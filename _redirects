@@ -1,8 +1,7 @@
-donate           buymeacoffee
+donate           /buymeacoffee
 
 buymeacoffee     https://buymeacoffee.com/clembs
 discord          https://discord.gg/6uNwP46
-email            mailto:clembs@clembs.com
 gamejolt         https://gamejolt.com/@Clembs
 gh/*             https://github.com/Clembs/:splat
 github/*         https://github.com/Clembs/:splat
@@ -21,14 +20,14 @@ twitter          https://twitter.com/ClembsV
 youtube          https://youtube.com/channel/UC1uQmGSF7MGyOnHnljzaCWg
 reclembs         https://youtube.com/channel/UCy_M0xynfNYjUSDn7iNrGvg
 
-unibros/latest   unibros/unibros-demo3.zip
+unibros/latest   /unibros/unibros-demo3.zip
 
 files/*          https://c.clembs.com/:splat
 crbt/*           https://crbt.app/*
 media/*          https://m.clembs.com/*
-videos/*         files/videos/*
+videos/*         /files/videos/*
 
 rickroll         https://youtu.be/dQw4w9WgXcQ
 grazalink        https://sites.google.com/view/grazalink
 flapps           https://sites.google.com/view/flapps
-icons            gh/Clembs-icon-pack
+icons            /gh/Clembs-icon-pack
