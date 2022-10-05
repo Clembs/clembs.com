@@ -23,9 +23,9 @@ reclembs         https://youtube.com/channel/UCy_M0xynfNYjUSDn7iNrGvg
 unibros/latest   /unibros/unibros-demo3.zip
 
 files/*          https://c.clembs.com/:splat
-crbt/*           https://crbt.app/*
-media/*          https://m.clembs.com/*
-videos/*         /files/videos/*
+crbt/*           https://crbt.app/:splat
+media/*          https://m.clembs.com/:splat
+videos/*         /files/videos/:splat
 
 rickroll         https://youtu.be/dQw4w9WgXcQ
 grazalink        https://sites.google.com/view/grazalink
