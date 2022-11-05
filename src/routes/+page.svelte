@@ -1,14 +1,12 @@
 <script lang="ts">
 	import { projects, socials } from './_stuff';
-	import '../styles/home.scss';
 	import { brandIcons } from '$lib/icons/brands/_allIcons';
 </script>
 
 <main>
 	<div class="content">
 		<div class="header">
-			<h1>Clembs website</h1>
-			<i>now clembs.com</i>
+			<h1>Clembs.com</h1>
 		</div>
 		<p>website still unfinished. check out my projects:</p>
 		<ul>
@@ -29,15 +27,41 @@
 	</div>
 </main>
 
-<style>
+<style lang="scss">
+	main {
+		color: white;
+		background: black;
+
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		height: 100%;
+
+		.content {
+			max-width: 50vh;
+		}
+
+		margin: 0 auto;
+	}
+
 	.socials {
-		display: grid;
-		grid-template-columns: 1fr 1fr 1fr 1fr;
-		gap: 1rem;
+		display: flex;
+		gap: 2rem;
+		flex-wrap: wrap;
 	}
 	:global(svg) {
 		width: 2rem;
 		height: auto;
 		fill: white;
+
+		&:hover {
+			fill: var(--links);
+			scale: 1.2;
+		}
+	}
+
+	.header {
+		text-align: center;
 	}
 </style>
