@@ -41,8 +41,9 @@
 
 	{#if form?.success}
 		<div>
-			Question envoyée avec succès ! Veux-tu m'en reposer une ?
-			<button on:click={() => history.go()}> Allez, pourquoi pas ! </button>
+			✅ Question envoyée avec succès ! <br />
+			Veux-tu m'en reposer une ?
+			<button on:click={() => history.go()}> 😳 Allez, pourquoi pas ! </button>
 		</div>
 	{:else}
 		<form method="POST">
@@ -57,13 +58,14 @@
 				maxlength={500}
 				name="question"
 				required
-				placeholder="Posez-moi une question, racontez-moi une histoire ou une blague, délivrez toute votre haine envers moi, etc."
+				placeholder="🗣️ Posez-moi une question, racontez-moi une histoire ou une blague, délivrez toute votre haine envers moi, etc."
 			/>
 			<input
 				name="identity"
 				bind:value={identity}
 				type="text"
-				placeholder="Un indice sur vous ? (facultatif)"
+				placeholder="👀 Un indice sur vous ? (facultatif)"
+				maxlength={200}
 			/>
 			<button
 				disabled={!question?.length || loading}
@@ -73,7 +75,7 @@
 				{#if loading}
 					Envoi en cours...
 				{:else}
-					{!identity ? 'Envoyer anonymement' : 'Envoyer'}
+					{!identity ? '🕵️ Envoyer anonymement' : '📤 Envoyer'}
 				{/if}
 			</button>
 		</form>
@@ -87,13 +89,16 @@
 		margin: 0 auto;
 		font-family: Figtree;
 		font-size: 16px;
+		height: 100%;
 	}
 	div {
 		margin: 1rem;
 		display: flex;
-		gap: 1rem;
+		gap: 2rem;
 		flex-direction: column;
 		font-size: 1.4rem;
+		height: 100%;
+		justify-content: center;
 	}
 	nav {
 		border-bottom: 1px solid black;
@@ -114,16 +119,20 @@
 		flex-direction: column;
 		gap: 0.6rem;
 		padding: 0 1rem;
+		height: 100%;
+	}
+	textarea {
+		height: 30%;
 	}
 	textarea,
 	input {
 		border: 1px solid black;
 		padding: 0.7rem;
 		border-radius: 0.2rem;
-		resize: vertical;
+		resize: none;
 		font-family: inherit;
 		font-size: 1.2rem;
-		height: max-content;
+		// height: max-content;
 	}
 	button {
 		&[disabled] {
