@@ -5,10 +5,15 @@ import { env } from '$env/dynamic/public';
 export const actions = {
   default: async ({ request, fetch }) => {
     const data = await request.formData();
-    const question = data.get('question');
-    const identity = data.get('identity');
+    const question = data.get('question')?.toString();
+    const identity = data.get('identity')?.toString();
     const date = new Date().toISOString();
-    const baseUrl = env.PUBLIC_NETLIFY ? 'https://clembs.com' : 'http://127.0.0.1:5173';
+    const baseUrlProd = 'https://clembs.com';
+    const baseUrlDev = 'http://127.0.0.1:5173';
+    const searchParams = new URLSearchParams({
+      identity: identity ? encodeURI(identity) : '',
+      question: question ? encodeURI(question) : ''
+    });
 
     await fetch(DISCORD_WEBHOOK_URL, {
       method: 'POST',
@@ -19,10 +24,7 @@ export const actions = {
         embeds: [
           {
             title: 'New question',
-            url: `${baseUrl}/render-question?${new URLSearchParams({
-              identity: identity ? encodeURI(identity.toString()) : '',
-              question: question ? encodeURI(question.toString()) : ''
-            })}`,
+            url: `${baseUrlProd}/render-question?${searchParams}`,
             fields: [
               {
                 name: 'Date',
@@ -36,7 +38,7 @@ export const actions = {
               },
               {
                 name: 'Question',
-                value: question?.toString()
+                value: `[${question}](${baseUrlDev}/render-question?${searchParams})`
               },
             ]
           }

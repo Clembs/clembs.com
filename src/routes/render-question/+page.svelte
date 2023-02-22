@@ -33,13 +33,17 @@
 			display: flex;
 			flex-direction: column;
 			gap: 1rem;
+			margin: 5rem;
 			align-items: center;
 		}
 
 		footer {
+			display: flex;
+			flex-direction: column;
 			text-align: center;
 			border: 1px solid black;
 			border-radius: 0.4rem;
+			font-size: 1.3rem;
 			max-width: max-content;
 			overflow: hidden;
 
@@ -54,7 +58,7 @@
 		}
 
 		.card {
-			width: 30rem;
+			width: 100%;
 			display: flex;
 			flex-direction: column;
 
