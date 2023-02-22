@@ -46,7 +46,7 @@
 		footer {
 			position: fixed;
 			bottom: 0;
-			transform: translateY(-3rem);
+			transform: translateY(-6.5rem);
 			display: flex;
 			flex-direction: column;
 			text-align: center;
