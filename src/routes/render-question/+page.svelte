@@ -1,8 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { colors } from '$lib/colors';
+	let typing = false;
 
 	const identity = decodeURI($page.url.searchParams.get('identity')!);
 	const question = decodeURI($page.url.searchParams.get('question')!);
+	const color = $page.url.searchParams.get('color') || 'black';
 </script>
 
 <main>
@@ -14,18 +17,25 @@
 					alt=""
 				/>
 			</div>
-			<span class="question">
+			<span class="question" style="--color: {colors[color]}">
 				{question}
 			</span>
-			<span class="answer" contenteditable="true">
-				Lorem ipsum dolor sit amet consectetur adipisicing elit.
+			<span
+				class="answer"
+				contenteditable="true"
+				on:focus={() => (typing = true)}
+				on:focusout={() => (typing = false)}
+			>
+				xd
 			</span>
 		</div>
 
-		<footer>
-			<span>🕵️ Questions anonymes</span>
-			<span class="link">clembs.com/questions</span>
-		</footer>
+		{#if !typing}
+			<footer>
+				<span>🕵️ Questions anonymes</span>
+				<span class="link">clembs.com/questions</span>
+			</footer>
+		{/if}
 	</div>
 </main>
 
@@ -76,6 +86,7 @@
 
 			.img-wrapper {
 				width: 100%;
+				z-index: 2;
 				position: absolute;
 				display: flex;
 				align-items: center;
@@ -98,8 +109,11 @@
 
 			.question {
 				padding-top: 3rem;
-				background-color: black;
+				background-color: var(--color);
 				color: white;
+				border-left: 1px solid black;
+				border-right: 1px solid black;
+				border-top: 1px solid black;
 				font-weight: 700;
 				font-size: 1.5rem;
 				border-radius: 0.4rem 0.4rem 0 0;

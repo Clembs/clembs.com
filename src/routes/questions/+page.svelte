@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { colors } from '$lib/colors';
 	import Clembs from '$lib/icons/Clembs.svelte';
 	import type { ActionData } from './$types';
 
@@ -36,11 +37,14 @@
 
 <main>
 	<nav>
-		<Clembs />Questions anonymes
+		<div class="title">
+			<Clembs />Questions anonymes
+		</div>
+		<span class="version">v1.2</span>
 	</nav>
 
 	{#if form?.success}
-		<div>
+		<div class="success-screen">
 			✅ Question envoyée avec succès ! <br />
 			Veux-tu m'en reposer une ?
 			<button on:click={() => history.go()}> 😳 Allez, pourquoi pas ! </button>
@@ -67,6 +71,21 @@
 				placeholder="👀 Un indice sur vous ? (facultatif)"
 				maxlength={200}
 			/>
+			<div class="colors">
+				Couleur de ton message <span class="new">nouveau</span> :
+				<div class="options">
+					{#each Object.entries(colors) as [name, value]}
+						<input
+							type="radio"
+							id="color"
+							name="color"
+							value={name}
+							style="--color: {value}"
+							checked={name === 'black'}
+						/>
+					{/each}
+				</div>
+			</div>
 			<button
 				disabled={!question?.length || loading}
 				on:submit={(ev) => (loading = true)}
@@ -88,10 +107,10 @@
 		max-width: 50rem;
 		margin: 0 auto;
 		font-family: Figtree;
-		font-size: 16px;
+		font-size: 18px;
 		height: 100%;
 	}
-	div {
+	.success-screen {
 		margin: 1rem;
 		display: flex;
 		gap: 2rem;
@@ -106,8 +125,28 @@
 		font-weight: 600;
 		padding: 0.8rem 1rem;
 		display: flex;
-		gap: 1rem;
 		align-items: center;
+		justify-content: space-between;
+
+		.version {
+			color: rgb(0 0 0 / 0.3);
+		}
+
+		.title {
+			display: flex;
+			gap: 1rem;
+			align-items: center;
+		}
+	}
+	.new {
+		color: white;
+		border: 1px solid black;
+		padding: 0.2rem 0.4rem;
+		font-weight: 700;
+		border-radius: 99px;
+		font-size: 0.9rem;
+		text-transform: uppercase;
+		background-color: #987fff;
 	}
 	header {
 		font-size: 2rem;
@@ -120,6 +159,35 @@
 		gap: 0.6rem;
 		padding: 0 1rem;
 		height: 100%;
+	}
+	.colors {
+		width: 100%;
+
+		.options {
+			display: flex;
+			gap: 1rem;
+			justify-content: space-between;
+			input[type='radio'] {
+				appearance: none;
+				width: 4rem;
+				height: 4rem;
+				border-radius: 99px;
+				border: 1px solid black;
+				display: block;
+				transition: 0.09s all linear;
+				background-color: var(--color);
+				position: relative;
+				&:checked {
+					&::after {
+						content: '✅';
+						font-size: 1.5rem;
+						position: absolute;
+						transform: translate(-1.5rem, -1.5rem);
+					}
+					border: 6px solid black;
+				}
+			}
+		}
 	}
 	textarea {
 		height: 30%;
@@ -140,27 +208,6 @@
 			color: black;
 			opacity: 0.5;
 		}
-
-		&::before {
-			content: '';
-			position: absolute;
-			bottom: 0;
-			left: 0;
-			right: 100%;
-			top: 0;
-			z-index: -1;
-			transition: right 0.5s ease-in;
-			background: #47cf73;
-		}
-
-		&.loading {
-			color: black;
-			&::before {
-				right: 0;
-			}
-		}
-
-		mix-blend-mode: difference;
 		overflow: hidden;
 		transition: 0.08s ease-in;
 		position: relative;
