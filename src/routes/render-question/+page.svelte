@@ -7,8 +7,9 @@
 	const identity = decodeURI($page.url.searchParams.get('identity')!);
 	const content = decodeURI($page.url.searchParams.get('question')!);
 	const color = $page.url.searchParams.get('color') || 'black';
-	const selectedMessage =
-		JSON.parse(decodeURI($page.url.searchParams.get('selectedMessage')!) || '{}') || null;
+	const selectedMessage = $page.url.searchParams.get('selectedMessage')
+		? JSON.parse(decodeURI($page.url.searchParams.get('selectedMessage')!))
+		: null;
 </script>
 
 <main>
