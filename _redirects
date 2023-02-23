@@ -1,6 +1,8 @@
-donate           /buymeacoffee
+donate           /kofi
+questions        /messages
 
-buymeacoffee     https://buymeacoffee.com/clembs
+kofi             https://ko-fi.com/clembs
+buymeacoffee     /kofi
 discord          https://discord.gg/6uNwP46
 gamejolt         https://gamejolt.com/@Clembs
 gh/*             https://github.com/Clembs/:splat
