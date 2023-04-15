@@ -6,7 +6,7 @@
 
 <div class="tags">
 	{#each tags as tag}
-		<Tag label={tag} background="white" color="black" />
+		<Tag label={tag} />
 	{/each}
 </div>
 
@@ -14,6 +14,6 @@
 	.tags {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 10px;
+		gap: 0.5rem;
 	}
 </style>

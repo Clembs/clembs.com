@@ -1,139 +1,152 @@
 <script lang="ts">
 	import Button from '$lib/components/Button.svelte';
-	import Tags from '$lib/components/Tags.svelte';
-	import type { PageData } from './$types';
+	import type { BrandingPost, Technology } from '$lib/data/branding';
+	import Clembs from '$lib/icons/Clembs.svelte';
+	import Wordmark from '$lib/icons/Wordmark.svelte';
 
-	export let data: PageData;
+	export let data: BrandingPost;
+
+	const baseUrl = 'https://c.clembs.com/branding';
+	const technologies: Record<Technology, string> = {
+		sveltekit: 'svelte',
+		figma: 'figma',
+		scss: 'sass',
+		tailwindcss: 'tailwindcss',
+		google_sites: 'google',
+		illustrator: 'adobeillustrator',
+		xd: 'adobexd',
+		typescript: 'typescript',
+		nextjs: 'nextjs'
+	};
+
+	function getUrl(url: string) {
+		return `${baseUrl}/${data.id}${url}`;
+	}
 </script>
 
-<main
-	style="
-  --color-background: {data?.themeColors?.background};
-  --color-accent: {data?.themeColors?.accent};
-"
->
-	<div class="heading">
-		<img src="https://c.clembs.com/branding/{data.id}/{data.wordmarkPath}" alt={data.projectName} />
-
-		<div class="text">
-			<div class="title">{data.title}</div>
-			<div class="heading-time">
-				<time datetime={data.finishedAt.toDateString()}>
-					{data.finishedAt.toLocaleString('en-US', {
-						month: 'short',
-						day: 'numeric',
-						year: 'numeric'
-					})}
-				</time>
-				• TTM: {(data.finishedAt.getTime() - data.createdAt.getTime()) / 86_400_000} days
+<header>
+	<div class="brands">
+		{#if !data.isCommission}
+			<div class="me">
+				<Clembs />
 			</div>
-		</div>
-
-		<Tags tags={[data.type === 'branding' ? 'Branding' : 'UI Design', ...data.tags]} />
+			x
+			<div class="the-guys-im-working-for">
+				<img alt={data.brand} src={getUrl(data.iconPath)} />
+			</div>
+		{:else}
+			<Wordmark />
+		{/if}
 	</div>
+	<h1 class="post-title">{data.title}</h1>
+</header>
 
-	<div class="content">
-		<div class="assets" role="list">
-			<h2>Gallery</h2>
-			{#each data.assets as asset_group}
-				<div class="asset-group" role="row">
-					{#each asset_group as asset}
-						<img src="https://c.clembs.com/branding/{data.id}{asset}" alt="" />
-					{/each}
-				</div>
+<div class="info-card">
+	<section>
+		<div class="section-title">About</div>
+		<span>{data.brief.split(' ').slice(0, 20).join(' ')}...</span>
+	</section>
+	<section>
+		<div class="section-title">Created at</div>
+		<time datetime={data.finishedAt.toDateString()}>
+			{data.finishedAt.toLocaleString('en-US', {
+				month: 'long',
+				day: 'numeric',
+				year: 'numeric'
+			})}
+		</time>
+		• Made in {(data.finishedAt.getTime() - data.createdAt.getTime()) / 86_400_000} days
+	</section>
+	<section>
+		<div class="section-title">Technologies</div>
+		<div class="technologies">
+			{#each data.technologies as technology}
+				<img
+					src="https://cdn.jsdelivr.net/npm/simple-icons@v8/icons/{technologies[technology]}.svg"
+					alt={technology}
+				/>
 			{/each}
 		</div>
-		<div class="description">
-			<div class="inner">
-				<h2>Description</h2>
-				<p>
-					{@html data.description}
-				</p>
+	</section>
+	<Button inline href={data.url}>Check it out</Button>
+</div>
 
-				{#if data.assetsZipPath}
-					<Button href={data.assetsZipPath} background={data.themeColors.accent}
-						>Download assets</Button
-					>
-				{/if}
-				{#if data.productURL}
-					<Button href={data.productURL} background={data.themeColors.accent}>Check it out!</Button>
-				{/if}
-			</div>
+<div class="content">
+	<div class="description">
+		<div class="inner">
+			<p>
+				{@html data.brief}
+			</p>
 		</div>
 	</div>
 
-	<p>
-		&copy; {data.finishedAt.getFullYear()}-{new Date().getFullYear()}
-
-		{#if data.credits}
-			Clembs & {#each data.credits as { href, label }}<a {href}>{label}</a>{/each}.
-		{:else}
-			Clembs.
-		{/if}
-		All rights reserved.
-	</p>
-</main>
+	<div class="assets" role="list">
+		<h2>Gallery</h2>
+		{#each data.assets as asset_group}
+			<div class="asset-group" role="row">
+				{#each asset_group as asset}
+					<img src="https://c.clembs.com/branding/{data.id}{asset}" alt="" />
+				{/each}
+			</div>
+		{/each}
+	</div>
+</div>
 
 <style lang="scss">
-	main {
-		background: var(--color-background);
+	header {
+		border-radius: 20px;
+		border-bottom: 1px solid black;
+		padding: 1.4rem;
+		padding-top: 2rem;
+		background-color: white;
+
+		.brands {
+			display: flex;
+			gap: 0.8rem;
+			font-size: larger;
+			margin-bottom: 0.5rem;
+
+			:global(svg),
+			img {
+				width: 2.5rem;
+				height: 2.5rem;
+			}
+		}
+
+		.post-title {
+			font-size: 2.2rem;
+			margin: 0;
+			font-weight: 600;
+		}
+	}
+
+	.content {
+		margin: 1rem;
 		display: flex;
 		flex-direction: column;
-		align-items: center;
-		padding: 50px;
+		gap: 1rem;
+	}
 
-		.heading {
-			.title {
-				font-size: 42px;
-				font-weight: 500;
-			}
-			img {
-				max-width: 300px;
-			}
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			text-align: center;
-			gap: 20px;
-		}
+	.info-card {
+		margin: 0.5rem;
+		border: 1px solid black;
+		padding: 0.8rem;
+		border-radius: 30px;
+		position: sticky;
+		top: 0;
+		left: 0;
+		background-color: white;
+		padding-top: 1rem;
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
 
-		.content {
-			display: flex;
-			padding: 10px;
-			gap: 25px;
-
-			.description {
-				width: 100%;
-				margin-top: 20px;
-				position: relative;
-
-				.inner {
-					position: sticky;
-					top: 0;
-				}
-			}
-
-			.assets {
-				display: flex;
-				flex-wrap: wrap;
-				width: 100%;
-				gap: 10px;
-
-				.asset-group {
-					display: flex;
-					width: 100%;
-					gap: 10px;
-
-					img {
-						border-radius: 10px;
-					}
-				}
-			}
-		}
-
-		@media screen and (max-width: 950px) {
-			.content {
-				flex-direction: column-reverse;
+		section {
+			.section-title {
+				text-transform: uppercase;
+				font-weight: 700;
+				font-size: 0.9rem;
+				padding-bottom: 0.3rem;
 			}
 		}
 	}

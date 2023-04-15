@@ -1,55 +1,64 @@
 <script lang="ts">
+	export let href = '';
+	export let style: 'primary' | 'secondary' = 'primary';
+	export let inline = false;
+	export let disabled = false;
 	export let background = 'var(--color-primary)';
 	export let color = 'white';
-	export let href: string | null = null;
 </script>
 
-{#if href}
-	<a
-		{href}
-		class="button"
-		style="
---color-bg: {background};
---color-text: {color};
-"
-	>
+{#if href && !disabled}
+	<a class="button {style}" class:inline {href}>
+		<slot name="icon" />
 		<slot />
 	</a>
 {:else}
-	<button
-		on:click
-		class="button"
-		style="
---color-bg: {background};
---color-text: {color};
-"
-	>
+	<button on:click on:submit class="button {style}" class:inline {disabled}>
+		<slot name="icon" />
 		<slot />
 	</button>
 {/if}
 
 <style lang="scss">
 	.button {
+		&.primary {
+			--button-bg: black;
+			--button-text: white;
+		}
+		&.secondary {
+			--button-bg: white;
+			--button-text: black;
+		}
+
+		&:disabled {
+			cursor: not-allowed;
+			opacity: 0.5;
+		}
+
+		&.inline {
+			text-align: center;
+			width: 100%;
+		}
+
 		appearance: none;
-		border: none;
-		padding: 15px 20px;
-		background: var(--color-bg);
-		color: var(--color-text);
-		font-weight: 600;
+		padding: 0.5rem 2.6rem;
+		font-weight: 500;
+		border: 1px solid black;
 		font-size: larger;
 
-		border-radius: 10px;
+		border-radius: 1.5rem;
 		user-select: none;
 		cursor: pointer;
 		display: block;
 		width: max-content;
-		transition: border-radius 0.1s ease, transform 0.2s ease-out;
+		text-decoration: none;
+		transition: all 100ms ease-in;
+		background-color: var(--button-bg);
+		color: var(--button-text);
 
 		&:hover {
-			border-radius: 30px;
-			transition: border-radius 0.2s ease, transform 0.2s ease-out;
-			text-decoration: none;
-			transform: scale(1.05);
+		}
+		&:active {
 		}
 	}
 </style>
