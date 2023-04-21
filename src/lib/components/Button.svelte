@@ -45,6 +45,7 @@
 		font-weight: 500;
 		border: 1px solid black;
 		font-size: larger;
+		height: min-content;
 
 		border-radius: 1.5rem;
 		user-select: none;
@@ -57,6 +58,7 @@
 		color: var(--button-text);
 
 		&:hover {
+			border-bottom: 3px solid black;
 		}
 		&:active {
 		}
