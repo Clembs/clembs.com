@@ -15,8 +15,8 @@
 			</div>
 			<p>
 				or Clément IRL, a 16 y/o high school student from the south of France. I am passionate about
-				computers and express my love through design, code and video. From Discord bots to web apps
-				to brand design to livestreaming, anything goes on clembs.com. Welcome!
+				computers and express my love through design, code and video.<br /><br />From Discord bots
+				to web apps to brand design to livestreaming, anything goes on clembs.com. Welcome!
 			</p>
 		</div>
 	</div>
@@ -52,26 +52,27 @@
 		flex-direction: column;
 		height: 100%;
 		align-items: center;
+		gap: 0.5rem;
 	}
 
 	.intro {
 		display: flex;
 		gap: 1.5rem;
-		padding: 1.5rem 0;
+		padding: 1rem 0;
 
 		.avatar img {
 			width: 100%;
 			height: auto;
 			border-radius: 999px;
 			border: 1px black solid;
-			box-shadow: 0px 3px 0px 0px black;
+			box-shadow: 3px 3px 0px 0px black;
 		}
 
 		.text {
 			display: flex;
 			flex-direction: column;
 			gap: 0.5rem;
-			max-width: 500px;
+			max-width: 420px;
 
 			:global(.wordmark svg) {
 				height: 5rem;
@@ -88,8 +89,7 @@
 	.projects {
 		display: grid;
 		width: 100%;
-		padding: 0.5rem 0;
-		gap: 0.8rem;
+		gap: 0.5rem;
 
 		&.featured {
 			grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -106,19 +106,19 @@
 
 			.year {
 				position: absolute;
-				right: 10px;
-				top: 10px;
+				right: 0.5rem;
+				top: 0.5rem;
 				color: black;
 				background: white;
 				border: 1px solid black;
-				border-radius: 999px;
-				font-size: small;
-				padding: 0 0.3rem;
+				border-radius: 0.4rem;
+				font-size: 0.7rem;
+				padding: 0.2rem 0.4rem;
 				font-weight: 400;
 			}
 
 			img {
-				border-radius: 20px;
+				border-radius: 0.5rem;
 				border: 1px black solid;
 				aspect-ratio: 16/9;
 				object-fit: cover;
@@ -136,7 +136,7 @@
 				bottom: 0;
 				width: 100%;
 				height: 100%;
-				border-radius: 20px;
+				border-radius: 0.5rem;
 				z-index: -1;
 			}
 
