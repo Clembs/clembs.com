@@ -1,4 +1,5 @@
 import type { BrandingPost } from '../branding';
+import { TechnologyName } from '../technologies';
 
 export const purplet2022: BrandingPost = {
 	id: 'purplet-2022',
@@ -8,7 +9,7 @@ export const purplet2022: BrandingPost = {
 	finishedAt: new Date('2022-10-18'),
 	url: 'https://github.com/CRBT-Team/Purplet',
 	isCommission: false,
-	technologies: ['xd', 'typescript'],
+	technologies: [TechnologyName.XD, TechnologyName.Svelte],
 	themeGradient: {
 		from: '#A172F8',
 		to: '#D5C2FF'
@@ -23,7 +24,5 @@ export const purplet2022: BrandingPost = {
 		['/explanations.png'],
 		['/colors.png', '/icon-small.png']
 	],
-	credits:
-		'Dave Caruso for massively contributing to Purplet in the code and management departments!',
 	bannerPath: '/banner.png'
 };

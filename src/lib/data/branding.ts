@@ -3,17 +3,7 @@ import { delegue } from './branding/delegue';
 import { purplet2022 } from './branding/purplet-2022';
 import { vbot } from './branding/vbot';
 import { verticalVision } from './branding/vertical-vision';
-
-export type Technology =
-	| 'xd'
-	| 'illustrator'
-	| 'figma'
-	| 'scss'
-	| 'tailwindcss'
-	| 'nextjs'
-	| 'sveltekit'
-	| 'typescript'
-	| 'google_sites';
+import type { TechnologyName } from './technologies';
 
 export interface BrandingPost {
 	id: string;
@@ -21,7 +11,7 @@ export interface BrandingPost {
 	isCommission: boolean;
 	title: string;
 	tags: string[];
-	technologies: Technology[];
+	technologies: TechnologyName[];
 	bannerPath: string;
 	iconPath: string;
 	brief: string;

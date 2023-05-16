@@ -1,4 +1,5 @@
 import type { BrandingPost } from '../branding';
+import { TechnologyName } from '../technologies';
 
 export const verticalVision: BrandingPost = {
 	id: 'vertical-vision',
@@ -13,7 +14,7 @@ export const verticalVision: BrandingPost = {
 	},
 	isCommission: true,
 	tags: ['Entreprise', 'Software', 'Branding', 'UI', 'Web design'],
-	technologies: ['xd', 'tailwindcss', 'sveltekit'],
+	technologies: [TechnologyName.XD, TechnologyName.TailwindCSS, TechnologyName.Svelte],
 	brief: 'watch your safety',
 	iconPath: '/favicon.svg',
 	assets: [
