@@ -1,13 +1,20 @@
 <script lang="ts">
 	import '../styles/globals.scss';
 	import { page } from '$app/stores';
+
+	let colors = $page.data?.themeGradient;
+
+	page.subscribe((p) => {
+		if (p.data?.themeGradient) {
+			colors = p.data.themeGradient;
+		}
+	});
 </script>
 
 <main>
 	<div
 		class="background-piece"
-		style="--from: {$page.data?.themeGradient?.from ?? '#643FFF'}; --to: {$page.data?.themeGradient
-			?.to ?? '#31C0FF'}"
+		style="--from: {colors?.from ?? '#643FFF'}; --to: {colors?.to ?? '#31C0FF'}"
 		class:move-gradient={!!$page.data?.themeGradient}
 	/>
 	<div class="content">
@@ -44,17 +51,17 @@
 	}
 
 	.content {
-		margin: 2rem 1rem;
+		margin: 3rem 2rem 1rem 2rem;
 		background-color: white;
-		max-width: 1260px;
+		max-width: 1000px;
 		border: 1px black solid;
-		border-radius: 20px;
+		border-radius: 1rem;
 		height: 100%;
 	}
 
 	@media (max-width: 768px) {
 		.content {
-			margin: 2rem 0.5rem;
+			margin: 2rem 0.7rem;
 		}
 	}
 </style>
