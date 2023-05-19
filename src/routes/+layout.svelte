@@ -12,7 +12,7 @@
 	});
 </script>
 
-<main>
+<main class="layout">
 	<div
 		class="background-piece"
 		style="--from: {colors?.from ?? '#643FFF'}; --to: {colors?.to ?? '#31C0FF'}"
@@ -26,12 +26,13 @@
 </main>
 
 <style lang="scss">
-	main {
+	.layout {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		min-height: 100%;
 		background: white;
+		transition: transform ease-in-out 0.6s, filter ease-in-out 0.4s;
 	}
 
 	.background-piece {
