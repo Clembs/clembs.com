@@ -81,16 +81,12 @@
 
 	.content {
 		padding: 1rem;
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
 		width: 100%;
 	}
 
 	main {
 		display: flex;
 		flex-direction: row-reverse;
-		gap: 1rem;
 		height: 100%;
 	}
 

@@ -61,7 +61,7 @@
 		display: flex;
 		flex-direction: column;
 		flex-grow: 1;
-		min-width: 350px;
+		max-width: 320px;
 
 		.info-card-content {
 			display: flex;
