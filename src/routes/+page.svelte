@@ -41,6 +41,18 @@
 			</a>
 		{/each}
 	</div>
+
+	<span
+		style="
+	opacity: 0.15;
+	color: white;
+	text-align: left;
+	transform: rotateY(180deg);
+	line-height: 0;
+	">Strange, isn't it?</span
+	>
+
+	&copy; 2006-2023 Clembs
 </main>
 
 <style lang="scss">
@@ -49,7 +61,6 @@
 		display: flex;
 		flex-direction: column;
 		height: 100%;
-		align-items: center;
 		gap: 0.5rem;
 	}
 
@@ -57,6 +68,7 @@
 		display: flex;
 		gap: 1.5rem;
 		padding: 1rem 0;
+		margin: 0 auto;
 
 		.avatar img {
 			width: 100%;
@@ -96,6 +108,12 @@
 			transition: transform ease-out 0.1s;
 			width: 100%;
 			height: 100%;
+			background-color: gray;
+			border-radius: 0.5rem;
+			aspect-ratio: 16/9;
+			color: white;
+			display: grid;
+			place-items: center;
 
 			&:focus-within {
 				outline: 2px solid black;
