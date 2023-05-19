@@ -2,6 +2,7 @@
 	import '../styles/globals.scss';
 	import { page } from '$app/stores';
 	import NavBar from '$lib/components/NavBar.svelte';
+	import { Toaster } from 'svelte-french-toast';
 
 	let colors = $page.data?.themeGradient;
 
@@ -11,6 +12,8 @@
 		}
 	});
 </script>
+
+<Toaster />
 
 <main class="layout">
 	<div
