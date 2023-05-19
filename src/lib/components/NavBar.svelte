@@ -12,7 +12,7 @@
 			label: 'Software'
 		},
 		{
-			href: '/design',
+			href: '/branding',
 			label: 'Design'
 		},
 		{
@@ -52,7 +52,7 @@
 				{/if}
 			</a>
 		{:else}
-			<a href={link.href} class="nav-item" class:active={$page.url.pathname.endsWith(link.href)}>
+			<a href={link.href} class="nav-item" class:active={$page.url.pathname.includes(link.href)}>
 				{#if link.label}
 					{link.label}
 				{:else}
@@ -76,12 +76,12 @@
 		align-items: center;
 		gap: 0.2rem;
 		box-shadow: 0px 2px 0px 0px black;
-		transition: transform ease-in 0.2s;
+		transition: transform ease-in-out 150ms;
 		z-index: 9;
 
 		&.hide {
-			transition: transform ease-out 0.2s;
-			transform: translateY(5rem);
+			transition: transform ease-in-out 150ms;
+			transform: translateY(200%) scale(0.8);
 		}
 
 		.nav-item {
