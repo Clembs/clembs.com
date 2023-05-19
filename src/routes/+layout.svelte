@@ -1,6 +1,7 @@
 <script lang="ts">
 	import '../styles/globals.scss';
 	import { page } from '$app/stores';
+	import NavBar from '$lib/components/NavBar.svelte';
 
 	let colors = $page.data?.themeGradient;
 
@@ -20,6 +21,8 @@
 	<div class="content">
 		<slot />
 	</div>
+
+	<NavBar />
 </main>
 
 <style lang="scss">
@@ -28,6 +31,7 @@
 		flex-direction: column;
 		align-items: center;
 		min-height: 100%;
+		background: white;
 	}
 
 	.background-piece {
@@ -41,7 +45,6 @@
 		top: 0;
 		left: 0;
 		height: 200px;
-		z-index: -1;
 		border-bottom: 1px solid black;
 
 		&.move-gradient {
@@ -57,6 +60,7 @@
 		border: 1px black solid;
 		border-radius: 1rem;
 		height: 100%;
+		z-index: 2;
 	}
 
 	@media (max-width: 768px) {

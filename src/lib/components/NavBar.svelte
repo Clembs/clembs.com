@@ -1,0 +1,123 @@
+<script lang="ts">
+	import { page } from '$app/stores';
+	import Clembs from '$lib/icons/Clembs.svelte';
+	import { onMount } from 'svelte';
+
+	const navLinks = [
+		{
+			href: '/'
+		},
+		{
+			href: '/software',
+			label: 'Software'
+		},
+		{
+			href: '/design',
+			label: 'Design'
+		},
+		{
+			href: '/contact',
+			label: 'Contact'
+		}
+	];
+
+	let firstNavEl: HTMLAnchorElement;
+	let hideNavBar = false;
+
+	const hide = () => (hideNavBar = (document.scrollingElement?.scrollTop ?? 0) > 5);
+
+	onMount(hide);
+</script>
+
+<svelte:window
+	on:scroll={hide}
+	on:keydown={(ev) => {
+		if (ev.key === 'n') firstNavEl.focus();
+	}}
+/>
+
+<nav class:hide={hideNavBar}>
+	{#each navLinks as link, i}
+		{#if i === 0}
+			<a
+				bind:this={firstNavEl}
+				href={link.href}
+				class="nav-item"
+				class:active={$page.url.pathname.endsWith(link.href)}
+			>
+				{#if link.label}
+					{link.label}
+				{:else}
+					<Clembs />
+				{/if}
+			</a>
+		{:else}
+			<a href={link.href} class="nav-item" class:active={$page.url.pathname.endsWith(link.href)}>
+				{#if link.label}
+					{link.label}
+				{:else}
+					<Clembs />
+				{/if}
+			</a>
+		{/if}
+	{/each}
+</nav>
+
+<style lang="scss">
+	nav {
+		position: fixed;
+		height: 58px;
+		bottom: 1rem;
+		border: 1px solid black;
+		background-color: white;
+		border-radius: 99rem;
+		padding: 0.2rem;
+		display: flex;
+		align-items: center;
+		gap: 0.2rem;
+		box-shadow: 0px 2px 0px 0px black;
+		transition: transform ease-in 0.2s;
+		z-index: 9;
+
+		&.hide {
+			transition: transform ease-out 0.2s;
+			transform: translateY(5rem);
+		}
+
+		.nav-item {
+			display: flex;
+			color: black;
+			padding: 0.4rem 1.6rem;
+			border-radius: 99rem;
+			height: 100%;
+			text-decoration: none;
+			font-weight: 400;
+			font-size: 1.1rem;
+			align-items: center;
+			// border: 1px solid white;
+			transition: background-color ease-in 100ms, outline ease-in 100ms;
+			background-color: white;
+
+			&.active {
+				fill: white;
+				color: white;
+				background: rgb(152, 118, 255);
+				background: linear-gradient(
+					90deg,
+					rgba(152, 118, 255, 1) 0%,
+					rgba(101, 79, 255, 1) 33%,
+					rgba(61, 132, 255, 1) 66%,
+					rgba(49, 192, 255, 1) 100%
+				);
+			}
+
+			&:hover,
+			&:focus-visible {
+				transition: background-color ease-out 100ms, outline ease-out 100ms;
+				// border: 1px solid black;
+				outline: 1px solid black;
+				background-color: rgb(231, 231, 231);
+			}
+		}
+	}
+</style>
