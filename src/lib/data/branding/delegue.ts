@@ -1,4 +1,4 @@
-import type { BrandingPost } from '../branding';
+import type { BrandingPost } from '.';
 import { TechnologyName } from '../technologies';
 
 export const delegue: BrandingPost = {
@@ -7,7 +7,7 @@ export const delegue: BrandingPost = {
 	title: 'Ensemble vers la réussite: A guide to a winning class rep campaign',
 	createdAt: new Date('2022-09-21'),
 	finishedAt: new Date('2022-09-16'),
-	url: 'https://delegue.clembs.com',
+	links: { projectUrl: 'https://delegue.clembs.com' },
 	isCommission: false,
 	themeGradient: {
 		from: '#18C6F2',

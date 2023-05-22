@@ -1,4 +1,4 @@
-import type { BrandingPost } from '../branding';
+import type { BrandingPost } from '.';
 import { TechnologyName } from '../technologies';
 
 export const crbt2023: BrandingPost = {
@@ -8,7 +8,7 @@ export const crbt2023: BrandingPost = {
 	createdAt: new Date('2022-08-30'),
 	finishedAt: new Date('2023-01-25'),
 	isCommission: false,
-	url: 'https://crbt.app',
+	links: { projectUrl: 'https://crbt.app', repoUrl: 'https://github.com/CRBT-Team/CRBT' },
 	themeGradient: {
 		from: '#FFCEDF',
 		to: '#A62541'

@@ -1,4 +1,4 @@
-import type { BrandingPost } from '../branding';
+import type { BrandingPost } from '.';
 import { TechnologyName } from '../technologies';
 
 export const purplet2022: BrandingPost = {
@@ -7,7 +7,7 @@ export const purplet2022: BrandingPost = {
 	title: 'Purplet: Next-gen tools to build modern Discord apps.',
 	createdAt: new Date('2022-10-07'),
 	finishedAt: new Date('2022-10-18'),
-	url: 'https://github.com/CRBT-Team/Purplet',
+	links: { projectUrl: 'https://github.com/CRBT-Team/Purplet' },
 	isCommission: false,
 	technologies: [TechnologyName.XD, TechnologyName.Svelte],
 	themeGradient: {

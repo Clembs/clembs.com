@@ -1,4 +1,4 @@
-import type { BrandingPost } from '../branding';
+import type { BrandingPost } from '.';
 import { TechnologyName } from '../technologies';
 
 export const verticalVision: BrandingPost = {
@@ -7,7 +7,7 @@ export const verticalVision: BrandingPost = {
 	title: 'Vertical Vision: Watch your safety',
 	createdAt: new Date('2021-06-21'),
 	finishedAt: new Date('2023-12-01'),
-	url: 'https://verticalvision.fr',
+	links: { projectUrl: 'https://verticalvision.fr' },
 	themeGradient: {
 		from: '#18C6F2',
 		to: '#1877F2'

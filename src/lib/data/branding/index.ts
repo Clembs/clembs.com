@@ -1,9 +1,9 @@
-import { crbt2023 } from './branding/crbt-2023';
-import { delegue } from './branding/delegue';
-import { purplet2022 } from './branding/purplet-2022';
-import { vbot } from './branding/vbot';
-import { verticalVision } from './branding/vertical-vision';
-import type { TechnologyName } from './technologies';
+import { crbt2023 } from './crbt-2023';
+import { delegue } from './delegue';
+import { purplet2022 } from './purplet-2022';
+import { vbot } from './vbot';
+import { verticalVision } from './vertical-vision';
+import type { TechnologyName } from '../technologies';
 
 export interface BrandingPost {
 	id: string;
@@ -15,7 +15,11 @@ export interface BrandingPost {
 	bannerPath: string;
 	iconPath: string;
 	brief: string;
-	url?: string;
+	links?: {
+		projectUrl?: string;
+		assetsUrl?: string;
+		repoUrl?: string;
+	};
 	assets: string[][];
 	createdAt: Date;
 	finishedAt: Date;

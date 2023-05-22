@@ -1,4 +1,4 @@
-import type { BrandingPost } from '../branding';
+import type { BrandingPost } from '.';
 import { TechnologyName } from '../technologies';
 
 export const vbot: BrandingPost = {
@@ -7,7 +7,7 @@ export const vbot: BrandingPost = {
 	title: 'Vbot',
 	createdAt: new Date('2021-06-13'),
 	finishedAt: new Date('2021-06-13'),
-	url: 'https://website-git-dev-user5522.vercel.app/projects/vbot',
+	links: { projectUrl: 'https://user5522.tk/projects/vbot' },
 	isCommission: true,
 	technologies: [TechnologyName.XD],
 	themeGradient: {
