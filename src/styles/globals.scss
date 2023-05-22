@@ -2,6 +2,17 @@
 	box-sizing: border-box;
 }
 
+a,
+button,
+textarea,
+iframe,
+input {
+	&:focus-within {
+		outline: 3px solid #987fff;
+		outline-offset: 0px;
+	}
+}
+
 :root {
 	--links: #987fff;
 }
@@ -28,13 +39,11 @@ h6 {
 }
 
 a {
-	font-weight: 700;
-	color: var(--links);
+	color: inherit;
 	cursor: pointer;
 	text-decoration: none;
 	&:hover {
 		text-decoration: underline;
-		color: var(--links);
 	}
 }
 
