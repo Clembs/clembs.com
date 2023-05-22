@@ -3,6 +3,7 @@
 	import { page } from '$app/stores';
 	import NavBar from '$lib/components/NavBar.svelte';
 	import { Toaster } from 'svelte-french-toast';
+	import Footer from '$lib/components/Footer.svelte';
 
 	let colors = $page.data?.themeGradient;
 
@@ -23,6 +24,8 @@
 	/>
 	<div class="content">
 		<slot />
+
+		<Footer />
 	</div>
 
 	<NavBar />
@@ -64,12 +67,14 @@
 		border: 1px black solid;
 		border-radius: 1rem;
 		height: 100%;
+		width: 100%;
 		z-index: 2;
 	}
 
-	@media (max-width: 768px) {
+	@media (max-width: 1022.4px) {
 		.content {
-			margin: 2rem 0.7rem;
+			margin: 3rem 2rem;
+			width: calc(100% - 1.4rem);
 		}
 	}
 </style>

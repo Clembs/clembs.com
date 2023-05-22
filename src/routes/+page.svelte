@@ -51,8 +51,6 @@
 	line-height: 0;
 	">Strange, isn't it?</span
 	>
-
-	&copy; 2006-2023 Clembs
 </main>
 
 <style lang="scss">
@@ -115,15 +113,9 @@
 			display: grid;
 			place-items: center;
 
-			&:focus-within {
-				outline: 2px solid black;
-				outline-offset: 1px;
-				border-radius: 0.35rem;
-
-				&:hover {
-					outline-style: none;
-				}
-			}
+			// &:focus-within {
+			// 	outline: 5px solid #987fff;
+			// }
 
 			.year {
 				position: absolute;
@@ -161,7 +153,8 @@
 				z-index: -1;
 			}
 
-			&:hover {
+			&:hover,
+			&:focus-within {
 				transition: transform ease-out 0.1s;
 				transform: translateY(-3px);
 				&::after {
