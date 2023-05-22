@@ -32,7 +32,10 @@
 <svelte:window
 	on:scroll={hide}
 	on:keydown={(ev) => {
-		if (ev.key === 'n') firstNavEl.focus();
+		if (ev.altKey && ev.key === 'n') {
+			ev.preventDefault();
+			firstNavEl.focus();
+		}
 	}}
 />
 
@@ -111,8 +114,7 @@
 				);
 			}
 
-			&:hover,
-			&:focus-visible {
+			&:hover {
 				transition: background-color ease-out 100ms, outline ease-out 100ms;
 				// border: 1px solid black;
 				outline: 1px solid black;
