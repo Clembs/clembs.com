@@ -39,7 +39,7 @@
 	}}
 />
 
-<nav class:hide={hideNavBar}>
+<nav aria-hidden={hideNavBar}>
 	{#each navLinks as link, i}
 		{#if i === 0}
 			<a
@@ -79,11 +79,11 @@
 		align-items: center;
 		gap: 0.2rem;
 		box-shadow: 0px 2px 0px 0px black;
-		transition: transform ease-in-out 150ms;
+		transition: transform cubic-bezier(1, 0, 0, 1) 150ms;
 		z-index: 9;
 
-		&.hide {
-			transition: transform ease-in-out 150ms;
+		&[aria-hidden='true'] {
+			transition: transform cubic-bezier(1, 0, 0, 1) 150ms;
 			transform: translateY(200%) scale(0.8);
 		}
 
