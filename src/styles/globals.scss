@@ -8,8 +8,11 @@ textarea,
 iframe,
 input {
 	&:focus-within {
-		outline: 3px solid #987fff;
-		outline-offset: 0px;
+		outline: none;
+		/* custom focus styles */
+		box-shadow: 0 0 0 3px #987fff;
+		// outline: 3px solid #987fff;
+		// outline-offset: 0px;
 	}
 }
 
@@ -48,6 +51,6 @@ a {
 }
 
 img {
-	width: 100%;
-	height: auto;
+	max-width: 100%;
+	display: block;
 }
