@@ -106,7 +106,7 @@
 			transition: transform ease-out 0.1s;
 			width: 100%;
 			height: 100%;
-			background-color: gray;
+			background-color: black;
 			border-radius: 0.5rem;
 			aspect-ratio: 16/9;
 			color: white;
@@ -133,7 +133,6 @@
 			img {
 				border-radius: 0.5rem;
 				border: 1px black solid;
-				aspect-ratio: 16/9;
 				object-fit: cover;
 				width: 100%;
 				height: 100%;
