@@ -7,6 +7,8 @@
 	import { onMount } from 'svelte';
 	import PreviousMessage from './PreviousMessage.svelte';
 	import { blur } from 'svelte/transition';
+	import Button from '$lib/components/Button.svelte';
+	import { IconMasksTheater, IconMasksTheaterOff } from '@tabler/icons-svelte';
 
 	let identity: string;
 	let question: string;
@@ -63,14 +65,14 @@
 		<div class="title">
 			<Clembs />Messages anonymes
 		</div>
-		<span class="version">v1.3</span>
+		<span class="version">v1.4</span>
 	</nav>
 
 	{#if form?.success}
 		<div class="success-screen">
 			✅ Message envoyé avec succès ! <br />
 			Tu veux m'en revoyer un ?
-			<button on:click={() => history.go()}> 😳 Allez, pourquoi pas ! </button>
+			<Button on:click={() => history.go()}>😳 Allez, pourquoi pas !</Button>
 		</div>
 	{:else}
 		<form bind:this={formEl} method="POST" on:submit|preventDefault={handleSubmit}>
@@ -98,7 +100,7 @@
 				maxlength={200}
 			/>
 			<div class="colors">
-				Couleur de ton message <span class="new">nouveau</span> :
+				Couleur de ton message :
 				<div class="options">
 					{#each Object.entries(colors) as [name, value]}
 						<input
@@ -112,14 +114,21 @@
 					{/each}
 				</div>
 			</div>
-			<button>
-				{!identity ? '🕵️ Envoyer anonymement' : '📤 Envoyer'}
-			</button>
+			<div>
+				<Button>
+					{#if !identity}
+						<IconMasksTheater />
+						Envoyer anonymement
+					{:else}
+						<IconMasksTheaterOff />
+						Envoyer avec l'indice
+					{/if}
+				</Button>
+			</div>
 		</form>
 	{/if}
-	<span class="divider" />
 	<div class="previous-messages">
-		<h2>Continuer un message envoyé précédemment <span class="new">Nouveau</span> :</h2>
+		<h2>Continuer un message envoyé précédemment :</h2>
 		{#if loadingMessages}
 			Chargement des anciens messages...
 		{:else}
@@ -143,14 +152,6 @@
 </main>
 
 <style lang="scss">
-	main {
-		min-width: 70%;
-		max-width: 50rem;
-		margin: 0 auto;
-		font-family: Figtree;
-		font-size: 18px;
-		height: 100%;
-	}
 	.success-screen {
 		margin: 1rem;
 		display: flex;
@@ -164,7 +165,7 @@
 		border-bottom: 1px solid black;
 		font-size: 1.2rem;
 		font-weight: 600;
-		padding: 0.8rem 1rem;
+		padding: 1rem;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -179,18 +180,9 @@
 			align-items: center;
 		}
 	}
-	.new {
-		color: white;
-		border: 1px solid black;
-		padding: 0.2rem 0.4rem;
-		font-weight: 700;
-		border-radius: 99px;
-		font-size: 0.9rem;
-		text-transform: uppercase;
-		background-color: #987fff;
-	}
 	.previous-messages {
-		margin: 1rem;
+		border-top: 1px solid black;
+		padding: 0 1rem;
 
 		.messages {
 			display: flex;
@@ -199,15 +191,15 @@
 		}
 	}
 	header {
-		font-size: 2rem;
+		font-size: 1.8rem;
 		font-weight: 600;
-		padding: 1rem 0;
+		padding: 0.6rem 0;
 	}
 	form {
 		display: flex;
 		flex-direction: column;
 		gap: 0.6rem;
-		padding: 0 1rem;
+		padding: 1rem;
 	}
 	.colors {
 		width: 100%;
@@ -242,31 +234,14 @@
 	textarea {
 		height: 15rem;
 	}
-	span.divider {
-		margin: 1rem 0;
-		display: block;
-		border: 1px solid black;
-	}
 	textarea,
 	input {
 		border: 1px solid black;
 		padding: 0.7rem;
-		border-radius: 0.2rem;
+		border-radius: 0.5rem;
 		resize: none;
 		font-family: inherit;
-		font-size: 1.2rem;
+		font-size: 1.1rem;
 		// height: max-content;
-	}
-	button {
-		transition: 0.08s ease-in;
-		border: 1px solid black;
-		background-color: black;
-		z-index: 1;
-		color: white;
-		padding: 1rem;
-		font-family: inherit;
-		font-weight: 500;
-		border-radius: 0.2rem;
-		font-size: 1.4rem;
 	}
 </style>
