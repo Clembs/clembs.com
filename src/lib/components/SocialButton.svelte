@@ -18,18 +18,17 @@
 		border: 1px solid black;
 		background: var(--bg);
 		fill: white;
-		box-shadow: 0px 0px 0px 0px black;
 		border-radius: 0.5rem;
 		transition: box-shadow 100ms ease-in-out, transform 100ms ease-in-out;
 
 		&:hover {
 			transform: translateY(-1px);
 			box-shadow: 0px 3px 0px 0px black;
-			transition: box-shadow 100ms ease-in-out, transform 100ms ease-in-out;
 		}
 
-		// &:focus-within {
-		// 	outline: 5px solid #987fff;
-		// }
+		&:active {
+			transform: translateY(0rem);
+			box-shadow: 0px 1px 0px 0px black;
+		}
 	}
 </style>
