@@ -5,20 +5,20 @@
 
 	const navLinks = [
 		{
-			href: '/'
+			href: '/',
 		},
 		{
 			href: '/software',
-			label: 'Software'
+			label: 'Software',
 		},
 		{
 			href: '/branding',
-			label: 'Design'
+			label: 'Design',
 		},
 		{
 			href: '/contact',
-			label: 'Contact'
-		}
+			label: 'Contact',
+		},
 	];
 
 	let firstNavEl: HTMLAnchorElement;
@@ -46,6 +46,7 @@
 				bind:this={firstNavEl}
 				href={link.href}
 				class="nav-item"
+				aria-label="Home"
 				class:active={$page.url.pathname.endsWith(link.href)}
 			>
 				{#if link.label}
