@@ -4,11 +4,12 @@
 	import NavBar from '$lib/components/NavBar.svelte';
 	import { Toaster } from 'svelte-french-toast';
 	import Footer from '$lib/components/Footer.svelte';
-	import DebugMenu from './DebugMenu.svelte';
+	import type DebugMenu from './DebugMenu.svelte';
 
 	let colors = $page.data?.themeGradient;
 
-	let showDebugMenu = false;
+	// don't import this right away, it's pretty heavy
+	let debugMenu: typeof DebugMenu | null = null;
 
 	page.subscribe((p) => {
 		if (p.error) {
@@ -24,16 +25,16 @@
 </script>
 
 <svelte:window
-	on:keydown={(e) => {
+	on:keydown={async (e) => {
 		if (e.key === 'F3') {
 			e.preventDefault();
-			showDebugMenu = !showDebugMenu;
+			debugMenu = debugMenu ? null : (await import('./DebugMenu.svelte')).default;
 		}
 	}}
 />
 
-{#if showDebugMenu}
-	<DebugMenu />
+{#if debugMenu}
+	<svelte:component this={debugMenu} />
 {/if}
 
 <Toaster />
@@ -65,8 +66,6 @@
 	.background-piece {
 		transition: left 0.5s ease-out;
 		background: linear-gradient(to right, #643fff, #31c0ff, var(--from), var(--to));
-		// background-image: url('/assets/purplue-gradient.png');
-		// background-size: cover;
 		width: 300%;
 		overflow: hidden;
 		position: fixed;
