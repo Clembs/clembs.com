@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { IconVideo } from '@tabler/icons-svelte';
+	import IconVideo from '@tabler/icons-svelte/dist/svelte/icons/IconVideo.svelte';
 	import Button from '$lib/components/Button.svelte';
 	import SocialButton from '$lib/components/SocialButton.svelte';
 	import { socials } from '$lib/data/socials';

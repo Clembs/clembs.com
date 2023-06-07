@@ -8,7 +8,8 @@
 	import PreviousMessage from './PreviousMessage.svelte';
 	import { blur } from 'svelte/transition';
 	import Button from '$lib/components/Button.svelte';
-	import { IconMasksTheater, IconMasksTheaterOff } from '@tabler/icons-svelte';
+	import IconMasksTheater from '@tabler/icons-svelte/dist/svelte/icons/IconMasksTheater.svelte';
+	import IconMasksTheaterOff from '@tabler/icons-svelte/dist/svelte/icons/IconMasksTheaterOff.svelte';
 
 	let identity: string;
 	let question: string;
@@ -36,7 +37,7 @@
 
 		const response = await fetch(formEl.action, {
 			method: 'POST',
-			body: data
+			body: data,
 		});
 
 		const result: ActionResult = deserialize(await response.text());
@@ -46,7 +47,7 @@
 				color: data.get('color')?.toString() || 'black',
 				content: data.get('question')?.toString()!,
 				date: new Date().toISOString(),
-				identity: data.get('identity')?.toString()
+				identity: data.get('identity')?.toString(),
 			};
 
 			const messages: Message[] = JSON.parse(localStorage.getItem('messages') || '[]');
