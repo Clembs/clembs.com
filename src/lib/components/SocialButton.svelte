@@ -22,7 +22,7 @@
 		transition: box-shadow 100ms ease-in-out, transform 100ms ease-in-out;
 
 		&:hover {
-			transform: translateY(-1px);
+			transform: translateY(-2px);
 			box-shadow: 0px 3px 0px 0px black;
 		}
 
