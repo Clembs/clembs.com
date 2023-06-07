@@ -93,6 +93,11 @@
 	@media (max-width: 850px) {
 		main {
 			flex-direction: column;
+			align-items: center;
+		}
+
+		.post-title {
+			font-size: 2rem;
 		}
 	}
 </style>
