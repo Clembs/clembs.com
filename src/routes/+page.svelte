@@ -1,12 +1,35 @@
 <script lang="ts">
 	import { brandingData } from '$lib/data/branding';
 	import Wordmark from './Wordmark.svelte';
+	import { onMount } from 'svelte';
+
+	onMount(() => {
+		const projects = document.querySelectorAll('.project');
+
+		projects.forEach((project) => {
+			const banner = project.querySelector('img');
+
+			function loaded() {
+				banner?.classList.add('loaded');
+			}
+
+			if (banner?.complete || false) {
+				loaded();
+			} else {
+				banner?.addEventListener('load', loaded);
+			}
+		});
+	});
 </script>
 
 <main>
 	<div class="intro">
 		<div class="avatar">
-			<img src="/assets/clément-election-2022.png" alt="Clément" draggable="false" />
+			<img
+				src="/assets/clément-election-2022.webp"
+				alt="Portrait of Clément smiling"
+				draggable="false"
+			/>
 		</div>
 		<div class="text">
 			<h3>Nice to meet you, I'm</h3>
@@ -21,34 +44,42 @@
 
 	<div class="projects featured">
 		{#each brandingData.slice(0, 2) as project}
-			<a href="/branding/{project.id}" class="project">
-				<span class="year">{project.finishedAt.getFullYear()}</span>
-				<img
-					src="https://c.clembs.com/branding/{project.id}{project.bannerPath}"
-					alt={project.brand}
-				/>
+			<a
+				aria-label="View brand project: {project.title}"
+				href="/branding/{project.id}"
+				class="project"
+				style="background-image: url({project.bannerThumbnailPath})"
+			>
+				<img src={project.bannerPath} alt={project.brand} loading="lazy" />
+				<span class="year" aria-label="Designed in {project.finishedAt.getFullYear()}">
+					{project.finishedAt.getFullYear()}
+				</span>
 			</a>
 		{/each}
 	</div>
 	<div class="projects rest">
 		{#each brandingData.slice(2) as project}
-			<a href="/branding/{project.id}" class="project">
-				<span class="year">{project.finishedAt.getFullYear()}</span>
-				<img
-					src="https://c.clembs.com/branding/{project.id}{project.bannerPath}"
-					alt={project.brand}
-				/>
+			<a
+				aria-label="View brand project: {project.title}"
+				href="/branding/{project.id}"
+				class="project"
+				style="background-image: url({project.bannerThumbnailPath})"
+			>
+				<img src={project.bannerPath} alt={project.brand} loading="lazy" />
+				<span class="year" aria-label="Designed in {project.finishedAt.getFullYear()}">
+					{project.finishedAt.getFullYear()}
+				</span>
 			</a>
 		{/each}
 	</div>
 
 	<span
+		aria-hidden="true"
 		style="
 	opacity: 0.15;
 	color: white;
 	text-align: left;
 	transform: rotateY(180deg);
-	line-height: 0;
 	">Strange, isn't it?</span
 	>
 </main>
@@ -69,8 +100,8 @@
 		margin: 0 auto;
 
 		.avatar img {
-			width: 100%;
-			height: auto;
+			width: 117px;
+			height: 117px;
 			border-radius: 999px;
 			border: 1px black solid;
 			box-shadow: 3px 3px 0px 0px black;
@@ -103,19 +134,17 @@
 
 		.project {
 			position: relative;
-			transition: transform ease-out 0.1s;
+			transition: transform ease-out 0.1s, box-shadow ease-out 0.1s;
 			width: 100%;
 			height: 100%;
-			background-color: black;
 			border-radius: 0.5rem;
+			border: 1px solid black;
 			aspect-ratio: 16/9;
 			color: white;
 			display: grid;
 			place-items: center;
-
-			// &:focus-within {
-			// 	outline: 5px solid #987fff;
-			// }
+			background-size: cover;
+			background-position: center;
 
 			.year {
 				position: absolute;
@@ -131,35 +160,22 @@
 			}
 
 			img {
+				opacity: 0;
+				transition: opacity ease-in-out 300ms;
 				border-radius: 0.5rem;
-				border: 1px black solid;
+				object-position: center;
 				object-fit: cover;
 				width: 100%;
 				height: 100%;
-			}
 
-			&::after {
-				content: '';
-				position: absolute;
-				background: black;
-				transition: transform ease-out 0.1s;
-				top: 0;
-				left: 0;
-				bottom: 0;
-				width: 100%;
-				height: 100%;
-				border-radius: 0.5rem;
-				z-index: -1;
-			}
-
-			&:hover,
-			&:focus-within {
-				transition: transform ease-out 0.1s;
-				transform: translateY(-3px);
-				&::after {
-					transition: transform ease-out 0.1s;
-					transform: translateY(3px);
+				&:global(.loaded) {
+					opacity: 1;
 				}
+			}
+
+			&:hover {
+				transform: translateY(-2px);
+				box-shadow: 0 4px 0 0 black;
 			}
 		}
 	}
