@@ -6,6 +6,7 @@
 	import Footer from '$lib/components/Footer.svelte';
 	import type DebugMenu from './DebugMenu.svelte';
 	import MetaTags from '$lib/components/MetaTags.svelte';
+	import ShortcutsModal from './ShortcutsModal.svelte';
 
 	let colors = $page.data?.themeGradient;
 
@@ -39,6 +40,8 @@
 {#if debugMenu}
 	<svelte:component this={debugMenu} />
 {/if}
+
+<ShortcutsModal />
 
 <Toaster />
 
