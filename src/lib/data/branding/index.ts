@@ -13,6 +13,7 @@ export interface BrandingPost {
 	tags: string[];
 	technologies: TechnologyName[];
 	bannerPath: string;
+	bannerThumbnailPath: string;
 	iconPath: string;
 	brief: string;
 	links?: {
@@ -34,5 +35,5 @@ export const brandingData: BrandingPost[] = [
 	crbt2023,
 	verticalVision,
 	delegue,
-	vbot
+	vbot,
 ].sort((a, b) => b.finishedAt.getTime() - a.finishedAt.getTime());
