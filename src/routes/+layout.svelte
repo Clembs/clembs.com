@@ -5,6 +5,7 @@
 	import { Toaster } from 'svelte-french-toast';
 	import Footer from '$lib/components/Footer.svelte';
 	import type DebugMenu from './DebugMenu.svelte';
+	import MetaTags from '$lib/components/MetaTags.svelte';
 
 	let colors = $page.data?.themeGradient;
 
@@ -32,6 +33,8 @@
 		}
 	}}
 />
+
+<MetaTags description="website of clembs. very beta." />
 
 {#if debugMenu}
 	<svelte:component this={debugMenu} />
