@@ -106,7 +106,7 @@
 	}}
 />
 
-<div class="filter-wrapper">
+<div class="filter-wrapper" aria-hidden="true">
 	<div
 		class="filter-box darkmodelol"
 		class:expand={screenFilters.invert}
@@ -121,7 +121,13 @@
 
 <div class="wordmark-wrapper">
 	<div class="wordmark" class:easter-egg={win}>
-		<svg class="front" viewBox="0 0 336 81" fill="none" xmlns="http://www.w3.org/2000/svg">
+		<svg
+			aria-label="Clembs"
+			class="front"
+			viewBox="0 0 336 81"
+			fill="none"
+			xmlns="http://www.w3.org/2000/svg"
+		>
 			<g id="wordmark">
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<g
@@ -288,7 +294,13 @@
 				</linearGradient>
 			</defs>
 		</svg>
-		<svg class="back" viewBox="0 0 336 81" fill="none" xmlns="http://www.w3.org/2000/svg">
+		<svg
+			class="back"
+			viewBox="0 0 336 81"
+			fill="none"
+			xmlns="http://www.w3.org/2000/svg"
+			aria-hidden="true"
+		>
 			<g id="wordmark" fill="black">
 				<g id="letter">
 					<path
@@ -440,7 +452,7 @@
 			stroke-width: 0px;
 
 			#letter_5.fall {
-				transition: transform ease-in 1s;
+				transition: transform ease-in 0.5s;
 				transform: translateY(12rem);
 			}
 
