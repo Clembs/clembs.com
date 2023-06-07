@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { BrandingPost } from '$lib/data/branding';
 	import { technologies } from '$lib/data/technologies';
-	import { IconChevronRight } from '@tabler/icons-svelte';
+	import IconChevronRight from '@tabler/icons-svelte/dist/svelte/icons/IconChevronRight.svelte';
 
 	let opened = false;
 
