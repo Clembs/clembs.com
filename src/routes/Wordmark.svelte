@@ -10,6 +10,9 @@
 	let timeRemaining = initialTimeToReset;
 	let screenReset = false;
 
+	let filterBoxInvert: HTMLDivElement;
+	let filterBoxGrayscale: HTMLDivElement;
+
 	let screenFilters = {
 		// C(razy)
 		rotate: false,
@@ -20,15 +23,29 @@
 		// d(true ark mode)
 		trueDarkMode: false,
 		// M(onochrome)
-		greyscale: false
+		greyscale: false,
 	};
 
 	function handleC() {
 		document.body.classList.toggle('flip');
 		screenFilters.rotate = !screenFilters.rotate;
 	}
+	function centerFilterToLetter(selector: string, filterBoxEl: HTMLDivElement) {
+		const el = document.querySelector(selector);
+		const position = el?.getBoundingClientRect();
+
+		let X = position?.x! + position?.width! / 2,
+			Y = position?.y! + position?.height! / 2;
+
+		if (screenFilters.rotate) {
+			X = document.body.clientWidth - X;
+		}
+
+		filterBoxEl.style.left = `${X}px`;
+		filterBoxEl.style.top = `${Y}px`;
+	}
 	function handleM() {
-		document.body.classList.toggle('monochrome');
+		centerFilterToLetter('#letter_4', filterBoxGrayscale);
 		screenFilters.greyscale = !screenFilters.greyscale;
 	}
 	function handleB() {
@@ -36,19 +53,19 @@
 			screenFilters.bFalls = !screenFilters.bFalls;
 			return;
 		}
+		centerFilterToLetter('#letter_5', filterBoxInvert);
 		if (clicksToTrueDarkMode < 4) {
 			clicksToTrueDarkMode += 1;
-			document.body.classList.toggle('darkmodelol');
+			// document.body.classList.toggle('darkmodelol');
 			screenFilters.invert = !screenFilters.invert;
 		} else {
-			document.body.classList.remove('darkmodelol');
 			screenFilters.invert = false;
 			document.body.classList.remove('flip');
 			screenFilters.rotate = false;
 			document.body.classList.add('ALLSYSTEMSFULLPOWER');
 			screenFilters.trueDarkMode = true;
 			trueDarkModeToastId = toast('Ultra dark mode activated! Press Esc to escape', {
-				duration: Infinity
+				duration: Infinity,
 			});
 		}
 	}
@@ -62,7 +79,6 @@
 			}
 		}, 1000);
 	}
-
 	function rocketScreenCancel() {
 		timeRemaining = initialTimeToReset;
 		clearInterval(longPressInterval);
@@ -89,6 +105,19 @@
 		}
 	}}
 />
+
+<div class="filter-wrapper">
+	<div
+		class="filter-box darkmodelol"
+		class:expand={screenFilters.invert}
+		bind:this={filterBoxInvert}
+	/>
+	<div
+		class="filter-box monochrome"
+		class:expand={screenFilters.greyscale}
+		bind:this={filterBoxGrayscale}
+	/>
+</div>
 
 <div class="wordmark-wrapper">
 	<div class="wordmark" class:easter-egg={win}>
@@ -319,18 +348,12 @@
 	:global(body.flip) {
 		transform: rotateY(180deg);
 	}
-	:global(body.monochrome) {
-		filter: grayscale(1);
-	}
-	:global(body.darkmodelol) {
-		filter: invert(1);
-	}
-	:global(body.darkmodelol.monochrome) {
-		filter: invert(1) grayscale(1);
-	}
-	:global(body.ALLSYSTEMSFULLPOWER main.layout) {
-		filter: brightness(0);
-		pointer-events: none;
+	:global(body.ALLSYSTEMSFULLPOWER) {
+		background: black;
+		:global(.layout) {
+			filter: brightness(0);
+			pointer-events: none;
+		}
 	}
 
 	@keyframes rainbow {
@@ -353,25 +376,37 @@
 			transform: translateY(0px);
 		}
 	}
-	@keyframes shake {
-		0% {
-			transform: translate(0);
+
+	.filter-wrapper {
+		position: fixed;
+		inset: 0;
+		pointer-events: none;
+		height: 100vh;
+		width: 100vw;
+		overflow: hidden;
+		z-index: 999;
+	}
+
+	.filter-box {
+		// border: 1px solid black;
+		display: block;
+		border-radius: 50%;
+		height: 1px;
+		width: 1px;
+		position: absolute;
+		transition: transform 0.35s ease-out;
+		transform: scale(1);
+
+		&.monochrome {
+			backdrop-filter: grayscale(1);
 		}
-		10%,
-		30%,
-		50%,
-		70%,
-		90% {
-			transform: translate(calc(-5px + 2px * 0.225), calc(-5px + 2px * 0.572));
+		&.darkmodelol {
+			backdrop-filter: invert(1);
 		}
-		20%,
-		40%,
-		60%,
-		80% {
-			transform: translate(calc(5px + 2px * 0.225), calc(5px + 2px * 0.572));
-		}
-		100% {
-			transform: translate(0);
+
+		&.expand {
+			transform: scale(3000);
+			transition: transform 0.5s ease-in;
 		}
 	}
 
@@ -390,7 +425,7 @@
 			// fill: red;
 		}
 
-		&.easter-egg svg g {
+		&.easter-egg .front g {
 			path {
 				animation: bouncy-letters 0.75s infinite calc(150ms * var(--index)) alternate;
 			}
@@ -406,33 +441,24 @@
 
 			#letter_5.fall {
 				transition: transform ease-in 1s;
-				transform: translateY(999rem);
+				transform: translateY(12rem);
 			}
 
 			&.front {
 				z-index: 2;
-
-				#letter_7 {
-					&:active {
-						animation: shake 0.5s infinite;
-					}
-
-					&::after {
-						content: var(--timeRemaining);
-					}
-				}
-				// .animate {
-				// 	animation: arrowResetRocket 2s;
-				// }
 			}
 
 			#wordmark > g {
 				transition: transform ease-in 150ms, stroke-width ease-in 150ms;
 				&:hover:not(.fall) {
-					transition: transform ease-out 150ms, stroke-width ease-out 150ms;
 					stroke: black;
 					stroke-width: 2px;
 					transform: translateY(-2px);
+				}
+				&:active:not(.fall) {
+					transform: translateY(2px);
+					stroke: black;
+					stroke-width: 2px;
 				}
 			}
 		}
