@@ -91,7 +91,7 @@
 		.nav-item {
 			display: flex;
 			color: black;
-			padding: 0.4rem 1.6rem;
+			padding: 0.4rem 1rem;
 			border-radius: 99rem;
 			height: 100%;
 			text-decoration: none;
@@ -107,12 +107,12 @@
 				color: white;
 				font-weight: 600;
 				background: rgb(152, 118, 255);
-				background: linear-gradient(
-					90deg,
-					rgba(152, 118, 255, 1) 0%,
-					rgba(101, 79, 255, 1) 33%,
-					rgba(61, 132, 255, 1) 66%,
-					rgba(49, 192, 255, 1) 100%
+				background: radial-gradient(
+					circle at 100%,
+					rgb(152, 118, 255) 0%,
+					rgb(101, 79, 255) 40%,
+					rgb(61, 132, 255) 70%,
+					rgb(49, 192, 255) 100%
 				);
 			}
 
