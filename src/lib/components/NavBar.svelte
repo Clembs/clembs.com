@@ -82,7 +82,7 @@
 		transition: transform cubic-bezier(1, 0, 0, 1) 150ms;
 		z-index: 9;
 
-		&[aria-hidden='true'] {
+		&[aria-hidden='true']:not(:focus-within) {
 			transition: transform cubic-bezier(1, 0, 0, 1) 150ms;
 			transform: translateY(200%) scale(0.8);
 		}
