@@ -4,15 +4,18 @@
 	export let social: Social;
 </script>
 
-<a href={social.url} class="social-button" style="--bg: {social.background}">
+<a
+	href={social.url}
+	class="social-button"
+	aria-label="Clembs on {social.name}"
+	style="--bg: {social.background}"
+>
 	<img src="/assets/socials/{social.id}.svg" alt={social.name} />
 </a>
 
 <style lang="scss">
 	.social-button {
 		display: flex;
-		height: 2rem;
-		width: 2rem;
 		padding: 0.3rem;
 		align-items: center;
 		border: 1px solid black;
@@ -20,6 +23,11 @@
 		fill: white;
 		border-radius: 0.5rem;
 		transition: box-shadow 100ms ease-in-out, transform 100ms ease-in-out;
+
+		img {
+			height: 1.3rem;
+			width: 1.3rem;
+		}
 
 		&:hover {
 			transform: translateY(-2px);
