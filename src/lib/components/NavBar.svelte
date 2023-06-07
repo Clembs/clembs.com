@@ -105,6 +105,7 @@
 			&.active {
 				fill: white;
 				color: white;
+				font-weight: 600;
 				background: rgb(152, 118, 255);
 				background: linear-gradient(
 					90deg,
