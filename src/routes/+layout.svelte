@@ -4,15 +4,37 @@
 	import NavBar from '$lib/components/NavBar.svelte';
 	import { Toaster } from 'svelte-french-toast';
 	import Footer from '$lib/components/Footer.svelte';
+	import DebugMenu from './DebugMenu.svelte';
 
 	let colors = $page.data?.themeGradient;
 
+	let showDebugMenu = false;
+
 	page.subscribe((p) => {
+		if (p.error) {
+			colors = {
+				from: '#8a0000',
+				to: '#480000',
+			};
+		}
 		if (p.data?.themeGradient) {
 			colors = p.data.themeGradient;
 		}
 	});
 </script>
+
+<svelte:window
+	on:keydown={(e) => {
+		if (e.key === 'F3') {
+			e.preventDefault();
+			showDebugMenu = !showDebugMenu;
+		}
+	}}
+/>
+
+{#if showDebugMenu}
+	<DebugMenu />
+{/if}
 
 <Toaster />
 
@@ -20,7 +42,7 @@
 	<div
 		class="background-piece"
 		style="--from: {colors?.from ?? '#643FFF'}; --to: {colors?.to ?? '#31C0FF'}"
-		class:move-gradient={!!$page.data?.themeGradient}
+		class:move-gradient={!!$page.data?.themeGradient || $page.error}
 	/>
 	<div class="content">
 		<slot />
@@ -37,7 +59,6 @@
 		flex-direction: column;
 		align-items: center;
 		min-height: 100%;
-		background: white;
 		transition: transform ease-in-out 0.6s, filter ease-in-out 0.4s;
 	}
 
@@ -49,8 +70,8 @@
 		width: 300%;
 		overflow: hidden;
 		position: fixed;
-		top: 0;
-		left: 0;
+		inset: 0;
+		pointer-events: none;
 		height: 200px;
 		border-bottom: 1px solid black;
 
