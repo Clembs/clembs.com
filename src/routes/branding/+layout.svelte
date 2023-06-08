@@ -55,7 +55,7 @@
 <style lang="scss">
 	header {
 		border-radius: 1rem 1rem 0 0;
-		border-bottom: 1px solid black;
+		border-bottom: 1px solid var(--neutral);
 		padding: 1.4rem;
 		padding-top: 2rem;
 

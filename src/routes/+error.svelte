@@ -132,8 +132,8 @@
 		gap: 1rem;
 		align-items: flex-start;
 		.iframe-wrapper {
-			border: 1px solid black;
-			box-shadow: 0px 1px 0px 0px black;
+			border: 1px solid var(--neutral);
+			box-shadow: 0px 1px 0px 0px var(--neutral);
 			border-radius: 1rem;
 			width: 100%;
 			height: 450px;

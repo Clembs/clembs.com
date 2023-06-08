@@ -38,8 +38,8 @@
 			width: 3.2rem;
 			height: 3.2rem;
 			border-radius: 99px;
-			box-shadow: 0px 2px 0px black;
-			border: 1px solid black;
+			box-shadow: 0px 2px 0px var(--neutral);
+			border: 1px solid var(--neutral);
 			background-color: var(--color);
 			font-size: 2rem;
 			display: grid;
@@ -65,10 +65,10 @@
 				border-radius: 2rem 2rem 0.5rem 2rem;
 			}
 
-			box-shadow: 0px 2px 0px black;
+			box-shadow: 0px 2px 0px var(--neutral);
 			max-width: 60%;
 			font-size: 1.2rem;
-			border: 1px solid black;
+			border: 1px solid var(--neutral);
 			padding: 0.5rem 1.2rem;
 		}
 	}

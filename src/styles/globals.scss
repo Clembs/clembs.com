@@ -26,6 +26,8 @@ body {
 	text-rendering: optimizeLegibility;
 	overflow-x: hidden;
 	height: 100vh;
+	background-color: var(--background);
+	color: var(--neutral);
 }
 
 h1,

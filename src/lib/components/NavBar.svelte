@@ -72,14 +72,14 @@
 		position: fixed;
 		height: 58px;
 		bottom: 1rem;
-		border: 1px solid black;
-		background-color: white;
+		border: 1px solid var(--neutral);
+		background-color: var(--background);
 		border-radius: 99rem;
 		padding: 0.2rem;
 		display: flex;
 		align-items: center;
 		gap: 0.2rem;
-		box-shadow: 0px 2px 0px 0px black;
+		box-shadow: 0px 2px 0px 0px var(--neutral);
 		transition: transform cubic-bezier(1, 0, 0, 1) 150ms;
 		z-index: 9;
 
@@ -90,7 +90,7 @@
 
 		.nav-item {
 			display: flex;
-			color: black;
+			color: var(--neutral);
 			padding: 0.4rem 1rem;
 			border-radius: 99rem;
 			height: 100%;
@@ -100,27 +100,19 @@
 			align-items: center;
 			// border: 1px solid white;
 			transition: background-color ease-in 100ms, outline ease-in 100ms;
-			background-color: white;
+			background-color: var(--background);
 
 			&.active {
 				fill: white;
 				color: white;
 				font-weight: 600;
-				background: rgb(152, 118, 255);
-				background: radial-gradient(
-					circle at 100%,
-					rgb(152, 118, 255) 0%,
-					rgb(101, 79, 255) 40%,
-					rgb(61, 132, 255) 70%,
-					rgb(49, 192, 255) 100%
-				);
+				background: var(--gradient-purplue);
 			}
 
 			&:hover {
 				transition: background-color ease-out 100ms, outline ease-out 100ms;
-				// border: 1px solid black;
-				outline: 1px solid black;
-				background-color: rgb(231, 231, 231);
+				outline: 1px solid var(--neutral);
+				background-color: var(--highlight);
 			}
 		}
 	}

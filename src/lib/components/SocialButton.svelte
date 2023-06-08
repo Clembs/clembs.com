@@ -18,7 +18,7 @@
 		display: flex;
 		padding: 0.3rem;
 		align-items: center;
-		border: 1px solid black;
+		border: 1px solid var(--neutral);
 		background: var(--bg);
 		fill: white;
 		border-radius: 0.5rem;
@@ -31,12 +31,12 @@
 
 		&:hover {
 			transform: translateY(-2px);
-			box-shadow: 0px 3px 0px 0px black;
+			box-shadow: 0px 3px 0px 0px var(--neutral);
 		}
 
 		&:active {
 			transform: translateY(0rem);
-			box-shadow: 0px 1px 0px 0px black;
+			box-shadow: 0px 1px 0px 0px var(--neutral);
 		}
 	}
 </style>

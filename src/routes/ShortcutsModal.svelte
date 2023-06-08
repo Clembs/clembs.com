@@ -123,7 +123,7 @@
 <style lang="scss">
 	header {
 		padding: 0 1rem;
-		border-bottom: 1px solid black;
+		border-bottom: 1px solid var(--neutral);
 	}
 
 	.shortcut-list {

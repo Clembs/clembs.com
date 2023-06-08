@@ -22,7 +22,7 @@
 			hasOgMessage={!!selectedMessage}
 			message={{
 				color,
-				content
+				content,
 			}}
 		/>
 		<div class="answer">
@@ -30,7 +30,7 @@
 				type="answer"
 				message={{
 					color,
-					content: 'xd'
+					content: 'xd',
 				}}
 			/>
 		</div>
@@ -66,7 +66,7 @@
 			display: flex;
 			flex-direction: column;
 			text-align: center;
-			border: 1px solid black;
+			border: 1px solid var(--neutral);
 			border-radius: 0.7rem;
 			font-size: 1.2rem;
 			font-weight: 400;
@@ -78,7 +78,7 @@
 			}
 
 			.link {
-				background-color: black;
+				background-color: var(--neutral);
 				color: white;
 			}
 		}

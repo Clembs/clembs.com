@@ -301,7 +301,7 @@
 			xmlns="http://www.w3.org/2000/svg"
 			aria-hidden="true"
 		>
-			<g id="wordmark" fill="black">
+			<g id="wordmark" fill="var(--neutral)">
 				<g id="letter">
 					<path
 						id="C"
@@ -400,7 +400,6 @@
 	}
 
 	.filter-box {
-		// border: 1px solid black;
 		display: block;
 		border-radius: 50%;
 		height: 1px;
@@ -463,13 +462,13 @@
 			#wordmark > g {
 				transition: transform ease-in 150ms, stroke-width ease-in 150ms;
 				&:hover:not(.fall) {
-					stroke: black;
+					stroke: var(--neutral);
 					stroke-width: 2px;
-					transform: translateY(-2px);
+					transform: translateY(-1px);
 				}
 				&:active:not(.fall) {
 					transform: translateY(2px);
-					stroke: black;
+					stroke: var(--neutral);
 					stroke-width: 2px;
 				}
 			}
@@ -479,7 +478,7 @@
 	.reset-timer {
 		user-select: all;
 		border: 5px solid lime;
-		outline: 1px solid black;
+		outline: 1px solid var(--neutral);
 		height: 4rem;
 		width: 4rem;
 		display: grid;

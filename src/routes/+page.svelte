@@ -103,8 +103,8 @@
 			width: 117px;
 			height: 117px;
 			border-radius: 999px;
-			border: 1px black solid;
-			box-shadow: 3px 3px 0px 0px black;
+			border: 1px var(--neutral) solid;
+			box-shadow: 3px 3px 0px 0px var(--neutral);
 		}
 
 		.text {
@@ -136,7 +136,7 @@
 			position: relative;
 			transition: transform ease-out 0.1s, box-shadow ease-out 0.1s;
 			border-radius: 0.5rem;
-			border: 1px solid black;
+			border: 1px solid var(--neutral);
 			aspect-ratio: 16/9;
 			color: white;
 			display: grid;
@@ -148,9 +148,9 @@
 				position: absolute;
 				right: 0.5rem;
 				top: 0.5rem;
-				color: black;
-				background: white;
-				border: 1px solid black;
+				color: var(--neutral);
+				background: var(--background);
+				border: 1px solid var(--neutral);
 				border-radius: 0.4rem;
 				font-size: 0.7rem;
 				padding: 0.2rem 0.4rem;
@@ -173,7 +173,7 @@
 
 			&:hover {
 				transform: translateY(-2px);
-				box-shadow: 0 4px 0 0 black;
+				box-shadow: 0 4px 0 0 var(--neutral);
 			}
 		}
 	}

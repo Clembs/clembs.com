@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { onDestroy, onMount } from 'svelte';
+	import { onMount } from 'svelte';
 
 	let display: { h: number; w: number } = { h: 0, w: 0 };
 	let scroll: { x: number; y: number } = { x: 0, y: 0 };
@@ -90,7 +90,7 @@
 		.tile {
 			padding: 0 0.4rem;
 			margin-bottom: 0.1rem;
-			border: 1px solid black;
+			border: 1px solid var(--neutral);
 			border-radius: 0.2rem;
 			background-color: white;
 			max-width: fit-content;

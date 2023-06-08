@@ -13,7 +13,7 @@
 		padding: 0.25rem 0.5rem;
 		border-radius: 0.25rem;
 		display: inline-block;
-		border: 1px solid black;
+		border: 1px solid var(--neutral);
 		text-align: center;
 		font-size: 0.85rem;
 		min-width: 2rem;

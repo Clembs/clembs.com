@@ -3,8 +3,6 @@
 	export let style: 'filled' | 'outlined' | 'text' = 'filled';
 	export let disabled = false;
 	export let type: 'submit' | 'button' = 'button';
-	// export let background = 'var(--color-primary)';
-	// export let color = 'white';
 </script>
 
 {#if href && !disabled}
@@ -22,6 +20,9 @@
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
+
+		width: max-content;
+		padding: 0.6rem 1.2rem;
 		gap: 0.7rem;
 
 		appearance: none;
@@ -34,39 +35,31 @@
 		font-weight: 500;
 		text-align: center;
 		text-decoration: none;
-		max-width: max-content;
-
-		padding: 0.6rem 1.2rem;
-		border-radius: 99rem;
 
 		background-color: var(--_bg);
-		border: var(--_border);
 		color: var(--_text-color);
+		border: var(--_border);
+		border-radius: 99rem;
 
 		transition: background-color 150ms ease-in, max-width 150ms ease-in-out;
 
-		:global(svg) {
-			height: 18px;
-			width: auto;
-		}
-
 		&.filled {
-			--_bg: black;
-			--_border: 1px solid black;
-			--_text-color: white;
-			--_hover-bg: rgb(0 0 0 / 0.75);
+			--_bg: var(--background);
+			--_border: 1px solid var(--neutral);
+			--_text-color: var(--neutral);
+			--_hover-bg: var(--highlight);
 		}
 		&.outlined {
 			--_bg: transparent;
-			--_border: 1px solid black;
+			--_border: 1px solid var(--neutral);
 			--_text-color: inherit;
-			--_hover-bg: rgb(0 0 0 / 0.2);
+			--_hover-bg: var(--highlight);
 		}
 		&.text {
 			--_bg: transparent;
 			--_border: none;
 			--_text-color: inherit;
-			--_hover-bg: rgb(0 0 0 / 0.2);
+			--_hover-bg: var(--highlight);
 		}
 
 		&:hover,

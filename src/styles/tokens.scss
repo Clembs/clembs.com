@@ -1,0 +1,16 @@
+:root {
+	--gradient-purplue: radial-gradient(
+		circle at 100%,
+		rgb(152, 118, 255) 0%,
+		rgb(101, 79, 255) 40%,
+		rgb(61, 132, 255) 70%,
+		rgb(49, 192, 255) 100%
+	);
+
+	--background-lightest: rgb(255, 255, 255);
+	--background-light: rgb(255, 255, 255);
+	--neutral-light: rgb(0, 0, 0);
+	--highlight-light: rgb(211, 211, 211);
+	--primary-light: rgb(152, 127, 255);
+	--danger-light: rgb(255, 0, 0);
+}

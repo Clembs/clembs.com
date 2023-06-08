@@ -66,7 +66,7 @@
 
 <style lang="scss">
 	.info-card {
-		border-left: 1px solid black;
+		border-left: 1px solid var(--neutral);
 		display: flex;
 		flex-direction: column;
 		flex-grow: 1;
@@ -78,8 +78,8 @@
 			flex-direction: column;
 			position: sticky;
 			inset: 0;
-			border-bottom: 1px solid black;
-			background-color: white;
+			border-bottom: 1px solid var(--neutral);
+			background-color: var(--background);
 
 			.sections {
 				display: flex;
@@ -121,17 +121,17 @@
 			font-size: inherit;
 			cursor: pointer;
 			border: none;
-			background-color: white;
-			color: black;
+			background-color: var(--background);
+			color: var(--neutral);
 			padding: 0.5rem 1rem;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			border-top: 1px solid black;
+			border-top: 1px solid var(--neutral);
 
 			&:hover {
 				text-decoration: none;
-				background-color: #e7e7e7;
+				background-color: var(--highlight);
 				&:global(:not(button) svg) {
 					transform: translateX(4px);
 				}
@@ -151,7 +151,7 @@
 
 			.info-card-content {
 				border-radius: 1rem;
-				border: 1px solid black;
+				border: 1px solid var(--neutral);
 				overflow: hidden;
 
 				.sections {
@@ -171,7 +171,7 @@
 					button {
 						border: 1px solid transparent;
 						&.opened {
-							border-bottom: 1px solid black;
+							border-bottom: 1px solid var(--neutral);
 						}
 					}
 
