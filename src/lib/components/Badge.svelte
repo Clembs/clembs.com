@@ -1,0 +1,61 @@
+<script lang="ts">
+	export let style: 'primary' | 'outlined' | 'danger' = 'primary';
+	export let disabled = false;
+	export let stickTo: 'left top' | 'left bottom' | 'right top' | 'right bottom' | null = null;
+</script>
+
+<span class="badge {style} {stickTo ?? ''}" class:sticky={stickTo} aria-disabled={disabled}>
+	<slot />
+</span>
+
+<style lang="scss">
+	.badge {
+		display: inline-flex;
+		align-items: center;
+
+		padding: 0.25rem 0.5rem;
+		gap: 0.5rem;
+
+		font-size: 0.85rem;
+		font-family: inherit;
+		font-weight: 600;
+		text-align: center;
+		text-transform: uppercase;
+
+		user-select: none;
+
+		background: var(--_bg);
+		color: var(--_text_color);
+		border: 1px solid var(--neutral);
+		border-radius: 99px;
+
+		&.primary {
+			--_bg: var(--neutral);
+			--_text_color: white;
+		}
+		&.outlined {
+			--_bg: white;
+			--_text_color: var(--neutral);
+		}
+		&.danger {
+			--_bg: var(--danger);
+			--_text_color: white;
+		}
+		&.sticky {
+			position: absolute;
+
+			&.top {
+				top: -5px;
+			}
+			&.bottom {
+				bottom: -5px;
+			}
+			&.left {
+				left: -5px;
+			}
+			&.right {
+				right: -5px;
+			}
+		}
+	}
+</style>
