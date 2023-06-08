@@ -135,8 +135,6 @@
 		.project {
 			position: relative;
 			transition: transform ease-out 0.1s, box-shadow ease-out 0.1s;
-			width: 100%;
-			height: 100%;
 			border-radius: 0.5rem;
 			border: 1px solid black;
 			aspect-ratio: 16/9;
