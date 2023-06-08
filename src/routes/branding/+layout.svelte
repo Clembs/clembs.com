@@ -73,7 +73,7 @@
 		}
 
 		.post-title {
-			font-size: 2.5rem;
+			font-size: 2rem;
 			margin: 0;
 			font-weight: 400;
 		}
