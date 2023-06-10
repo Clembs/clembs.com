@@ -9,9 +9,9 @@
 <style lang="scss">
 	.tag {
 		padding: 0.3rem 1rem;
-		border: 1px solid var(--neutral);
+		border: 1px solid var(--color-on-background);
 		background-color: white;
-		color: var(--neutral);
+		color: var(--color-on-background);
 		border-radius: 999px;
 		user-select: none;
 		transition: background-color 0.2s ease-out;

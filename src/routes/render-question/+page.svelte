@@ -66,7 +66,7 @@
 			display: flex;
 			flex-direction: column;
 			text-align: center;
-			border: 1px solid var(--neutral);
+			border: 1px solid var(--color-on-background);
 			border-radius: 0.7rem;
 			font-size: 1.2rem;
 			font-weight: 400;
@@ -78,7 +78,7 @@
 			}
 
 			.link {
-				background-color: var(--neutral);
+				background-color: var(--color-on-background);
 				color: white;
 			}
 		}

@@ -163,7 +163,7 @@
 		justify-content: center;
 	}
 	nav {
-		border-bottom: 1px solid var(--neutral);
+		border-bottom: 1px solid var(--color-on-background);
 		font-size: 1.2rem;
 		font-weight: 600;
 		padding: 1rem;
@@ -182,7 +182,7 @@
 		}
 	}
 	.previous-messages {
-		border-top: 1px solid var(--neutral);
+		border-top: 1px solid var(--color-on-background);
 		padding: 0 1rem;
 
 		.messages {
@@ -215,7 +215,7 @@
 				width: 4rem;
 				height: 4rem;
 				border-radius: 99px;
-				border: 1px solid var(--neutral);
+				border: 1px solid var(--color-on-background);
 				display: block;
 				transition: 0.09s all linear;
 				background-color: var(--color);
@@ -227,7 +227,7 @@
 						position: absolute;
 						transform: translate(-1.5rem, -1.5rem);
 					}
-					border: 6px solid var(--neutral);
+					border: 6px solid var(--color-on-background);
 				}
 			}
 		}
@@ -237,7 +237,7 @@
 	}
 	textarea,
 	input {
-		border: 1px solid var(--neutral);
+		border: 1px solid var(--color-on-background);
 		padding: 0.7rem;
 		border-radius: 0.5rem;
 		resize: none;

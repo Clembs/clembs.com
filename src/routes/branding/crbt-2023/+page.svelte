@@ -37,9 +37,9 @@
 		width: 100%;
 		height: 400px;
 		border-radius: 0.6rem;
-		border: 1px solid var(--neutral);
+		border: 1px solid var(--color-on-background);
 		overflow: hidden;
-		box-shadow: 0px 1px 0px 0px var(--neutral);
+		box-shadow: 0px 1px 0px 0px var(--color-on-background);
 
 		iframe {
 			border: none;

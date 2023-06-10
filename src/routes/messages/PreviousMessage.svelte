@@ -31,11 +31,11 @@
 			font-size: 0.9rem;
 			font-weight: 600;
 			border-radius: 99px 99px 99px 0;
-			border: 1px solid var(--neutral);
+			border: 1px solid var(--color-on-background);
 			text-transform: lowercase;
 		}
 		.content {
-			border: 1px solid var(--neutral);
+			border: 1px solid var(--color-on-background);
 			border-radius: 0 99px 99px 99px;
 			font-size: 1.4rem;
 			padding: 0.5rem 1rem;

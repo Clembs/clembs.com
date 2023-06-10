@@ -26,19 +26,19 @@
 
 		background: var(--_bg);
 		color: var(--_text_color);
-		border: 1px solid var(--neutral);
+		border: 1px solid var(--color-on-background);
 		border-radius: 99px;
 
 		&.primary {
-			--_bg: var(--neutral);
+			--_bg: var(--color-on-background);
 			--_text_color: white;
 		}
 		&.outlined {
 			--_bg: white;
-			--_text_color: var(--neutral);
+			--_text_color: var(--color-on-background);
 		}
 		&.danger {
-			--_bg: var(--danger);
+			--_bg: var(--color-error);
 			--_text_color: white;
 		}
 		&.sticky {

@@ -5,6 +5,9 @@
 	import SocialButton from '$lib/components/SocialButton.svelte';
 	import { socials } from '$lib/data/socials';
 	import Badge from '$lib/components/Badge.svelte';
+	import Modal from '$lib/components/Modal.svelte';
+
+	let dialog: any;
 </script>
 
 <main>
@@ -69,6 +72,18 @@
 			</div>
 		</div>
 	</div>
+
+	<h2>Modal</h2>
+
+	<div class="components">
+		<div class="component">
+			<Button on:click={() => dialog.showModal()}>Open Modal</Button>
+
+			<Modal bind:this={dialog}>
+				<h1>Hi</h1>
+			</Modal>
+		</div>
+	</div>
 </main>
 
 <style lang="scss">
@@ -80,12 +95,12 @@
 		display: flex;
 		justify-content: space-between;
 		flex-wrap: wrap;
-		border: 1px solid var(--neutral);
+		border: 1px solid var(--color-on-background);
 
 		overflow: hidden;
 
 		.component {
-			border: 0.5px solid var(--neutral);
+			border: 0.5px solid var(--color-on-background);
 			display: grid;
 			place-items: center;
 			width: 100%;

@@ -90,7 +90,7 @@
 		.tile {
 			padding: 0 0.4rem;
 			margin-bottom: 0.1rem;
-			border: 1px solid var(--neutral);
+			border: 1px solid var(--color-on-background);
 			border-radius: 0.2rem;
 			background-color: white;
 			max-width: fit-content;

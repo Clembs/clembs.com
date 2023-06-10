@@ -72,14 +72,14 @@
 		position: fixed;
 		height: 58px;
 		bottom: 1rem;
-		border: 1px solid var(--neutral);
-		background-color: var(--background);
+		border: 1px solid var(--color-on-background);
+		background-color: var(--color-background);
 		border-radius: 99rem;
 		padding: 0.2rem;
 		display: flex;
 		align-items: center;
 		gap: 0.2rem;
-		box-shadow: 0px 2px 0px 0px var(--neutral);
+		box-shadow: 0px 2px 0px 0px var(--color-on-background);
 		transition: transform cubic-bezier(1, 0, 0, 1) 150ms;
 		z-index: 9;
 
@@ -90,7 +90,7 @@
 
 		.nav-item {
 			display: flex;
-			color: var(--neutral);
+			color: var(--color-on-background);
 			padding: 0.4rem 1rem;
 			border-radius: 99rem;
 			height: 100%;
@@ -100,19 +100,19 @@
 			align-items: center;
 			// border: 1px solid white;
 			transition: background-color ease-in 100ms, outline ease-in 100ms;
-			background-color: var(--background);
+			background-color: var(--color-background);
 
 			&.active {
 				fill: white;
 				color: white;
 				font-weight: 600;
-				background: var(--gradient-purplue);
+				background: var(--main-gradient);
 			}
 
 			&:hover {
 				transition: background-color ease-out 100ms, outline ease-out 100ms;
-				outline: 1px solid var(--neutral);
-				background-color: var(--highlight);
+				outline: 1px solid var(--color-on-background);
+				background-color: var(--color-surface);
 			}
 		}
 	}

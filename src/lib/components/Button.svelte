@@ -44,22 +44,22 @@
 		transition: background-color 150ms ease-in, max-width 150ms ease-in-out;
 
 		&.filled {
-			--_bg: var(--background);
-			--_border: 1px solid var(--neutral);
-			--_text-color: var(--neutral);
-			--_hover-bg: var(--highlight);
+			--_bg: var(--color-on-background);
+			--_border: 1px solid var(--color-on-background);
+			--_text-color: var(--color-background);
+			--_hover-bg: var(--color-on-surface);
 		}
 		&.outlined {
 			--_bg: transparent;
-			--_border: 1px solid var(--neutral);
+			--_border: 1px solid var(--color-on-background);
 			--_text-color: inherit;
-			--_hover-bg: var(--highlight);
+			--_hover-bg: var(--color-surface);
 		}
 		&.text {
 			--_bg: transparent;
 			--_border: none;
 			--_text-color: inherit;
-			--_hover-bg: var(--highlight);
+			--_hover-bg: var(--color-surface);
 		}
 
 		&:hover,

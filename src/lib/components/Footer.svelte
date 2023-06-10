@@ -21,7 +21,7 @@
 		justify-content: space-between;
 		align-items: center;
 		padding: 1rem;
-		border-top: 1px solid var(--neutral);
+		border-top: 1px solid var(--color-on-background);
 		gap: 0.5rem;
 		flex-wrap: wrap;
 

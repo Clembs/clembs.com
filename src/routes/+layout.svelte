@@ -1,5 +1,5 @@
 <script lang="ts">
-	import '../styles/theme.scss';
+	import '../styles/globals.scss';
 	import { page } from '$app/stores';
 	import NavBar from '$lib/components/NavBar.svelte';
 	import { Toaster } from 'svelte-french-toast';
@@ -78,7 +78,7 @@
 		inset: 0;
 		pointer-events: none;
 		height: 200px;
-		border-bottom: 1px solid var(--neutral);
+		border-bottom: 1px solid var(--color-on-background);
 
 		&.move-gradient {
 			left: -200%;
@@ -88,9 +88,9 @@
 
 	.content {
 		margin: 3rem 2rem 1rem 2rem;
-		background-color: var(--background);
+		background-color: var(--color-background);
 		max-width: 1000px;
-		border: 1px var(--neutral) solid;
+		border: 1px var(--color-on-background) solid;
 		border-radius: 1rem;
 		height: 100%;
 		width: 100%;

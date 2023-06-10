@@ -20,7 +20,7 @@
 		scale: 0.8;
 
 		appearance: none;
-		border: 1px solid var(--neutral);
+		border: 1px solid var(--color-on-background);
 		background-color: white;
 		border-radius: 1rem;
 		max-width: 100%;

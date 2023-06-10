@@ -301,7 +301,7 @@
 			xmlns="http://www.w3.org/2000/svg"
 			aria-hidden="true"
 		>
-			<g id="wordmark" fill="var(--neutral)">
+			<g id="wordmark" fill="var(--color-on-background)">
 				<g id="letter">
 					<path
 						id="C"
@@ -462,13 +462,13 @@
 			#wordmark > g {
 				transition: transform ease-in 150ms, stroke-width ease-in 150ms;
 				&:hover:not(.fall) {
-					stroke: var(--neutral);
+					stroke: var(--color-on-background);
 					stroke-width: 2px;
-					transform: translateY(-1px);
+					transform: translateY(-2px);
 				}
 				&:active:not(.fall) {
-					transform: translateY(2px);
-					stroke: var(--neutral);
+					transform: translateY(0px);
+					stroke: var(--color-on-background);
 					stroke-width: 2px;
 				}
 			}
@@ -478,7 +478,7 @@
 	.reset-timer {
 		user-select: all;
 		border: 5px solid lime;
-		outline: 1px solid var(--neutral);
+		outline: 1px solid var(--color-on-background);
 		height: 4rem;
 		width: 4rem;
 		display: grid;

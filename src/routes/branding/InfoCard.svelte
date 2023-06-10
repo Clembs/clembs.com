@@ -66,7 +66,7 @@
 
 <style lang="scss">
 	.info-card {
-		border-left: 1px solid var(--neutral);
+		border-left: 1px solid var(--color-on-background);
 		display: flex;
 		flex-direction: column;
 		flex-grow: 1;
@@ -78,8 +78,8 @@
 			flex-direction: column;
 			position: sticky;
 			inset: 0;
-			border-bottom: 1px solid var(--neutral);
-			background-color: var(--background);
+			border-bottom: 1px solid var(--color-on-background);
+			background-color: var(--color-background);
 
 			.sections {
 				display: flex;
@@ -121,17 +121,17 @@
 			font-size: inherit;
 			cursor: pointer;
 			border: none;
-			background-color: var(--background);
-			color: var(--neutral);
+			background-color: var(--color-background);
+			color: var(--color-on-background);
 			padding: 0.5rem 1rem;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			border-top: 1px solid var(--neutral);
+			border-top: 1px solid var(--color-on-background);
 
 			&:hover {
 				text-decoration: none;
-				background-color: var(--highlight);
+				background-color: var(--color-surface);
 				&:global(:not(button) svg) {
 					transform: translateX(4px);
 				}
@@ -151,7 +151,7 @@
 
 			.info-card-content {
 				border-radius: 1rem;
-				border: 1px solid var(--neutral);
+				border: 1px solid var(--color-on-background);
 				overflow: hidden;
 
 				.sections {
@@ -171,7 +171,7 @@
 					button {
 						border: 1px solid transparent;
 						&.opened {
-							border-bottom: 1px solid var(--neutral);
+							border-bottom: 1px solid var(--color-on-background);
 						}
 					}
 
