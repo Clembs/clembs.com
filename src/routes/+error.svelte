@@ -40,7 +40,7 @@
 />
 
 <main>
-	<div class="content" class:404={$page.status === 404} class:easterEggShown={showEasterEgg}>
+	<div class="content" class:fourofour={$page.status === 404} class:easterEggShown={showEasterEgg}>
 		{#if $page.status === 404}
 			<div class="actual-page">
 				<img src="/assets/error-screens/404.svg" alt="404" />
@@ -53,7 +53,7 @@
 					<ul>
 						<li>This page used to exist, but does not anymore.</li>
 						<li>It never existed in the first place.</li>
-						<li>The spelling isn't correct; Ask whoever sent you here to double-check.</li>
+						<li>The spelling isn't correct; ask whoever sent you here to double-check.</li>
 					</ul>
 				</div>
 			</div>
@@ -101,7 +101,7 @@
 			align-items: center;
 			transform: translateX(0%);
 			transition: transform 400ms cubic-bezier(1, 0, 0, 1);
-			&.404 {
+			&.fourofour {
 				width: 200%;
 			}
 			&.easterEggShown {
