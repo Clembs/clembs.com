@@ -57,7 +57,7 @@
 				href={link.href}
 				class="nav-item"
 				aria-label="Home"
-				class:active={$page.url.pathname === '/' && scrollingOnNavBarEl === '/'}
+				class:active={scrollingOnNavBarEl === '/'}
 			>
 				{#if link.label}
 					{link.label}
@@ -69,7 +69,7 @@
 			<a
 				href={link.href}
 				class="nav-item"
-				class:active={($page.url.href.includes(link.href) && scrollingOnNavBarEl === link.href) ||
+				class:active={scrollingOnNavBarEl === link.href ||
 					(link?.path ? $page.url.href.includes(link.path) : false)}
 			>
 				{#if link.label}

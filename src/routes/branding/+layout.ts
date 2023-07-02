@@ -6,6 +6,6 @@ export const load: LayoutLoad = ({ url }) => {
 
 	return {
 		themeGradient: h?.themeGradient,
-		...h
+		...h,
 	};
 };
