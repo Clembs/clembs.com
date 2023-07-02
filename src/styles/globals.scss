@@ -12,7 +12,7 @@ input {
 	&:focus-within {
 		outline: none;
 		/* custom focus styles */
-		box-shadow: 0 0 0 3px #987fff;
+		box-shadow: 0 0 0 3px var(--color-primary);
 		// outline: 3px solid #987fff;
 		// outline-offset: 0px;
 	}
@@ -37,16 +37,13 @@ h3,
 h4,
 h5,
 h6 {
-	font-weight: 400;
+	font-weight: 500;
 }
 
 a {
 	color: inherit;
 	cursor: pointer;
-	text-decoration: none;
-	&:hover {
-		text-decoration: underline;
-	}
+	text-decoration: underline;
 }
 
 img {
