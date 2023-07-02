@@ -1,15 +1,11 @@
 <script lang="ts">
+	import './global.scss';
 	import type { BrandingPost } from '$lib/data/branding';
 	import Clembs from '$lib/icons/Clembs.svelte';
+	import IconX from '@tabler/icons-svelte/dist/svelte/icons/IconX.svelte';
 	import InfoCard from './InfoCard.svelte';
 
 	export let data: BrandingPost;
-
-	const baseUrl = 'https://c.clembs.com/branding';
-
-	function getUrl(url: string) {
-		return `${baseUrl}/${data.id}${url}`;
-	}
 </script>
 
 <header>
@@ -18,9 +14,9 @@
 			<Clembs />
 		</div>
 		{#if data.isCommission}
-			x
+			<IconX size={24} />
 			<div class="the-guys-im-working-for">
-				<img alt={data.brand} src={getUrl(data.iconPath)} />
+				<img draggable="false" alt={data.brand} src={data.iconPath} />
 			</div>
 		{/if}
 	</div>
@@ -32,23 +28,6 @@
 
 	<div class="content">
 		<slot />
-		<!-- <div class="description">
-			<div class="inner">
-				<p>
-					{@html data.brief}
-				</p>
-			</div>
-		</div>
-
-		<div class="assets" role="list">
-			{#each data.assets as asset_group}
-				<div class="asset-group" role="row">
-					{#each asset_group as asset}
-						<img src="https://c.clembs.com/branding/{data.id}{asset}" alt="" />
-					{/each}
-				</div>
-			{/each}
-		</div> -->
 	</div>
 </main>
 
@@ -61,27 +40,31 @@
 
 		.brands {
 			display: flex;
-			gap: 0.8rem;
-			font-size: larger;
+			gap: 0.75rem;
+			align-items: center;
 			margin-bottom: 0.5rem;
 
-			:global(svg),
-			img {
-				width: auto;
+			.me,
+			.the-guys-im-working-for {
 				height: 2.5rem;
+				:global(svg),
+				img {
+					width: auto;
+					height: 2.5rem;
+				}
 			}
 		}
 
 		.post-title {
 			font-size: 2rem;
 			margin: 0;
-			font-weight: 400;
+			text-wrap: balance;
 		}
 	}
 
 	.content {
-		padding: 1rem;
-		width: 100%;
+		margin: 1.5rem;
+		margin-top: 0.5rem;
 	}
 
 	main {

@@ -19,7 +19,7 @@
 		<div class="sections" class:opened>
 			<section id="about">
 				<div class="section-title">About</div>
-				<span>{data.brief.split(' ').slice(0, 20).join(' ')}...</span>
+				<span>{data.brief}</span>
 			</section>
 			<section id="date">
 				<div class="section-title">Created at</div>
@@ -30,7 +30,9 @@
 						year: 'numeric',
 					})}
 				</time>
-				• made in {(data.finishedAt.getTime() - data.createdAt.getTime()) / 86_400_000} days
+				• made in {Math.round(
+					(data.finishedAt.getTime() - data.createdAt.getTime()) / (86_400_000 * 7)
+				)} weeks
 			</section>
 			<section id="technologies">
 				<div class="section-title">Technologies</div>
@@ -115,6 +117,7 @@
 		.links a,
 		button {
 			width: 100%;
+			text-decoration: none;
 			appearance: none;
 			font-style: inherit;
 			font-family: inherit;
