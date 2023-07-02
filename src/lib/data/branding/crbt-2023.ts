@@ -16,9 +16,8 @@ export const crbt2023: BrandingPost = {
 	technologies: [TechnologyName.XD, TechnologyName.Svelte, TechnologyName.TypeScript],
 	tags: ['Discord', 'Software', 'Web design', 'UI', 'Personal'],
 	brief:
-		"I started CRBT in 2019 as my very first coding experiment, and over the years it's become more complete and defined, as a true multi-purpose Discord bot.<br>As the project evolved a lot the past year, its website needed a serious refresh to reflect it, and what the future holds for it.<br>Inspired by Material You, the new website features a clean and refined design that works on all screen sizes and themes.",
-	assets: [['https://c.clembs.com/branding/crbt-2023/banner.png']],
+		"CRBT is my first ever program and Discord bot. As it became more feature-rich and polished, I needed to build a new website to reflect how far it's come.",
 	iconPath: 'https://c.clembs.com/branding/crbt-2023/favicon.svg',
-	bannerPath: 'https://c.clembs.com/branding/crbt-2023/banner.png',
+	bannerPath: 'https://c.clembs.com/branding/crbt-2023/crbt-2023.webp',
 	bannerThumbnailPath: '/assets/small-banners/crbt-2023.png',
 };

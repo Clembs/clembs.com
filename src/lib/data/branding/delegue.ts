@@ -16,8 +16,7 @@ export const delegue: BrandingPost = {
 	technologies: [TechnologyName.XD, TechnologyName.Svelte],
 	tags: ['Entreprise', 'Software', 'Branding', 'UI', 'Web design'],
 	brief: '',
-	assets: [],
 	iconPath: 'https://c.clembs.com/branding/delegue/favicon.svg',
-	bannerPath: 'https://c.clembs.com/branding/delegue/banner.png',
+	bannerPath: 'https://c.clembs.com/branding/delegue/delegue.webp',
 	bannerThumbnailPath: '/assets/small-banners/delegue.png',
 };
