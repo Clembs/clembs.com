@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import Clembs from '$lib/icons/Clembs.svelte';
-	import { onMount } from 'svelte';
 
 	const navLinks = [
 		{
@@ -24,32 +23,24 @@
 	];
 
 	let firstNavEl: HTMLAnchorElement;
-	let hideNavBar = false;
-	let previousScroll = 0;
 	let scrollingOnNavBarEl: '/#design' | '/#software' | '/' = '/';
 	let designHomeSection: HTMLElement;
 
-	function hide() {
-		hideNavBar = window.scrollY > previousScroll;
-		previousScroll = window.scrollY;
+	function detectHomeSection() {
+		if ($page.url.pathname !== '/') return;
+		designHomeSection ??= document.querySelector('section#design')!;
+		const position = designHomeSection?.getBoundingClientRect();
 
-		if ($page.url.pathname === '/') {
-			designHomeSection ??= document.querySelector('section#design')!;
-			const position = designHomeSection?.getBoundingClientRect();
-
-			scrollingOnNavBarEl =
-				window.scrollY > document.body.clientHeight + position.top &&
-				window.scrollY < document.body.clientHeight + position.bottom
-					? '/#design'
-					: '/';
-		}
+		scrollingOnNavBarEl =
+			window.scrollY > document.body.clientHeight + position.top - 100 &&
+			window.scrollY < document.body.clientHeight + position.bottom + 100
+				? '/#design'
+				: '/';
 	}
-
-	onMount(hide);
 </script>
 
 <svelte:window
-	on:scroll={hide}
+	on:scroll={detectHomeSection}
 	on:keydown={(ev) => {
 		if (ev.altKey && ev.key === 'n') {
 			ev.preventDefault();
@@ -58,7 +49,7 @@
 	}}
 />
 
-<nav aria-hidden={hideNavBar}>
+<nav>
 	{#each navLinks as link, i}
 		{#if i === 0}
 			<a
@@ -107,11 +98,6 @@
 		box-shadow: 0px 2px 0px 0px var(--color-on-background);
 		transition: all cubic-bezier(1, 0, 0, 1) 150ms;
 		z-index: 9;
-
-		&[aria-hidden='true']:not(:focus-within) {
-			transition: all cubic-bezier(1, 0, 0, 1) 150ms;
-			transform: translateY(200%) scale(0.8);
-		}
 
 		.nav-item {
 			display: flex;
