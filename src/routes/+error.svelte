@@ -40,7 +40,7 @@
 />
 
 <main>
-	<div class="content" class:easterEggShown={showEasterEgg}>
+	<div class="content" class:404={$page.status === 404} class:easterEggShown={showEasterEgg}>
 		{#if $page.status === 404}
 			<div class="actual-page">
 				<img src="/assets/error-screens/404.svg" alt="404" />
@@ -101,10 +101,12 @@
 			align-items: center;
 			transform: translateX(0%);
 			transition: transform 400ms cubic-bezier(1, 0, 0, 1);
+			&.404 {
+				width: 200%;
+			}
 			&.easterEggShown {
 				transition: transform 400ms cubic-bezier(1, 0, 0, 1);
 				transform: translateX(-50%);
-				width: 200%;
 			}
 		}
 	}
