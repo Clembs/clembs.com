@@ -87,7 +87,7 @@
 	}
 
 	.content {
-		margin: 3rem 2rem 1rem 2rem;
+		margin: 3rem 2rem;
 		background-color: var(--color-background);
 		max-width: 1500px;
 		border: 1px var(--color-on-background) solid;
@@ -99,7 +99,6 @@
 
 	@media (max-width: 1550.4px) {
 		.content {
-			margin: 3rem 2rem;
 			width: calc(100% - 1.4rem);
 		}
 	}
