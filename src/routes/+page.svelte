@@ -46,7 +46,7 @@
 				id="irl"
 			>
 				<img
-					src="/assets/clément-election-2022.webp"
+					src="/assets/clément-herrenchimsee-2023.webp"
 					alt="Portrait of Clément smiling"
 					draggable="false"
 				/>
