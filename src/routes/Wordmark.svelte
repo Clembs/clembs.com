@@ -27,8 +27,8 @@
 	};
 
 	function handleC() {
-		document.body.classList.toggle('flip');
-		screenFilters.rotate = !screenFilters.rotate;
+		// document.body.classList.toggle('flip');
+		// screenFilters.rotate = !screenFilters.rotate;
 	}
 	function centerFilterToLetter(selector: string, filterBoxEl: HTMLDivElement) {
 		const el = document.querySelector(selector);
@@ -45,43 +45,43 @@
 		filterBoxEl.style.top = `${Y}px`;
 	}
 	function handleM() {
-		centerFilterToLetter('#letter_4', filterBoxGrayscale);
-		screenFilters.greyscale = !screenFilters.greyscale;
+		// centerFilterToLetter('#letter_4', filterBoxGrayscale);
+		// screenFilters.greyscale = !screenFilters.greyscale;
 	}
 	function handleB() {
-		if (!screenFilters.rotate) {
-			screenFilters.bFalls = !screenFilters.bFalls;
-			return;
-		}
-		centerFilterToLetter('#letter_5', filterBoxInvert);
-		if (clicksToTrueDarkMode < 4) {
-			clicksToTrueDarkMode += 1;
-			// document.body.classList.toggle('darkmodelol');
-			screenFilters.invert = !screenFilters.invert;
-		} else {
-			screenFilters.invert = false;
-			document.body.classList.remove('flip');
-			screenFilters.rotate = false;
-			document.body.classList.add('ALLSYSTEMSFULLPOWER');
-			screenFilters.trueDarkMode = true;
-			trueDarkModeToastId = toast('Ultra dark mode activated! Press Esc to escape', {
-				duration: Infinity,
-			});
-		}
+		// if (!screenFilters.rotate) {
+		// 	screenFilters.bFalls = !screenFilters.bFalls;
+		// 	return;
+		// }
+		// centerFilterToLetter('#letter_5', filterBoxInvert);
+		// if (clicksToTrueDarkMode < 4) {
+		// 	clicksToTrueDarkMode += 1;
+		// 	// document.body.classList.toggle('darkmodelol');
+		// 	screenFilters.invert = !screenFilters.invert;
+		// } else {
+		// 	screenFilters.invert = false;
+		// 	document.body.classList.remove('flip');
+		// 	screenFilters.rotate = false;
+		// 	document.body.classList.add('ALLSYSTEMSFULLPOWER');
+		// 	screenFilters.trueDarkMode = true;
+		// 	trueDarkModeToastId = toast('Ultra dark mode activated! Press Esc to escape', {
+		// 		duration: Infinity,
+		// 	});
+		// }
 	}
 	function rocketScreenReset() {
-		longPressInterval = setInterval(() => {
-			if (timeRemaining !== 0) {
-				timeRemaining -= 1000;
-			} else {
-				clearInterval(longPressInterval);
-				screenReset = true;
-			}
-		}, 1000);
+		// longPressInterval = setInterval(() => {
+		// 	if (timeRemaining !== 0) {
+		// 		timeRemaining -= 1000;
+		// 	} else {
+		// 		clearInterval(longPressInterval);
+		// 		screenReset = true;
+		// 	}
+		// }, 1000);
 	}
 	function rocketScreenCancel() {
-		timeRemaining = initialTimeToReset;
-		clearInterval(longPressInterval);
+		// timeRemaining = initialTimeToReset;
+		// clearInterval(longPressInterval);
 	}
 </script>
 
@@ -121,6 +121,7 @@
 
 <div class="wordmark-wrapper">
 	<div class="wordmark" class:easter-egg={win}>
+		<span aria-hidden="true" style="height: 0; opacity: 0;">Clembs</span>
 		<svg
 			aria-label="Clembs"
 			class="front"
@@ -475,25 +476,18 @@
 		}
 	}
 
-	.reset-timer {
-		user-select: all;
-		border: 5px solid lime;
-		outline: 1px solid var(--color-on-background);
-		height: 4rem;
-		width: 4rem;
-		display: grid;
-		place-items: center;
-		font-weight: 900;
-		font-size: 2rem;
-		border-radius: 5rem;
-	}
-
-	@media (max-width: 768px) {
-		.wordmark {
-			place-items: center;
-		}
-	}
-
+	// .reset-timer {
+	// 	user-select: all;
+	// 	border: 5px solid lime;
+	// 	outline: 1px solid var(--color-on-background);
+	// 	height: 4rem;
+	// 	width: 4rem;
+	// 	display: grid;
+	// 	place-items: center;
+	// 	font-weight: 900;
+	// 	font-size: 2rem;
+	// 	border-radius: 5rem;
+	// }
 	@media (prefers-reduced-motion: reduce) {
 		.wordmark.easter-egg svg g {
 			path {
