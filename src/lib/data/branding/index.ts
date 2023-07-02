@@ -1,8 +1,7 @@
 import { crbt2023 } from './crbt-2023';
 import { delegue } from './delegue';
 import { purplet2022 } from './purplet-2022';
-import { vbot } from './vbot';
-import { verticalVision } from './vertical-vision';
+import { kikuri } from './kikuri';
 import type { TechnologyName } from '../technologies';
 
 export interface BrandingPost {
@@ -21,7 +20,6 @@ export interface BrandingPost {
 		assetsUrl?: string;
 		repoUrl?: string;
 	};
-	assets: string[][];
 	createdAt: Date;
 	finishedAt: Date;
 	themeGradient: {
@@ -30,10 +28,6 @@ export interface BrandingPost {
 	};
 }
 
-export const brandingData: BrandingPost[] = [
-	purplet2022,
-	crbt2023,
-	verticalVision,
-	delegue,
-	vbot,
-].sort((a, b) => b.finishedAt.getTime() - a.finishedAt.getTime());
+export const brandingData: BrandingPost[] = [kikuri, purplet2022, crbt2023, delegue].sort(
+	(a, b) => b.finishedAt.getTime() - a.finishedAt.getTime()
+);
