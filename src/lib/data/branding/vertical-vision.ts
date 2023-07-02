@@ -16,7 +16,6 @@ export const verticalVision: BrandingPost = {
 	tags: ['Entreprise', 'Software', 'Branding', 'UI', 'Web design'],
 	technologies: [TechnologyName.XD, TechnologyName.TailwindCSS, TechnologyName.Svelte],
 	brief: 'Watch your safety',
-	assets: [],
 	iconPath: 'https://c.clembs.com/branding/vertical-vision/favicon.svg',
 	bannerPath: 'https://c.clembs.com/branding/vertical-vision/banner.png',
 	bannerThumbnailPath: '/assets/small-banners/vertical-vision.png',
