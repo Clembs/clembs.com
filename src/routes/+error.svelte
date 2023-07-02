@@ -80,12 +80,14 @@
 				>
 			</div>
 		{:else}
-			<h1>{$page.status}</h1>
+			<div class="woopsies">
+				<h1>{$page.status}</h1>
 
-			<h2>
-				<pre>{$page.error?.message}</pre>
-			</h2>
-			<pre>{String($page.error)}</pre>
+				<h2>
+					<pre>{$page.error?.message}</pre>
+				</h2>
+				<pre>{JSON.stringify($page.error, null, 2)}</pre>
+			</div>
 		{/if}
 	</div>
 </main>
@@ -97,12 +99,12 @@
 		.content {
 			display: flex;
 			align-items: center;
-			width: 200%;
 			transform: translateX(0%);
 			transition: transform 400ms cubic-bezier(1, 0, 0, 1);
 			&.easterEggShown {
 				transition: transform 400ms cubic-bezier(1, 0, 0, 1);
 				transform: translateX(-50%);
+				width: 200%;
 			}
 		}
 	}
@@ -149,5 +151,13 @@
 				height: 100%;
 			}
 		}
+	}
+
+	.woopsies {
+		display: flex;
+		flex-direction: column;
+		padding: 1.5rem;
+		align-items: center;
+		width: 100%;
 	}
 </style>
