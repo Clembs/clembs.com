@@ -97,7 +97,7 @@
 		z-index: 2;
 	}
 
-	@media (max-width: 1022.4px) {
+	@media (max-width: 1550.4px) {
 		.content {
 			margin: 3rem 2rem;
 			width: calc(100% - 1.4rem);
