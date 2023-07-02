@@ -1,16 +1,32 @@
 <script lang="ts">
+	import Card from '$lib/components/Card.svelte';
 	import { brandingData } from '$lib/data/branding';
 	import Wordmark from './Wordmark.svelte';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 
 	let currentFace: 'logo' | 'irl' = 'irl';
 	let isAnimating = false;
 
+	let observer: IntersectionObserver;
+
 	onMount(() => {
 		const projects = document.querySelectorAll('.project');
 
+		// observe all projects to load them in nicely
+		observer = new IntersectionObserver((entries) => {
+			entries.forEach((entry) => {
+				if (entry.isIntersecting) {
+					entry.target.classList.add('show');
+				}
+			});
+		});
+
 		projects.forEach((project) => {
-			const banner = project.querySelector('img');
+			// observe 👁️👁️
+			observer.observe(project);
+
+			// load all card images and check when they've loaded to apply the nice blur out animation
+			const banner: HTMLImageElement = project.querySelector('.card-image img')!;
 
 			function loaded() {
 				banner?.classList.add('loaded');
@@ -23,86 +39,91 @@
 			}
 		});
 	});
+
+	onDestroy(() => {
+		if (observer) observer.disconnect();
+	});
 </script>
 
 <main>
-	<div class="intro">
-		<button
-			class="avatar"
-			disabled={isAnimating}
-			on:click={() => {
-				if (isAnimating) return;
-				isAnimating = true;
-				setTimeout(() => (isAnimating = false), 500);
-				currentFace = currentFace === 'irl' ? 'logo' : 'irl';
-			}}
-		>
-			<!-- irl -->
-
-			<div
-				class="img-wrapper"
-				class:animating={isAnimating}
-				aria-hidden={currentFace !== 'irl'}
-				id="irl"
+	<div class="intro-wrapper">
+		<div class="intro">
+			<button
+				class="avatar"
+				disabled={isAnimating}
+				on:click={() => {
+					if (isAnimating) return;
+					isAnimating = true;
+					setTimeout(() => (isAnimating = false), 500);
+					currentFace = currentFace === 'irl' ? 'logo' : 'irl';
+				}}
 			>
-				<img
-					src="/assets/clément-herrenchimsee-2023.webp"
-					alt="Portrait of Clément smiling"
-					draggable="false"
-				/>
-			</div>
-			<!-- logo -->
+				<!-- irl -->
 
-			<div
-				class="img-wrapper"
-				class:animating={isAnimating}
-				aria-hidden={currentFace !== 'logo'}
-				id="logo"
-			>
-				<img src="/assets/logo-purplue.webp" alt="Clembs logo" draggable="false" />
+				<div
+					class="img-wrapper"
+					class:animating={isAnimating}
+					aria-hidden={currentFace !== 'irl'}
+					id="irl"
+				>
+					<img
+						src="/assets/clément-herrenchimsee-2023.webp"
+						alt="Portrait of Clément smiling"
+						draggable="false"
+					/>
+				</div>
+				<!-- logo -->
+
+				<div
+					class="img-wrapper"
+					class:animating={isAnimating}
+					aria-hidden={currentFace !== 'logo'}
+					id="logo"
+				>
+					<img src="/assets/logo-purplue.webp" alt="Clembs logo" draggable="false" />
+				</div>
+			</button>
+			<div class="text">
+				<h3>Nice to meet you, I'm</h3>
+				<Wordmark />
+				<p>
+					or Clément IRL, a 16 y/o high school student from the south of France. I am passionate
+					about computers and express my love through design, code and video.<br /><br />From
+					Discord bots to web apps to brand design to livestreaming, anything goes on clembs.com.
+					Welcome!
+				</p>
 			</div>
-		</button>
-		<div class="text">
-			<h3>Nice to meet you, I'm</h3>
-			<Wordmark />
-			<p>
-				or Clément IRL, a 16 y/o high school student from the south of France. I am passionate about
-				computers and express my love through design, code and video.<br /><br />From Discord bots
-				to web apps to brand design to livestreaming, anything goes on clembs.com. Welcome!
-			</p>
 		</div>
 	</div>
 
-	<div class="projects featured">
-		{#each brandingData.slice(0, 2) as project}
-			<a
-				aria-label="View brand project: {project.title}"
-				href="/branding/{project.id}"
-				class="project"
-				style="background-image: url({project.bannerThumbnailPath})"
-			>
-				<img src={project.bannerPath} alt={project.brand} loading="lazy" />
-				<span class="year" aria-label="Designed in {project.finishedAt.getFullYear()}">
-					{project.finishedAt.getFullYear()}
-				</span>
-			</a>
-		{/each}
-	</div>
-	<div class="projects rest">
-		{#each brandingData.slice(2) as project}
-			<a
-				aria-label="View brand project: {project.title}"
-				href="/branding/{project.id}"
-				class="project"
-				style="background-image: url({project.bannerThumbnailPath})"
-			>
-				<img src={project.bannerPath} alt={project.brand} loading="lazy" />
-				<span class="year" aria-label="Designed in {project.finishedAt.getFullYear()}">
-					{project.finishedAt.getFullYear()}
-				</span>
-			</a>
-		{/each}
-	</div>
+	<section id="projects">
+		<h1>Design portfolio</h1>
+
+		<div class="projects featured">
+			{#each brandingData as project, index}
+				<Card
+					class="card project"
+					aria-label="View brand project: {project.title}"
+					href="/branding/{project.id}"
+					style="--delay: {index}"
+				>
+					<div class="card-image" style="background-image: url({project.bannerThumbnailPath})">
+						<img src={project.bannerPath} alt={project.brand} loading="lazy" />
+
+						<span class="year" aria-label="Designed in {project.finishedAt.getFullYear()}">
+							{project.finishedAt.getFullYear()}
+						</span>
+					</div>
+					<div slot="card-content">
+						<h3>
+							{project.title}
+						</h3>
+						<p>{project.brief}</p>
+					</div>
+				</Card>
+			{/each}
+		</div>
+	</section>
 
 	<span
 		aria-hidden="true"
@@ -116,6 +137,12 @@
 </main>
 
 <style lang="scss">
+	@media (prefers-reduced-motion) {
+		.img-wrapper {
+			animation: none !important;
+		}
+	}
+
 	@keyframes switchPfpFront {
 		0% {
 			z-index: 2;
@@ -144,6 +171,11 @@
 		}
 	}
 
+	section h1 {
+		text-align: center;
+		font-size: 2rem;
+	}
+
 	main {
 		padding: 1rem;
 		display: flex;
@@ -152,11 +184,19 @@
 		gap: 0.5rem;
 	}
 
+	.intro-wrapper {
+		height: 100dvh;
+		height: 100vh;
+		display: grid;
+		place-items: center;
+	}
+
 	.intro {
 		display: flex;
-		gap: 1.5rem;
-		padding: 1rem 0;
+		gap: 2rem;
 		margin: 0 auto;
+		font-size: 1.25rem;
+		transform: translateY(-5rem);
 
 		.avatar {
 			cursor: pointer;
@@ -167,8 +207,8 @@
 			border-radius: 1rem;
 			padding: 0;
 			margin: 0;
-			width: 117px;
-			height: 117px;
+			width: 8rem;
+			height: 8rem;
 			border-radius: 999px;
 			box-shadow: none;
 
@@ -183,11 +223,16 @@
 				}
 
 				img {
-					width: 117px;
-					height: 117px;
+					width: 8rem;
+					height: 8rem;
+					object-fit: cover;
 					border-radius: 999px;
 					border: 1px var(--color-on-background) solid;
 					// box-shadow: 3px 3px 0px 0px var(--color-on-background);
+				}
+
+				&[aria-hidden='false']:hover {
+					transform: translate(-2px, -2px);
 				}
 
 				&::after {
@@ -218,8 +263,8 @@
 		.text {
 			display: flex;
 			flex-direction: column;
-			gap: 0.5rem;
-			max-width: 420px;
+			gap: 0.75rem;
+			max-width: 650px;
 
 			h3,
 			p {
@@ -231,20 +276,29 @@
 	.projects {
 		display: grid;
 		width: 100%;
-		gap: 0.5rem;
+		gap: 0.75rem;
 
 		&.featured {
-			grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-		}
-		&.rest {
-			grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+			grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
 		}
 
-		.project {
+		:global(.project) {
+			opacity: 0;
+			transform: translateY(5rem);
+			transition-delay: calc(200ms * var(--delay));
+			transition: all cubic-bezier(0.64, 0.005, 0.43, 1.01) 300ms;
+		}
+		:global(.project.show) {
+			opacity: 1;
+			transform: translateY(0);
+			transition-delay: none;
+			transition: all cubic-bezier(0.64, 0.005, 0.43, 1.01) 200ms;
+		}
+
+		.card-image {
 			position: relative;
 			transition: transform ease-out 0.1s, box-shadow ease-out 0.1s;
-			border-radius: 1rem;
-			border: 1px solid var(--color-on-background);
+			border-bottom: 1px solid var(--color-on-background);
 			aspect-ratio: 16/9;
 			color: white;
 			display: grid;
@@ -278,15 +332,10 @@
 					opacity: 1;
 				}
 			}
-
-			&:hover {
-				transform: translateY(-4px);
-				box-shadow: 0 4px 0 0 var(--color-on-background);
-			}
 		}
 	}
 
-	@media (max-width: 768px) {
+	@media (max-width: 939px) {
 		.intro {
 			flex-direction: column;
 			align-items: center;
