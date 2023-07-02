@@ -89,7 +89,7 @@
 	.content {
 		margin: 3rem 2rem 1rem 2rem;
 		background-color: var(--color-background);
-		max-width: 1000px;
+		max-width: 1500px;
 		border: 1px var(--color-on-background) solid;
 		border-radius: 1rem;
 		height: 100%;
