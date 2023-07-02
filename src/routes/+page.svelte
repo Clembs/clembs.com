@@ -96,7 +96,7 @@
 		</div>
 	</div>
 
-	<section id="projects">
+	<section id="design">
 		<h1>Design portfolio</h1>
 
 		<div class="projects featured">
@@ -264,7 +264,7 @@
 			display: flex;
 			flex-direction: column;
 			gap: 0.75rem;
-			max-width: 650px;
+			max-width: 550px;
 
 			h3,
 			p {
