@@ -231,8 +231,13 @@
 					// box-shadow: 3px 3px 0px 0px var(--color-on-background);
 				}
 
-				&[aria-hidden='false']:hover {
-					transform: translate(-2px, -2px);
+				&[aria-hidden='false'] {
+					&:hover {
+						transform: translate(-1px, -1px);
+					}
+					&:active {
+						transform: translate(-4px, -4px);
+					}
 				}
 
 				&::after {
