@@ -35,6 +35,11 @@
 				transform: translateY(-4px);
 				box-shadow: 0 4px 0 0 var(--color-on-background);
 			}
+			&:active {
+				background-color: var(--color-surface);
+				transform: translateY(0px);
+				box-shadow: 0 0 0 0 var(--color-on-background);
+			}
 		}
 	}
 </style>
