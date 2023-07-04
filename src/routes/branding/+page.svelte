@@ -1,16 +1,23 @@
 <script lang="ts">
+	import MetaTags from '$lib/components/MetaTags.svelte';
 	import BrandingItem from '$lib/components/Projects/BrandingItem.svelte';
 	import { brandingData } from '$lib/data/branding';
 
 	const years = [...new Set(brandingData.map((p) => p.createdAt.getFullYear()))];
 </script>
 
+<MetaTags
+	pageName="Graphic design"
+	description="I've been into design for 4 years now, sourcing inspiration by digital worlds and the real world
+  to craft interfaces and brand identities that look good and that stick to people's minds."
+/>
+
 <main>
 	<h1>Graphic design</h1>
 
 	<p>
-		I've been into design for 4 years now, sourcing inspiration by the digital worlds to craft
-		interfaces and brand identities that look good and stick to people.
+		I've been into design for 4 years now, sourcing inspiration by digital worlds and the real world
+		to craft interfaces and brand identities that look good and that stick to people's minds.
 	</p>
 
 	{#each years as year}

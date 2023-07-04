@@ -6,6 +6,7 @@
 	import { onDestroy, onMount } from 'svelte';
 	import Wordmark from './Wordmark.svelte';
 	import IconArrowRight from '@tabler/icons-svelte/dist/svelte/icons/IconArrowRight.svelte';
+	import MetaTags from '$lib/components/MetaTags.svelte';
 
 	let currentFace: 'logo' | 'irl' = 'irl';
 	let isAnimating = false;
@@ -47,6 +48,11 @@
 		if (observer) observer.disconnect();
 	});
 </script>
+
+<MetaTags
+	description="Hi to meet you, I'm Clembs, a student from the south of France. I am passionate about computers
+and express my love through design, code and video. Welcome to clembs.com!"
+/>
 
 <main>
 	<div class="intro">

@@ -6,9 +6,20 @@
 	import { softwareData } from '$lib/data/software';
 	import { page } from '$app/stores';
 	import ShareButton from '$lib/components/ShareButton.svelte';
+	import MetaTags from '$lib/components/MetaTags.svelte';
 
 	export let data: BrandingPost;
 </script>
+
+<MetaTags
+	pageName={data.title}
+	description="{data.category} • {data.createdAt.toLocaleString('en-US', {
+		month: 'long',
+		day: 'numeric',
+		year: 'numeric',
+	})}"
+	image={data.bannerPath}
+/>
 
 <header>
 	<div class="brands">
@@ -125,10 +136,6 @@
 
 		.post-title {
 			font-size: 1.75rem !important;
-		}
-
-		.buttons {
-			justify-content: center;
 		}
 	}
 </style>

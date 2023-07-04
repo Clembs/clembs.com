@@ -6,6 +6,7 @@
 	import ProjectGrid from '$lib/components/Projects/ProjectGrid.svelte';
 	import { page } from '$app/stores';
 	import ShareButton from '$lib/components/ShareButton.svelte';
+	import MetaTags from '$lib/components/MetaTags.svelte';
 
 	let observer: IntersectionObserver;
 	let viewedImage = 0;
@@ -31,6 +32,16 @@
 
 	export let data: Software;
 </script>
+
+<MetaTags
+	pageName={data.name}
+	description="{data.category} •
+	{data.createdAt.toLocaleString('en-US', {
+		month: 'long',
+		day: 'numeric',
+		year: 'numeric',
+	})}"
+/>
 
 <header>
 	<div class="icon">

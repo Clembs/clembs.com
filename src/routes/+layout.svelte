@@ -35,8 +35,6 @@
 	}}
 />
 
-<MetaTags description="website of clembs. very beta." />
-
 {#if debugMenu}
 	<svelte:component this={debugMenu} />
 {/if}
