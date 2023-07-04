@@ -1,9 +1,11 @@
 <script lang="ts">
-	import '../../styles/showcase.scss';
+	import '../../../styles/showcase.scss';
 	import type { BrandingPost } from '$lib/data/branding';
 	import IconPlus from '@tabler/icons-svelte/dist/svelte/icons/IconPlus.svelte';
 	import Button from '$lib/components/Button.svelte';
 	import { softwareData } from '$lib/data/software';
+	import { page } from '$app/stores';
+	import ShareButton from '$lib/components/ShareButton.svelte';
 
 	export let data: BrandingPost;
 </script>
@@ -32,28 +34,27 @@
 		</time>
 	</span>
 
-	{#if data.links || data.relatedSoftwareId}
-		<div class="buttons">
-			{#if data.links?.projectUrl}
-				<Button href={data.links?.projectUrl}>Check it out</Button>
-			{/if}
-			{#if data.links?.assetsUrl}
-				<Button style="outlined" href={data.links?.assetsUrl}>View assets</Button>
-			{/if}
-			{#if data.relatedSoftwareId}
-				{@const relatedSoftware = softwareData.find(({ id }) => data.relatedSoftwareId === id)}
-				<Button style="outlined" href="/software/{relatedSoftware?.id}">
-					<img
-						class="related-software-icon"
-						draggable="false"
-						src={relatedSoftware?.iconThumbnailPath}
-						alt="{relatedSoftware?.name} icon"
-					/>
-					Related software: {relatedSoftware?.name}
-				</Button>
-			{/if}
-		</div>
-	{/if}
+	<div class="buttons">
+		{#if data.links?.projectUrl}
+			<Button href={data.links?.projectUrl}>Check it out</Button>
+		{/if}
+		{#if data.links?.assetsUrl}
+			<Button style="outlined" href={data.links?.assetsUrl}>View assets</Button>
+		{/if}
+		{#if data.relatedSoftwareId}
+			{@const relatedSoftware = softwareData.find(({ id }) => data.relatedSoftwareId === id)}
+			<Button style="outlined" href="/software/{relatedSoftware?.id}">
+				<img
+					class="related-software-icon"
+					draggable="false"
+					src={relatedSoftware?.iconThumbnailPath}
+					alt="{relatedSoftware?.name} icon"
+				/>
+				Related software: {relatedSoftware?.name}
+			</Button>
+		{/if}
+		<ShareButton url={$page.url.href} />
+	</div>
 </header>
 
 <main>
@@ -124,6 +125,10 @@
 
 		.post-title {
 			font-size: 1.75rem !important;
+		}
+
+		.buttons {
+			justify-content: center;
 		}
 	}
 </style>
