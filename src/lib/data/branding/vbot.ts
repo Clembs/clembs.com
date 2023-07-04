@@ -6,6 +6,7 @@ export const vbot: BrandingPost = {
 	title: 'Vbot',
 	createdAt: new Date('2021-06-13'),
 	links: { projectUrl: 'https://user5522.tk/projects/vbot' },
+	category: 'Brand identity',
 	themeGradient: {
 		from: '#A172F8',
 		to: '#D5C2FF',

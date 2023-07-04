@@ -6,6 +6,7 @@ export const kikuri: BrandingPost = {
 	title: 'Kikuri - The fun and casual card collecting Discord bot.',
 	createdAt: new Date('2023-06-23'),
 	links: { projectUrl: 'https://kikuri-bot.com' },
+	category: 'UI/UX design',
 	themeGradient: {
 		from: '#BA3F3D',
 		to: '#5D1C3C',

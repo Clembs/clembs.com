@@ -11,6 +11,7 @@ export interface BrandingPost {
 	bannerThumbnailPath: string;
 	iconPath: string;
 	brief: string;
+	category: string;
 	links?: {
 		projectUrl?: string;
 		assetsUrl?: string;

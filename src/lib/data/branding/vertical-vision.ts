@@ -6,6 +6,7 @@ export const verticalVision: BrandingPost = {
 	title: 'Vertical Vision - Watch your safety',
 	createdAt: new Date('2023-12-01'),
 	links: { projectUrl: 'https://verticalvision.fr' },
+	category: 'Brand identity & UI/UX design',
 	themeGradient: {
 		from: '#18C6F2',
 		to: '#1877F2',
