@@ -1,5 +1,5 @@
 <script lang="ts">
-	import './global.scss';
+	import '../../styles/showcase.scss';
 	import type { BrandingPost } from '$lib/data/branding';
 	import Clembs from '$lib/icons/Clembs.svelte';
 	import IconX from '@tabler/icons-svelte/dist/svelte/icons/IconX.svelte';
@@ -77,6 +77,12 @@
 		main {
 			flex-direction: column;
 			align-items: center;
+			margin: 0 1rem 1rem 1rem;
+		}
+
+		.content {
+			margin: 0.5rem;
+			margin-top: 1rem;
 		}
 
 		.post-title {

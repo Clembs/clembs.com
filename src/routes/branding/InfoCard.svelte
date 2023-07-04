@@ -1,11 +1,14 @@
 <script lang="ts">
+	import Badge from '$lib/components/Badge.svelte';
 	import type { BrandingPost } from '$lib/data/branding';
+	import type { Software } from '$lib/data/software';
 	import { technologies } from '$lib/data/technologies';
 	import IconChevronRight from '@tabler/icons-svelte/dist/svelte/icons/IconChevronRight.svelte';
 
 	let opened = false;
 
-	export let data: BrandingPost;
+	export let data: BrandingPost | Software;
+	let creationDate = data.finishedAt ?? data.createdAt;
 </script>
 
 <aside class="info-card">
@@ -17,22 +20,39 @@
 			</button>
 		</div>
 		<div class="sections" class:opened>
-			<section id="about">
-				<div class="section-title">About</div>
-				<span>{data.brief}</span>
-			</section>
+			{#if 'brief' in data}
+				<section id="about">
+					<div class="section-title">About</div>
+					<span>{data.brief}</span>
+				</section>
+			{/if}
+			{#if data.tags}
+				<section id="tags">
+					<div class="section-title">Tags</div>
+					<div class="tags">
+						{#each data.tags as tag}
+							<Badge>{tag}</Badge>
+						{/each}
+					</div>
+				</section>
+			{/if}
 			<section id="date">
 				<div class="section-title">Created at</div>
-				<time datetime={data.finishedAt.toDateString()}>
-					{data.finishedAt.toLocaleString('en-US', {
+				<time datetime={creationDate.toDateString()}>
+					{creationDate.toLocaleString('en-US', {
 						month: 'long',
 						day: 'numeric',
 						year: 'numeric',
 					})}
 				</time>
-				• made in {Math.round(
-					(data.finishedAt.getTime() - data.createdAt.getTime()) / (86_400_000 * 7)
-				)} weeks
+				•
+				{#if data.finishedAt}
+					made in {Math.round(
+						(data.finishedAt.getTime() - data.createdAt.getTime()) / (86_400_000 * 7)
+					)} weeks
+				{:else}
+					On-going project
+				{/if}
 			</section>
 			<section id="technologies">
 				<div class="section-title">Technologies</div>
@@ -49,18 +69,28 @@
 			</section>
 		</div>
 		<div class="links">
-			{#if data.links?.assetsUrl}
-				<a href={data.links.assetsUrl}>Download assets <IconChevronRight /> </a>
+			{#if 'outsideLinks' in data && data.outsideLinks}
+				{#each data.outsideLinks as link}
+					<a href={link.href}>
+						{link.label}
+						<IconChevronRight />
+					</a>
+				{/each}
 			{/if}
-			{#if data.links?.repoUrl}
-				<a href={data.links.repoUrl}>
-					GitHub repository <IconChevronRight />
-				</a>
-			{/if}
-			{#if data.links?.projectUrl}
-				<a href={data.links.projectUrl}>
-					Check it out <IconChevronRight />
-				</a>
+			{#if data.links}
+				{#if 'assetsUrl' in data.links && data.links?.assetsUrl}
+					<a href={data.links.assetsUrl}>Download assets <IconChevronRight /> </a>
+				{/if}
+				{#if data.links?.repoUrl}
+					<a href={data.links.repoUrl}>
+						GitHub repository <IconChevronRight />
+					</a>
+				{/if}
+				{#if data.links?.projectUrl}
+					<a href={data.links.projectUrl}>
+						Check it out <IconChevronRight />
+					</a>
+				{/if}
 			{/if}
 		</div>
 	</div>
@@ -72,7 +102,7 @@
 		display: flex;
 		flex-direction: column;
 		flex-grow: 1;
-		max-width: 320px;
+		min-width: 320px;
 		z-index: 2;
 
 		.info-card-content {
@@ -105,6 +135,11 @@
 							width: 32px;
 							height: auto;
 						}
+					}
+					.tags {
+						display: inline-flex;
+						flex-wrap: wrap;
+						gap: 0.25rem;
 					}
 				}
 			}
@@ -148,7 +183,7 @@
 	@media (max-width: 850px) {
 		.info-card {
 			border-left: none;
-			max-width: 100%;
+			min-width: 100%;
 			margin: 0.7rem 0.7rem 0 0.7rem;
 			border-radius: 1rem;
 
