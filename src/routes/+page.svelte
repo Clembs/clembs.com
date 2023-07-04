@@ -46,11 +46,9 @@
 </script>
 
 <main>
-	<div class="intro-wrapper">
 		<div class="intro">
 			<button
-				class="avatar animate-slide-up"
-				style="--delay: 0"
+				class="avatar"
 				disabled={isAnimating}
 				on:click={() => {
 					if (isAnimating) return;
@@ -85,11 +83,11 @@
 				</div>
 			</button>
 			<div class="text">
-				<h3 class="animate-slide-up" style="--delay: 1">Nice to meet you, I'm</h3>
-				<div class="animate-slide-up" style="--delay: 2">
+				<h3>Nice to meet you, I'm</h3>
+				<div>
 					<Wordmark />
 				</div>
-				<p class="animate-slide-up" style="--delay: 3">
+				<p>
 					or Clément IRL, a 16 y/o high school student from the south of France. I am passionate
 					about computers and express my love through design, code and video.<br /><br />From
 					Discord bots to web apps to brand design to livestreaming, anything goes on clembs.com.
@@ -97,10 +95,9 @@
 				</p>
 			</div>
 		</div>
-	</div>
 
 	<section id="design">
-		<h1>Design portfolio</h1>
+		<h1>Graphic design</h1>
 
 		<div class="projects featured">
 			{#each brandingData as project, index}
@@ -113,8 +110,8 @@
 					<div class="card-image" style="background-image: url({project.bannerThumbnailPath})">
 						<img src={project.bannerPath} alt={project.brand} loading="lazy" />
 
-						<span class="year" aria-label="Designed in {project.finishedAt.getFullYear()}">
-							{project.finishedAt.getFullYear()}
+						<span class="year" aria-label="Designed in {project.createdAt.getFullYear()}">
+							{project.createdAt.getFullYear()}
 						</span>
 					</div>
 					<div slot="card-content">
@@ -143,16 +140,6 @@
 	@media (prefers-reduced-motion) {
 		.img-wrapper {
 			animation: none !important;
-		}
-	}
-	@keyframes slideUp {
-		0% {
-			opacity: 0;
-			transform: translateY(10rem);
-		}
-		100% {
-			opacity: 1;
-			transform: translateX(0);
 		}
 	}
 
@@ -185,7 +172,6 @@
 	}
 
 	section h1 {
-		text-align: center;
 		font-size: 2rem;
 	}
 
@@ -197,23 +183,12 @@
 		gap: 0.5rem;
 	}
 
-	.intro-wrapper {
-		height: 100dvh;
-		height: 100vh;
-		display: grid;
-		place-items: center;
-	}
-
 	.intro {
-		display: flex;
-		gap: 2rem;
+		padding: 3rem 0;
+		display: flex;	
+		gap: 2.5rem;
 		margin: 0 auto;
 		font-size: 1.25rem;
-		transform: translateY(-5rem);
-
-		.animate-slide-up {
-			animation: 1s ease-in-out calc(250ms * var(--delay)) 1 slideUp;
-		}
 
 		.avatar {
 			cursor: pointer;
@@ -285,7 +260,7 @@
 		.text {
 			display: flex;
 			flex-direction: column;
-			gap: 0.75rem;
+			gap: 1rem;
 			max-width: 550px;
 
 			h3,
