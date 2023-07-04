@@ -21,6 +21,7 @@
 		align-items: center;
 		justify-content: center;
 
+		height: max-content;
 		width: max-content;
 		padding: 0.6rem 1.2rem;
 		gap: 0.7rem;

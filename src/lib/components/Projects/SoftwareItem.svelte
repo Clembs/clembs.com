@@ -4,6 +4,7 @@
 
 	export let data: Software;
 	export let index: number;
+	export let loaded = false;
 </script>
 
 <Card
@@ -17,7 +18,7 @@
 		style="--project-from: {data.themeGradient.from}; --project-to: {data.themeGradient.to}; "
 	>
 		<div class="software-icon" style="background-image: url({data.iconThumbnailPath})">
-			<img src={data.iconPath} alt="{data.name} icon" loading="lazy" />
+			<img src={data.iconPath} class:loaded alt="{data.name} icon" loading="lazy" />
 		</div>
 	</div>
 	<div slot="card-content" class="software">
@@ -39,7 +40,7 @@
 
 <style lang="scss">
 	.software-icon-wrapper {
-		height: 8rem;
+		height: 7rem;
 		display: grid;
 		place-items: center;
 		width: 100%;
@@ -47,8 +48,8 @@
 		border-bottom: 1px solid var(--color-on-background);
 
 		.software-icon {
-			width: 6rem;
-			height: 6rem;
+			width: 5rem;
+			height: 5rem;
 			border: 1px solid var(--color-on-background);
 			border-radius: 1.5rem;
 			overflow: hidden;

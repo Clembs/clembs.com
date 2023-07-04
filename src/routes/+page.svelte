@@ -1,9 +1,11 @@
 <script lang="ts">
+	import Button from '$lib/components/Button.svelte';
 	import ProjectGrid from '$lib/components/Projects/ProjectGrid.svelte';
 	import { brandingData } from '$lib/data/branding';
 	import { softwareData } from '$lib/data/software';
-	import Wordmark from './Wordmark.svelte';
 	import { onDestroy, onMount } from 'svelte';
+	import Wordmark from './Wordmark.svelte';
+	import IconArrowRight from '@tabler/icons-svelte/dist/svelte/icons/IconArrowRight.svelte';
 
 	let currentFace: 'logo' | 'irl' = 'irl';
 	let isAnimating = false;
@@ -89,23 +91,47 @@
 				<Wordmark />
 			</div>
 			<p>
-				or Clément IRL, a 16 y/o high school student from the south of France. I am passionate about
-				computers and express my love through design, code and video.<br /><br />From Discord bots
-				to web apps to brand design to livestreaming, anything goes on clembs.com. Welcome!
+				or Clément IRL, a 17 y/o student from the south of France. I am passionate about computers
+				and express my love through design, code and video.<br /><br />From Discord bots to web apps
+				to brand design to livestreaming, anything goes on clembs.com. Welcome!
 			</p>
 		</div>
 	</div>
 
 	<section id="design">
-		<h1>Graphic design</h1>
+		<header>
+			<div class="top">
+				<h1>Graphic design</h1>
 
-		<ProjectGrid projects={brandingData} />
+				<Button style="outlined" href="/branding">View more <IconArrowRight /></Button>
+			</div>
+
+			<p>
+				I've been into design for 4 years now, sourcing inspiration by the digital worlds to craft
+				interfaces and brand identities that look good and stick to people.
+			</p>
+		</header>
+
+		<ProjectGrid projects={brandingData.slice(0, 3)} compact loaded={false} />
 	</section>
 
 	<section id="software">
-		<h1>Software & tools</h1>
+		<header>
+			<div class="top">
+				<h1>Apps & tools</h1>
 
-		<ProjectGrid projects={softwareData} compact />
+				<Button style="outlined" href="/software">View more <IconArrowRight /></Button>
+			</div>
+
+			<p>
+				Computers have been my thing forever, and I made coding my newfound passion. Having
+				graduated on July 2023, I will be moving to Toulouse to study for a Bachelor of Computer
+				Technology (BUT Informatique) in order to fullfill my dream of becoming a professional
+				programmer!
+			</p>
+		</header>
+
+		<ProjectGrid projects={softwareData.slice(0, 3)} compact loaded={false} />
 	</section>
 
 	<span
@@ -115,8 +141,10 @@
 	color: white;
 	text-align: left;
 	transform: rotateY(180deg);
-	">Strange, isn't it?</span
+	"
 	>
+		Strange, isn't it?
+	</span>
 </main>
 
 <style lang="scss">
@@ -240,7 +268,7 @@
 			display: flex;
 			flex-direction: column;
 			gap: 1rem;
-			max-width: 400px;
+			max-width: 42ch;
 
 			h3,
 			p {
@@ -249,8 +277,22 @@
 		}
 	}
 
-	section h1 {
-		font-size: 2rem;
+	section {
+		header {
+			.top {
+				display: flex;
+				justify-content: space-between;
+			}
+
+			h1 {
+				font-size: clamp(1.5rem, 5vw, 2rem);
+				margin: 0;
+			}
+			p {
+				text-wrap: balance;
+				max-width: 70ch;
+			}
+		}
 	}
 
 	@media (max-width: 939px) {

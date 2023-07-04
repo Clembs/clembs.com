@@ -4,6 +4,7 @@
 
 	export let data: BrandingPost;
 	export let index: number;
+	export let loaded = false;
 </script>
 
 <Card
@@ -13,7 +14,7 @@
 	style="--delay: {index}"
 >
 	<div class="card-image" style="background-image: url({data.bannerThumbnailPath})">
-		<img src={data.bannerPath} alt={data.brand} loading="lazy" />
+		<img src={data.bannerPath} class:loaded alt={data.brand} loading="lazy" />
 	</div>
 	<div slot="card-content" class="card-content">
 		<div class="title">
