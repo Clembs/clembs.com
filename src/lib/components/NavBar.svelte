@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import Clembs from '$lib/icons/Clembs.svelte';
+	import { onMount } from 'svelte';
 
 	const navLinks = [
 		{
@@ -23,20 +24,40 @@
 	];
 
 	let firstNavEl: HTMLAnchorElement;
-	let scrollingOnNavBarEl: '/#design' | '/#software' | '/' = '/';
-	let designHomeSection: HTMLElement;
+	let scrollingOnNavBarEl = '/';
+	let designSectionRect: DOMRect;
 
 	function detectHomeSection() {
 		if ($page.url.pathname !== '/') return;
-		designHomeSection ??= document.querySelector('section#design')!;
-		const position = designHomeSection?.getBoundingClientRect();
+		designSectionRect = document.querySelector('section#design')?.getBoundingClientRect()!;
+
+		const topXPosition = designSectionRect.top + window.scrollY - 100;
+		const bottomXPosition = designSectionRect.bottom + window.scrollY - 100;
+
+		console.log('scroll height', document.body.scrollHeight);
+		console.log('x coordinate of the top', topXPosition);
+		console.log('x coordinate of the bottom', bottomXPosition);
 
 		scrollingOnNavBarEl =
-			window.scrollY > document.body.clientHeight + position.top - 100 &&
-			window.scrollY < document.body.clientHeight + position.bottom + 100
-				? '/#design'
-				: '/';
+			window.scrollY > topXPosition && window.scrollY < bottomXPosition ? '/#design' : '/';
 	}
+
+	onMount(detectHomeSection);
+
+	page.subscribe((p) => {
+		if (p.url.href.endsWith('/')) {
+			scrollingOnNavBarEl = '/';
+		}
+		navLinks.forEach((link, i) => {
+			if (i === 0) return;
+			if (
+				scrollingOnNavBarEl === link.href ||
+				(link?.path ? p.url.href.includes(link.path) : false)
+			) {
+				scrollingOnNavBarEl = link.href;
+			}
+		});
+	});
 </script>
 
 <svelte:window
@@ -59,11 +80,8 @@
 				aria-label="Home"
 				class:active={scrollingOnNavBarEl === '/'}
 			>
-				{#if link.label}
-					{link.label}
-				{:else}
-					<Clembs />
-				{/if}
+				<Clembs />
+				<div class="background" />
 			</a>
 		{:else}
 			<a
@@ -72,11 +90,8 @@
 				class:active={scrollingOnNavBarEl === link.href ||
 					(link?.path ? $page.url.href.includes(link.path) : false)}
 			>
-				{#if link.label}
-					{link.label}
-				{:else}
-					<Clembs />
-				{/if}
+				{link.label}
+				<div class="background" />
 			</a>
 		{/if}
 	{/each}
@@ -96,35 +111,58 @@
 		gap: 0.2rem;
 		min-width: max-content;
 		box-shadow: 0px 2px 0px 0px var(--color-on-background);
-		transition: all cubic-bezier(1, 0, 0, 1) 150ms;
+		transition: all linear 150ms;
 		z-index: 9;
 
 		.nav-item {
 			display: flex;
+			position: relative;
 			color: var(--color-on-background);
 			padding: 0rem 1rem;
 			border-radius: 99rem;
 			height: 100%;
 			text-decoration: none;
 			font-weight: 400;
+			font-variation-settings: 'wght' 400;
 			font-size: 1.1rem;
 			align-items: center;
+			justify-self: center;
 			// border: 1px solid white;
-			transition: all ease-in 100ms;
-			background-color: var(--color-background);
+			--transition-duration: 250ms;
+			--transition: var(--transition-duration) cubic-bezier(0, 0, 0.125, 1);
+			transition: font-variation-settings var(--transition), padding var(--transition);
+
+			.background {
+				position: absolute;
+				height: 100%;
+				width: 30px;
+				opacity: 0;
+				background: var(--main-gradient);
+				transition: width var(--transition);
+				border-radius: 999px;
+				z-index: -1;
+				left: 50%;
+				transform: translateX(-50%);
+			}
 
 			&.active {
 				fill: white;
 				color: white;
 				font-weight: 600;
-				background: var(--main-gradient);
+				font-variation-settings: 'wght' 600;
+				// background: var(--main-gradient);
 				padding: 0rem 1.5rem;
+
+				.background {
+					width: 100%;
+					opacity: 1;
+				}
 			}
 
-			&:hover {
-				transition: all ease-out 100ms;
+			&:hover:not(.active) {
+				transition: all ease-out 150ms;
 				outline: 1px solid var(--color-on-background);
-				background-color: var(--color-surface);
+				background: var(--color-surface);
 			}
 		}
 	}
