@@ -23,7 +23,7 @@ CRBT is easy to use, regardless of your language! More than 9 languages are (mor
 		repoUrl: 'https://github.com/CRBT-Team/CRBT',
 	},
 	themeGradient: {
-		from: '#FFCEDF',
-		to: '#A62541',
+		from: '#FECEDE',
+		to: '#FFF9FB',
 	},
 };

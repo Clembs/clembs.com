@@ -13,7 +13,7 @@ export const purplet2022: BrandingPost = {
 	},
 	relatedSoftwareId: 'purplet',
 	brief:
-		"Purplet is an ecosystem of libraries for building modern Discord apps with JavaScript, made by my friend Dave and I. Ahead of Purplet 2's launch, I decided to rebrand it to match our vision of making Discord applications.",
+		'Ecosystem of libraries for building modern Discord apps with JavaScript, made by my friend Dave and I.',
 	iconPath: 'https://c.clembs.com/branding/purplet-2022/icon-small.png',
 	bannerPath: 'https://c.clembs.com/branding/purplet-2022/purplet-2022.webp',
 	bannerThumbnailPath: '/assets/small-banners/purplet-2022.png',

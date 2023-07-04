@@ -12,7 +12,7 @@ export const kikuri: BrandingPost = {
 		to: '#5D1C3C',
 	},
 	brief:
-		'Kikuri is an anime-themed card-collecting Discord bot where users manage their cards and use them to combat other users. Its team approached me to make a more content-rich and responsive website that fit their branding.',
+		'Anime-themed card-collecting Discord bot where users collect cards to use them for combat against other users.',
 	iconPath: 'https://c.clembs.com/branding/kikuri/avatar.webp',
 	bannerPath: 'https://c.clembs.com/branding/kikuri/kikuri.webp',
 	bannerThumbnailPath: '/assets/small-banners/kikuri.png',

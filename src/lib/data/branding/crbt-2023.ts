@@ -3,7 +3,7 @@ import type { BrandingPost } from '.';
 export const crbt2023: BrandingPost = {
 	id: 'crbt-2023',
 	brand: 'CRBT',
-	title: 'CRBT - The perfect just-about-anything Discord app',
+	title: 'CRBT - The perfect just-about-anything Discord app.',
 	createdAt: new Date('2023-01-25'),
 	links: { projectUrl: 'https://crbt.app' },
 	themeGradient: {
@@ -13,7 +13,7 @@ export const crbt2023: BrandingPost = {
 	category: 'UI/UX design',
 	relatedSoftwareId: 'crbt',
 	brief:
-		'CRBT is a multipurpose Discord bot that helps you get things done quickly through user-friendly and customizable commands.',
+		'Multipurpose Discord bot that helps you get things done quickly through user-friendly and customizable commands.',
 	iconPath:
 		'https://cdn.discordapp.com/avatars/595731552709771264/90f936a706b20f0798eb271bd16308d3.png?size=2048',
 	bannerPath: 'https://c.clembs.com/branding/crbt-2023/crbt-2023.webp',
