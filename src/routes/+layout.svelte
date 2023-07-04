@@ -89,7 +89,7 @@
 	.content {
 		margin: 3rem 2rem;
 		background-color: var(--color-background);
-		max-width: 1500px;
+		max-width: 1000px;
 		border: 1px var(--color-on-background) solid;
 		border-radius: 1rem;
 		height: 100%;
@@ -99,7 +99,8 @@
 
 	@media (max-width: 1550.4px) {
 		.content {
-			width: calc(100% - 1.4rem);
+			width: calc(100% - 1rem);
+			margin: 1.5rem 1rem 5rem 1rem;
 		}
 	}
 </style>
