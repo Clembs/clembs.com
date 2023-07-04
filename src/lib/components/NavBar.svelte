@@ -1,24 +1,17 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import type { BrandingPost } from '$lib/data/branding';
-	import type { Software } from '$lib/data/software';
 	import Clembs from '$lib/icons/Clembs.svelte';
-	import { onMount } from 'svelte';
-
-	export let data: BrandingPost | Software;
 
 	const navLinks = [
 		{
 			href: '/',
 		},
 		{
-			path: '/branding',
-			href: '/#design',
+			href: '/branding',
 			label: 'Design',
 		},
 		{
-			path: '/software',
-			href: '/#software',
+			href: '/software',
 			label: 'Software',
 		},
 		{
@@ -28,53 +21,9 @@
 	];
 
 	let firstNavEl: HTMLAnchorElement;
-	let scrollingOnNavBarEl = '/';
-	let designSectionRect: DOMRect;
-	let softwareSectionRect: DOMRect;
-
-	function detectHomeSection() {
-		if ($page.url.pathname !== '/') return;
-		designSectionRect = document.querySelector('section#design')?.getBoundingClientRect()!;
-		softwareSectionRect = document.querySelector('section#software')?.getBoundingClientRect()!;
-
-		const designXPosition = {
-			top: designSectionRect.top + window.scrollY - 100,
-			bottom: designSectionRect.bottom + window.scrollY - 100,
-		};
-
-		const softwareXPosition = {
-			top: softwareSectionRect.top + window.scrollY - 100,
-			bottom: softwareSectionRect.bottom + window.scrollY - 100,
-		};
-
-		scrollingOnNavBarEl =
-			window.scrollY > designXPosition.top && window.scrollY < designXPosition.bottom
-				? '/#design'
-				: window.scrollY > softwareXPosition.top && window.scrollY < softwareXPosition.bottom
-				? '/#software'
-				: '/';
-	}
-
-	onMount(detectHomeSection);
-
-	page.subscribe((p) => {
-		if (p.url.href.endsWith('/')) {
-			scrollingOnNavBarEl = '/';
-		}
-		navLinks.forEach((link, i) => {
-			if (i === 0) return;
-			if (
-				scrollingOnNavBarEl === link.href ||
-				(link?.path ? p.url.href.includes(link.path) : false)
-			) {
-				scrollingOnNavBarEl = link.href;
-			}
-		});
-	});
 </script>
 
 <svelte:window
-	on:scroll={detectHomeSection}
 	on:keydown={(ev) => {
 		if (ev.altKey && ev.key === 'n') {
 			ev.preventDefault();
@@ -91,18 +40,13 @@
 				href={link.href}
 				class="nav-item"
 				aria-label="Home"
-				class:active={scrollingOnNavBarEl === '/'}
+				class:active={$page.url.pathname === '/'}
 			>
 				<Clembs />
 				<div class="background" />
 			</a>
 		{:else}
-			<a
-				href={link.href}
-				class="nav-item"
-				class:active={scrollingOnNavBarEl === link.href ||
-					(link?.path ? $page.url.href.includes(link.path) : false)}
-			>
+			<a href={link.href} class="nav-item" class:active={$page.url.href.includes(link.href)}>
 				{link.label}
 				<div class="background" />
 			</a>
@@ -143,7 +87,7 @@
 			// border: 1px solid white;
 			--transition-duration: 250ms;
 			--transition: var(--transition-duration) cubic-bezier(0, 0, 0.125, 1);
-			transition: font-variation-settings var(--transition), padding var(--transition);
+			transition: font-variation-settings var(--transition);
 
 			.background {
 				position: absolute;
@@ -164,7 +108,6 @@
 				font-weight: 600;
 				font-variation-settings: 'wght' 600;
 				// background: var(--main-gradient);
-				padding: 0rem 1.5rem;
 
 				.background {
 					width: 100%;
