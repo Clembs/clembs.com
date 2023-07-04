@@ -1,7 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import type { BrandingPost } from '$lib/data/branding';
+	import type { Software } from '$lib/data/software';
 	import Clembs from '$lib/icons/Clembs.svelte';
 	import { onMount } from 'svelte';
+
+	export let data: BrandingPost | Software;
 
 	const navLinks = [
 		{
@@ -26,20 +30,29 @@
 	let firstNavEl: HTMLAnchorElement;
 	let scrollingOnNavBarEl = '/';
 	let designSectionRect: DOMRect;
+	let softwareSectionRect: DOMRect;
 
 	function detectHomeSection() {
 		if ($page.url.pathname !== '/') return;
 		designSectionRect = document.querySelector('section#design')?.getBoundingClientRect()!;
+		softwareSectionRect = document.querySelector('section#software')?.getBoundingClientRect()!;
 
-		const topXPosition = designSectionRect.top + window.scrollY - 100;
-		const bottomXPosition = designSectionRect.bottom + window.scrollY - 100;
+		const designXPosition = {
+			top: designSectionRect.top + window.scrollY - 100,
+			bottom: designSectionRect.bottom + window.scrollY - 100,
+		};
 
-		console.log('scroll height', document.body.scrollHeight);
-		console.log('x coordinate of the top', topXPosition);
-		console.log('x coordinate of the bottom', bottomXPosition);
+		const softwareXPosition = {
+			top: softwareSectionRect.top + window.scrollY - 100,
+			bottom: softwareSectionRect.bottom + window.scrollY - 100,
+		};
 
 		scrollingOnNavBarEl =
-			window.scrollY > topXPosition && window.scrollY < bottomXPosition ? '/#design' : '/';
+			window.scrollY > designXPosition.top && window.scrollY < designXPosition.bottom
+				? '/#design'
+				: window.scrollY > softwareXPosition.top && window.scrollY < softwareXPosition.bottom
+				? '/#software'
+				: '/';
 	}
 
 	onMount(detectHomeSection);
