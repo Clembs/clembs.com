@@ -1,4 +1,4 @@
-<h2>About</h2>
+<h2>Overview</h2>
 
 <p>
 	I started CRBT in 2019 as my very first coding experiment, and over the years it's become more

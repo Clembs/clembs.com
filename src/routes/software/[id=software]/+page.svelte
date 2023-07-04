@@ -1,7 +1,30 @@
 <script lang="ts">
 	import '../../../styles/showcase.scss';
 	import type { Software } from '$lib/data/software';
-	import InfoCard from '../../branding/InfoCard.svelte';
+	import Button from '$lib/components/Button.svelte';
+	import { onDestroy, onMount } from 'svelte';
+
+	let observer: IntersectionObserver;
+	let viewedImage = 0;
+
+	onMount(() => {
+		if (!data.gallery) return;
+		const galleryImages = document.querySelectorAll('.gallery-image');
+
+		observer = new IntersectionObserver((entries) => {
+			entries.forEach((entry) => {
+				if (entry.isIntersecting) {
+					viewedImage = Number(entry.target.id.replace('image-', ''));
+				}
+			});
+		});
+
+		galleryImages.forEach((image) => observer.observe(image));
+	});
+
+	onDestroy(() => {
+		if (observer) observer.disconnect();
+	});
 
 	export let data: Software;
 </script>
@@ -11,46 +34,68 @@
 		<img src={data.iconPath} alt="{data.name} icon" draggable="false" />
 	</div>
 
-	<div class="text">
+	<div class="about">
 		<h1 class="title">{data.name}</h1>
 
-		<span class="category">{data.category}</span>
+		<span class="subtext">
+			{data.category} •
+			<time datetime={data.createdAt.toDateString()}>
+				{data.createdAt.toLocaleString('en-US', {
+					month: 'long',
+					day: 'numeric',
+					year: 'numeric',
+				})}
+			</time>
+		</span>
+	</div>
+
+	<div class="buttons">
+		{#if data.links?.projectUrl}
+			<Button href={data.links?.projectUrl}>Check it out</Button>
+		{/if}
+		{#if data.links?.repoUrl}
+			<Button style={data.links?.projectUrl ? 'outlined' : 'filled'} href={data.links?.repoUrl}
+				>View source</Button
+			>
+		{/if}
 	</div>
 </header>
 
 <main>
-	<InfoCard {data} />
+	<h2>Overview</h2>
 
-	<div class="content">
-		<h2>About</h2>
-
+	<p>
 		{@html data.description}
+	</p>
 
-		{#if data.gallery}
-			<h2>Gallery</h2>
+	{#if data.gallery}
+		<h2>Gallery</h2>
 
-			<div class="gallery">
-				{#each data.gallery as image, i}
-					<img id="image-{i}" class="stylized-element" src={image} alt="Screenshot {i}" />
-				{/each}
-			</div>
+		<div class="gallery-images">
+			{#each data.gallery as image, i}
+				<img
+					id="image-{i}"
+					class="gallery-image stylized-element"
+					src={image}
+					alt="Image {i + 1}/{data.gallery.length}"
+				/>
+			{/each}
+		</div>
 
-			<div class="pagination">
-				{#each data.gallery as image, i}
-					<button
-						class="go-to-button"
-						on:click={() =>
-							document
-								.querySelector(`#image-${i}`)
-								?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })}
-					>
-						<span class="dot" />
-					</button>
-				{/each}
-			</div>
-		{/if}
-
-	</div>
+		<div class="pagination">
+			{#each data.gallery as image, i}
+				<button
+					class="go-to-button"
+					on:click={() =>
+						document
+							.querySelector(`#image-${i}`)
+							?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })}
+				>
+					<span class="dot {viewedImage === i ? 'selected' : ''}" />
+				</button>
+			{/each}
+		</div>
+	{/if}
 </main>
 
 <style lang="scss">
@@ -62,7 +107,7 @@
 		flex-direction: column;
 		align-items: center;
 		gap: 0.5rem;
-    text-align: center;
+		text-align: center;
 
 		.icon img {
 			border: 1px solid black;
@@ -71,32 +116,38 @@
 			border-radius: 1.5rem;
 		}
 
-    .title {
-			font-size: 2rem;
-			margin: 0;
+		.about {
+			margin-bottom: 0.5rem;
+
+			.title {
+				font-size: 2rem;
+				margin: 0;
+			}
+		}
+		.buttons {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.5rem;
 		}
 	}
 
-	.content {
-		margin: 1.5rem;
-		margin-top: 1rem;
-	}
-
 	main {
-		display: flex;
-		flex-direction: row-reverse;
-		height: 100%;
+		margin: 2rem;
 	}
 
-	.gallery {
+	:global(p) {
+		max-width: 70ch;
+	}
+
+	.gallery-images {
 		display: flex;
 		gap: 0.5rem;
 		overflow-x: auto;
 		scroll-snap-type: x mandatory;
 		scroll-behavior: smooth;
 		-webkit-overflow-scrolling: touch;
-		border-radius: 1rem;
 		align-items: center;
+		scrollbar-width: none;
 
 		img {
 			width: 100%;
@@ -108,7 +159,7 @@
 	.pagination {
 		display: flex;
 		justify-content: center;
-		width: 100%;
+		gap: 0.1rem;
 
 		.go-to-button {
 			appearance: none;
@@ -116,25 +167,48 @@
 			background-color: transparent;
 			display: grid;
 			place-items: center;
-			padding: 0.5rem;
+			height: 1.25rem;
+			width: 1.25rem;
 			border-radius: 0.25rem;
+
+			&:hover {
+				background-color: var(--color-surface);
+				box-shadow: none;
+
+				.dot {
+					transform: scale(1.3);
+				}
+			}
+			&:active,
+			&:focus-within {
+				box-shadow: none;
+				.dot {
+					transform: scale(0.9);
+				}
+			}
+
+			.dot {
+				height: 0.5rem;
+				width: 0.5rem;
+				border-radius: 999rem;
+				background-color: var(--color-on-surface);
+				transition: transform ease-in-out 100ms;
+
+				&.selected {
+					background-color: var(--color-on-background);
+					transform: scale(1.5);
+				}
+			}
 		}
 	}
 
 	@media (max-width: 850px) {
+		header {
+			padding: 1.25rem;
+		}
 		main {
-			flex-direction: column;
-			align-items: center;
-			margin: 0 1rem 1rem 1rem;
-		}
-
-		.content {
-			margin: 0rem;
-			margin-top: 1rem;
-		}
-
-		.title {
-			font-size: 2rem;
+			margin: 1.25rem;
+			margin-top: 1.5rem;
 		}
 	}
 </style>
