@@ -1,10 +1,16 @@
 <script lang="ts">
+	export let color = '';
 	export let style: 'primary' | 'outlined' | 'danger' = 'primary';
 	export let disabled = false;
 	export let stickTo: 'left top' | 'left bottom' | 'right top' | 'right bottom' | null = null;
 </script>
 
-<span class="badge {style} {stickTo ?? ''}" class:sticky={stickTo} aria-disabled={disabled}>
+<span
+	class="badge {style} {stickTo ?? ''}"
+	class:sticky={stickTo}
+	aria-disabled={disabled}
+	style={color ? `--custom-color: ${color}` : ''}
+>
 	<slot />
 </span>
 
@@ -18,13 +24,12 @@
 
 		font-size: 0.85rem;
 		font-family: inherit;
-		font-weight: 600;
+		font-weight: 500;
 		text-align: center;
-		text-transform: uppercase;
 
 		user-select: none;
 
-		background: var(--_bg);
+		background: var(--custom-color, var(--_bg));
 		color: var(--_text_color);
 		border: 1px solid var(--color-on-background);
 		border-radius: 99px;
