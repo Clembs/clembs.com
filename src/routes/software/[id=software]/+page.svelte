@@ -1,8 +1,11 @@
 <script lang="ts">
 	import '../../../styles/showcase.scss';
-	import type { Software } from '$lib/data/software';
+	import { softwareData, type Software } from '$lib/data/software';
 	import Button from '$lib/components/Button.svelte';
 	import { onDestroy, onMount } from 'svelte';
+	import ProjectGrid from '$lib/components/Projects/ProjectGrid.svelte';
+	import { page } from '$app/stores';
+	import ShareButton from '$lib/components/ShareButton.svelte';
 
 	let observer: IntersectionObserver;
 	let viewedImage = 0;
@@ -54,10 +57,11 @@
 			<Button href={data.links?.projectUrl}>Check it out</Button>
 		{/if}
 		{#if data.links?.repoUrl}
-			<Button style={data.links?.projectUrl ? 'outlined' : 'filled'} href={data.links?.repoUrl}
-				>View source</Button
-			>
+			<Button style={data.links?.projectUrl ? 'outlined' : 'filled'} href={data.links?.repoUrl}>
+				View source
+			</Button>
 		{/if}
+		<ShareButton url={$page.url.href} />
 	</div>
 </header>
 
@@ -97,6 +101,11 @@
 		</div>
 	{/if}
 </main>
+<div class="suggested-apps">
+	<h3>Other apps by Clembs</h3>
+
+	<ProjectGrid projects={softwareData.filter(({ id }) => id !== data.id).slice(0, 3)} compact />
+</div>
 
 <style lang="scss">
 	header {
@@ -120,7 +129,7 @@
 			margin-bottom: 0.5rem;
 
 			.title {
-				font-size: 2rem;
+				font-size: clamp(2rem, 0.5rem, 1rem);
 				margin: 0;
 			}
 		}
@@ -202,6 +211,11 @@
 		}
 	}
 
+	.suggested-apps {
+		border-top: 1px solid var(--color-on-background);
+		padding: 0.5rem 2rem;
+	}
+
 	@media (max-width: 850px) {
 		header {
 			padding: 1.25rem;
@@ -209,6 +223,12 @@
 		main {
 			margin: 1.25rem;
 			margin-top: 1.5rem;
+		}
+		.suggested-apps {
+			padding: 0.25rem 1.25rem;
+		}
+		.buttons {
+			justify-content: center;
 		}
 	}
 </style>
