@@ -1,6 +1,7 @@
 <script lang="ts">
-	import Card from '$lib/components/Card.svelte';
+	import ProjectGrid from '$lib/components/Projects/ProjectGrid.svelte';
 	import { brandingData } from '$lib/data/branding';
+	import { softwareData } from '$lib/data/software';
 	import Wordmark from './Wordmark.svelte';
 	import { onDestroy, onMount } from 'svelte';
 
@@ -46,83 +47,65 @@
 </script>
 
 <main>
-		<div class="intro">
-			<button
-				class="avatar"
-				disabled={isAnimating}
-				on:click={() => {
-					if (isAnimating) return;
-					isAnimating = true;
-					setTimeout(() => (isAnimating = false), 500);
-					currentFace = currentFace === 'irl' ? 'logo' : 'irl';
-				}}
+	<div class="intro">
+		<button
+			class="avatar"
+			disabled={isAnimating}
+			on:click={() => {
+				if (isAnimating) return;
+				isAnimating = true;
+				setTimeout(() => (isAnimating = false), 500);
+				currentFace = currentFace === 'irl' ? 'logo' : 'irl';
+			}}
+		>
+			<!-- irl -->
+
+			<div
+				class="img-wrapper"
+				class:animating={isAnimating}
+				aria-hidden={currentFace !== 'irl'}
+				id="irl"
 			>
-				<!-- irl -->
-
-				<div
-					class="img-wrapper"
-					class:animating={isAnimating}
-					aria-hidden={currentFace !== 'irl'}
-					id="irl"
-				>
-					<img
-						src="/assets/clément-herrenchimsee-2023.webp"
-						alt="Portrait of Clément smiling"
-						draggable="false"
-					/>
-				</div>
-				<!-- logo -->
-
-				<div
-					class="img-wrapper"
-					class:animating={isAnimating}
-					aria-hidden={currentFace !== 'logo'}
-					id="logo"
-				>
-					<img src="/assets/logo-purplue.webp" alt="Clembs logo" draggable="false" />
-				</div>
-			</button>
-			<div class="text">
-				<h3>Nice to meet you, I'm</h3>
-				<div>
-					<Wordmark />
-				</div>
-				<p>
-					or Clément IRL, a 16 y/o high school student from the south of France. I am passionate
-					about computers and express my love through design, code and video.<br /><br />From
-					Discord bots to web apps to brand design to livestreaming, anything goes on clembs.com.
-					Welcome!
-				</p>
+				<img
+					src="/assets/clément-herrenchimsee-2023.webp"
+					alt="Portrait of Clément smiling"
+					draggable="false"
+				/>
 			</div>
+			<!-- logo -->
+
+			<div
+				class="img-wrapper"
+				class:animating={isAnimating}
+				aria-hidden={currentFace !== 'logo'}
+				id="logo"
+			>
+				<img src="/assets/logo-purplue.webp" alt="Clembs logo" draggable="false" />
+			</div>
+		</button>
+		<div class="text">
+			<h3>Nice to meet you, I'm</h3>
+			<div>
+				<Wordmark />
+			</div>
+			<p>
+				or Clément IRL, a 16 y/o high school student from the south of France. I am passionate about
+				computers and express my love through design, code and video.<br /><br />From Discord bots
+				to web apps to brand design to livestreaming, anything goes on clembs.com. Welcome!
+			</p>
 		</div>
+	</div>
 
 	<section id="design">
 		<h1>Graphic design</h1>
 
-		<div class="projects featured">
-			{#each brandingData as project, index}
-				<Card
-					class="card project"
-					aria-label="View brand project: {project.title}"
-					href="/branding/{project.id}"
-					style="--delay: {index}"
-				>
-					<div class="card-image" style="background-image: url({project.bannerThumbnailPath})">
-						<img src={project.bannerPath} alt={project.brand} loading="lazy" />
+		<ProjectGrid projects={brandingData} />
+	</section>
 
-						<span class="year" aria-label="Designed in {project.createdAt.getFullYear()}">
-							{project.createdAt.getFullYear()}
-						</span>
-					</div>
-					<div slot="card-content">
-						<h3>
-							{project.title}
-						</h3>
-						<p>{project.brief}</p>
-					</div>
-				</Card>
-			{/each}
-		</div>
+	<section id="software">
+		<h1>Software & tools</h1>
+
+		<ProjectGrid projects={softwareData} compact />
 	</section>
 
 	<span
@@ -171,10 +154,6 @@
 		}
 	}
 
-	section h1 {
-		font-size: 2rem;
-	}
-
 	main {
 		padding: 1rem;
 		display: flex;
@@ -185,10 +164,10 @@
 
 	.intro {
 		padding: 3rem 0;
-		display: flex;	
+		display: flex;
 		gap: 2.5rem;
 		margin: 0 auto;
-		font-size: 1.25rem;
+		font-size: 1.15rem;
 
 		.avatar {
 			cursor: pointer;
@@ -261,7 +240,7 @@
 			display: flex;
 			flex-direction: column;
 			gap: 1rem;
-			max-width: 550px;
+			max-width: 400px;
 
 			h3,
 			p {
@@ -270,66 +249,8 @@
 		}
 	}
 
-	.projects {
-		display: grid;
-		width: 100%;
-		gap: 0.75rem;
-
-		&.featured {
-			grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
-		}
-
-		:global(.project) {
-			opacity: 0;
-			transform: translateY(5rem);
-			transition-delay: calc(200ms * var(--delay));
-			transition: all cubic-bezier(0.64, 0.005, 0.43, 1.01) 300ms;
-		}
-		:global(.project.show) {
-			opacity: 1;
-			transform: translateY(0);
-			transition-delay: none;
-			transition: all cubic-bezier(0.64, 0.005, 0.43, 1.01) 200ms;
-		}
-
-		.card-image {
-			position: relative;
-			transition: transform ease-out 0.1s, box-shadow ease-out 0.1s;
-			border-bottom: 1px solid var(--color-on-background);
-			aspect-ratio: 16/9;
-			color: white;
-			display: grid;
-			place-items: center;
-			background-size: cover;
-			background-position: center;
-			overflow: hidden;
-
-			.year {
-				position: absolute;
-				right: 0.5rem;
-				top: 0.5rem;
-				color: var(--color-on-background);
-				background: var(--color-background);
-				border: 1px solid var(--color-on-background);
-				border-radius: 0.5rem;
-				font-size: 0.8rem;
-				padding: 0.2rem 0.4rem;
-				font-weight: 500;
-			}
-
-			img {
-				opacity: 0;
-				transition: opacity ease-in-out 300ms;
-				object-position: center;
-				object-fit: cover;
-				width: 100%;
-				height: 100%;
-
-				&:global(.loaded) {
-					opacity: 1;
-				}
-			}
-		}
+	section h1 {
+		font-size: 2rem;
 	}
 
 	@media (max-width: 939px) {

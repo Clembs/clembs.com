@@ -1,0 +1,12 @@
+.project {
+	opacity: 0;
+	transform: translateY(5rem);
+	transition-delay: calc(200ms * var(--delay));
+	transition: all cubic-bezier(0.64, 0.005, 0.43, 1.01) 300ms;
+}
+.project.show {
+	opacity: 1;
+	transform: translateY(0);
+	transition-delay: none;
+	transition: all cubic-bezier(0.64, 0.005, 0.43, 1.01) 200ms;
+}
