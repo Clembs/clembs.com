@@ -32,6 +32,11 @@ body {
 	height: 100vh;
 	background-color: var(--color-body-background);
 	color: var(--color-on-background);
+	background-image: radial-gradient(#f4f4f4 10%, transparent 11%),
+		radial-gradient(#f4f4f4 10%, transparent 11%);
+	background-size: 25px 25px;
+	background-position: 0 0, 25px 25px;
+	background-repeat: repeat;
 }
 
 h1,
