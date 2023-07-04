@@ -81,4 +81,10 @@
 			transition: none;
 		}
 	}
+	@media (max-width: 450px) {
+		.button {
+			font-size: 0.9rem;
+			padding: 0.4rem 1rem;
+		}
+	}
 </style>

@@ -428,7 +428,7 @@
 
 	.wordmark {
 		height: 5.5rem;
-		width: min-content;
+		width: 100%;
 		display: grid;
 
 		.eg-hint {
@@ -449,6 +449,7 @@
 			grid-column-start: 1;
 			grid-row-start: 1;
 			height: 5rem;
+			max-width: 100%;
 			stroke-width: 0px;
 
 			#letter_5.fall {

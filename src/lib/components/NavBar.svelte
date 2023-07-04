@@ -87,7 +87,7 @@
 			// border: 1px solid white;
 			--transition-duration: 250ms;
 			--transition: var(--transition-duration) cubic-bezier(0, 0, 0.125, 1);
-			transition: font-variation-settings var(--transition);
+			transition: font-variation-settings var(--transition), padding var(--transition);
 
 			.background {
 				position: absolute;
@@ -108,6 +108,7 @@
 				font-weight: 600;
 				font-variation-settings: 'wght' 600;
 				// background: var(--main-gradient);
+				padding: 0rem 1.5rem;
 
 				.background {
 					width: 100%;
@@ -119,6 +120,21 @@
 				transition: all ease-out 150ms;
 				outline: 1px solid var(--color-on-background);
 				background: var(--color-surface);
+			}
+		}
+	}
+
+	@media (max-width: 768px) {
+		nav {
+			height: 55px;
+
+			.nav-item {
+				font-size: 1rem;
+				padding: 0 0.5rem;
+
+				&.active {
+					padding: 0 0.825rem;
+				}
 			}
 		}
 	}

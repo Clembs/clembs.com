@@ -33,6 +33,6 @@
 		width: 100%;
 		gap: 0.75rem;
 		margin: 2rem 0;
-		grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+		grid-template-columns: repeat(auto-fill, minmax(min(450px, 100%), 1fr));
 	}
 </style>

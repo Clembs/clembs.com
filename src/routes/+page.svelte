@@ -195,7 +195,7 @@
 		display: flex;
 		gap: 2.5rem;
 		margin: 0 auto;
-		font-size: 1.15rem;
+		font-size: clamp(1rem, 2vw, 1.15rem);
 
 		.avatar {
 			cursor: pointer;
@@ -282,10 +282,11 @@
 			.top {
 				display: flex;
 				justify-content: space-between;
+				align-items: center;
 			}
 
 			h1 {
-				font-size: clamp(1.5rem, 5vw, 2rem);
+				font-size: clamp(1.25rem, 5vw, 2rem);
 				margin: 0;
 			}
 			p {
