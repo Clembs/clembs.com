@@ -1,4 +1,5 @@
 import { crbt } from './crbt';
+import { purplet } from './purplet';
 
 export interface Software {
 	id: string;
@@ -20,6 +21,6 @@ export interface Software {
 	};
 }
 
-export const softwareData: Software[] = [crbt].sort(
+export const softwareData: Software[] = [crbt, purplet].sort(
 	(a, b) => b.createdAt.getTime() - a.createdAt.getTime()
 );
