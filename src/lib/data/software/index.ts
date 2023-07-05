@@ -1,5 +1,6 @@
 import { acknowledgements } from './acknowledgements';
 import { crbt } from './crbt';
+import { messages } from './messages';
 import { purplet } from './purplet';
 
 export interface Software {
@@ -22,6 +23,6 @@ export interface Software {
 	};
 }
 
-export const softwareData: Software[] = [crbt, purplet, acknowledgements].sort(
+export const softwareData: Software[] = [crbt, purplet, acknowledgements, messages].sort(
 	(a, b) => b.createdAt.getTime() - a.createdAt.getTime()
 );
