@@ -5,7 +5,10 @@ export const purplet2022: BrandingPost = {
 	brand: 'Purplet',
 	title: 'Purplet - Next-gen tools to build modern Discord apps.',
 	createdAt: new Date('2022-10-18'),
-	links: { projectUrl: 'https://purplet.js.org' },
+	links: {
+		projectUrl: 'https://purplet.js.org',
+		instagram: 'https://www.instagram.com/p/Cj2GQwhA8tn/',
+	},
 	category: 'Brand identity',
 	themeGradient: {
 		from: '#A172F8',

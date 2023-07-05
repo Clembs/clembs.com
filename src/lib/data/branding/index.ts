@@ -2,6 +2,7 @@ import { crbt2023 } from './crbt-2023';
 import { delegue } from './delegue';
 import { purplet2022 } from './purplet-2022';
 import { kikuri } from './kikuri';
+import { clembs } from './clembs';
 
 export interface BrandingPost {
 	id: string;
@@ -15,6 +16,9 @@ export interface BrandingPost {
 	links?: {
 		projectUrl?: string;
 		assetsUrl?: string;
+		dribbble?: string;
+		behance?: string;
+		instagram?: string;
 	};
 	relatedSoftwareId?: string;
 	createdAt: Date;
@@ -24,6 +28,6 @@ export interface BrandingPost {
 	};
 }
 
-export const brandingData: BrandingPost[] = [kikuri, purplet2022, crbt2023, delegue].sort(
+export const brandingData: BrandingPost[] = [kikuri, purplet2022, crbt2023, delegue, clembs].sort(
 	(a, b) => b.createdAt.getTime() - a.createdAt.getTime()
 );

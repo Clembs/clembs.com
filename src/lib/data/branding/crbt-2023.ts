@@ -5,7 +5,10 @@ export const crbt2023: BrandingPost = {
 	brand: 'CRBT',
 	title: 'CRBT - The perfect just-about-anything Discord app.',
 	createdAt: new Date('2023-01-25'),
-	links: { projectUrl: 'https://crbt.app' },
+	links: {
+		projectUrl: 'https://crbt.app',
+		instagram: 'https://www.instagram.com/p/Cn2fuOotGhn/',
+	},
 	themeGradient: {
 		from: '#FECEDE',
 		to: '#FFF9FB',
