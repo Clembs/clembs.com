@@ -2,6 +2,9 @@
 	import '../../../styles/showcase.scss';
 	import type { BrandingPost } from '$lib/data/branding';
 	import IconPlus from '@tabler/icons-svelte/dist/svelte/icons/IconPlus.svelte';
+	import IconDribbble from '@tabler/icons-svelte/dist/svelte/icons/IconBrandDribbble.svelte';
+	import IconBehance from '@tabler/icons-svelte/dist/svelte/icons/IconBrandBehance.svelte';
+	import IconInstagram from '@tabler/icons-svelte/dist/svelte/icons/IconBrandInstagram.svelte';
 	import Button from '$lib/components/Button.svelte';
 	import { softwareData } from '$lib/data/software';
 	import { page } from '$app/stores';
@@ -64,13 +67,28 @@
 				Related software: {relatedSoftware?.name}
 			</Button>
 		{/if}
+		{#if data.links?.behance}
+			<Button style="outlined" href={data.links?.behance}>
+				<IconBehance />
+			</Button>
+		{/if}
+		{#if data.links?.dribbble}
+			<Button style="outlined" href={data.links?.dribbble}>
+				<IconDribbble />
+			</Button>
+		{/if}
+		{#if data.links?.instagram}
+			<Button style="outlined" href={data.links?.instagram}>
+				<IconInstagram />
+			</Button>
+		{/if}
 		<ShareButton url={$page.url.href} />
 	</div>
 </header>
 
-<main>
+<article>
 	<slot />
-</main>
+</article>
 
 <style lang="scss">
 	header {
@@ -98,7 +116,7 @@
 		}
 
 		.post-title {
-			font-size: 2rem;
+			font-size: clamp(1.5rem, 5vw, 2rem);
 			margin: 0;
 			text-wrap: balance;
 		}
@@ -114,28 +132,6 @@
 				height: 24px;
 				border-radius: 999rem;
 			}
-		}
-	}
-
-	main {
-		margin: 2rem;
-	}
-
-	:global(p) {
-		max-width: 70ch;
-	}
-
-	@media (max-width: 850px) {
-		header {
-			padding: 1.25rem;
-		}
-		main {
-			margin: 1.25rem;
-			margin-top: 1.5rem;
-		}
-
-		.post-title {
-			font-size: 1.75rem !important;
 		}
 	}
 </style>

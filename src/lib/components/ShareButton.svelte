@@ -29,6 +29,6 @@
 	}
 </script>
 
-<Button style="text" on:click={share}>
+<Button style="outlined" on:click={share}>
 	<IconShare />
 </Button>

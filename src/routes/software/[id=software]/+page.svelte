@@ -76,7 +76,7 @@
 	</div>
 </header>
 
-<main>
+<article>
 	<h2>Overview</h2>
 
 	<p>
@@ -111,7 +111,7 @@
 			{/each}
 		</div>
 	{/if}
-</main>
+</article>
 <div class="suggested-apps">
 	<h3>Other apps by Clembs</h3>
 
@@ -140,7 +140,7 @@
 			margin-bottom: 0.5rem;
 
 			.title {
-				font-size: clamp(2rem, 0.5rem, 1rem);
+				font-size: clamp(1.5rem, 5vw, 2rem);
 				margin: 0;
 			}
 		}
@@ -149,14 +149,6 @@
 			flex-wrap: wrap;
 			gap: 0.5rem;
 		}
-	}
-
-	main {
-		margin: 2rem;
-	}
-
-	:global(p) {
-		max-width: 70ch;
 	}
 
 	.gallery-images {
@@ -228,13 +220,6 @@
 	}
 
 	@media (max-width: 850px) {
-		header {
-			padding: 1.25rem;
-		}
-		main {
-			margin: 1.25rem;
-			margin-top: 1.5rem;
-		}
 		.suggested-apps {
 			padding: 0.25rem 1.25rem;
 		}
