@@ -46,7 +46,12 @@
 				<div class="background" />
 			</a>
 		{:else}
-			<a href={link.href} class="nav-item" class:active={$page.url.href.includes(link.href)}>
+			<a
+				href={link.href}
+				aria-disabled={link.href === '/contact'}
+				class="nav-item"
+				class:active={$page.url.href.includes(link.href)}
+			>
 				{link.label}
 				<div class="background" />
 			</a>
@@ -88,6 +93,14 @@
 			--transition-duration: 250ms;
 			--transition: var(--transition-duration) cubic-bezier(0, 0, 0.125, 1);
 			transition: font-variation-settings var(--transition), padding var(--transition);
+			user-select: none;
+
+			&[aria-disabled='true'] {
+				pointer-events: none;
+				text-decoration: line-through;
+				text-decoration-color: red;
+				color: var(--color-on-surface);
+			}
 
 			.background {
 				position: absolute;
