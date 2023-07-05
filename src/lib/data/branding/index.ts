@@ -28,6 +28,6 @@ export interface BrandingPost {
 	};
 }
 
-export const brandingData: BrandingPost[] = [kikuri, purplet2022, crbt2023, delegue, clembs].sort(
+export const brandingData: BrandingPost[] = [kikuri, crbt2023, clembs].sort(
 	(a, b) => b.createdAt.getTime() - a.createdAt.getTime()
 );
