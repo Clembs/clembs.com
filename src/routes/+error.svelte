@@ -58,26 +58,28 @@
 				</div>
 			</div>
 			<div class="owowhatsthis" aria-hidden={!showEasterEgg}>
-				<div class="iframe-wrapper">
-					{#if iframeLoaded || showEasterEgg}
-						<iframe
-							class:hide={!showStatic}
-							bind:this={iframe}
-							class="dino-game"
-							title="Dino game"
-							src="https://wayou.github.io/t-rex-runner/"
-							scrolling="no"
-							loading="lazy"
-						/>
-					{/if}
-				</div>
-				<Button
-					style="outlined"
-					on:click={() => {
-						showStatic = true;
-						setTimeout(() => (showEasterEgg = false), 200);
-					}}>go back</Button
-				>
+				{#if showEasterEgg}
+					<div class="iframe-wrapper">
+						{#if iframeLoaded || showEasterEgg}
+							<iframe
+								class:hide={!showStatic}
+								bind:this={iframe}
+								class="dino-game"
+								title="Dino game"
+								src="https://wayou.github.io/t-rex-runner/"
+								scrolling="no"
+								loading="lazy"
+							/>
+						{/if}
+					</div>
+					<Button
+						style="outlined"
+						on:click={() => {
+							showStatic = true;
+							setTimeout(() => (showEasterEgg = false), 200);
+						}}>go back</Button
+					>
+				{/if}
 			</div>
 		{:else}
 			<div class="woopsies">
@@ -117,7 +119,9 @@
 		flex-direction: column;
 		align-items: center;
 		text-align: center;
+		justify-content: center;
 		width: 100%;
+		min-height: 600px;
 		img {
 			max-width: 300px;
 		}
