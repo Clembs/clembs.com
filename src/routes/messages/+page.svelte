@@ -116,7 +116,7 @@
 				</div>
 			</div>
 			<div>
-				<Button>
+				<Button type="submit">
 					{#if !identity}
 						<IconMasksTheater />
 						Envoyer anonymement

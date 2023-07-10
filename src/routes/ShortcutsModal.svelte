@@ -60,7 +60,6 @@
 	on:keydown={(e) => {
 		if ((e.metaKey || e.ctrlKey) && e.keyCode === 58) {
 			if (showModal) return;
-			console.log('hi');
 			showModal = true;
 		}
 		if (e.key === 'Escape') showModal = false;

@@ -10,8 +10,6 @@
 	let sectionElements: NodeListOf<Element>;
 	let activeTab = '0';
 
-	const link = (id: string) => document.querySelector(`a[href="#${id}"]`)!;
-
 	function inView(element: any) {
 		var top = element.offsetTop - 25;
 		var height = element.offsetHeight;
@@ -28,11 +26,8 @@
 		let next = false;
 
 		sectionElements.forEach((section) => {
-			const current = link(section.id);
-
 			if (inView(section) && !next) {
 				activeTab = section.id.replace('section-', '');
-				console.log(activeTab);
 				next = true;
 			}
 			// else {

@@ -5,13 +5,12 @@ import type { Message } from '.';
 
 export const actions = {
 	default: async ({ request, fetch }) => {
-		console.log('hi');
 		const data = await request.formData();
 		const message: Message = {
 			color: data.get('color')?.toString() || 'black',
 			content: data.get('question')?.toString()!,
 			date: new Date().toISOString(),
-			identity: data.get('identity')?.toString()
+			identity: data.get('identity')?.toString(),
 		};
 		const selectedRawMessage = data.get('selectedMessage')?.toString();
 		const selectedParsedMessage: Message | null = selectedRawMessage
@@ -27,43 +26,43 @@ export const actions = {
 				? encodeURI(
 						JSON.stringify({
 							content: selectedParsedMessage!.content,
-							color: selectedParsedMessage!.color
+							color: selectedParsedMessage!.color,
 						})
 				  )
-				: ''
+				: '',
 		});
 
 		await fetch(DISCORD_WEBHOOK_URL, {
 			method: 'POST',
 			headers: {
-				'Content-Type': 'application/json'
+				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify({
 				embeds: [
 					{
 						description: [
 							['localhost', `${baseUrlDev}/render-question?${searchParams}`],
-							['clembs.com', `${baseUrlProd}/render-question?${searchParams}`]
+							['clembs.com', `${baseUrlProd}/render-question?${searchParams}`],
 						]
 							.map(([label, url]) => `**[${label}](${url})**`)
 							.join(' • '),
 						fields: [
 							{
 								name: 'Identité',
-								value: message.identity || 'Unknown'
+								value: message.identity || 'Unknown',
 							},
 							{
 								name: 'Message',
-								value: message.content
-							}
+								value: message.content,
+							},
 						],
 						color: parseInt(colors[message.color].replace('#', ''), 16),
-						timestamp: new Date().toISOString()
-					}
-				]
-			})
+						timestamp: new Date().toISOString(),
+					},
+				],
+			}),
 		});
 
 		return { success: true };
-	}
+	},
 } satisfies Actions;
