@@ -7,6 +7,10 @@
 			href: '/',
 		},
 		{
+			href: '/smp',
+			label: 'Clembs SMP',
+		},
+		{
 			href: '/branding',
 			label: 'Design',
 		},
@@ -14,10 +18,10 @@
 			href: '/software',
 			label: 'Software',
 		},
-		{
-			href: '/contact',
-			label: 'Contact',
-		},
+		// {
+		// 	href: '/contact',
+		// 	label: 'Contact',
+		// },
 	];
 
 	let firstNavEl: HTMLAnchorElement;
