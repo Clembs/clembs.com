@@ -28,8 +28,10 @@
 		display: flex;
 		border-radius: 1.25rem;
 		border: 1px solid var(--color-on-background);
-		margin: 1rem 0;
+		margin: 0;
 		padding: 0;
+		scrollbar-width: none;
+		overflow-y: scroll;
 
 		:global(.chip) {
 			width: 100%;
@@ -37,12 +39,7 @@
 
 		&.vertical {
 			flex-direction: column;
-		}
-	}
-
-	@media (max-width: 768px) {
-		ul {
-			flex-direction: column;
+			overflow-x: scroll;
 		}
 	}
 </style>
