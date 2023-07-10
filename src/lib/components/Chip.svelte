@@ -10,7 +10,7 @@
 </script>
 
 {#if href}
-	<a {href} {...props} {...$$restProps} role="radio" aria-checked={checked}>
+	<a on:click {href} {...props} {...$$restProps} role="radio" aria-checked={checked}>
 		<slot />
 	</a>
 {:else}
