@@ -4,15 +4,10 @@
 	import { onMount } from 'svelte';
 	import IconKeyboard from '@tabler/icons-svelte/dist/svelte/icons/IconKeyboard.svelte';
 	import IconLayoutBottombar from '@tabler/icons-svelte/dist/svelte/icons/IconLayoutBottombar.svelte';
-	import IconHome from '@tabler/icons-svelte/dist/svelte/icons/IconHome.svelte';
-	import IconCode from '@tabler/icons-svelte/dist/svelte/icons/IconCode.svelte';
-	import IconBrush from '@tabler/icons-svelte/dist/svelte/icons/IconBrush.svelte';
-	import IconId from '@tabler/icons-svelte/dist/svelte/icons/IconId.svelte';
 	import Icon123 from '@tabler/icons-svelte/dist/svelte/icons/Icon123.svelte';
 	import { page } from '$app/stores';
 
-	let isOpen = false;
-	let dialog: any;
+	let showModal = false;
 
 	interface KbdShortcut {
 		keys: string[];
@@ -37,26 +32,6 @@
 			keys: [alt, 'N'],
 			label: 'Focus navigation',
 			icon: IconLayoutBottombar,
-		},
-		{
-			keys: [ctrl, '1'],
-			label: 'Home',
-			icon: IconHome,
-		},
-		{
-			keys: [ctrl, '2'],
-			label: 'Software',
-			icon: IconCode,
-		},
-		{
-			keys: [ctrl, '3'],
-			label: 'Design',
-			icon: IconBrush,
-		},
-		{
-			keys: [ctrl, '4'],
-			label: 'Contact',
-			icon: IconId,
 		},
 		{
 			keys: ['F3'],
@@ -84,15 +59,15 @@
 <svelte:window
 	on:keydown={(e) => {
 		if ((e.metaKey || e.ctrlKey) && e.keyCode === 58) {
-			if (isOpen) return;
-			isOpen = true;
-			dialog.showModal();
+			if (showModal) return;
+			console.log('hi');
+			showModal = true;
 		}
-		if (e.key === 'Escape') isOpen = false;
+		if (e.key === 'Escape') showModal = false;
 	}}
 />
 
-<Modal bind:this={dialog}>
+<Modal bind:showModal>
 	<div class="shortcut-modal">
 		<header>
 			<h1>Keyboard combos</h1>
