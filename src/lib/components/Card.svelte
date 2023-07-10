@@ -3,19 +3,19 @@
 </script>
 
 {#if href}
-	<a {href} class="card" {...$$restProps}>
+	<a {href} class="card" on:click on:mouseover on:focus {...$$restProps}>
 		<slot />
 		<div class="card-content">
 			<slot name="card-content" />
 		</div>
 	</a>
 {:else}
-	<div class="card" {...$$restProps}>
+	<button on:click on:mouseover on:focus class="card" {...$$restProps}>
 		<slot />
 		<div class="card-content">
 			<slot name="card-content" />
 		</div>
-	</div>
+	</button>
 {/if}
 
 <style lang="scss">
@@ -25,6 +25,9 @@
 		overflow: hidden;
 		transition: all cubic-bezier(0.64, 0.005, 0.43, 1.01) 200ms;
 		text-decoration: none;
+		background-color: var(--color-background);
+		display: block;
+		appearance: none;
 
 		.card-content {
 			margin: 1rem;
