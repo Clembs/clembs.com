@@ -1,7 +1,5 @@
 <script lang="ts">
-	import toast from 'svelte-french-toast';
-	import IconCircleCheck from '@tabler/icons-svelte/dist/svelte/icons/IconCircleCheck.svelte';
-	import IconCircleX from '@tabler/icons-svelte/dist/svelte/icons/IconCircleX.svelte';
+	import toast, { CheckmarkIcon, ErrorIcon } from 'svelte-french-toast';
 	import IconShare from '@tabler/icons-svelte/dist/svelte/icons/IconShare.svelte';
 	import Button from './Button.svelte';
 
@@ -17,12 +15,12 @@
 				.writeText(url)
 				.then((e) =>
 					toast('Link copied to clipboard!', {
-						icon: IconCircleCheck,
+						icon: CheckmarkIcon,
 					})
 				)
 				.catch((e) =>
 					toast('Failed to copy to clipboard.', {
-						icon: IconCircleX,
+						icon: ErrorIcon,
 					})
 				);
 		}
