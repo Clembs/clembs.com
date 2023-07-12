@@ -1,19 +1,22 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition';
 	import Card from '$lib/components/Card.svelte';
+	import Button from '$lib/components/Button.svelte';
+	import IconInfoCircle from '@tabler/icons-svelte/dist/svelte/icons/IconInfoCircle.svelte';
 
 	const dateFormatterOptions: Intl.DateTimeFormatOptions = {
 		dateStyle: 'long',
 		timeStyle: 'short',
 	};
 
-	const initialEndDate = new Date(Date.UTC(2023, 7, 11, 16, 0));
+	const initialEndDate = new Date(Date.UTC(2023, 7, 11, 15, 0));
 	let smpEndDate = initialEndDate;
 
 	interface TimeExtension {
 		label: string;
 		time: number;
 		href: string;
+		price: number;
 	}
 
 	const timeExtensions: TimeExtension[] = [
@@ -21,21 +24,24 @@
 			label: '3 days',
 			time: 3 * 1000 * 60 * 60 * 24,
 			href: 'https://ko-fi.com/s/80346780d5',
+			price: 3,
 		},
 		{
 			label: '30 days',
 			time: 1000 * 60 * 60 * 24 * 30,
 			href: 'https://ko-fi.com/s/08b2d868d1',
+			price: 6,
 		},
 		{
 			label: '3 months',
 			time: 3 * 1000 * 60 * 60 * 24 * 30,
 			href: 'https://ko-fi.com/s/113d368e72',
+			price: 15,
 		},
 	];
 	let previousTimeExtensionIntent: TimeExtension | null;
 	let timeExtensionIntent: TimeExtension | null;
-	let interval: NodeJS.Timer;
+	let interval: ReturnType<typeof setInterval>;
 
 	function setTimeExtensionIntent(newIntent: TimeExtension | null) {
 		// if the new intent is null, reset the time
@@ -119,9 +125,23 @@
 				on:mouseover={() => setTimeExtensionIntent(timeExtension)}
 				href={timeExtension.href}
 			>
-				<div slot="card-content">Extend by {timeExtension.label}</div>
+				<div class="content" slot="card-content">
+					Extend by {timeExtension.label}
+					<div class="price">{timeExtension.price}€</div>
+				</div>
 			</Card>
 		{/each}
+	</div>
+
+	<div class="discount-card">
+		<span class="text">
+			<IconInfoCircle /> Get 10% off any server lifetime extension!
+		</span>
+
+		<div class="button-wrapper">
+			<Button href="https://ko-fi.com/clembs/link/SMP10">Apply discount</Button>
+			Available until Aug 10.
+		</div>
 	</div>
 </section>
 
@@ -129,8 +149,21 @@
 	.shop {
 		display: grid;
 		width: 100%;
-		grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(min(230px, 100%), 1fr));
 		gap: 0.5rem;
+
+		.content {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-between;
+			align-items: center;
+			gap: 0.5rem;
+
+			.price {
+				font-size: 1.5rem;
+				font-weight: 500;
+			}
+		}
 	}
 	p {
 		max-width: 70ch;
@@ -162,6 +195,34 @@
 			border-radius: 99rem;
 			box-shadow: 0 1px 0 0 var(--color-on-background);
 			font-size: 0.9rem;
+		}
+	}
+
+	.discount-card {
+		margin-top: 0.5rem;
+		display: flex;
+		position: relative;
+		align-items: center;
+		text-align: center;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		background-color: var(--color-surface);
+		padding: 1.3rem 1rem;
+		border-radius: 1rem;
+		gap: 0.5rem;
+
+		.text {
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+		}
+
+		.button-wrapper {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			text-align: center;
+			font-size: 0.8rem;
 		}
 	}
 </style>

@@ -3,14 +3,16 @@
 	export let style: 'filled' | 'outlined' | 'text' = 'filled';
 	export let disabled = false;
 	export let type: 'submit' | 'button' = 'button';
+	let className = '';
+	export { className as class };
 </script>
 
 {#if href && !disabled}
-	<a class="button {style}" {href} role="button">
+	<a class="button {style} {className}" {href} role="button" {...$$restProps}>
 		<slot />
 	</a>
 {:else}
-	<button on:click on:submit {type} class="button {style}" {disabled}>
+	<button on:click on:submit {type} class="button {style} {className}" {disabled} {...$$restProps}>
 		<slot />
 	</button>
 {/if}
