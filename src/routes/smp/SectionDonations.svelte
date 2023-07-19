@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { fly } from 'svelte/transition';
 	import Button from '$lib/components/Button.svelte';
 	import IconExclamationCircle from '@tabler/icons-svelte/dist/svelte/icons/IconExclamationCircle.svelte';
 
@@ -38,25 +37,13 @@
 			price: 15,
 		},
 	];
-	let previousTimeExtensionIntent: TimeExtension | null;
-	let timeExtensionIntent: TimeExtension | null;
+	let timeExtensionIntent: TimeExtension;
 	let interval: ReturnType<typeof setInterval>;
 
-	function setTimeExtensionIntent(newIntent: TimeExtension | null) {
-		// if the new intent is null, reset the time
-		if (!newIntent) {
-			smpEndDate = initialEndDate;
-			timeExtensionIntent = null;
-			clearInterval(interval);
-			return;
-		}
-
-		// give a previous intent to remove animation duping when hovering multiple times
-		previousTimeExtensionIntent = timeExtensionIntent;
+	function setTimeExtensionIntent(newIntent: TimeExtension) {
+		smpEndDate = initialEndDate;
+		clearInterval(interval);
 		timeExtensionIntent = newIntent;
-
-		// if the intent is the same, don't bother animating
-		if (previousTimeExtensionIntent === timeExtensionIntent) return;
 
 		// when the server will run out + the intended time purchase
 		const maxNumber = +smpEndDate + newIntent.time;
@@ -190,6 +177,7 @@
 			transition: transform 250ms cubic-bezier(0.075, 0.82, 0.165, 1);
 			font-size: 1.1rem;
 			font-weight: 500;
+			cursor: pointer;
 		}
 	}
 	p {
