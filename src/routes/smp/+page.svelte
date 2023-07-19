@@ -7,7 +7,7 @@
 	import SectionRules from './SectionRules.svelte';
 	import MetaTags from '$lib/components/MetaTags.svelte';
 
-	const sections = ['Donations', 'Guide', 'Rules'] as const;
+	const sections = ['Support', 'Guide', 'Rules'] as const;
 	let sectionElements: NodeListOf<Element>;
 	let activeTab = '0';
 
@@ -48,7 +48,7 @@
 	pageName="About the Clembs SMP"
 	image="/assets/smp/Clembs SMP.png"
 	description="The Clembs SMP (Survival Multi Player) is a Minecraft server where players from around the
-world come together to build, fight, survive and create! Register now!"
+world come together to build, fight, survive and create!"
 />
 
 <main>

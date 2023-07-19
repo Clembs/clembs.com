@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition';
-	import Card from '$lib/components/Card.svelte';
 	import Button from '$lib/components/Button.svelte';
-	import IconInfoCircle from '@tabler/icons-svelte/dist/svelte/icons/IconInfoCircle.svelte';
+	import IconExclamationCircle from '@tabler/icons-svelte/dist/svelte/icons/IconExclamationCircle.svelte';
 
 	const dateFormatterOptions: Intl.DateTimeFormatOptions = {
 		dateStyle: 'long',
@@ -86,7 +85,36 @@
 </script>
 
 <section id="section-0">
-	<h2>End of server & donations</h2>
+	<h2>Support us to extend the server's lifetime!</h2>
+
+	<p>
+		Hosting a server isn't free, and while the first month is paid for by myself,
+		I need your support to keep it alive for longer!
+	</p>
+	<p>
+		When supporting, you will:
+	</p>
+	<ul>
+		<li>Get a fancy &lbrack;Supporter&rbrack; prefix on their Minecraft username</li>
+		<li>Get an extra Supporter role on the Discord server</li>
+		<li>Extend the server's lifetime by the amount of time you paid for!</li>
+	</ul>
+
+	<div
+		class="time-extensions"
+	>
+		{#each timeExtensions as timeExtension}
+			<button
+				class="time-extension"
+				class:active={timeExtension === timeExtensionIntent}
+				on:click={() => setTimeExtensionIntent(timeExtension)}
+			>
+				<div class="content">
+					+{timeExtension.label}
+				</div>
+			</button>
+		{/each}
+	</div>
 
 	<div class="server-life-card">
 		{#if timeExtensionIntent}
@@ -96,73 +124,72 @@
 		{/if}
 		the server will continue to run until
 		<time datetime={smpEndDate.toUTCString()}>
-			{smpEndDate.toLocaleString(undefined, dateFormatterOptions)}.
+			{smpEndDate.toLocaleString(undefined, dateFormatterOptions)}
 		</time>
 		{#if timeExtensionIntent}
-			<span transition:fly={{ y: 10, duration: 150 }} class="time-extension-intent">
-				+{timeExtensionIntent.label}
-			</span>
+			<div class="purchase-button">
+				<Button href={timeExtensionIntent.href}>Extend the server by {timeExtensionIntent.label} for {timeExtensionIntent.price}€</Button>
+			</div>
 		{/if}
 	</div>
 
-	<h3>Donate to extend the server's length</h3>
-
-	<p>
-		Hosting a server isn't free, and while I'm paying for the first month, I need your support to
-		keep it alive for longer!
-		<br /> Supporters get a "&lbrack;Supporter&rbrack;" prefix on their Minecraft username, as well as
-		the Supporter role on Discord &lt;3
-	</p>
-
-	<div
-		class="shop"
-		on:blur={() => setTimeExtensionIntent(null)}
-		on:mouseout={() => setTimeExtensionIntent(null)}
-	>
-		{#each timeExtensions as timeExtension, i}
-			<Card
-				on:focus={() => setTimeExtensionIntent(timeExtension)}
-				on:mouseover={() => setTimeExtensionIntent(timeExtension)}
-				href={timeExtension.href}
-			>
-				<div class="content" slot="card-content">
-					Extend by {timeExtension.label}
-					<div class="price">{timeExtension.price}€</div>
-				</div>
-			</Card>
-		{/each}
-	</div>
-
 	<div class="discount-card">
-		<span class="text">
-			<IconInfoCircle /> Get 10% off any server lifetime extension!
-		</span>
-
-		<div class="button-wrapper">
-			<Button href="https://ko-fi.com/clembs/link/SMP10">Apply discount</Button>
-			Available until Aug 10.
+		<div class="left-side">
+			<IconExclamationCircle size={32} />
+			<div class="text">
+				<span class="title">
+					Get 10% off any server lifetime extension!
+				</span>
+				<span class="subtext">
+					Available until August 10. Use code SMP10 at checkout.
+				</span>
+			</div>
 		</div>
+
+		<Button href="https://ko-fi.com/clembs/link/SMP10">View shop</Button>
 	</div>
 </section>
 
 <style lang="scss">
-	.shop {
-		display: grid;
-		width: 100%;
-		grid-template-columns: repeat(auto-fit, minmax(min(230px, 100%), 1fr));
-		gap: 0.5rem;
+	.time-extensions {
+		display: flex;
+		margin-top: 1.5rem;
 
-		.content {
-			display: flex;
-			flex-wrap: wrap;
-			justify-content: space-between;
-			align-items: center;
-			gap: 0.5rem;
-
-			.price {
-				font-size: 1.5rem;
-				font-weight: 500;
+		.time-extension {
+			&:is(:first-child) {
+				border-top-left-radius: 1rem;
 			}
+			&:is(:last-child) {
+				border-top-right-radius: 1rem;
+			}
+			&:focus-within {
+				box-shadow: none;
+			}
+			&.active {
+				transform: translateY(-0.5rem);
+				background-color: hsl(221, 100%, 85%);
+				.content {
+					border: none;
+				}
+			}
+			.content {
+				padding: 0.5rem 1rem;
+				border-bottom: 1px solid var(--color-on-background);
+			}
+
+			padding: 0;
+			margin: 0;
+			background-color: var(--color-background);
+			font-family: inherit;
+			font-size: inherit;
+			border: 1px solid var(--color-on-background);
+			margin-bottom: -1.1rem;
+			padding-bottom: 1rem;
+			text-align: center;
+			width: 100%;
+			transition: transform 250ms cubic-bezier(0.075, 0.82, 0.165, 1);
+			font-size: 1.1rem;
+			font-weight: 500;
 		}
 	}
 	p {
@@ -175,26 +202,21 @@
 		flex-direction: column;
 		align-items: center;
 		text-align: center;
-		background-color: hsl(108, 75%, 61%);
+		border: 1px solid var(--color-on-background);
+		border-top: none;
+		background-color: hsl(221, 100%, 85%);
 		padding: 1.3rem 1rem;
-		border-radius: 1rem;
-		gap: 0.5rem;
+		border-radius: 0 0 1rem 1rem;
+		gap: 0.25rem;
 
 		time {
-			font-size: 1.5rem;
+			font-size: 1.75rem;
 			max-width: 30ch;
 			font-weight: 500;
 		}
 
-		.time-extension-intent {
-			position: absolute;
-			bottom: -20px;
-			border: 1px solid var(--color-on-background);
-			background-color: var(--color-background);
-			padding: 0.5rem;
-			border-radius: 99rem;
-			box-shadow: 0 1px 0 0 var(--color-on-background);
-			font-size: 0.9rem;
+		.purchase-button {
+			margin-top: 0.5rem;
 		}
 	}
 
@@ -203,26 +225,32 @@
 		display: flex;
 		position: relative;
 		align-items: center;
-		text-align: center;
 		justify-content: space-between;
 		flex-wrap: wrap;
-		background-color: var(--color-surface);
-		padding: 1.3rem 1rem;
+		background-color: hsl(46, 100%, 50%);
+		border: 1px solid var(--color-on-background);
+		padding: 0.75rem 1.25rem;
 		border-radius: 1rem;
 		gap: 0.5rem;
 
-		.text {
+		.left-side {
 			display: flex;
 			align-items: center;
 			gap: 0.5rem;
-		}
 
-		.button-wrapper {
+			.text {
 			display: flex;
 			flex-direction: column;
-			align-items: center;
-			text-align: center;
 			font-size: 0.8rem;
+
+			.title {
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+				font-size: 1.1rem;
+				font-weight: 500;
+			}
+		}
 		}
 	}
 </style>

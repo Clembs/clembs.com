@@ -33,7 +33,10 @@
 			To join or create a new team, submit a request via Discord DMs that includes:
 			<ul>
 				<li>
-					The new team's name (one of the 11 Habile's Lounge role colors; see: Customize Community).
+					The team's name.
+				</li>
+				<li>
+					If creating a team, its color, which must be one of the <a href="https://minecraft.fandom.com/wiki/Formatting_codes#Color_codes" target="_blank" rel="noopener noreferrer">Minecraft color names</a>.
 				</li>
 				<li>
 					When creating the team, your teammates (they also must DM me to approve their membership).
