@@ -6,8 +6,9 @@
 	import SectionGuide from './SectionGuide.svelte';
 	import SectionRules from './SectionRules.svelte';
 	import MetaTags from '$lib/components/MetaTags.svelte';
+	import SectionConfiguration from './SectionConfiguration.svelte';
 
-	const sections = ['Support', 'Guide', 'Rules'] as const;
+	const sections = ['Support', 'Guide', 'Rules', 'Configuration'] as const;
 	let sectionElements: NodeListOf<Element>;
 	let activeTab = '0';
 
@@ -79,6 +80,8 @@ world come together to build, fight, survive and create!"
 	<SectionGuide />
 
 	<SectionRules />
+
+	<SectionConfiguration />
 </main>
 
 <style lang="scss">
