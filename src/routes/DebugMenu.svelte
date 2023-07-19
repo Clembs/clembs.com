@@ -2,6 +2,8 @@
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 
+	const versionString = '3.1.3';
+
 	let display: { h: number; w: number } = { h: 0, w: 0 };
 	let scroll: { x: number; y: number } = { x: 0, y: 0 };
 	let fps: number;
@@ -44,7 +46,7 @@
 <div class="debug-menu-wrapper">
 	<div class="tiles">
 		<div class="tile-group">
-			<span class="tile"> Clembs.com 3.0.0 (3.0.0/vanilla) </span>
+			<span class="tile"> Clembs.com {versionString} ({versionString}/vanilla) </span>
 			<span class="tile"> {fps} fps T: inf fabulous</span>
 			<span class="tile"> Multiplayer server @ 20 ms ticks </span>
 			<span class="tile"> clembs:website FC: 0 </span>
@@ -61,7 +63,7 @@
 			<span class="tile"> Local Difficulty: 0.0 // 0.0 (Day {new Date().getDate()}) </span>
 		</div>
 		<div class="tile-group">
-			<span class="tile"> For help : press Ctrl/⌘ + / </span>
+			<span class="tile"> For help : press Ctrl|⌘ + / </span>
 		</div>
 	</div>
 	<div class="tiles right">
