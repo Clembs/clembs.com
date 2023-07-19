@@ -20,20 +20,26 @@
 
 <style lang="scss">
 	.card {
+		display: block;
+		
+		appearance: none;
+		overflow: hidden;
+		cursor: pointer;
+		
+		font-family: inherit;
+		font-size: inherit;
+		text-decoration: none;
+
+		background-color: var(--color-background);
 		border: 1px solid var(--color-on-background);
 		border-radius: 1rem;
-		overflow: hidden;
+
 		transition: all cubic-bezier(0.64, 0.005, 0.43, 1.01) 200ms;
-		text-decoration: none;
-		background-color: var(--color-background);
-		display: block;
-		appearance: none;
 
 		.card-content {
 			margin: 1rem;
 		}
 
-		&:is(a) {
 			&:hover {
 				transform: translateY(-4px);
 				box-shadow: 0 4px 0 0 var(--color-on-background);
@@ -43,6 +49,6 @@
 				transform: translateY(0px);
 				box-shadow: 0 0 0 0 var(--color-on-background);
 			}
-		}
+	
 	}
 </style>
