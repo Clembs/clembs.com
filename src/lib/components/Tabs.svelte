@@ -30,6 +30,7 @@
 		margin: 0;
 		padding: 0;
 		scrollbar-width: none;
+		overflow-x: hidden;
 		overflow-y: scroll;
 		gap: 0.25rem;
 
@@ -40,6 +41,7 @@
 		&.vertical {
 			flex-direction: column;
 			overflow-x: scroll;
+			overflow-y: hidden;
 		}
 	}
 </style>
