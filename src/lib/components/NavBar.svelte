@@ -126,6 +126,7 @@
 				font-variation-settings: 'wght' 600;
 				// background: var(--main-gradient);
 				padding: 0rem 1.5rem;
+				border: 1px solid var(--color-on-background);
 
 				.background {
 					width: 100%;
