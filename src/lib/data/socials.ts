@@ -3,7 +3,7 @@ export enum SocialName {
 	Instagram = 'instagram',
 	GitHub = 'github',
 	Twitch = 'twitch',
-	Twitter = 'twitter',
+	Mastodon = 'mastodon',
 	YouTube = 'youtube',
 }
 
@@ -40,9 +40,9 @@ export const socials = [
 		background: '#FD0074',
 	},
 	{
-		id: SocialName.Twitter,
-		name: 'Twitter',
-		url: 'https://twitter.com/clembsv',
-		background: '#1D9BF0',
+		id: SocialName.Mastodon,
+		name: 'Mastodon',
+		url: 'https://mastodon.social/@clembs',
+		background: '#6364FF',
 	},
 ] satisfies Social[];
