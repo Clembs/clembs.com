@@ -10,6 +10,8 @@
 	aria-label="Clembs on {social.name}"
 	style="--bg: {social.background}"
 	title={social.name}
+	rel="me"
+	target="_blank"
 >
 	<img src="/assets/socials/{social.id}.svg" alt={social.name} />
 </a>
