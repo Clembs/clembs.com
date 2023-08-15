@@ -1,14 +1,12 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import Clembs from '$lib/icons/Clembs.svelte';
+	import { onMount } from 'svelte';
 
 	const navLinks = [
 		{
 			href: '/',
-		},
-		{
-			href: '/smp',
-			label: 'Clembs SMP',
+			label: 'Home',
 		},
 		{
 			href: '/branding',
@@ -18,13 +16,15 @@
 			href: '/software',
 			label: 'Software',
 		},
-		// {
-		// 	href: '/contact',
-		// 	label: 'Contact',
-		// },
+		{
+			href: '/contact',
+			label: 'Contact',
+		},
 	];
 
 	let firstNavEl: HTMLAnchorElement;
+
+	onMount(() => (firstNavEl = document.querySelector('a[href="/"]')!));
 </script>
 
 <svelte:window
@@ -37,66 +37,62 @@
 />
 
 <nav>
-	{#each navLinks as link, i}
-		{#if i === 0}
-			<a
-				bind:this={firstNavEl}
-				href={link.href}
-				class="nav-item"
-				aria-label="Home"
-				class:active={$page.url.pathname === '/'}
-			>
-				<Clembs />
-				<div class="background" />
-			</a>
-		{:else}
+	<div class="links">
+		{#each navLinks as link, i}
 			<a
 				href={link.href}
 				aria-disabled={link.href === '/contact'}
 				class="nav-item"
-				class:active={$page.url.href.includes(link.href)}
+				class:selected={link.href === '/'
+					? $page.url.pathname === '/'
+					: $page.url.href.includes(link.href)}
+				aria-label={link.label}
 			>
 				{link.label}
 				<div class="background" />
 			</a>
-		{/if}
-	{/each}
+		{/each}
+	</div>
 </nav>
 
 <style lang="scss">
 	nav {
+		display: flex;
+		align-items: center;
 		position: fixed;
 		height: 58px;
-		bottom: 1rem;
+		bottom: 0.75rem;
+		max-width: 100%;
 		border: 1px solid var(--color-on-background);
 		background-color: var(--color-background);
 		border-radius: 99rem;
-		padding: 0.2rem;
-		display: flex;
-		align-items: center;
-		gap: 0.2rem;
-		min-width: max-content;
+		padding: 0.25rem;
+		gap: 0.25rem;
 		box-shadow: 0px 2px 0px 0px var(--color-on-background);
 		transition: all linear 150ms;
 		z-index: 9;
 
+		.links {
+			display: flex;
+			gap: 0.25rem;
+			height: 100%;
+		}
+
 		.nav-item {
+			height: 100%;
 			display: flex;
 			position: relative;
 			color: var(--color-on-background);
-			padding: 0rem 1rem;
+			padding: 0rem 0.75rem;
 			border-radius: 99rem;
-			height: 100%;
 			text-decoration: none;
 			font-weight: 400;
 			font-variation-settings: 'wght' 400;
-			font-size: 1.1rem;
 			align-items: center;
-			justify-self: center;
-			// border: 1px solid white;
+
 			--transition-duration: 250ms;
 			--transition: var(--transition-duration) cubic-bezier(0, 0, 0.125, 1);
-			transition: font-variation-settings var(--transition), padding var(--transition);
+			transition: all var(--transition);
 			user-select: none;
 
 			&[aria-disabled='true'] {
@@ -119,24 +115,17 @@
 				transform: translateX(-50%);
 			}
 
-			&.active {
+			&.selected {
 				fill: white;
 				color: white;
 				font-weight: 600;
 				font-variation-settings: 'wght' 600;
-				// background: var(--main-gradient);
-				padding: 0rem 1.5rem;
-				border: 1px solid var(--color-on-background);
-
-				.background {
-					width: 100%;
-					opacity: 1;
-				}
+				background: var(--color-on-background);
+				padding: 0rem 1.25rem;
 			}
 
-			&:hover:not(.active) {
-				transition: all ease-out 150ms;
-				outline: 1px solid var(--color-on-background);
+			&:hover:not(.selected) {
+				transition: all var(--transition);
 				background: var(--color-surface);
 			}
 		}
@@ -144,13 +133,10 @@
 
 	@media (max-width: 768px) {
 		nav {
-			height: 55px;
-
 			.nav-item {
-				font-size: 1rem;
 				padding: 0 0.5rem;
 
-				&.active {
+				&.selected {
 					padding: 0 0.825rem;
 				}
 			}
