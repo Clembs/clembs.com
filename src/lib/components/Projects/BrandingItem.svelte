@@ -21,16 +21,9 @@
 			<h3>
 				{data.title}
 			</h3>
-			<span class="subtext"
-				>{data.category} •
-				<time datetime={data.createdAt.toDateString()}>
-					{data.createdAt.toLocaleString('en-US', {
-						month: 'short',
-						day: 'numeric',
-						year: 'numeric',
-					})}
-				</time></span
-			>
+			<span class="subtext">
+				{data.brief}
+			</span>
 		</div>
 		<!-- <p>{project.brief}</p> -->
 	</div>
