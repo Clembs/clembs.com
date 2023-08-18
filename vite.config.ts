@@ -1,11 +1,9 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import type { UserConfig } from 'vite';
+import { imagetools } from '@zerodevx/svelte-img/vite';
 
 const config: UserConfig = {
-	optimizeDeps: {
-		include: ['@tabler/icons-svelte'],
-	},
-	plugins: [sveltekit()],
+	plugins: [sveltekit(), imagetools()],
 };
 
 export default config;
