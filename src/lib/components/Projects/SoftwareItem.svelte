@@ -31,7 +31,6 @@
 		<time datetime={data.createdAt.toDateString()}>
 			{data.createdAt.toLocaleString('en-US', {
 				month: 'long',
-				day: 'numeric',
 				year: 'numeric',
 			})}
 		</time>
