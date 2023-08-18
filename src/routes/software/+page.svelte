@@ -2,8 +2,6 @@
 	import MetaTags from '$lib/components/MetaTags.svelte';
 	import SoftwareItem from '$lib/components/Projects/SoftwareItem.svelte';
 	import { softwareData } from '$lib/data/software';
-
-	const years = [...new Set(softwareData.map((p) => p.createdAt.getFullYear()))];
 </script>
 
 <MetaTags
@@ -22,14 +20,11 @@
 		Informatique) in order to fullfill my dream of becoming a professional programmer!
 	</p>
 
-	{#each years as year}
-		<h2>{year} {year !== 2023 ? '- Archival in construction' : ''}</h2>
-		<div class="projects">
-			{#each softwareData.filter((p) => p.createdAt.getFullYear() === year) as project, index}
-				<SoftwareItem loaded data={project} {index} />
-			{/each}
-		</div>
-	{/each}
+	<div class="projects">
+		{#each softwareData as project, index}
+			<SoftwareItem loaded data={project} {index} />
+		{/each}
+	</div>
 </main>
 
 <style lang="scss">
@@ -42,6 +37,6 @@
 		width: 100%;
 		gap: 0.75rem;
 		margin: 2rem 0;
-		grid-template-columns: repeat(auto-fill, minmax(min(450px, 100%), 1fr));
+		grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
 	}
 </style>
