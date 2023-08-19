@@ -3,28 +3,37 @@
 	export let style: 'filled' | 'outlined' | 'text' = 'filled';
 	export let disabled = false;
 	export let type: 'submit' | 'button' = 'button';
+	export let inline = true;
 	let className = '';
 	export { className as class };
 </script>
 
 {#if href && !disabled}
-	<a class="button {style} {className}" {href} role="button" {...$$restProps}>
+	<a class="button {style} {className}" {href} role="button" {...$$restProps} class:inline>
 		<slot />
 	</a>
 {:else}
-	<button on:click on:submit {type} class="button {style} {className}" {disabled} {...$$restProps}>
+	<button
+		on:click
+		on:submit
+		{type}
+		class="button {style} {className}"
+		{disabled}
+		{...$$restProps}
+		class:inline
+	>
 		<slot />
 	</button>
 {/if}
 
 <style lang="scss">
 	.button {
-		display: inline-flex;
+		display: flex;
 		align-items: center;
 		justify-content: center;
 
 		height: max-content;
-		width: max-content;
+		width: 100%;
 		padding: 0.6rem 1.2rem;
 		gap: 0.7rem;
 
@@ -45,6 +54,11 @@
 		border-radius: 99rem;
 
 		transition: background-color 150ms ease-in, max-width 150ms ease-in-out;
+
+		&.inline {
+			display: inline-flex;
+			width: max-content;
+		}
 
 		&.filled {
 			--_bg: var(--color-on-background);
