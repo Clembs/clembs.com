@@ -15,6 +15,7 @@
 	"devDependencies": {
 		"@purplet/utils": "^1.0.0",
 		"@sapphire/snowflake": "^3.5.1",
+		"@supabase/auth-helpers-sveltekit": "^0.10.2",
 		"@sveltejs/adapter-netlify": "^2.0.7",
 		"@sveltejs/kit": "^1.8.3",
 		"@typescript-eslint/eslint-plugin": "^5.59.9",
@@ -39,6 +40,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@supabase/supabase-js": "^2.32.0",
 		"@tabler/icons-svelte": "^2.23.0",
 		"drizzle-orm": "^0.28.2",
 		"postgres": "^3.3.5",
