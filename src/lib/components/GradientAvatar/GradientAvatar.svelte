@@ -1,0 +1,51 @@
+<script lang="ts">
+	import IconCircleCheckFilled from '@tabler/icons-svelte/dist/svelte/icons/IconCircleCheckFilled.svelte';
+	import { letterColors } from './letterColors';
+	import type { Comment } from '../../../routes/comments/+page.server';
+
+	export let user: null | Comment['author'] = null;
+	export let showBadge = true;
+	export let size = '1.5rem';
+
+	$: username = user?.username ?? 'anonymous user';
+
+	$: firstCharUsername = username[0];
+	$: lastCharUsername = username.at(-1)!;
+
+	$: avatarGradient = {
+		a: letterColors[firstCharUsername] ?? letterColors.a,
+		b: letterColors[lastCharUsername] ?? letterColors.z,
+	};
+</script>
+
+<div
+	class="avatar"
+	style="--color-a: {avatarGradient.a}; --color-b: {avatarGradient.b}; --size: {size}"
+>
+	{#if user && showBadge}
+		<div class="avatar-verified">
+			<IconCircleCheckFilled />
+		</div>
+	{/if}
+</div>
+
+<style lang="scss">
+	.avatar {
+		position: relative;
+		height: var(--size);
+		width: var(--size);
+		border-radius: 99rem;
+		background: linear-gradient(45deg, var(--color-a), var(--color-b));
+
+		&-verified {
+			position: absolute;
+			bottom: -0.85rem;
+			right: -0.65rem;
+
+			:global(svg) {
+				width: 1.25rem;
+				height: 1.25rem;
+			}
+		}
+	}
+</style>
