@@ -1,7 +1,11 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
+
 	export let showModal: boolean;
 
 	let dialog: HTMLDialogElement;
+
+	const dispatch = createEventDispatcher();
 
 	$: if (dialog && showModal) dialog.showModal();
 </script>
@@ -9,9 +13,15 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <dialog
 	bind:this={dialog}
-	on:close={() => (showModal = false)}
+	on:close={() => {
+		dispatch('close');
+		showModal = false;
+	}}
 	on:click|self={() => dialog.close()}
 >
+	<slot name="title">
+		<h1>Modal Title</h1>
+	</slot>
 	<slot />
 </dialog>
 
@@ -25,6 +35,7 @@
 		width: 500px;
 		padding: 0;
 		transition: scale 200ms ease-out, opacity 200ms ease-out;
+		padding: 1rem;
 
 		&[open] {
 			animation: zoom 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
