@@ -24,7 +24,7 @@
 		border-top: 1px solid var(--color-on-background);
 		gap: 0.5rem;
 		flex-wrap: wrap;
-
+		width: 100%;
 		.socials {
 			display: flex;
 			gap: 0.5rem;

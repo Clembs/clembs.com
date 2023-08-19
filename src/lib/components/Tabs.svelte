@@ -33,6 +33,7 @@
 		overflow-x: hidden;
 		overflow-y: scroll;
 		gap: 0.25rem;
+		width: 100%;
 
 		:global(.chip) {
 			width: 100%;
