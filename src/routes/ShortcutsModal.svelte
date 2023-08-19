@@ -67,43 +67,29 @@
 />
 
 <Modal bind:showModal>
-	<div class="shortcut-modal">
-		<header>
-			<h1>Keyboard combos</h1>
+	<h1 slot="title">Keyboard combos</h1>
 
-			<!-- <Button on:click={() => dialog.close()} style="text">
-				<IconX />
-			</Button> -->
-		</header>
-
-		<div class="shortcut-list">
-			{#each shortcuts as shortcut}
-				<div class="shortcut">
-					<span class="shortcut-label">
-						<svelte:component this={shortcut.icon} />
-						{shortcut.label}
-					</span>
-					<span class="keys">
-						{#each shortcut.keys as key}
-							<Key modifier={modifierKeys.includes(key)}>{key.replace(ctrl, modifierKey)}</Key>
-						{/each}
-					</span>
-				</div>
-			{/each}
-		</div>
+	<div class="shortcut-list">
+		{#each shortcuts as shortcut}
+			<div class="shortcut">
+				<span class="shortcut-label">
+					<svelte:component this={shortcut.icon} />
+					{shortcut.label}
+				</span>
+				<span class="keys">
+					{#each shortcut.keys as key}
+						<Key modifier={modifierKeys.includes(key)}>{key.replace(ctrl, modifierKey)}</Key>
+					{/each}
+				</span>
+			</div>
+		{/each}
 	</div>
 </Modal>
 
 <style lang="scss">
-	header {
-		padding: 0 1rem;
-		border-bottom: 1px solid var(--color-on-background);
-	}
-
 	.shortcut-list {
 		display: flex;
 		flex-direction: column;
-		padding: 1rem;
 		gap: 0.5rem;
 
 		.shortcut {
