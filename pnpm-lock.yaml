@@ -19,6 +19,12 @@ dependencies:
     version: 1.0.4-beta.0(svelte@3.59.2)
 
 devDependencies:
+  '@purplet/utils':
+    specifier: ^1.0.0
+    version: 1.0.0(discord-api-types@0.37.54)
+  '@sapphire/snowflake':
+    specifier: ^3.5.1
+    version: 3.5.1
   '@sveltejs/adapter-netlify':
     specifier: ^2.0.7
     version: 2.0.7(@sveltejs/kit@1.8.3)
@@ -610,6 +616,14 @@ packages:
     resolution: {integrity: sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g==}
     dev: true
 
+  /@purplet/utils@1.0.0(discord-api-types@0.37.54):
+    resolution: {integrity: sha512-LCE9dzUxh+3ETwk1ZX8L8RyaZq+Rj27e31/oppOHwpmSIa58AT8K7sS9urdBisSMpDvJRKY06LaOud8Oi8Hb8g==}
+    peerDependencies:
+      discord-api-types: ^0.37.14
+    dependencies:
+      discord-api-types: 0.37.54
+    dev: true
+
   /@rollup/pluginutils@5.0.2:
     resolution: {integrity: sha512-pTd9rIsP92h+B6wWwFbW8RkZv4hiR/xKsqre4SIuAOaOEQRxi0lqLke9k2/7WegC85GgUs9pjmOjCUi3In4vwA==}
     engines: {node: '>=14.0.0'}
@@ -622,6 +636,11 @@ packages:
       '@types/estree': 1.0.1
       estree-walker: 2.0.2
       picomatch: 2.3.1
+    dev: true
+
+  /@sapphire/snowflake@3.5.1:
+    resolution: {integrity: sha512-BxcYGzgEsdlG0dKAyOm0ehLGm2CafIrfQTZGWgkfKYbj+pNNsorZ7EotuZukc2MT70E0UbppVbtpBrqpzVzjNA==}
+    engines: {node: '>=v14.0.0', npm: '>=7.0.0'}
     dev: true
 
   /@sveltejs/adapter-netlify@2.0.7(@sveltejs/kit@1.8.3):
@@ -1170,6 +1189,10 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       path-type: 4.0.0
+    dev: true
+
+  /discord-api-types@0.37.54:
+    resolution: {integrity: sha512-xNO6yzEMfpVSVUa6lOOzgLDy3Gyd8yuBAozGQdjpW9VjRq2Ccboz4FhTrd5v4Hw7pbkCKwnHvddjIYrX0INkUQ==}
     dev: true
 
   /doctrine@3.0.0:
