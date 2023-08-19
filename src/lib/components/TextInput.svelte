@@ -1,0 +1,82 @@
+<script lang="ts">
+	type InputType = 'email' | 'number' | 'password' | 'tel' | 'text' | 'url' | 'search';
+
+	export let type: InputType = 'text';
+	export let required = true;
+	export let placeholder = '';
+	export let disabled = false;
+	export let readonly = false;
+	export let value = '';
+	export let maxlength: number | undefined = undefined;
+	export let minlength: number | undefined = undefined;
+	export let multiline = false;
+	export let name = '';
+	export let label = '';
+</script>
+
+<div class="text-input">
+	{#if label}
+		<label for={name}>{label}</label>
+	{/if}
+	{#if multiline}
+		<textarea
+			bind:value
+			on:input
+			on:focus
+			on:blur
+			{minlength}
+			{maxlength}
+			{placeholder}
+			{disabled}
+			{readonly}
+			{required}
+			{name}
+			id={name}
+			{...$$restProps}
+		/>
+	{:else}
+		<input
+			{...{ type }}
+			bind:value
+			on:input
+			on:focus
+			on:blur
+			{minlength}
+			{maxlength}
+			{placeholder}
+			{disabled}
+			{readonly}
+			{required}
+			{name}
+			id={name}
+			{...$$restProps}
+		/>
+	{/if}
+</div>
+
+<style lang="scss">
+	.text-input {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		margin-bottom: 1rem;
+
+		label {
+			font-size: 0.9rem;
+			font-weight: 500;
+		}
+
+		textarea,
+		input {
+			border: 1px solid var(--color-on-background);
+			padding: 0.7rem 1rem;
+			border-radius: 0.5rem;
+			resize: none;
+			font-family: inherit;
+			font-size: inherit;
+			width: 100%;
+			height: var(--height, auto);
+			transition: height 0.2s cubic-bezier(0.1, 0.6, 0.4, 1);
+		}
+	}
+</style>
