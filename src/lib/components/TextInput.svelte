@@ -58,8 +58,10 @@
 	.text-input {
 		display: flex;
 		flex-direction: column;
+		text-align: left;
 		gap: 0.5rem;
-		margin-bottom: 1rem;
+		margin-bottom: 0.5rem;
+		width: 100%;
 
 		label {
 			font-size: 0.9rem;
@@ -71,12 +73,15 @@
 			border: 1px solid var(--color-on-background);
 			padding: 0.7rem 1rem;
 			border-radius: 0.5rem;
-			resize: none;
 			font-family: inherit;
 			font-size: inherit;
 			width: 100%;
-			height: var(--height, auto);
 			transition: height 0.2s cubic-bezier(0.1, 0.6, 0.4, 1);
+		}
+
+		textarea {
+			resize: none;
+			height: 200px;
 		}
 	}
 </style>
