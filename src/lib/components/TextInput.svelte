@@ -80,7 +80,7 @@
 		}
 
 		textarea {
-			resize: none;
+			resize: vertical;
 			height: 200px;
 		}
 	}
