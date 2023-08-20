@@ -62,7 +62,7 @@
 
 <ul class="comments">
 	{#each data.comments.reverse() as comment}
-		<Comment {comment} on:reply={handleReplyButton} on:login={handleLoginRequiredButton} />
+		<Comment {data} {comment} on:reply={handleReplyButton} on:login={handleLoginRequiredButton} />
 	{/each}
 </ul>
 

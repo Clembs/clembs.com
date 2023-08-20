@@ -65,6 +65,6 @@
 
 {#if data.comment.childComments.length}
 	{#each data.comment.childComments as comment}
-		<Comment {comment} on:reply={handleReplyButton} on:login={handleLoginRequiredButton} />
+		<Comment {data} {comment} on:reply={handleReplyButton} on:login={handleLoginRequiredButton} />
 	{/each}
 {/if}

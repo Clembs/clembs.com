@@ -12,14 +12,16 @@
 	import toast from 'svelte-french-toast';
 	import { snowflakeToDate } from '$lib/helpers/snowflake';
 	import { relativeTimeFormat } from '$lib/helpers/relativeTimeFormat';
+	import type { PageData } from '../$types';
 
 	export let comment: Comment;
 	export let showActions = true;
+	export let data: PageData;
 
 	const dispatch = createEventDispatcher();
 	const date = snowflakeToDate(comment.id);
 
-	let hasLiked = $page.data.userData
+	let hasLiked = data.userData
 		? !!comment.userLikes.find((e) => e.userId === $page.data?.userData?.id)
 		: false;
 	let likes = comment.userLikes?.length ?? 0;
@@ -27,7 +29,7 @@
 	let username = comment.author?.username ?? 'anonymous user';
 
 	async function likeComment() {
-		if (!$page.data.userData) {
+		if (!data.userData) {
 			dispatch('login');
 			return;
 		}
