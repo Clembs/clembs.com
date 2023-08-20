@@ -3,8 +3,8 @@
 	import IconHeart from '@tabler/icons-svelte/dist/svelte/icons/IconHeart.svelte';
 	import IconHeartFilled from '@tabler/icons-svelte/dist/svelte/icons/IconHeartFilled.svelte';
 	import IconArrowBackUp from '@tabler/icons-svelte/dist/svelte/icons/IconMessageCircle.svelte';
+	import IconCopy from '@tabler/icons-svelte/dist/svelte/icons/IconCopy.svelte';
 	import IconShare from '@tabler/icons-svelte/dist/svelte/icons/IconShare3.svelte';
-	import IconCirclePlus from '@tabler/icons-svelte/dist/svelte/icons/IconCirclePlus.svelte';
 	import { createEventDispatcher } from 'svelte';
 	import { useShare } from '$lib/components/useShare';
 	import GradientAvatar from '$lib/components/GradientAvatar/GradientAvatar.svelte';
@@ -14,7 +14,6 @@
 	import { relativeTimeFormat } from '$lib/helpers/relativeTimeFormat';
 
 	export let comment: Comment;
-	export let showActions = true;
 
 	const dispatch = createEventDispatcher();
 	const date = snowflakeToDate(comment.id);
@@ -61,115 +60,86 @@
 	async function replyComment() {
 		dispatch('reply', comment);
 	}
-
-	async function loadReplies() {}
 </script>
 
-<a
-	tabindex={showActions ? 0 : -1}
-	class="comment-wrapper {showActions ? '' : 'no-hover'}"
-	href={showActions ? `/comments/${comment.id}` : '#'}
-	data-comment-id={comment.id}
->
+<div class="comment-wrapper" data-comment-id={comment.id}>
 	<div class="comment">
-		<GradientAvatar user={comment.author} />
-		<div class="comment-text">
-			<div class="comment-text-metadata">
-				<span class="comment-text-metadata-username">
+		<div class="comment-metadata">
+			<div class="comment-metadata-author">
+				<GradientAvatar user={comment.author} />
+				<span class="comment-metadata-author-username">
 					{username}
 				</span>
-				<time datetime={date.toISOString()} class="comment-text-metadata-timestamp">
-					{relativeTimeFormat(date)}
-				</time>
 			</div>
-			<div class="comment-text-content">
-				{comment.content}
-			</div>
+
+			<time datetime={date.toISOString()} class="comment-metadata-timestamp">
+				{relativeTimeFormat(date)}
+			</time>
+		</div>
+
+		<div class="comment-text">
+			{comment.content}
 		</div>
 	</div>
 
-	{#if showActions}
-		<div class="actions">
-			<div class="main-actions">
-				<button
-					class="action-button"
-					data-liked={hasLiked}
-					on:click|preventDefault|stopPropagation={likeComment}
-				>
-					{#if hasLiked}
-						<IconHeartFilled />
-					{:else}
-						<IconHeart />
-					{/if}
-
-					{likes}
-				</button>
-				<button class="action-button" on:click|preventDefault|stopPropagation={replyComment}>
-					<IconArrowBackUp />
-					{comment.childComments?.length || 0}
-				</button>
-				<button
-					class="action-button"
-					on:click|preventDefault|stopPropagation={() =>
-						useShare(`https://clembs.com/comments/${comment.id}`)}
-				>
-					<IconShare />
-				</button>
-			</div>
-
-			{#if comment.childComments?.length}
-				<!-- <button on:click|preventDefault|stopPropagation={loadReplies}> -->
-				<div class="action-button">
-					<IconCirclePlus /> View {comment.childComments?.length}
-					{comment.childComments?.length === 1 ? 'reply' : 'replies'}
-				</div>
-				<!-- </button> -->
+	<div class="actions">
+		<button data-liked={hasLiked} on:click={likeComment}>
+			{#if hasLiked}
+				<IconHeartFilled />
+			{:else}
+				<IconHeart />
 			{/if}
-		</div>
-	{/if}
-</a>
+
+			<span class="button-label">
+				{likes}
+				{likes === 1 ? 'like' : 'likes'}
+			</span>
+		</button>
+		<button on:click={replyComment}>
+			<IconArrowBackUp />
+			<span class="button-label"> Reply </span>
+		</button>
+		<button on:click={() => useShare(`https://clembs.com/comments/${comment.id}`)}>
+			<IconShare />
+			<span class="button-label"> Share </span>
+		</button>
+		<button style="flex-grow: 1;" on:click={() => navigator.clipboard.writeText(comment.id)}>
+			<IconCopy />
+			<span class="button-label"> Copy Comment ID </span>
+		</button>
+	</div>
+</div>
 
 <style lang="scss">
 	.comment-wrapper {
 		display: flex;
 		flex-direction: column;
-		gap: 0.25rem;
+		gap: 0.5rem;
 		padding: 0.5rem;
-		border-radius: 1rem;
 		text-decoration: none;
-
-		&.no-hover {
-			cursor: default;
-		}
-
-		&:hover:not(.no-hover) {
-			background-color: #eeeeee;
-		}
+		border-bottom: 1px solid var(--color-surface);
 	}
 
 	.actions {
 		display: flex;
-		flex-direction: column;
-		margin-left: 2.5rem;
+		font-family: monospace;
+		width: 100%;
 
-		.main-actions {
-			display: flex;
-			font-family: monospace;
-		}
-
-		.action-button {
+		button {
 			border: none;
+			width: 100%;
 			color: var(--color-on-surface);
 			background-color: transparent;
 			border-radius: 0.5rem;
 			display: flex;
 			align-items: center;
-			padding: 0.5rem 0.615rem;
+			padding: 0.615rem;
 			cursor: pointer;
 			gap: 0.5rem;
 			font-size: 0.9rem;
-			max-width: max-content;
 			font-family: inherit;
+			justify-content: center;
+			white-space: nowrap;
 
 			&:hover {
 				background-color: var(--color-surface);
@@ -189,26 +159,41 @@
 
 	.comment {
 		display: flex;
-		gap: 1rem;
-		&-text {
-			flex: 1;
+		flex-direction: column;
+		gap: 0.75rem;
 
-			&-metadata {
-				padding-bottom: 0.25rem;
+		&-metadata {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 1rem;
+
+			&-author {
 				display: flex;
-				justify-content: space-between;
-				align-items: baseline;
+				align-items: center;
+				gap: 1rem;
 
 				&-username {
 					font-weight: 500;
 				}
-
-				&-timestamp {
-					font-size: 0.9rem;
-					margin-left: 0.5rem;
-					color: var(--color-on-surface);
-				}
 			}
+
+			&-timestamp {
+				font-size: 0.9rem;
+				margin-left: 0.5rem;
+				color: var(--color-on-surface);
+			}
+		}
+
+		&-text {
+			flex: 1;
+			font-size: 1.2rem;
+		}
+	}
+
+	@media (max-width: 768px) {
+		.button-label {
+			display: none;
 		}
 	}
 </style>
