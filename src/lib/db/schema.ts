@@ -1,17 +1,18 @@
 import { relations } from 'drizzle-orm';
-import { pgTable, primaryKey, text, varchar } from 'drizzle-orm/pg-core';
+import { boolean, pgTable, primaryKey, text } from 'drizzle-orm/pg-core';
 
 export const users = pgTable('users', {
 	id: text('id').primaryKey(),
-	username: varchar('username', { length: 32 }).notNull(),
-	email: text('email').notNull(),
+	username: text('username').notNull(),
+	email: text('email'),
+	badges: text('badges', { enum: ['VERIFIED', 'BLOCKED', 'SUPPORTER', 'CLEMBS'] })
+		.array()
+		.default(['VERIFIED']),
 });
 
 export const comments = pgTable('comments', {
 	id: text('id').primaryKey(),
-	content: varchar('content', {
-		length: 512,
-	}).notNull(),
+	content: text('content').notNull(),
 	projectId: text('project_id'),
 	userId: text('user_id'),
 	parentId: text('parent_id'),
