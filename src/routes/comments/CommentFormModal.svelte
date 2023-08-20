@@ -28,7 +28,7 @@
 		</div>
 	{/if}
 
-	<CommentForm bind:formComponent {parentComment} on:submit={() => (showModal = false)} />
+	<CommentForm bind:formComponent {parentComment} />
 </Modal>
 
 <style lang="scss">
