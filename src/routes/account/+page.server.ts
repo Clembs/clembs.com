@@ -27,10 +27,12 @@ export const load: PageServerLoad = async ({ locals }) => {
 };
 
 export const actions: Actions = {
-	login: async ({ request, locals: { supabase, getSession } }) => {
+	login: async ({ request, locals: { supabase, getSession, getUserData } }) => {
 		const session = await getSession();
 
 		if (session) {
+			await getUserData();
+
 			throw redirect(303, '/account');
 		}
 
@@ -60,10 +62,12 @@ export const actions: Actions = {
 
 		return { success: true };
 	},
-	verifyOTP: async ({ url, request, locals: { getSession, supabase } }) => {
+	verifyOTP: async ({ url, request, locals: { getSession, getUserData, supabase } }) => {
 		const session = await getSession();
 
 		if (session) {
+			await getUserData();
+
 			throw redirect(303, '/account');
 		}
 
@@ -103,14 +107,12 @@ export const actions: Actions = {
 			});
 		}
 
-		console.log(res.data);
-
 		const userEmail = res.data.user?.email!;
 		const userId = res.data.user?.id!;
 
-		const isNewUser = await db.query.users.findFirst({
+		const isNewUser = !(await db.query.users.findFirst({
 			where: ({ email: dbEmail }, { eq }) => eq(dbEmail, userEmail),
-		});
+		}));
 
 		if (isNewUser) {
 			await db
@@ -119,7 +121,7 @@ export const actions: Actions = {
 				.onConflictDoNothing();
 		}
 
-		throw redirect(303, '/account');
+		return { success: true };
 	},
 	changeUsername: async ({ request, locals: { getUserData } }) => {
 		const currentUser = await getUserData();

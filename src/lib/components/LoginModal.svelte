@@ -39,14 +39,15 @@
 				error = '';
 				loading = true;
 
-				return async ({ result, update }) => {
+				return async ({ action, result, update }) => {
 					loading = false;
 
-					if ('message' in result) {
-						error = String(result.message);
+					console.log(result);
+
+					if (result.type === 'redirect' && result.location === '/account') {
+						showModal = false;
 						return;
 					}
-
 					if (result.type === 'failure') {
 						error = result.data?.message;
 						return;
@@ -55,8 +56,14 @@
 						error = result.error?.message;
 						return;
 					}
-					if (result.type === 'success') {
+					if (action.search === '?/login' && result.type === 'success') {
 						otpEmailSent = true;
+					}
+					if (action.search === '?/verifyOTP' && result.type === 'success') {
+						showModal = false;
+					}
+					if ('message' in result) {
+						error = String(result.message);
 					}
 
 					update({
