@@ -1,6 +1,4 @@
 import { crbt2023 } from './crbt-2023';
-import { delegue } from './delegue';
-import { purplet2022 } from './purplet-2022';
 import { kikuri } from './kikuri';
 import { clembs } from './clembs';
 
@@ -23,8 +21,8 @@ export interface BrandingPost {
 	relatedSoftwareId?: string;
 	createdAt: Date;
 	themeGradient: {
-		from: `#${string}`;
-		to: `#${string}`;
+		from: string;
+		to: string;
 	};
 }
 
