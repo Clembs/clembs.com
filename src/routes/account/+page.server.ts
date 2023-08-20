@@ -1,6 +1,6 @@
 import { letterColors } from '$lib/components/GradientAvatar/letterColors';
 import type { Actions, PageServerLoad } from './$types';
-import { fail, redirect } from '@sveltejs/kit';
+import { error, fail, redirect } from '@sveltejs/kit';
 import { db } from '$lib/db';
 import { users } from '$lib/db/schema';
 import { eq } from 'drizzle-orm';
@@ -58,7 +58,11 @@ export const actions: Actions = {
 			},
 		});
 
-		console.log(res);
+		if (res.error) {
+			return error(res.error.status || 500, {
+				message: res.error.message,
+			});
+		}
 
 		return { success: true };
 	},
