@@ -5,8 +5,15 @@
 	import { Toaster } from 'svelte-french-toast';
 	import Footer from '$lib/components/Footer.svelte';
 	import type DebugMenu from './DebugMenu.svelte';
-	import MetaTags from '$lib/components/MetaTags.svelte';
 	import ShortcutsModal from './ShortcutsModal.svelte';
+	import { invalidate } from '$app/navigation';
+	import type { LayoutData } from './$types';
+	import { onMount } from 'svelte';
+
+	export let data: LayoutData;
+
+	let { supabase, session } = data;
+	$: ({ supabase, session } = data);
 
 	let colors = $page.data?.themeGradient;
 
@@ -23,6 +30,16 @@
 		if (p.data?.themeGradient) {
 			colors = p.data.themeGradient;
 		}
+	});
+
+	onMount(() => {
+		const { data } = supabase.auth.onAuthStateChange((event, _session) => {
+			if (_session?.expires_at !== session?.expires_at) {
+				invalidate('supabase:auth');
+			}
+		});
+
+		return () => data.subscription.unsubscribe();
 	});
 </script>
 
