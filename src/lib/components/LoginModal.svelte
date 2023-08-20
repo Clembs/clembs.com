@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { EMAIL_REGEX } from '$lib/helpers/email';
+	import { LoaderIcon } from 'svelte-french-toast';
 	import type { Comment } from '../../routes/comments/+page.server';
 	import CommentFormModal from '../../routes/comments/CommentFormModal.svelte';
 	import Button from './Button.svelte';
@@ -13,10 +15,9 @@
 	export let parentComment: Comment | null = null;
 	let error = '';
 	let success: boolean;
+	let loading = false;
 
 	let showCommentFormModal = false;
-
-	const EMAIL_REGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 </script>
 
 {#if skipToComment}
@@ -27,12 +28,15 @@
 	<Modal bind:showModal>
 		<h1 slot="title">Sign in to clembs.com</h1>
 
+		<p>Like comments and get yours verified and personalized with a clembs.com account!</p>
 		<p>Create an account or log back into it, no passwords required!</p>
 
 		<form
-			action="/account/login"
+			action="/account?/login"
 			use:enhance={() => {
+				loading = true;
 				return async ({ result }) => {
+					loading = false;
 					if (result.type === 'success') {
 						success = true;
 					}
@@ -56,12 +60,16 @@
 				{#if error}
 					<InfoBox type="danger">
 						<div slot="title">An error occured.</div>
-						<span slot="description">{error}</span>
+						{error}
 					</InfoBox>
 				{/if}
 
 				<Button type="submit" disabled={success || !EMAIL_REGEX.test(email)} inline={false}>
-					{success ? 'Check your inbox!' : 'Send email link'}
+					{#if loading}
+						<LoaderIcon />
+					{:else}
+						{success ? 'Check your inbox!' : 'Send email link'}
+					{/if}
 				</Button>
 				{#if skipToComment}
 					<Button
