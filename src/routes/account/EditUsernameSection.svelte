@@ -26,8 +26,9 @@
 		why every time you change the first or last character, a different gradient shows up!
 	</p>
 
+	<Button on:click={() => (showModal = false)}>Got it!</Button>
 	<Button
-		inline={false}
+		style="outlined"
 		href="https://github.com/Clembs/clembs.com/blob/b29beb998fb621e306bf07bd5db0dfacfea09abe/src/lib/components/GradientAvatar/GradientAvatar.svelte"
 	>
 		View source code
