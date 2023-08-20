@@ -32,7 +32,7 @@
 		background-color: white;
 		border-radius: 1rem;
 		max-width: 100%;
-		width: 500px;
+		width: 600px;
 		padding: 0;
 		transition: scale 200ms ease-out, opacity 200ms ease-out;
 		padding: 1rem;
