@@ -1,15 +1,22 @@
 <script lang="ts">
 	export let href = '';
-	export let style: 'filled' | 'outlined' | 'text' = 'filled';
+	export let style: 'filled' | 'outlined' | 'text' | 'danger' = 'filled';
 	export let disabled = false;
 	export let type: 'submit' | 'button' = 'button';
 	export let inline = true;
+	export let size: 'sm' | 'm' | 'xl' = 'm';
 	let className = '';
 	export { className as class };
 </script>
 
 {#if href && !disabled}
-	<a class="button {style} {className}" {href} role="button" {...$$restProps} class:inline>
+	<a
+		class="button {style} {className} size-{size}"
+		{href}
+		role="button"
+		{...$$restProps}
+		class:inline
+	>
 		<slot />
 	</a>
 {:else}
@@ -17,7 +24,7 @@
 		on:click
 		on:submit
 		{type}
-		class="button {style} {className}"
+		class="button {style} {className} size-{size}"
 		{disabled}
 		{...$$restProps}
 		class:inline
@@ -67,7 +74,7 @@
 			--_hover-bg: var(--color-on-surface);
 		}
 		&.outlined {
-			--_bg: transparent;
+			--_bg: var(--color-background);
 			--_border: 1px solid var(--color-on-background);
 			--_text-color: inherit;
 			--_hover-bg: var(--color-surface);
@@ -77,6 +84,17 @@
 			--_border: none;
 			--_text-color: inherit;
 			--_hover-bg: var(--color-surface);
+		}
+		&.danger {
+			--_bg: var(--color-error);
+			--_border: 1px solid var(--color-on-background);
+			--_text-color: var(--color-on-error);
+			--_hover-bg: var(--color-error);
+		}
+
+		&.size-sm {
+			font-size: 0.75rem;
+			padding: 0.4rem;
 		}
 
 		&:hover,
