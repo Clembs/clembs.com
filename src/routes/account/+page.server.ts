@@ -4,7 +4,7 @@ import { error, fail, redirect } from '@sveltejs/kit';
 import { db } from '$lib/db';
 import { users } from '$lib/db/schema';
 import { eq } from 'drizzle-orm';
-import { EMAIL_REGEX } from '$lib/helpers/email';
+import { EMAIL_REGEX, OTP_REGEX } from '$lib/helpers/auth';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const username = (await locals.getUserData())?.username;
@@ -27,7 +27,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 };
 
 export const actions: Actions = {
-	login: async ({ request, url, locals: { supabase, getSession } }) => {
+	login: async ({ request, locals: { supabase, getSession } }) => {
 		const session = await getSession();
 
 		if (session) {
@@ -46,25 +46,80 @@ export const actions: Actions = {
 			return fail(400);
 		}
 
-		const baseUrl = url.origin.replace('[::1]', 'localhost');
-		const fullUrl = `${baseUrl}/account/callback/`;
-
-		console.log(fullUrl);
-
 		const res = await supabase.auth.signInWithOtp({
 			email: email,
-			options: {
-				emailRedirectTo: fullUrl,
-			},
 		});
 
 		if (res.error) {
-			return error(res.error.status || 500, {
+			console.error(res.error);
+
+			throw error(res.error.status || 500, {
 				message: res.error.message,
 			});
 		}
 
 		return { success: true };
+	},
+	verifyOTP: async ({ url, request, locals: { getSession, supabase } }) => {
+		const session = await getSession();
+
+		if (session) {
+			throw redirect(303, '/account');
+		}
+
+		const formData = await request.formData();
+
+		if (!formData) {
+			return fail(400);
+		}
+
+		const email = formData.get('email')?.toString();
+
+		if (!email || !EMAIL_REGEX.test(email)) {
+			return fail(400, {
+				message: 'Invalid email address.',
+			});
+		}
+
+		const otp = formData.get('otp')?.toString();
+
+		if (!otp || !OTP_REGEX.test(otp)) {
+			return fail(400, {
+				message: 'Incorrect one-time password.',
+			});
+		}
+
+		const res = await supabase.auth.verifyOtp({
+			email,
+			token: otp,
+			type: 'email',
+		});
+
+		if (res.error || !res.data) {
+			console.error(res.error);
+
+			throw error(res.error?.status || 500, {
+				message: res.error?.message || 'Unexpected error.',
+			});
+		}
+
+		console.log(res.data);
+
+		const userEmail = res.data.user?.email!;
+		const userId = res.data.user?.id!;
+
+		const isNewUser = await db.query.users.findFirst({
+			where: ({ email: dbEmail }, { eq }) => eq(dbEmail, userEmail),
+		});
+
+		if (isNewUser) {
+			await db
+				.insert(users)
+				.values({ id: userId, email: userEmail, username: 'verified anonymous user' })
+				.onConflictDoNothing();
+		}
+
+		throw redirect(303, '/account');
 	},
 	changeUsername: async ({ request, locals: { getUserData } }) => {
 		const currentUser = await getUserData();

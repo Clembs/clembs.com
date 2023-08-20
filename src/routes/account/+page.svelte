@@ -12,9 +12,7 @@
 	let signOutLoading = false;
 </script>
 
-{#if !data?.session}
-	<LoginModal bind:showModal />
-{/if}
+<LoginModal bind:showModal />
 
 <main>
 	{#if data?.session && data?.userData}

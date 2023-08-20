@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { EMAIL_REGEX } from '$lib/helpers/email';
+	import { EMAIL_REGEX, OTP_REGEX } from '$lib/helpers/auth';
 	import { LoaderIcon } from 'svelte-french-toast';
 	import type { Comment } from '$lib/db/types';
 	import CommentFormModal from '../../routes/comments/CommentFormModal.svelte';
@@ -13,8 +13,10 @@
 	export let email = '';
 	export let skipToComment = false;
 	export let parentComment: Comment | null = null;
+
+	let otp = '';
 	let error = '';
-	let success: boolean;
+	let otpEmailSent = false;
 	let loading = false;
 
 	let showCommentFormModal = false;
@@ -32,22 +34,29 @@
 		<p>Create an account or log back into it, no passwords required!</p>
 
 		<form
-			action="/account?/login"
+			action={otpEmailSent ? '/account?/verifyOTP' : '/account?/login'}
 			use:enhance={() => {
+				error = '';
 				loading = true;
 
 				return async ({ result, update }) => {
 					loading = false;
 
+					if ('message' in result) {
+						error = String(result.message);
+						return;
+					}
+
 					if (result.type === 'failure') {
 						error = result.data?.message;
+						return;
 					}
 					if (result.type === 'error') {
 						error = result.error?.message;
+						return;
 					}
 					if (result.type === 'success') {
-						success = true;
-						error = '';
+						otpEmailSent = true;
 					}
 
 					update({
@@ -64,7 +73,20 @@
 				type="email"
 				placeholder="example@clembs.com"
 				required={true}
+				readonly={otpEmailSent}
 			/>
+
+			{#if otpEmailSent}
+				<TextInput
+					bind:value={otp}
+					name="otp"
+					label="One-time password"
+					type="number"
+					placeholder="000000"
+					required={true}
+					maxlength={999999}
+				/>
+			{/if}
 
 			<div class="actions">
 				{#if error}
@@ -72,15 +94,30 @@
 						<div slot="title">An error occured.</div>
 						{error}
 					</InfoBox>
+				{:else if otpEmailSent}
+					<InfoBox type="success">
+						<div class="title">One-time password sent!</div>
+						To log in, simply enter the code sent to you via email.
+					</InfoBox>
 				{/if}
 
-				<Button type="submit" disabled={success || !EMAIL_REGEX.test(email)} inline={false}>
-					{#if loading}
-						<LoaderIcon />
-					{:else}
-						{success ? 'Check your inbox!' : 'Send email link'}
-					{/if}
-				</Button>
+				{#if !otpEmailSent}
+					<Button type="submit" disabled={otpEmailSent || !EMAIL_REGEX.test(email)} inline={false}>
+						{#if loading}
+							<LoaderIcon />
+						{:else}
+							{otpEmailSent ? 'Log in' : 'Send one-time password'}
+						{/if}
+					</Button>
+				{:else}
+					<Button type="submit" disabled={!OTP_REGEX.test(otp)} inline={false}>
+						{#if loading}
+							<LoaderIcon />
+						{:else}
+							{otpEmailSent ? 'Log in' : 'Send one-time password'}
+						{/if}
+					</Button>
+				{/if}
 				{#if skipToComment}
 					<Button
 						style="text"
