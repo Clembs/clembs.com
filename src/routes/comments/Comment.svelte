@@ -194,6 +194,7 @@
 		gap: 1rem;
 		&-text {
 			flex: 1;
+			word-break: break-word;
 
 			&-metadata {
 				padding-bottom: 0.25rem;

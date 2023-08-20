@@ -188,6 +188,7 @@
 		&-text {
 			flex: 1;
 			font-size: 1.2rem;
+			word-break: break-word;
 		}
 	}
 
