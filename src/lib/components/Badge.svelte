@@ -48,6 +48,7 @@
 		}
 		&.sticky {
 			position: absolute;
+			z-index: 5;
 
 			&.top {
 				top: -5px;
