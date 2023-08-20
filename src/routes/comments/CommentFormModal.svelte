@@ -1,47 +1,61 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
-	import Button from '$lib/components/Button.svelte';
 	import Modal from '$lib/components/Modal.svelte';
-	import TextInput from '$lib/components/TextInput.svelte';
-	import type { Comment } from './+page.server';
+	import type { Comment as CommentType } from './+page.server';
+	import Comment from './Comment.svelte';
+	import Curve from '$lib/components/Curve.svelte';
+	import CommentForm from './CommentForm.svelte';
+	import { onMount } from 'svelte';
 
 	export let showModal = false;
 
-	let content = '';
-	let email = '';
+	export let parentComment: CommentType | null = null;
+	let formComponent: HTMLFormElement;
 
-	export let parentComment: Comment | null = null;
+	onMount(() => formComponent.focus());
 </script>
 
 <Modal on:close bind:showModal>
-	<h1 slot="title">{parentComment ? 'Reply' : 'Write a comment'}</h1>
-	<form action="?/post" method="POST" use:enhance>
-		<TextInput
-			bind:value={content}
-			name="content"
-			label="Content"
-			placeholder="Rate the website, ask me anything..."
-			multiline
-		/>
+	<h1 slot="title">
+		{parentComment ? `Reply to ${parentComment.author?.username ?? 'comment'}` : 'Write a comment'}
+	</h1>
+	{#if parentComment}
+		<div class="parent-comment">
+			<div aria-hidden="false" class="branch">
+				<Curve />
+				<div class="line" />
+			</div>
+			<Comment showActions={false} comment={parentComment} />
+		</div>
+	{/if}
 
-		<TextInput
-			bind:value={email}
-			label="Your email (optional)"
-			required={false}
-			type="email"
-			name="email"
-			placeholder="example@clembs.com"
-		/>
-
-		<Button inline={false} type="submit">Comment</Button>
-	</form>
+	<CommentForm bind:formComponent {parentComment} bind:showModal />
 </Modal>
 
-<Button on:click={() => (showModal = true)}>Write a comment</Button>
-
 <style lang="scss">
-	form {
+	.parent-comment {
 		display: flex;
-		flex-direction: column;
+		// gap: 0.5rem;
+		margin-bottom: 1rem;
+
+		.branch {
+			position: relative;
+			color: var(--color-on-surface);
+			top: 1.5rem;
+			margin-left: 17.5px;
+
+			:global(svg) {
+				height: 24px;
+				width: 24px;
+			}
+
+			.line {
+				position: relative;
+				top: -0.5rem;
+				height: calc(100% - 2.25rem);
+				width: 2px;
+				margin: 0;
+				background-color: var(--color-on-surface);
+			}
+		}
 	}
 </style>
