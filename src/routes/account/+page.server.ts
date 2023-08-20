@@ -46,10 +46,13 @@ export const actions: Actions = {
 			return fail(400);
 		}
 
+		const baseUrl = url.origin.replace('[::1]', 'localhost');
+		const fullUrl = `${baseUrl}/account/callback/`;
+
 		await supabase.auth.signInWithOtp({
 			email: email,
 			options: {
-				emailRedirectTo: `${url.origin}/account/callback`,
+				emailRedirectTo: fullUrl,
 			},
 		});
 
