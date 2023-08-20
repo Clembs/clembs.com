@@ -32,8 +32,8 @@
 		<p>Create an account or log back into it, no passwords required!</p>
 
 		<form
-			action="account?/login"
-			use:enhance={({ action }) => {
+			action="/account?/login"
+			use:enhance={() => {
 				loading = true;
 
 				return async ({ result, update }) => {
