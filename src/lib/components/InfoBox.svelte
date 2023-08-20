@@ -16,7 +16,9 @@
 </script>
 
 <div class="info-box {type}">
-	<svelte:component this={icons[type]} />
+	<div class="icon">
+		<svelte:component this={icons[type]} />
+	</div>
 	<div class="text">
 		<div class="title">
 			<slot name="title" />
@@ -30,7 +32,7 @@
 <style lang="scss">
 	.info-box {
 		display: flex;
-		gap: 0.5rem;
+		gap: 1rem;
 		align-items: center;
 		border: 1px solid var(--color-outline);
 		padding: 0.5rem 1rem;
@@ -39,6 +41,16 @@
 		margin-bottom: 0.5rem;
 		background-color: var(--color-surface);
 		color: var(--color-on-background);
+
+		.icon {
+			height: 24px;
+			width: 24px;
+		}
+
+		.title {
+			font-size: 1.1rem;
+			font-weight: 500;
+		}
 
 		.description {
 			font-size: 0.9rem;
