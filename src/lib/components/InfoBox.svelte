@@ -41,6 +41,7 @@
 		margin-bottom: 0.5rem;
 		background-color: var(--color-surface);
 		color: var(--color-on-background);
+		width: 100%;
 
 		.icon {
 			height: 24px;
