@@ -11,9 +11,9 @@
 <nav>
 	<div class="nav-inside">
 		<a href="/comments" class="title">Comments <Badge>Alpha</Badge></a>
-		{#if data.userData}
+		{#if data?.userData}
 			<a href="/account">
-				<GradientAvatar user={data.userData} size="2rem" showBadge={false} />
+				<GradientAvatar user={data?.userData} size="2rem" showBadge={false} />
 			</a>
 		{:else}
 			<Button href="/account" style="outlined">

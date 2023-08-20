@@ -14,7 +14,7 @@
 	let showModal = false;
 	let isLoading = false;
 	let error = '';
-	let username = data.userData?.username;
+	let username = data?.userData?.username;
 </script>
 
 <Modal bind:showModal>
@@ -72,7 +72,7 @@
 				<GradientAvatar
 					size="3rem"
 					user={{
-						...data.userData,
+						...data?.userData,
 						username: username || 'anonymous user',
 					}}
 					showBadge={false}
@@ -99,7 +99,10 @@
 			</InfoBox>
 		{/if}
 
-		<Button disabled={isLoading || username === data.userData?.username || !username} type="submit">
+		<Button
+			disabled={isLoading || username === data?.userData?.username || !username}
+			type="submit"
+		>
 			{#if isLoading}
 				<LoaderIcon />
 			{:else}

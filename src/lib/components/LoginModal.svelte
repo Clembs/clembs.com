@@ -2,7 +2,7 @@
 	import { enhance } from '$app/forms';
 	import { EMAIL_REGEX } from '$lib/helpers/email';
 	import { LoaderIcon } from 'svelte-french-toast';
-	import type { Comment } from '../../routes/comments/+page.server';
+	import type { Comment } from '$lib/db/types';
 	import CommentFormModal from '../../routes/comments/CommentFormModal.svelte';
 	import Button from './Button.svelte';
 	import InfoBox from './InfoBox.svelte';
@@ -32,17 +32,27 @@
 		<p>Create an account or log back into it, no passwords required!</p>
 
 		<form
-			action="/account?/login"
-			use:enhance={() => {
+			action="account?/login"
+			use:enhance={({ action }) => {
 				loading = true;
-				return async ({ result }) => {
+
+				return async ({ result, update }) => {
 					loading = false;
-					if (result.type === 'success') {
-						success = true;
+
+					if (result.type === 'failure') {
+						error = result.data?.message;
 					}
 					if (result.type === 'error') {
-						error = result.error;
+						error = result.error?.message;
 					}
+					if (result.type === 'success') {
+						success = true;
+						error = '';
+					}
+
+					update({
+						reset: false,
+					});
 				};
 			}}
 			method="post"

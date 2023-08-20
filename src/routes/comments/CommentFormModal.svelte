@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Modal from '$lib/components/Modal.svelte';
-	import type { Comment as CommentType } from './+page.server';
+	import type { Comment as CommentType } from '$lib/db/types';
 	import Comment from './Comment.svelte';
 	import Curve from '$lib/components/Curve.svelte';
 	import CommentForm from './CommentForm.svelte';
@@ -28,7 +28,7 @@
 		</div>
 	{/if}
 
-	<CommentForm bind:formComponent {parentComment} bind:showModal />
+	<CommentForm bind:formComponent {parentComment} on:submit={() => (showModal = false)} />
 </Modal>
 
 <style lang="scss">

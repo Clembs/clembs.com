@@ -3,8 +3,9 @@ import { comments } from '$lib/db/schema.js';
 import { generateSnowflake } from '$lib/helpers/snowflake.js';
 import { fail } from '@sveltejs/kit';
 import { isNull, type InferModel } from 'drizzle-orm';
+import type { Actions, PageServerLoad } from './$types.js';
 
-export async function load({ locals }) {
+export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.getSession();
 	const user = session?.user ?? null;
 
@@ -18,11 +19,9 @@ export async function load({ locals }) {
 	});
 
 	return { comments, user };
-}
+};
 
-export type Comment = Awaited<ReturnType<typeof load>>['comments'][number];
-
-export const actions = {
+export const actions: Actions = {
 	post: async ({ request, locals }) => {
 		const formData = await request.formData();
 
@@ -32,7 +31,11 @@ export const actions = {
 
 		const currentUser = await locals.getUserData();
 		const content = formData.get('content')?.toString();
+		const { content: content2 } = Object.values(formData) as any as { content: string };
 		const parentCommentId = formData.get('parent-comment')?.toString();
+
+		console.log(content);
+		console.log(content2);
 
 		if (parentCommentId) {
 			const comment = await db.query.comments.findFirst({

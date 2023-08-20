@@ -1,12 +1,10 @@
 <script lang="ts">
-	import GradientAvatar from '$lib/components/GradientAvatar/GradientAvatar.svelte';
 	import LoginModal from '$lib/components/LoginModal.svelte';
 	import Comment from '../Comment.svelte';
-	import CommentForm from '../CommentForm.svelte';
 	import CommentFormModal from '../CommentFormModal.svelte';
 	import ExpandedComment from '../ExpandedComment.svelte';
 	import type { PageData } from './$types';
-	import type { Comment as CommentType } from '../+page.server';
+	import type { Comment as CommentType } from '$lib/db/types';
 	import CreateCommentButton from '../CreateCommentButton.svelte';
 
 	export let data: PageData;
@@ -27,7 +25,7 @@
 	}
 </script>
 
-{#if !data.userData}
+{#if !data?.userData}
 	<LoginModal
 		{skipToComment}
 		parentComment={selectedParentComment}
@@ -52,19 +50,19 @@
 	on:login={handleLoginRequiredButton}
 />
 
-<h3>Replies ({data.comment.childComments.length})</h3>
+<h3>Replies ({data?.comment?.childComments.length})</h3>
 
 <CreateCommentButton
-	userData={data.userData}
+	userData={data?.userData}
 	on:click={() =>
 		handleReplyButton({
-			detail: data.comment,
+			detail: data?.comment,
 		})}
 	reply={true}
 />
 
-{#if data.comment.childComments.length}
-	{#each data.comment.childComments as comment}
-		<Comment {data} {comment} on:reply={handleReplyButton} on:login={handleLoginRequiredButton} />
+{#if data?.comment?.childComments.length}
+	{#each data?.comment?.childComments as comment}
+		<Comment {comment} on:reply={handleReplyButton} on:login={handleLoginRequiredButton} />
 	{/each}
 {/if}

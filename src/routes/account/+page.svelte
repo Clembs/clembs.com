@@ -8,16 +8,16 @@
 
 	export let data: LayoutData;
 
-	let showModal = !data.userData;
+	let showModal = !data?.userData;
 	let signOutLoading = false;
 </script>
 
-{#if !data.session}
+{#if !data?.session}
 	<LoginModal bind:showModal />
 {/if}
 
 <main>
-	{#if data.session && data.userData}
+	{#if data?.session && data?.userData}
 		<header>
 			<h1>Account details</h1>
 

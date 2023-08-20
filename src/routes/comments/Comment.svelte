@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Comment } from './+page.server';
+	import type { Comment } from '$lib/db/types';
 	import IconHeart from '@tabler/icons-svelte/dist/svelte/icons/IconHeart.svelte';
 	import IconHeartFilled from '@tabler/icons-svelte/dist/svelte/icons/IconHeartFilled.svelte';
 	import IconArrowBackUp from '@tabler/icons-svelte/dist/svelte/icons/IconMessageCircle.svelte';
@@ -12,24 +12,24 @@
 	import toast from 'svelte-french-toast';
 	import { snowflakeToDate } from '$lib/helpers/snowflake';
 	import { relativeTimeFormat } from '$lib/helpers/relativeTimeFormat';
-	import type { PageData } from '../$types';
 
 	export let comment: Comment;
 	export let showActions = true;
-	export let data: PageData;
+
+	let data = $page.data;
 
 	const dispatch = createEventDispatcher();
 	const date = snowflakeToDate(comment.id);
 
-	let hasLiked = data.userData
-		? !!comment.userLikes.find((e) => e.userId === $page.data?.userData?.id)
+	let hasLiked = data?.userData
+		? !!comment.userLikes?.find((e) => e.userId === data?.userData?.id)
 		: false;
 	let likes = comment.userLikes?.length ?? 0;
 
 	let username = comment.author?.username ?? 'anonymous user';
 
 	async function likeComment() {
-		if (!data.userData) {
+		if (!data?.userData) {
 			dispatch('login');
 			return;
 		}
@@ -113,7 +113,7 @@
 				<button
 					class="action-button"
 					on:click|preventDefault|stopPropagation={() =>
-						useShare(`https://clembs.com/comments/${comment.id}`)}
+						useShare(`${$page.url.origin}/comments/${comment.id}`)}
 				>
 					<IconShare />
 				</button>

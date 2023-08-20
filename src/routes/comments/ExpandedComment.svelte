@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Comment } from './+page.server';
+	import type { Comment } from '$lib/db/types';
 	import IconHeart from '@tabler/icons-svelte/dist/svelte/icons/IconHeart.svelte';
 	import IconHeartFilled from '@tabler/icons-svelte/dist/svelte/icons/IconHeartFilled.svelte';
 	import IconArrowBackUp from '@tabler/icons-svelte/dist/svelte/icons/IconMessageCircle.svelte';
@@ -19,7 +19,7 @@
 	const date = snowflakeToDate(comment.id);
 
 	let hasLiked = $page.data.userData
-		? !!comment.userLikes.find((e) => e.userId === $page.data?.userData?.id)
+		? !!comment.userLikes?.find((e) => e.userId === $page.data?.userData?.id)
 		: false;
 	let likes = comment.userLikes?.length ?? 0;
 
@@ -99,7 +99,7 @@
 			<IconArrowBackUp />
 			<span class="button-label"> Reply </span>
 		</button>
-		<button on:click={() => useShare(`https://clembs.com/comments/${comment.id}`)}>
+		<button on:click={() => useShare(`${$page.url.origin}/comments/${comment.id}`)}>
 			<IconShare />
 			<span class="button-label"> Share </span>
 		</button>

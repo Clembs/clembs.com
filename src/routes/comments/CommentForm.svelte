@@ -7,7 +7,7 @@
 	import IconAlertCircleFilled from '@tabler/icons-svelte/dist/svelte/icons/IconAlertCircleFilled.svelte';
 	import toast from 'svelte-french-toast';
 	import InfoBox from '$lib/components/InfoBox.svelte';
-	import type { Comment as CommentType } from './+page.server';
+	import type { Comment as CommentType } from '$lib/db/types';
 
 	export let parentComment: CommentType | null = null;
 	export let showModal = false;
@@ -19,6 +19,7 @@
 <form
 	action="/comments?/post"
 	method="POST"
+	on:submit|preventDefault
 	bind:this={formComponent}
 	use:enhance={() =>
 		({ result, update }) => {

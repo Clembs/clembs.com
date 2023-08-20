@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Comment from './Comment.svelte';
-	import type { Comment as CommentType } from './+page.server';
+	import type { Comment as CommentType } from '$lib/db/types';
 	import LoginModal from '$lib/components/LoginModal.svelte';
 	import CommentFormModal from './CommentFormModal.svelte';
 	import type { PageData } from './$types';
@@ -62,7 +62,7 @@
 
 <ul class="comments">
 	{#each data.comments.reverse() as comment}
-		<Comment {data} {comment} on:reply={handleReplyButton} on:login={handleLoginRequiredButton} />
+		<Comment {comment} on:reply={handleReplyButton} on:login={handleLoginRequiredButton} />
 	{/each}
 </ul>
 
