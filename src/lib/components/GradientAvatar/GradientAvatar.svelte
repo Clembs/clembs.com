@@ -5,7 +5,7 @@
 
 	export let user: null | Comment['author'] = null;
 	export let showBadge = true;
-	export let size = '1.5rem';
+	export let size = '2.25rem';
 
 	$: username = user?.username ?? 'anonymous user';
 
@@ -39,8 +39,8 @@
 
 		&-verified {
 			position: absolute;
-			bottom: -0.85rem;
-			right: -0.65rem;
+			bottom: -0.75rem;
+			right: -0.55rem;
 
 			:global(svg) {
 				width: 1.25rem;
