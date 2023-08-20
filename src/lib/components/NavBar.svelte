@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import Clembs from '$lib/icons/Clembs.svelte';
 	import { onMount } from 'svelte';
 
 	const navLinks = [
@@ -15,6 +14,10 @@
 		{
 			href: '/software',
 			label: 'Software',
+		},
+		{
+			href: '/comments',
+			label: 'Comments (Alpha)',
 		},
 		{
 			href: '/contact',
@@ -71,6 +74,7 @@
 		box-shadow: 0px 2px 0px 0px var(--color-on-background);
 		transition: all linear 150ms;
 		z-index: 9;
+		overflow-y: scroll;
 
 		.links {
 			display: flex;
@@ -89,6 +93,7 @@
 			font-weight: 400;
 			font-variation-settings: 'wght' 400;
 			align-items: center;
+			white-space: nowrap;
 
 			--transition-duration: 250ms;
 			--transition: var(--transition-duration) cubic-bezier(0, 0, 0.125, 1);
