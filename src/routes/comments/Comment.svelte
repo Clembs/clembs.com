@@ -5,6 +5,7 @@
 	import IconArrowBackUp from '@tabler/icons-svelte/dist/svelte/icons/IconMessageCircle.svelte';
 	import IconShare from '@tabler/icons-svelte/dist/svelte/icons/IconShare3.svelte';
 	import IconCirclePlus from '@tabler/icons-svelte/dist/svelte/icons/IconCirclePlus.svelte';
+	import IconTrash from '@tabler/icons-svelte/dist/svelte/icons/IconTrash.svelte';
 	import { createEventDispatcher } from 'svelte';
 	import { useShare } from '$lib/components/useShare';
 	import GradientAvatar from '$lib/components/GradientAvatar/GradientAvatar.svelte';
@@ -12,6 +13,7 @@
 	import toast from 'svelte-french-toast';
 	import { snowflakeToDate } from '$lib/helpers/snowflake';
 	import { relativeTimeFormat } from '$lib/helpers/relativeTimeFormat';
+	import { goto } from '$app/navigation';
 
 	export let comment: Comment;
 	export let showActions = true;
@@ -31,6 +33,11 @@
 	async function likeComment() {
 		if (!data?.userData) {
 			dispatch('login');
+			return;
+		}
+
+		if (data.userData?.badges?.includes('BLOCKED')) {
+			dispatch('blocked');
 			return;
 		}
 
@@ -61,16 +68,39 @@
 	}
 
 	async function replyComment() {
+		if (data.userData?.badges?.includes('BLOCKED')) {
+			dispatch('blocked');
+			return;
+		}
+
 		dispatch('reply', comment);
+	}
+
+	async function deleteComment() {
+		try {
+			const res = await fetch(`/comments/api/${comment.id}/delete`, {
+				method: 'DELETE',
+			});
+
+			if (res.ok) {
+				toast.success(`Successfully deleted.`);
+			}
+		} catch (e) {
+			toast.error(`Something went wrong while trying to delete this comment.`);
+		}
 	}
 
 	async function loadReplies() {}
 </script>
 
-<a
-	tabindex={showActions ? 0 : -1}
+<div
 	class="comment-wrapper {showActions ? '' : 'no-hover'}"
-	href={showActions ? `/comments/${comment.id}` : '#'}
+	on:click={() => showActions && goto(`/comments/${comment.id}`)}
+	on:keypress={(e) => {
+		if (e.key === 'Enter') {
+			goto(`/comments/${comment.id}`);
+		}
+	}}
 	data-comment-id={comment.id}
 >
 	<div class="comment">
@@ -117,6 +147,11 @@
 				>
 					<IconShare />
 				</button>
+				{#if data.userData?.badges?.includes('CLEMBS')}
+					<button class="action-button" on:click|preventDefault|stopPropagation={deleteComment}>
+						<IconTrash />
+					</button>
+				{/if}
 			</div>
 
 			{#if comment.childComments?.length}
@@ -129,7 +164,7 @@
 			{/if}
 		</div>
 	{/if}
-</a>
+</div>
 
 <style lang="scss">
 	.comment-wrapper {
@@ -139,6 +174,7 @@
 		padding: 0.5rem;
 		border-radius: 1rem;
 		text-decoration: none;
+		cursor: pointer;
 
 		&.no-hover {
 			cursor: default;
