@@ -33,6 +33,12 @@ export const actions: Actions = {
 		const currentUser = await locals.getUserData();
 		const ipAddress = getClientAddress();
 
+		if (currentUser?.badges?.includes('BLOCKED')) {
+			return fail(400, {
+				message: 'Your account is restricted.',
+			});
+		}
+
 		const content = formData.get('content')?.toString()?.trim();
 
 		if (!content) {
