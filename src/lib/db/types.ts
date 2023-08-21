@@ -1,7 +1,9 @@
 import type { InferModel } from 'drizzle-orm';
 import type { comments, userCommentLikes, users } from './schema';
 
-export type User = InferModel<typeof users>;
+export type User = InferModel<typeof users> & {
+	userLikes?: UserCommentLikes[] | null | undefined;
+};
 
 export type UserBadge = Exclude<User['badges'], null>[number];
 
