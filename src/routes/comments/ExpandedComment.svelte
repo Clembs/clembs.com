@@ -5,6 +5,7 @@
 	import IconArrowBackUp from '@tabler/icons-svelte/dist/svelte/icons/IconMessageCircle.svelte';
 	import IconCopy from '@tabler/icons-svelte/dist/svelte/icons/IconCopy.svelte';
 	import IconShare from '@tabler/icons-svelte/dist/svelte/icons/IconShare3.svelte';
+	import IconTrash from '@tabler/icons-svelte/dist/svelte/icons/IconTrash.svelte';
 	import { createEventDispatcher } from 'svelte';
 	import { useShare } from '$lib/components/useShare';
 	import GradientAvatar from '$lib/components/GradientAvatar/GradientAvatar.svelte';
@@ -15,19 +16,26 @@
 
 	export let comment: Comment;
 
+	let data = $page.data;
+
 	const dispatch = createEventDispatcher();
 	const date = snowflakeToDate(comment.id);
 
-	let hasLiked = $page.data.userData
-		? !!comment.userLikes?.find((e) => e.userId === $page.data?.userData?.id)
+	let hasLiked = data.userData
+		? !!comment.userLikes?.find((e) => e.userId === data?.userData?.id)
 		: false;
 	let likes = comment.userLikes?.length ?? 0;
 
 	let username = comment.author?.username ?? 'anonymous user';
 
 	async function likeComment() {
-		if (!$page.data.userData) {
+		if (!data.userData) {
 			dispatch('login');
+			return;
+		}
+
+		if (data.userData?.badges?.includes('BLOCKED')) {
+			dispatch('blocked');
 			return;
 		}
 
@@ -58,7 +66,26 @@
 	}
 
 	async function replyComment() {
+		if (data.userData?.badges?.includes('BLOCKED')) {
+			dispatch('blocked');
+			return;
+		}
+
 		dispatch('reply', comment);
+	}
+
+	async function deleteComment() {
+		try {
+			const res = await fetch(`/comments/api/${comment.id}/delete`, {
+				method: 'DELETE',
+			});
+
+			if (res.ok) {
+				toast.success(`Successfully deleted.`);
+			}
+		} catch (e) {
+			toast.error(`Something went wrong while trying to delete this comment.`);
+		}
 	}
 </script>
 
@@ -105,8 +132,14 @@
 		</button>
 		<button style="flex-grow: 1;" on:click={() => navigator.clipboard.writeText(comment.id)}>
 			<IconCopy />
-			<span class="button-label"> Copy Comment ID </span>
+			<span class="button-label"> Copy ID </span>
 		</button>
+		{#if data.userData?.id === comment.userId || data.userData?.badges?.includes('CLEMBS')}
+			<button class="action-button" on:click|preventDefault|stopPropagation={deleteComment}>
+				<IconTrash />
+				<span class="button-label"> Delete </span>
+			</button>
+		{/if}
 	</div>
 </div>
 
