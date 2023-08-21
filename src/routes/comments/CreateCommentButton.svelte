@@ -25,7 +25,7 @@
 		width: 100%;
 		align-items: center;
 		gap: 0.5rem;
-		margin-bottom: 1rem;
+		margin: 1rem 0;
 
 		.user-avatar {
 			flex: 1;
