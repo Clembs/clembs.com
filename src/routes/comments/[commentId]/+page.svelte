@@ -1,11 +1,8 @@
 <script lang="ts">
-	import LoginModal from '$lib/components/LoginModal.svelte';
-	import Comment from '../Comment.svelte';
-	import CommentFormModal from '../CommentFormModal.svelte';
 	import ExpandedComment from '../ExpandedComment.svelte';
 	import type { PageData } from './$types';
 	import type { Comment as CommentType } from '$lib/db/types';
-	import CreateCommentButton from '../CreateCommentButton.svelte';
+	import Comments from '../Comments.svelte';
 
 	export let data: PageData;
 	let showModal = false;
@@ -25,44 +22,15 @@
 	}
 </script>
 
-{#if !data?.userData}
-	<LoginModal
-		{skipToComment}
-		parentComment={selectedParentComment}
-		on:close={() => {
-			selectedParentComment = null;
-		}}
-		bind:showModal
-	/>
-{:else}
-	<CommentFormModal
-		bind:showModal
-		parentComment={selectedParentComment}
-		on:close={() => {
-			selectedParentComment = null;
-		}}
-	/>
-{/if}
-
 <ExpandedComment
 	comment={data.comment}
 	on:reply={handleReplyButton}
 	on:login={handleLoginRequiredButton}
 />
 
-<h3>Replies ({data?.comment?.childComments.length})</h3>
-
-<CreateCommentButton
+<Comments
+	bind:showModal
 	userData={data?.userData}
-	on:click={() =>
-		handleReplyButton({
-			detail: data?.comment,
-		})}
-	reply={true}
+	comments={data.comment.childComments}
+	parentComment={data.comment}
 />
-
-{#if data?.comment?.childComments.length}
-	{#each data?.comment?.childComments as comment}
-		<Comment {comment} on:reply={handleReplyButton} on:login={handleLoginRequiredButton} />
-	{/each}
-{/if}
