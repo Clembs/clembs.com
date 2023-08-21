@@ -1,9 +1,10 @@
 import { db } from '$lib/db';
-import { comments } from '$lib/db/schema.js';
-import { generateSnowflake } from '$lib/helpers/snowflake.js';
+import { comments } from '$lib/db/schema';
+import { generateSnowflake } from '$lib/helpers/snowflake';
 import { fail } from '@sveltejs/kit';
 import { isNull, type InferModel } from 'drizzle-orm';
-import type { Actions, PageServerLoad } from './$types.js';
+import type { Actions, PageServerLoad } from './$types';
+import { rateLimit } from '$lib/helpers/handleRateLimit';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.getSession();
@@ -22,7 +23,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 };
 
 export const actions: Actions = {
-	post: async ({ request, locals }) => {
+	post: async ({ request, locals, getClientAddress }) => {
 		const formData = await request.formData();
 
 		if (!formData) {
@@ -30,12 +31,25 @@ export const actions: Actions = {
 		}
 
 		const currentUser = await locals.getUserData();
-		const content = formData.get('content')?.toString();
-		const { content: content2 } = Object.values(formData) as any as { content: string };
-		const parentCommentId = formData.get('parent-comment')?.toString();
+		const ipAddress = getClientAddress();
 
-		console.log(content);
-		console.log(content2);
+		const content = formData.get('content')?.toString()?.trim();
+
+		if (!content) {
+			return fail(400, {
+				message: 'Missing content',
+			});
+		}
+
+		const rateLimited = rateLimit(currentUser?.id || ipAddress, 60 * 1000, currentUser ? 5 : 1);
+
+		if (rateLimited) {
+			return fail(429, {
+				message: 'Rate limited. Try again later.',
+			});
+		}
+
+		const parentCommentId = formData.get('parent-comment')?.toString();
 
 		if (parentCommentId) {
 			const comment = await db.query.comments.findFirst({
@@ -47,12 +61,6 @@ export const actions: Actions = {
 					message: 'Invalid parent comment ID',
 				});
 			}
-		}
-
-		if (!content) {
-			return fail(400, {
-				message: 'Missing content',
-			});
 		}
 
 		const input: InferModel<typeof comments, 'insert'> = {
