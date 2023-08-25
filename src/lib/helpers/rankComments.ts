@@ -7,7 +7,6 @@ export function rankComments(
 	filters: {
 		anonymous: boolean;
 		blocked: boolean;
-		liked: boolean;
 	}
 ): Comment[] {
 	let allComments: Comment[] = [];
@@ -32,13 +31,6 @@ export function rankComments(
 			return;
 		}
 		if (!filters.blocked && comment.author && comment.author.badges?.includes('BLOCKED')) {
-			return;
-		}
-		if (
-			filters.liked &&
-			userData &&
-			!comment.userLikes?.find(({ userId }) => userId === userData.id)
-		) {
 			return;
 		}
 

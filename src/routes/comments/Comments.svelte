@@ -19,7 +19,6 @@
 	let filters = {
 		anonymous: true,
 		blocked: false,
-		liked: false,
 	};
 
 	let selectedSortingMode: 'interactions' | 'recent' = 'recent';
