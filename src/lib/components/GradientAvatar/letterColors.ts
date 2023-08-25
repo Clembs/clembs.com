@@ -17,7 +17,7 @@ export const letterColors: Record<string, string> = {
 	p: '#3F5AFC',
 	q: '#B444AE',
 	r: '#8D6A31',
-	s: '#2AC9E9',
+	s: '#31C0FF',
 	t: '#7C1E5D',
 	u: '#E2C9E0',
 	v: '#BB3D88',
@@ -27,7 +27,7 @@ export const letterColors: Record<string, string> = {
 	z: '#FC52F7',
 	A: '#9126A0',
 	B: '#3B0A3A',
-	C: '#7E106B',
+	C: '#643FFF',
 	D: '#42FA64',
 	E: '#8C8D75',
 	F: '#D47226',
@@ -80,4 +80,5 @@ export const letterColors: Record<string, string> = {
 	'|': '#9399A9',
 	'}': '#C32C7A',
 	'~': '#4A7849',
+	' ': '',
 };

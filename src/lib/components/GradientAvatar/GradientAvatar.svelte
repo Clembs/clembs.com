@@ -9,8 +9,8 @@
 
 	$: username = user?.username ?? 'anonymous user';
 
-	$: firstCharUsername = username[0];
-	$: lastCharUsername = username.at(-1)!;
+	$: firstCharUsername = username[0].trim();
+	$: lastCharUsername = username.at(-1)?.trim()!;
 
 	$: avatarGradient = {
 		a: letterColors[firstCharUsername] ?? letterColors.a,

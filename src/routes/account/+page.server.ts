@@ -117,7 +117,12 @@ export const actions: Actions = {
 		if (isNewUser) {
 			await db
 				.insert(users)
-				.values({ id: userId, email: userEmail, username: 'verified anonymous user' })
+				.values({
+					id: userId,
+					email: userEmail,
+					username: 'verified anonymous user',
+					badges: ['VERIFIED'],
+				})
 				.onConflictDoNothing();
 		}
 
@@ -136,7 +141,7 @@ export const actions: Actions = {
 			return fail(400);
 		}
 
-		const username = formData.get('username')?.toString();
+		const username = formData.get('username')?.toString()?.trim();
 
 		if (!username) {
 			return fail(400);
@@ -154,7 +159,7 @@ export const actions: Actions = {
 			});
 		}
 
-		if (!/^[a-zA-Z0-9._%+-]+$/.test(username)) {
+		if (!/^[a-zA-Z0-9 ._%+-]+$/.test(username)) {
 			return fail(400, {
 				message: 'Username contains invalid characters.',
 			});
