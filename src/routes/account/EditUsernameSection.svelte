@@ -17,23 +17,25 @@
 	let username = data?.userData?.username;
 </script>
 
-<Modal bind:showModal>
-	<h1 slot="title">How is my avatar generated?</h1>
+{#if showModal}
+	<Modal bind:showModal>
+		<h1 slot="title">How is my avatar generated?</h1>
 
-	<p>
-		The colors in your avatar are based on the first and last character of your username.<br />
-		Every character that is allowed in your username has a specific color code mapped to it, which is
-		why every time you change the first or last character, a different gradient shows up!
-	</p>
+		<p>
+			The colors in your avatar are based on the first and last character of your username.<br />
+			Every character that is allowed in your username has a specific color code mapped to it, which
+			is why every time you change the first or last character, a different gradient shows up!
+		</p>
 
-	<Button on:click={() => (showModal = false)}>Got it!</Button>
-	<Button
-		style="outlined"
-		href="https://github.com/Clembs/clembs.com/blob/b29beb998fb621e306bf07bd5db0dfacfea09abe/src/lib/components/GradientAvatar/GradientAvatar.svelte"
-	>
-		View source code
-	</Button>
-</Modal>
+		<Button on:click={() => (showModal = false)}>Got it!</Button>
+		<Button
+			style="outlined"
+			href="https://github.com/Clembs/clembs.com/blob/b29beb998fb621e306bf07bd5db0dfacfea09abe/src/lib/components/GradientAvatar/GradientAvatar.svelte"
+		>
+			View source code
+		</Button>
+	</Modal>
+{/if}
 
 <section>
 	<h2>Edit Username</h2>
@@ -69,7 +71,7 @@
 		action="/account?/changeUsername"
 	>
 		<div class="profile">
-			<button class="avatar" on:click|preventDefault={() => (showModal = true)}>
+			<button type="button" class="avatar" on:click|preventDefault={() => (showModal = true)}>
 				<GradientAvatar
 					size="3rem"
 					user={{
