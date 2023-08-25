@@ -13,7 +13,6 @@ export const load: PageServerLoad = async ({ locals }) => {
 	const comments = await db.query.comments.findMany({
 		with: {
 			author: true,
-			userLikes: true,
 			childComments: true,
 		},
 		where: ({ parentId }) => isNull(parentId),

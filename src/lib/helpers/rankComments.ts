@@ -14,8 +14,8 @@ export function rankComments(
 
 	if (sortingMode === 'interactions') {
 		allComments = comments.sort((a, b) => {
-			const aRanking = (a.childComments?.length || 0) + (a.userLikes?.length || 0);
-			const bRanking = (b.childComments?.length || 0) + (b.userLikes?.length || 0);
+			const aRanking = a.childComments?.length || 0;
+			const bRanking = b.childComments?.length || 0;
 
 			return bRanking - aRanking;
 		});
