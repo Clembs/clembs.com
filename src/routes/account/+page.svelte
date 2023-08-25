@@ -19,7 +19,11 @@
 		<header>
 			<h1>Account details</h1>
 
-			<p>Review and edit your account settings before commenting.</p>
+			<p>
+				Review and edit your account settings before {data.hasNameChange
+					? 'clembing'
+					: 'commenting'}.
+			</p>
 
 			<form
 				use:enhance={() => {
@@ -33,7 +37,9 @@
 				action="?/signOut"
 				method="post"
 			>
-				<Button style="outlined" href="/comments">Open Comments</Button>
+				<Button style="outlined" href="/comments">
+					Open {data.hasNameChange ? 'Clember' : 'Comments'}
+				</Button>
 				<Button style="danger" type="submit">
 					{#if signOutLoading}
 						<LoaderIcon />

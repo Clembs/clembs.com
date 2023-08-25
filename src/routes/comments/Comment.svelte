@@ -56,7 +56,11 @@
 				commentDeleted = true;
 			}
 		} catch (e) {
-			toast.error(`Something went wrong while trying to delete this comment.`);
+			toast.error(
+				`Something went wrong while trying to delete this ${
+					$page.data.hasNameChange ? 'clemb' : 'comment'
+				}.`
+			);
 		}
 	}
 

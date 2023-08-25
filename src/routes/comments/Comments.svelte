@@ -10,6 +10,7 @@
 	import RestrictedFunctionalityModal from './RestrictedFunctionalityModal.svelte';
 	import autoAnimate from '@formkit/auto-animate';
 	import UserInfoModal from '$lib/components/UserInfoModal.svelte';
+	import { page } from '$app/stores';
 
 	export let userData: User | null | undefined;
 	export let parentComment: CommentType | null | undefined = null;
@@ -93,7 +94,9 @@
 	}}
 />
 
-{#if !parentComment}
+{#if $page.data.hasNameChange}
+	<InfoBox type="note"><span slot="title">yo that website is clembing or what</span></InfoBox>
+{:else}
 	<InfoBox type="note">
 		<span slot="title">Welcome to the clembs.com comment section!</span>
 		Here you can leave your feedback, ask me questions, speak between y'all, etc.<br />Basically,
@@ -107,39 +110,35 @@
 	</InfoBox>
 {/if}
 
-<h3>Comments ({sortedAndFiltered?.length || 0})</h3>
+<h3>{$page.data.hasNameChange ? 'Clembs' : 'Comments'} ({sortedAndFiltered?.length || 0})</h3>
 
-{#if comments.length}
-	<div class="sort-and-filter">
-		<Chip
-			checked={selectedSortingMode === 'interactions'}
-			on:click={() =>
-				(selectedSortingMode = selectedSortingMode === 'recent' ? 'interactions' : 'recent')}
-		>
-			Most replied to
-		</Chip>
-		<Chip checked={!filters.anonymous} on:click={() => (filters.anonymous = !filters.anonymous)}>
-			Hide anonymous users
-		</Chip>
-		<Chip checked={filters.blocked} on:click={() => (filters.blocked = !filters.blocked)}>
-			Show blocked users
-		</Chip>
-	</div>
+<div class="sort-and-filter">
+	<Chip
+		checked={selectedSortingMode === 'interactions'}
+		on:click={() =>
+			(selectedSortingMode = selectedSortingMode === 'recent' ? 'interactions' : 'recent')}
+	>
+		Most replied to
+	</Chip>
+	<Chip checked={!filters.anonymous} on:click={() => (filters.anonymous = !filters.anonymous)}>
+		Hide anonymous users
+	</Chip>
+	<Chip checked={filters.blocked} on:click={() => (filters.blocked = !filters.blocked)}>
+		Show blocked users
+	</Chip>
+</div>
 
-	<ul class="comments" use:autoAnimate>
-		{#each sortedAndFiltered as comment (comment.id)}
-			<Comment
-				{comment}
-				on:reply={handleReplyButton}
-				on:login={handleLoginRequiredButton}
-				on:blocked={handleRestrictedFunctionality}
-				on:userinfo={handleUserInfoButton}
-			/>
-		{/each}
-	</ul>
-{:else}
-	No comments yet, but you could be the first!
-{/if}
+<ul class="comments" use:autoAnimate>
+	{#each sortedAndFiltered as comment (comment.id)}
+		<Comment
+			{comment}
+			on:reply={handleReplyButton}
+			on:login={handleLoginRequiredButton}
+			on:blocked={handleRestrictedFunctionality}
+			on:userinfo={handleUserInfoButton}
+		/>
+	{/each}
+</ul>
 
 <style lang="scss">
 	.sort-and-filter {
@@ -147,6 +146,7 @@
 		align-items: center;
 		gap: 0.5rem;
 		margin-bottom: 0.5rem;
+		overflow-y: scroll;
 	}
 
 	.comments {

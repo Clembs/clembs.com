@@ -4,13 +4,21 @@
 	import GradientAvatar from '$lib/components/GradientAvatar/GradientAvatar.svelte';
 	import IconUserCircle from '@tabler/icons-svelte/dist/svelte/icons/IconUserCircle.svelte';
 	import type { PageData } from './$types';
+	import Clembs from '$lib/icons/Clembs.svelte';
 
 	export let data: PageData;
 </script>
 
 <nav>
 	<div class="nav-inside">
-		<a href="/comments" class="title">Comments <Badge>Alpha</Badge></a>
+		<div class="left">
+			<a href="/comments" class="title">
+				<Clembs />
+				{data.hasNameChange ? 'Clember (C)' : 'Comments'}
+				<Badge style="outlined">Preview</Badge>
+			</a>
+		</div>
+
 		{#if data?.userData}
 			<a href="/account" title="Account details" aria-label="Account details">
 				<GradientAvatar user={data?.userData} size="2rem" showBadge={false} />
@@ -45,12 +53,12 @@
 		border-bottom: 1px solid var(--color-outline);
 
 		.nav-inside {
-			padding: 0.5rem 0.5rem;
+			padding: 0.5rem 1rem;
 			display: flex;
 			gap: 1rem;
 			align-items: center;
 			justify-content: space-between;
-			max-width: 800px;
+			max-width: 768px;
 			margin: 0 auto;
 		}
 
@@ -61,8 +69,9 @@
 			font-size: 1.5rem;
 			font-weight: 500;
 			border-radius: 1rem;
-			padding: 0.5rem 1rem;
+			padding: 0.5rem 0.5rem;
 			text-decoration: none;
+			margin-left: -0.5rem;
 
 			&:hover {
 				background-color: #eeeeee;

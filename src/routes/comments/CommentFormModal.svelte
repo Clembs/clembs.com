@@ -38,7 +38,11 @@
 	<Modal on:close={(e) => (content = '')} bind:showModal>
 		<h1 slot="title">
 			{parentComment
-				? `Reply to ${parentComment.author?.username ?? 'comment'}`
+				? $page.data.hasNameChange
+					? 'Clemb a reply'
+					: `Reply to ${parentComment.author?.username ?? 'comment'}`
+				: $page.data.hasNameChange
+				? 'Write a clemb'
 				: 'Write a comment'}
 		</h1>
 		{#if parentComment}
@@ -64,7 +68,9 @@
 
 					if (result.type === 'success') {
 						showModal = false;
-						toast.success('Comment sent!');
+						toast.success(
+							$page.data.hasNameChange ? 'you clembed. well clembed!' : 'Comment sent!'
+						);
 					}
 					if (result.type === 'failure') {
 						error = result.data?.message;
@@ -122,7 +128,7 @@
 					{#if loading}
 						<LoaderIcon />
 					{:else}
-						{parentComment ? 'Reply' : 'Comment'}
+						{$page.data.hasNameChange ? 'Clemb' : parentComment ? 'Reply' : 'Comment'}
 					{/if}
 				</Button>
 			</div>

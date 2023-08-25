@@ -17,7 +17,7 @@
 		},
 		{
 			href: '/comments',
-			label: 'Comments',
+			label: $page.data.hasNameChange ? 'Clember' : 'Comments',
 		},
 		{
 			href: '/contact',
