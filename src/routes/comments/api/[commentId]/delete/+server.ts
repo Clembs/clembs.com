@@ -27,8 +27,13 @@ export const DELETE: RequestHandler = async ({ params, locals: { getUserData } }
 		throw error(401);
 	}
 
+	// delete child comments
+	await db.delete(comments).where(eq(comments.parentId, params.commentId));
+
+	// delete comment likes
 	await db.delete(userCommentLikes).where(eq(userCommentLikes.commentId, params.commentId));
 
+	// delete comment itself
 	await db.delete(comments).where(eq(comments.id, params.commentId));
 
 	return new Response(null, { status: 200 });
