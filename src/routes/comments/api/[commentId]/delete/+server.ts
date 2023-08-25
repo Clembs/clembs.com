@@ -1,7 +1,7 @@
 import { db } from '$lib/db';
 import { error } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { comments, userCommentLikes } from '$lib/db/schema';
+import { comments } from '$lib/db/schema';
 import { eq } from 'drizzle-orm';
 
 export const DELETE: RequestHandler = async ({ params, locals: { getUserData } }) => {
@@ -29,9 +29,6 @@ export const DELETE: RequestHandler = async ({ params, locals: { getUserData } }
 
 	// delete child comments
 	await db.delete(comments).where(eq(comments.parentId, params.commentId));
-
-	// delete comment likes
-	await db.delete(userCommentLikes).where(eq(userCommentLikes.commentId, params.commentId));
 
 	// delete comment itself
 	await db.delete(comments).where(eq(comments.id, params.commentId));
