@@ -137,7 +137,7 @@
 						{/if}
 					</button>
 				{/if}
-				{#if data.userData?.id === comment.author?.id || data.userData?.badges?.includes('CLEMBS')}
+				{#if (data.userData && data.userData?.id === comment.author?.id) || data.userData?.badges?.includes('CLEMBS')}
 					<button class="action-button" on:click={deleteComment}>
 						{#if loadingDelete}
 							<LoaderIcon />
@@ -152,7 +152,13 @@
 		{#if childComments && childCommentsExpanded}
 			<div class="child-comments" class:margin-left={nestingLevel < 3} transition:slide>
 				{#each childComments as comment}
-					<svelte:self {comment} initialNestingLevel={nestingLevel + 1} />
+					<svelte:self
+						{comment}
+						initialNestingLevel={nestingLevel + 1}
+						on:blocked
+						on:userinfo
+						on:reply
+					/>
 				{/each}
 			</div>
 		{/if}
