@@ -12,7 +12,7 @@
 	<div class="nav-inside">
 		<a href="/comments" class="title">Comments <Badge>Alpha</Badge></a>
 		{#if data?.userData}
-			<a href="/account">
+			<a href="/account" title="Account details" aria-label="Account details">
 				<GradientAvatar user={data?.userData} size="2rem" showBadge={false} />
 			</a>
 		{:else}
