@@ -58,7 +58,6 @@
 			border: none;
 			display: grid;
 			align-items: center;
-			cursor: help;
 			bottom: -0.55rem;
 			right: -0.55rem;
 			color: var(--background);
