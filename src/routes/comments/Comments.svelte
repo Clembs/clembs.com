@@ -8,16 +8,12 @@
 	import CreateCommentButton from './CreateCommentButton.svelte';
 	import InfoBox from '$lib/components/InfoBox.svelte';
 	import RestrictedFunctionalityModal from './RestrictedFunctionalityModal.svelte';
+	import autoAnimate from '@formkit/auto-animate';
 
 	export let userData: User | null | undefined;
 	export let parentComment: CommentType | null | undefined = null;
 	export let comments: CommentType[];
 	export let showModal = false;
-
-	const sortingModes = [
-		['recent', 'Newest first'],
-		['interactions', 'Most interacted with first'],
-	];
 
 	let filters = {
 		anonymous: true,
@@ -25,7 +21,7 @@
 		liked: false,
 	};
 
-	let selectedSortingMode: (typeof sortingModes)[number][0] = 'recent';
+	let selectedSortingMode: 'interactions' | 'recent' = 'recent';
 
 	let selectedParentComment = parentComment;
 	let skipToComment = true;
@@ -103,36 +99,26 @@
 	</InfoBox>
 {/if}
 
-<h3>{selectedParentComment ? 'Replies' : 'Comments'} ({sortedAndFiltered?.length || 0})</h3>
+<h3>Comments ({sortedAndFiltered?.length || 0})</h3>
 
 {#if comments.length}
 	<div class="sort-and-filter">
-		Sort:
-		{#each sortingModes as [id, label]}
-			<Chip
-				on:click={() => (selectedSortingMode = id)}
-				checked={selectedSortingMode === id}
-				value={id}>{label}</Chip
-			>
-		{/each}
-	</div>
-
-	<div class="sort-and-filter">
-		Filter:
-		{#if userData}
-			<Chip checked={filters.liked} on:click={() => (filters.liked = !filters.liked)}>
-				Liked by you
-			</Chip>
-		{/if}
+		<Chip
+			checked={selectedSortingMode === 'interactions'}
+			on:click={() =>
+				(selectedSortingMode = selectedSortingMode === 'recent' ? 'interactions' : 'recent')}
+		>
+			Most replied to
+		</Chip>
+		<Chip checked={!filters.anonymous} on:click={() => (filters.anonymous = !filters.anonymous)}>
+			Hide anonymous users
+		</Chip>
 		<Chip checked={filters.blocked} on:click={() => (filters.blocked = !filters.blocked)}>
 			Show blocked users
 		</Chip>
-		<Chip checked={!filters.anonymous} on:click={() => (filters.anonymous = !filters.anonymous)}>
-			Hide anonymous posts
-		</Chip>
 	</div>
 
-	<ul class="comments">
+	<ul class="comments" use:autoAnimate>
 		{#each sortedAndFiltered as comment (comment.id)}
 			<Comment
 				{comment}
@@ -157,9 +143,9 @@
 	.comments {
 		list-style: none;
 		padding: 0;
-		margin: 1rem -0.75rem;
+		margin: 1rem 0;
 		display: flex;
 		flex-direction: column;
-		gap: 0.5rem;
+		gap: 0.75rem;
 	}
 </style>
