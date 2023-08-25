@@ -17,7 +17,7 @@
 		},
 		{
 			href: '/comments',
-			label: 'Comments (Alpha)',
+			label: 'Comments',
 		},
 		{
 			href: '/contact',
