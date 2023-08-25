@@ -81,6 +81,7 @@
 				placeholder="example@clembs.com"
 				required={true}
 				readonly={otpEmailSent}
+				pattern={EMAIL_REGEX}
 			/>
 
 			{#if otpEmailSent}
@@ -92,6 +93,7 @@
 					placeholder="000000"
 					required={true}
 					maxlength={999999}
+					pattern={OTP_REGEX}
 				/>
 			{/if}
 
