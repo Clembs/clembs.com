@@ -46,9 +46,9 @@
 <svelte:window on:scroll={update} />
 
 <MetaTags
-	pageName="About the Clembs SMP"
+	pageName="About Clembs Minecraft"
 	image="/assets/smp/Clembs SMP.png"
-	description="The Clembs SMP (Survival Multi Player) is a Minecraft server where players from around the
+	description="Clembs Minecraft (formerly Clembs SMP) is a Minecraft server where players from around the
 world come together to build, fight, survive and create!"
 />
 
@@ -57,7 +57,7 @@ world come together to build, fight, survive and create!"
 		<img src="/assets/smp/smp-wordmark.webp" alt="Clembs SMP" />
 
 		<p>
-			The Clembs SMP (Survival Multi Player) is a Minecraft server where players from around the
+			Clembs Minecraft (formerly Clembs SMP) is a Minecraft server where players from around the
 			world come together to build, fight, survive and create!
 		</p>
 

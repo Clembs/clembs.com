@@ -4,16 +4,24 @@
 </script>
 
 <div class="registration-card">
-	<span class="title"> The SMP is currently online.<br />Join the survival now! </span>
+	<span class="title">
+		The Clembs Minecraft server has officially ended.<br />Thank you for taking interesting in this
+		month-long event!
+		<!-- <br />Join the survival now! -->
+	</span>
 
-	<div class="button-wrapper">
+	<Button href="https://drive.google.com/file/d/1daezoNNv5JhMxLxZT_gvl3ftlydhbdCf/view">
+		Download the world for CMC Season Finale
+	</Button>
+
+	<!-- <div class="button-wrapper">
 		<Button on:click={() => {
 			navigator.clipboard.writeText('smp.clembs.com').then(() => toast('Copied to clipboard', {
 				icon: CheckmarkIcon
 			}))
 		}}>smp.clembs.com</Button>
 		Java Edition only. Cracked accounts allowed.
-	</div>
+	</div> -->
 </div>
 
 <style lang="scss">
@@ -22,7 +30,7 @@
 		justify-content: space-evenly;
 		align-items: center;
 		flex-wrap: wrap;
-		background-color: hsl(108, 100%, 67%);
+		background-color: var(--color-surface);
 		border: 1px solid var(--color-on-background);
 		padding: 1.25rem 1rem;
 		border-radius: 1rem;
@@ -35,12 +43,12 @@
 			font-weight: 500;
 		}
 
-		.button-wrapper {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			text-align: center;
-			font-size: 0.8rem;
-		}
+		// .button-wrapper {
+		// 	display: flex;
+		// 	flex-direction: column;
+		// 	align-items: center;
+		// 	text-align: center;
+		// 	font-size: 0.8rem;
+		// }
 	}
 </style>
