@@ -51,7 +51,7 @@
 			--_hover-bg: var(--color-on-surface);
 		}
 		&[aria-checked='false'] {
-			--_bg: transparent;
+			--_bg: var(--color-surface);
 			--_border: 1px solid transparent;
 			--_text-color: var(--color-on-background);
 
