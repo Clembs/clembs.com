@@ -41,10 +41,13 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@formkit/auto-animate": "^0.7.0",
 		"@supabase/supabase-js": "^2.32.0",
 		"@tabler/icons-svelte": "^2.23.0",
 		"drizzle-orm": "^0.28.2",
+		"insane": "^2.6.2",
 		"postgres": "^3.3.5",
+		"snarkdown": "^2.0.0",
 		"svelte-french-toast": "^1.0.4-beta.0"
 	}
 }
