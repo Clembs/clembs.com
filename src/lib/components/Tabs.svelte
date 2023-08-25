@@ -35,6 +35,10 @@
 		gap: 0.25rem;
 		width: 100%;
 
+		&::-webkit-scrollbar {
+			display: none;
+		}
+
 		:global(.chip) {
 			width: 100%;
 		}

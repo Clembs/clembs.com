@@ -147,6 +147,11 @@
 		gap: 0.5rem;
 		margin-bottom: 0.5rem;
 		overflow-y: scroll;
+		scrollbar-width: none;
+
+		&::-webkit-scrollbar {
+			display: none;
+		}
 	}
 
 	.comments {

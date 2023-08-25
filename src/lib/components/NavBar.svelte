@@ -75,6 +75,11 @@
 		transition: all linear 150ms;
 		z-index: 9;
 		overflow-y: scroll;
+		scrollbar-width: none;
+
+		&::-webkit-scrollbar {
+			display: none;
+		}
 
 		.links {
 			display: flex;
