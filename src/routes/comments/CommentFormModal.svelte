@@ -133,13 +133,13 @@
 <style lang="scss">
 	.parent-comment {
 		display: flex;
-		// gap: 0.5rem;
+		gap: 0.25rem;
 		margin-bottom: 1rem;
 
 		.branch {
 			position: relative;
 			color: var(--color-on-surface);
-			top: 1.5rem;
+			top: 1rem;
 			margin-left: 17.5px;
 
 			:global(svg) {
@@ -150,7 +150,7 @@
 			.line {
 				position: relative;
 				top: -0.5rem;
-				height: calc(100% - 2.25rem);
+				height: calc(100% - 1.5rem);
 				width: 2px;
 				margin: 0;
 				background-color: var(--color-on-surface);
