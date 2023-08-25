@@ -29,6 +29,10 @@
 
 	let username = comment.author?.username ?? 'anonymous user';
 
+	async function accessUserInfo() {
+		dispatch('userinfo', comment.author);
+	}
+
 	async function replyComment() {
 		if (data.userData?.badges?.includes('BLOCKED')) {
 			dispatch('blocked');
@@ -84,17 +88,30 @@
 		class="comment-wrapper {showActions ? '' : 'no-hover'}"
 		id="comment-{comment.id}"
 		class:reply={nestingLevel}
+		class:no-actions={!showActions}
 	>
 		<div class="comment">
-			<GradientAvatar user={comment.author} size={!nestingLevel ? '2.25rem' : '1.5rem'} />
+			{#if showActions}
+				<button on:click={accessUserInfo} class="comment-avatar">
+					<GradientAvatar user={comment.author} size={!nestingLevel ? '2.25rem' : '1.5rem'} />
+				</button>
+			{:else}
+				<GradientAvatar user={comment.author} size={!nestingLevel ? '2.25rem' : '1.5rem'} />
+			{/if}
 			<div class="comment-text">
 				<div class="comment-text-metadata">
-					<span class="comment-text-metadata-username">
-						{username}
-					</span>
-					<time datetime={date.toISOString()} class="comment-text-metadata-timestamp">
-						{relativeTimeFormat(date)}
-					</time>
+					{#if showActions}
+						<button on:click={accessUserInfo} class="comment-text-metadata-username">
+							{username}
+						</button>
+						<time datetime={date.toISOString()} class="comment-text-metadata-timestamp">
+							{relativeTimeFormat(date)}
+						</time>
+					{:else}
+						<div class="comment-text-metadata-username">
+							{username}
+						</div>
+					{/if}
 				</div>
 				<div class="comment-text-content">
 					{comment.content}
@@ -163,6 +180,20 @@
 				margin-left: 2rem;
 			}
 		}
+
+		&.no-actions {
+			.comment-avatar {
+				cursor: default;
+			}
+
+			.comment-text-metadata-username {
+				cursor: default;
+
+				&:hover {
+					text-decoration: inherit;
+				}
+			}
+		}
 	}
 
 	.child-comments {
@@ -215,6 +246,18 @@
 	.comment {
 		display: flex;
 		gap: 1rem;
+
+		&-avatar {
+			appearance: none;
+			margin: 0;
+			border: 0;
+			padding: 0;
+			background-color: transparent;
+			border-radius: 99rem;
+			cursor: pointer;
+			height: min-content;
+		}
+
 		&-text {
 			flex: 1;
 			word-break: break-word;
@@ -226,7 +269,20 @@
 				align-items: baseline;
 
 				&-username {
+					appearance: none;
+					margin: 0;
+					border: 0;
+					padding: 0;
+					background-color: transparent;
+					font-size: inherit;
+					font-family: inherit;
+					border-radius: 0.5rem;
+					cursor: pointer;
 					font-weight: 500;
+
+					&:hover {
+						text-decoration: underline;
+					}
 				}
 
 				&-timestamp {

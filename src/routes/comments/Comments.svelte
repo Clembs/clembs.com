@@ -9,6 +9,7 @@
 	import InfoBox from '$lib/components/InfoBox.svelte';
 	import RestrictedFunctionalityModal from './RestrictedFunctionalityModal.svelte';
 	import autoAnimate from '@formkit/auto-animate';
+	import UserInfoModal from '$lib/components/UserInfoModal.svelte';
 
 	export let userData: User | null | undefined;
 	export let parentComment: CommentType | null | undefined = null;
@@ -22,10 +23,11 @@
 	};
 
 	let selectedSortingMode: 'interactions' | 'recent' = 'recent';
-
 	let selectedParentComment = parentComment;
 	let skipToComment = true;
 	let showRestrictedFunctionalityModal = false;
+	let showUserInfoModal = false;
+	let selectedUser: User;
 
 	$: sortedAndFiltered = rankComments(comments, userData, selectedSortingMode, filters);
 
@@ -45,6 +47,11 @@
 	function handleRestrictedFunctionality() {
 		showRestrictedFunctionalityModal = true;
 	}
+
+	function handleUserInfoButton(event: { detail: User }) {
+		showUserInfoModal = true;
+		selectedUser = event.detail;
+	}
 </script>
 
 {#if !userData}
@@ -59,6 +66,8 @@
 		}}
 	/>
 {:else}
+	<UserInfoModal userData={selectedUser} bind:showModal={showUserInfoModal} />
+
 	<CommentFormModal
 		bind:showModal
 		parentComment={selectedParentComment}
@@ -125,6 +134,7 @@
 				on:reply={handleReplyButton}
 				on:login={handleLoginRequiredButton}
 				on:blocked={handleRestrictedFunctionality}
+				on:userinfo={handleUserInfoButton}
 			/>
 		{/each}
 	</ul>
