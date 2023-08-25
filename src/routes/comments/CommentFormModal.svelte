@@ -20,11 +20,22 @@
 	let content = '';
 	let loading = false;
 
+	const commentMaxLength = 256;
+
 	onMount(() => document.querySelector('textarea')?.focus());
 </script>
 
+<svelte:window
+	on:beforeunload={(e) => {
+		if (content) {
+			e.preventDefault();
+			e.returnValue = '';
+		}
+	}}
+/>
+
 {#if showModal}
-	<Modal on:close bind:showModal>
+	<Modal on:close={(e) => (content = '')} bind:showModal>
 		<h1 slot="title">
 			{parentComment
 				? `Reply to ${parentComment.author?.username ?? 'comment'}`
@@ -99,15 +110,15 @@
 			{/if}
 
 			<div class="actions">
-				<div class="content-info" class:error={content.length > 512}>
-					{#if content.length > 512}
+				<div class="content-info" class:error={content.length > commentMaxLength}>
+					{#if content.length > commentMaxLength}
 						<IconAlertCircleFilled />
 					{/if}
 
-					{content.length}/512<br />
+					{content.length}/{commentMaxLength}<br />
 				</div>
 
-				<Button disabled={loading || content.length > 512 || !content} type="submit">
+				<Button disabled={loading || content.length > commentMaxLength || !content} type="submit">
 					{#if loading}
 						<LoaderIcon />
 					{:else}
