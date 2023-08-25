@@ -30,6 +30,7 @@
 
 		user-select: none;
 		cursor: pointer;
+		white-space: nowrap;
 
 		font-size: 1rem;
 		font-family: inherit;
