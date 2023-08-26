@@ -11,9 +11,11 @@
 	import autoAnimate from '@formkit/auto-animate';
 	import UserInfoModal from '$lib/components/UserInfoModal.svelte';
 	import { page } from '$app/stores';
+	import HabileNeutral from '$lib/svg/HabileNeutral.svelte';
 
 	export let userData: User | null | undefined;
 	export let parentComment: CommentType | null | undefined = null;
+	export let projectId: string | null = null;
 	export let comments: CommentType[];
 	export let showModal = false;
 
@@ -54,93 +56,108 @@
 	}
 </script>
 
-{#if !userData}
-	<LoginModal
-		bind:showModal
-		parentComment={selectedParentComment}
-		{skipToComment}
-		on:close={() => {
-			if (!parentComment) {
-				selectedParentComment = null;
+<div class="comments-page" id="comments">
+	{#if !userData}
+		<LoginModal
+			bind:showModal
+			parentComment={selectedParentComment}
+			{skipToComment}
+			on:close={() => {
+				if (!parentComment) {
+					selectedParentComment = null;
+				}
+			}}
+		/>
+	{:else}
+		<UserInfoModal userData={selectedUser} bind:showModal={showUserInfoModal} />
+
+		<CommentFormModal
+			bind:showModal
+			{projectId}
+			parentComment={selectedParentComment}
+			on:close={() => {
+				if (!parentComment) {
+					selectedParentComment = null;
+				}
+			}}
+		/>
+	{/if}
+
+	<RestrictedFunctionalityModal bind:showModal={showRestrictedFunctionalityModal} />
+
+	<CreateCommentButton
+		{userData}
+		on:blocked={handleRestrictedFunctionality}
+		on:click={() => {
+			if (userData?.badges?.includes('BLOCKED')) {
+				return handleRestrictedFunctionality();
 			}
+			handleReplyButton({
+				detail: parentComment,
+			});
 		}}
 	/>
-{:else}
-	<UserInfoModal userData={selectedUser} bind:showModal={showUserInfoModal} />
 
-	<CommentFormModal
-		bind:showModal
-		parentComment={selectedParentComment}
-		on:close={() => {
-			if (!parentComment) {
-				selectedParentComment = null;
-			}
-		}}
-	/>
-{/if}
+	{#if $page.data.hasNameChange}
+		<InfoBox type="note"><span slot="title">yo that website is clembing or what</span></InfoBox>
+	{:else}
+		<InfoBox type="note">
+			<span slot="title">Welcome to the Comments section!</span>
+			I created this so you can leave feedback, report bugs, ask questions and be chill.<br />
+			No spam or harmful content allowed. Use common sense.
+		</InfoBox>
 
-<RestrictedFunctionalityModal bind:showModal={showRestrictedFunctionalityModal} />
+		<InfoBox type="danger">
+			<span slot="title">Comments is still in development</span>
+			Let me know if anything goes wrong, or if you'd like to see a feature added ;)
+		</InfoBox>
+	{/if}
 
-<CreateCommentButton
-	{userData}
-	on:blocked={handleRestrictedFunctionality}
-	on:click={() => {
-		if (userData?.badges?.includes('BLOCKED')) {
-			return handleRestrictedFunctionality();
-		}
-		handleReplyButton({
-			detail: parentComment,
-		});
-	}}
-/>
+	<h3>{$page.data.hasNameChange ? 'Clembs' : 'Comments'} ({sortedAndFiltered?.length || 0})</h3>
 
-{#if $page.data.hasNameChange}
-	<InfoBox type="note"><span slot="title">yo that website is clembing or what</span></InfoBox>
-{:else}
-	<InfoBox type="note">
-		<span slot="title">Welcome to the clembs.com comment section!</span>
-		Here you can leave your feedback, ask me questions, speak between y'all, etc.<br />Basically,
-		the only rule is don't be annoying (includes spam, racism, trolling, etc)!!!
-	</InfoBox>
+	{#if comments.length}
+		<div class="sort-and-filter">
+			<Chip
+				checked={selectedSortingMode === 'interactions'}
+				on:click={() =>
+					(selectedSortingMode = selectedSortingMode === 'recent' ? 'interactions' : 'recent')}
+			>
+				Most replied to
+			</Chip>
+			<Chip checked={!filters.anonymous} on:click={() => (filters.anonymous = !filters.anonymous)}>
+				Hide anonymous users
+			</Chip>
+			<Chip checked={filters.blocked} on:click={() => (filters.blocked = !filters.blocked)}>
+				Show blocked users
+			</Chip>
+		</div>
 
-	<InfoBox type="danger">
-		<span slot="title">Alpha warning</span>
-		All of this is in very early development!! Let me know if anything goes wrong or you'd like to see
-		any feature in particular ;)
-	</InfoBox>
-{/if}
-
-<h3>{$page.data.hasNameChange ? 'Clembs' : 'Comments'} ({sortedAndFiltered?.length || 0})</h3>
-
-<div class="sort-and-filter">
-	<Chip
-		checked={selectedSortingMode === 'interactions'}
-		on:click={() =>
-			(selectedSortingMode = selectedSortingMode === 'recent' ? 'interactions' : 'recent')}
-	>
-		Most replied to
-	</Chip>
-	<Chip checked={!filters.anonymous} on:click={() => (filters.anonymous = !filters.anonymous)}>
-		Hide anonymous users
-	</Chip>
-	<Chip checked={filters.blocked} on:click={() => (filters.blocked = !filters.blocked)}>
-		Show blocked users
-	</Chip>
+		<ul class="comments" use:autoAnimate>
+			{#each sortedAndFiltered as comment (comment.id)}
+				<Comment
+					{comment}
+					on:reply={handleReplyButton}
+					on:login={handleLoginRequiredButton}
+					on:blocked={handleRestrictedFunctionality}
+					on:userinfo={handleUserInfoButton}
+				/>
+			{/each}
+		</ul>
+	{:else}
+		<div class="no-comments">
+			<HabileNeutral />
+			No comments, but you could be the first!
+		</div>
+	{/if}
 </div>
 
-<ul class="comments" use:autoAnimate>
-	{#each sortedAndFiltered as comment (comment.id)}
-		<Comment
-			{comment}
-			on:reply={handleReplyButton}
-			on:login={handleLoginRequiredButton}
-			on:blocked={handleRestrictedFunctionality}
-			on:userinfo={handleUserInfoButton}
-		/>
-	{/each}
-</ul>
-
 <style lang="scss">
+	.comments-page {
+		padding: 0 2rem;
+		width: 100%;
+		margin: 0 auto;
+	}
+
 	.sort-and-filter {
 		display: flex;
 		align-items: center;
@@ -151,6 +168,25 @@
 
 		&::-webkit-scrollbar {
 			display: none;
+		}
+	}
+
+	.no-comments {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		opacity: 0.5;
+		gap: 0.5rem;
+		color: var(--color-on-surface);
+		font-size: 1.1rem;
+		width: 100%;
+		text-align: center;
+		padding: 2rem;
+		user-select: none;
+
+		:global(svg) {
+			width: 64px;
+			height: 64px;
 		}
 	}
 

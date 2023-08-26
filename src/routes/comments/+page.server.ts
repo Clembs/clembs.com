@@ -5,6 +5,9 @@ import { fail } from '@sveltejs/kit';
 import { isNull, type InferModel } from 'drizzle-orm';
 import type { Actions, PageServerLoad } from './$types';
 import { rateLimit } from '$lib/helpers/handleRateLimit';
+import { PROJECT_ID_REGEX } from '$lib/helpers/regex';
+import { brandingData } from '$lib/data/branding';
+import { softwareData } from '$lib/data/software';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.getSession();
@@ -15,7 +18,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 			author: true,
 			childComments: true,
 		},
-		where: ({ parentId }) => isNull(parentId),
+		where: ({ parentId, projectId }, { and }) => and(isNull(parentId), isNull(projectId)),
 	});
 
 	return { comments, user };
@@ -68,11 +71,38 @@ export const actions: Actions = {
 			}
 		}
 
+		const projectId = formData.get('project-id')?.toString();
+
+		console.log(projectId);
+
+		if (projectId) {
+			const regex = projectId.match(PROJECT_ID_REGEX);
+
+			console.log(regex);
+
+			if (!regex) {
+				return fail(404, {
+					message: 'Cannot find project.',
+				});
+			}
+
+			const project = [...(regex[1] === 'branding' ? brandingData : softwareData)].find(
+				({ id }) => id === regex[2]
+			);
+
+			if (!project) {
+				return fail(404, {
+					message: 'Cannot find project.',
+				});
+			}
+		}
+
 		const input: InferModel<typeof comments, 'insert'> = {
 			id: generateSnowflake(),
 			content: content,
 			userId: currentUser?.id,
 			parentId: parentCommentId,
+			projectId: projectId,
 		};
 
 		await db.insert(comments).values(input);

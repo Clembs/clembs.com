@@ -1,17 +1,19 @@
 <script lang="ts">
 	import '../../../styles/showcase.scss';
-	import type { BrandingPost } from '$lib/data/branding';
 	import IconPlus from '@tabler/icons-svelte/dist/svelte/icons/IconPlus.svelte';
 	import IconDribbble from '@tabler/icons-svelte/dist/svelte/icons/IconBrandDribbble.svelte';
 	import IconBehance from '@tabler/icons-svelte/dist/svelte/icons/IconBrandBehance.svelte';
 	import IconInstagram from '@tabler/icons-svelte/dist/svelte/icons/IconBrandInstagram.svelte';
+	import IconMessageCircle from '@tabler/icons-svelte/dist/svelte/icons/IconMessageCircle.svelte';
 	import Button from '$lib/components/Button.svelte';
 	import { softwareData } from '$lib/data/software';
 	import { page } from '$app/stores';
 	import ShareButton from '$lib/components/ShareButton.svelte';
 	import MetaTags from '$lib/components/MetaTags.svelte';
+	import type { LayoutServerData } from './$types';
+	import Comments from '../../comments/Comments.svelte';
 
-	export let data: BrandingPost;
+	export let data: LayoutServerData;
 </script>
 
 <MetaTags
@@ -82,6 +84,10 @@
 				<IconInstagram />
 			</Button>
 		{/if}
+		<Button style="outlined" href="#comments">
+			<IconMessageCircle />
+			Comments
+		</Button>
 		<ShareButton url={$page.url.href} />
 	</div>
 </header>
@@ -89,6 +95,8 @@
 <article>
 	<slot />
 </article>
+
+<Comments projectId="{data.type}/{data.id}" comments={data.comments} userData={data.userData} />
 
 <style lang="scss">
 	header {

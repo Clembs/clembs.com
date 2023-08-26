@@ -4,7 +4,7 @@ import { error, fail, redirect } from '@sveltejs/kit';
 import { db } from '$lib/db';
 import { users } from '$lib/db/schema';
 import { eq } from 'drizzle-orm';
-import { EMAIL_REGEX, OTP_REGEX } from '$lib/helpers/auth';
+import { EMAIL_REGEX, OTP_REGEX } from '$lib/helpers/regex';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const username = (await locals.getUserData())?.username;

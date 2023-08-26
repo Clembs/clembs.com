@@ -14,6 +14,7 @@
 	import InfoBox from '$lib/components/InfoBox.svelte';
 
 	export let parentComment: CommentType | null = null;
+	export let projectId: string | null = null;
 	export let showModal = false;
 
 	let error = '';
@@ -89,6 +90,9 @@
 		>
 			{#if parentComment}
 				<input type="hidden" name="parent-comment" value={parentComment.id} />
+			{/if}
+			{#if projectId}
+				<input type="hidden" name="project-id" value={projectId} />
 			{/if}
 
 			<div class="comment">

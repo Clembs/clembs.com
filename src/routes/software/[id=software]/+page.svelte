@@ -1,12 +1,15 @@
 <script lang="ts">
 	import '../../../styles/showcase.scss';
-	import { softwareData, type Software } from '$lib/data/software';
+	import IconMessageCircle from '@tabler/icons-svelte/dist/svelte/icons/IconMessageCircle.svelte';
+	import { softwareData } from '$lib/data/software';
 	import Button from '$lib/components/Button.svelte';
 	import { onDestroy, onMount } from 'svelte';
 	import ProjectGrid from '$lib/components/Projects/ProjectGrid.svelte';
 	import { page } from '$app/stores';
 	import ShareButton from '$lib/components/ShareButton.svelte';
 	import MetaTags from '$lib/components/MetaTags.svelte';
+	import Comments from '../../comments/Comments.svelte';
+	import type { PageServerData } from './$types';
 
 	let observer: IntersectionObserver;
 	let viewedImage = 0;
@@ -30,7 +33,7 @@
 		if (observer) observer.disconnect();
 	});
 
-	export let data: Software;
+	export let data: PageServerData;
 </script>
 
 <MetaTags
@@ -72,6 +75,10 @@
 				View source
 			</Button>
 		{/if}
+		<Button style="outlined" href="#comments">
+			<IconMessageCircle />
+			Comments
+		</Button>
 		<ShareButton url={$page.url.href} />
 	</div>
 </header>
@@ -117,6 +124,8 @@
 
 	<ProjectGrid projects={softwareData.filter(({ id }) => id !== data.id).slice(0, 3)} compact />
 </div>
+
+<Comments projectId="{data.type}/{data.id}" comments={data.comments} userData={data.userData} />
 
 <style lang="scss">
 	header {
