@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { EMAIL_REGEX, OTP_REGEX } from '$lib/helpers/auth';
+	import { EMAIL_REGEX, OTP_REGEX } from '$lib/helpers/regex';
 	import { LoaderIcon } from 'svelte-french-toast';
 	import type { Comment } from '$lib/db/types';
 	import CommentFormModal from '../../routes/comments/CommentFormModal.svelte';
