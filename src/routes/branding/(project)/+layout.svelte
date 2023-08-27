@@ -1,5 +1,4 @@
 <script lang="ts">
-	import '../../../styles/showcase.scss';
 	import IconPlus from '@tabler/icons-svelte/dist/svelte/icons/IconPlus.svelte';
 	import IconDribbble from '@tabler/icons-svelte/dist/svelte/icons/IconBrandDribbble.svelte';
 	import IconBehance from '@tabler/icons-svelte/dist/svelte/icons/IconBrandBehance.svelte';
@@ -15,6 +14,10 @@
 
 	export let data: LayoutServerData;
 </script>
+
+<svelte:head>
+	<style src="../../../styles/showcase.scss"></style>
+</svelte:head>
 
 <MetaTags
 	pageName={data.title}
