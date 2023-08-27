@@ -5,16 +5,14 @@
 	import TextInput from '$lib/components/TextInput.svelte';
 	import InfoBox from '$lib/components/InfoBox.svelte';
 	import toast, { LoaderIcon } from 'svelte-french-toast';
-	import type { LayoutData } from '../$types';
 	import Button from '$lib/components/Button.svelte';
 	import Modal from '$lib/components/Modal.svelte';
-
-	export let data: LayoutData;
+	import { page } from '$app/stores';
 
 	let showModal = false;
 	let isLoading = false;
 	let error = '';
-	let username = data?.userData?.username;
+	let username = $page.data?.userData?.username;
 </script>
 
 {#if showModal}
@@ -75,7 +73,7 @@
 				<GradientAvatar
 					size="3rem"
 					user={{
-						...data?.userData,
+						...$page.data?.userData,
 						username: username || 'anonymous user',
 					}}
 					showBadge={false}
@@ -103,7 +101,7 @@
 		{/if}
 
 		<Button
-			disabled={isLoading || username === data?.userData?.username || !username}
+			disabled={isLoading || username === $page.data?.userData?.username || !username}
 			type="submit"
 		>
 			{#if isLoading}

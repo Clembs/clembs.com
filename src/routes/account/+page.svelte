@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import Button from '$lib/components/Button.svelte';
-	import LoginModal from '$lib/components/LoginModal.svelte';
+	import LoginModal from '$lib/components/Settings/LoginModal.svelte';
 	import { LoaderIcon } from 'svelte-french-toast';
 	import type { LayoutData } from '../$types';
 	import EditUsernameSection from './EditUsernameSection.svelte';

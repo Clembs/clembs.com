@@ -12,7 +12,7 @@
 	import Footer from '$lib/components/Footer.svelte';
 	import GradientAvatar from '$lib/components/GradientAvatar/GradientAvatar.svelte';
 	import Card from '$lib/components/Card.svelte';
-	import LoginModal from '$lib/components/LoginModal.svelte';
+	import LoginModal from '$lib/components/Settings/LoginModal.svelte';
 	import Chip from '$lib/components/Chip.svelte';
 	import TextInput from '$lib/components/TextInput.svelte';
 	import ToggleAvatar from '$lib/components/ToggleAvatar.svelte';
@@ -81,10 +81,10 @@
 		<div class="component">
 			<Card href="#">
 				<img
+					loading="lazy"
 					class="card-image"
 					src="https://c.clembs.com/branding/clembs/clembs.webp"
 					alt="Clembs"
-					loading="lazy"
 				/>
 				<div slot="card-content">Hello</div>
 			</Card>
