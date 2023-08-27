@@ -1,31 +1,34 @@
 <script lang="ts">
 	export let href = '';
+
+	let className = '';
+
+	export { className as class };
 </script>
 
-{#if href}
-	<a {href} class="card" on:click on:mouseover on:focus {...$$restProps}>
-		<slot />
-		<div class="card-content">
-			<slot name="card-content" />
-		</div>
-	</a>
-{:else}
-	<button on:click on:mouseover on:focus class="card" {...$$restProps}>
-		<slot />
-		<div class="card-content">
-			<slot name="card-content" />
-		</div>
-	</button>
-{/if}
+<svelte:element
+	this={href ? 'a' : 'div'}
+	{href}
+	class="card {className}"
+	on:click
+	on:mouseover
+	on:focus
+	{...$$restProps}
+>
+	<slot />
+	<div class="card-content">
+		<slot name="card-content" />
+	</div>
+</svelte:element>
 
 <style lang="scss">
 	.card {
 		display: block;
-		
+
 		appearance: none;
 		overflow: hidden;
 		cursor: pointer;
-		
+
 		font-family: inherit;
 		font-size: inherit;
 		text-decoration: none;
@@ -40,15 +43,14 @@
 			margin: 1rem;
 		}
 
-			&:hover {
-				transform: translateY(-4px);
-				box-shadow: 0 4px 0 0 var(--color-on-background);
-			}
-			&:active {
-				background-color: var(--color-surface);
-				transform: translateY(0px);
-				box-shadow: 0 0 0 0 var(--color-on-background);
-			}
-	
+		&:hover {
+			transform: translateY(-4px) !important;
+			box-shadow: 0 4px 0 0 var(--color-on-background);
+		}
+		&:active {
+			background-color: var(--color-surface);
+			transform: translateY(0px);
+			box-shadow: 0 0 0 0 var(--color-on-background);
+		}
 	}
 </style>
