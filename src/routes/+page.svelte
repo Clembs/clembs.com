@@ -4,10 +4,10 @@
 	import { brandingData } from '$lib/data/branding';
 	import { softwareData } from '$lib/data/software';
 	import { onDestroy, onMount } from 'svelte';
-	import Wordmark from './Wordmark.svelte';
 	import IconArrowRight from '@tabler/icons-svelte/dist/svelte/icons/IconArrowRight.svelte';
 	import MetaTags from '$lib/components/MetaTags.svelte';
 	import ToggleAvatar from '$lib/components/ToggleAvatar.svelte';
+	import SoftwareGrid from '$lib/components/Projects/SoftwareGrid.svelte';
 
 	let observer: IntersectionObserver;
 
@@ -53,10 +53,22 @@ and express my love through design, code and video. Welcome to clembs.com!"
 />
 
 <main>
-	<div class="intro">
+	<header class="intro">
+		<div class="intro-text">
+			<h1>
+				Worlds made from<br />
+				design, code and heart.
+			</h1>
+
+			<div class="buttons">
+				<Button href="#design">View projects</Button>
+				<Button href="/contact" disabled style="outlined">Contact me</Button>
+			</div>
+		</div>
+
 		<ToggleAvatar />
 
-		<div class="text">
+		<!-- <div class="text">
 			<h3>Nice to meet you, I'm</h3>
 			<div>
 				<Wordmark />
@@ -66,21 +78,16 @@ and express my love through design, code and video. Welcome to clembs.com!"
 				and express my love through design, code and video.<br /><br />From Discord bots to web apps
 				to brand design to livestreaming, anything goes on clembs.com. Welcome!
 			</p>
-		</div>
-	</div>
+		</div> -->
+	</header>
 
 	<section id="design">
 		<header>
 			<div class="top">
-				<h1>Graphic design</h1>
+				<h2>Graphic design</h2>
 
-				<Button style="outlined" href="/branding">View more <IconArrowRight /></Button>
+				<Button style="outlined" href="/projects#design">View more <IconArrowRight /></Button>
 			</div>
-
-			<p>
-				I've been into design for 4 years now, sourcing inspiration by the digital worlds to craft
-				interfaces and brand identities that look good and stick to people.
-			</p>
 		</header>
 
 		<ProjectGrid projects={brandingData.slice(0, 3)} compact loaded={false} />
@@ -89,20 +96,13 @@ and express my love through design, code and video. Welcome to clembs.com!"
 	<section id="software">
 		<header>
 			<div class="top">
-				<h1>Apps & tools</h1>
+				<h2>Apps & tools</h2>
 
-				<Button style="outlined" href="/software">View more <IconArrowRight /></Button>
+				<Button style="outlined" href="/projects#software">View more <IconArrowRight /></Button>
 			</div>
-
-			<p>
-				Computers have been my thing forever, and I made coding my newfound passion. Having
-				graduated on July 2023, I will be moving to Toulouse to study for a Bachelor of Computer
-				Technology (BUT Informatique) in order to fullfill my dream of becoming a professional
-				programmer!
-			</p>
 		</header>
 
-		<ProjectGrid projects={softwareData.slice(0, 3)} compact loaded={false} />
+		<SoftwareGrid projects={softwareData.slice(0, 3)} loaded={false} />
 	</section>
 
 	<span
@@ -128,23 +128,37 @@ and express my love through design, code and video. Welcome to clembs.com!"
 	}
 
 	.intro {
-		padding: 3rem 0;
+		padding: 5rem 0;
 		display: flex;
-		gap: 2.5rem;
-		margin: 0 auto;
+		gap: 1rem;
 		font-size: clamp(1rem, 2vw, 1.15rem);
+		justify-content: space-between;
+		align-items: center;
 
-		.text {
-			display: flex;
-			flex-direction: column;
-			gap: 1rem;
-			max-width: 42ch;
+		&-text {
+			h1 {
+				font-size: clamp(2rem, 5vw, 3rem);
+				line-height: 1.28;
+			}
 
-			h3,
-			p {
-				margin: 0;
+			.buttons {
+				display: flex;
+				gap: 1rem;
+				margin-top: 1rem;
 			}
 		}
+
+		// .text {
+		// 	display: flex;
+		// 	flex-direction: column;
+		// 	gap: 1rem;
+		// 	max-width: 42ch;
+
+		// 	h3,
+		// 	p {
+		// 		margin: 0;
+		// 	}
+		// }
 	}
 
 	section {
@@ -159,22 +173,17 @@ and express my love through design, code and video. Welcome to clembs.com!"
 				font-size: clamp(1.25rem, 5vw, 2rem);
 				margin: 0;
 			}
-			p {
-				text-wrap: balance;
-				max-width: 70ch;
-			}
 		}
 	}
 
 	@media (max-width: 939px) {
 		.intro {
-			flex-direction: column;
+			flex-direction: column-reverse;
 			align-items: center;
-			gap: 0.5rem;
+			text-align: center;
 
-			.text {
-				align-items: center;
-				gap: 1rem;
+			.buttons {
+				justify-content: center;
 			}
 		}
 	}
