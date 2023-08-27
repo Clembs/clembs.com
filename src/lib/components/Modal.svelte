@@ -19,10 +19,12 @@
 	}}
 	on:click|self={() => dialog.close()}
 >
-	<slot name="title">
-		<h1>Modal Title</h1>
-	</slot>
-	<slot />
+	<div on:click|stopPropagation>
+		<slot name="title">
+			<h1>Modal Title</h1>
+		</slot>
+		<slot />
+	</div>
 </dialog>
 
 <style lang="scss">
