@@ -53,35 +53,10 @@
 		}
 	}
 
-	@keyframes switchPfpFront {
-		0% {
-			z-index: 2;
-			transform: translate(0px, 0px) scale(1);
-		}
-		50% {
-			z-index: 0;
-			transform: translate(35px, 35px) scale(0.7);
-		}
-		100% {
-			transform: translate(5px, 5px) scale(1);
-		}
-	}
-
-	@keyframes switchPfpBack {
-		0% {
-			z-index: 0;
-			transform: translate(5px, 5px) scale(1);
-		}
-		50% {
-			z-index: 2;
-			transform: translate(-35px, -35px) scale(0.7);
-		}
-		100% {
-			transform: translate(0px, 0px) scale(1);
-		}
-	}
-
 	.avatar {
+		--_size: clamp(6rem, 12vw, 10rem);
+		--_animation-spacing: clamp(30px, 6vw, 45px);
+
 		cursor: pointer;
 		appearance: none;
 		border: none;
@@ -90,10 +65,42 @@
 		border-radius: 1rem;
 		padding: 0;
 		margin: 0;
-		width: 8rem;
-		height: 8rem;
+		width: var(--_size);
+		height: var(--_size);
 		border-radius: 999px;
 		box-shadow: none;
+
+		@keyframes switchPfpFront {
+			0% {
+				z-index: 2;
+				transform: translate(0px, 0px) scale(1);
+			}
+			50% {
+				z-index: 0;
+				transform: translate(var(--_animation-spacing), var(--_animation-spacing)) scale(0.7);
+			}
+			100% {
+				transform: translate(5px, 5px) scale(1);
+			}
+		}
+
+		@keyframes switchPfpBack {
+			0% {
+				z-index: 0;
+				transform: translate(5px, 5px) scale(1);
+			}
+			50% {
+				z-index: 2;
+				transform: translate(
+						calc(0px - var(--_animation-spacing)),
+						calc(0px - var(--_animation-spacing))
+					)
+					scale(0.7);
+			}
+			100% {
+				transform: translate(0px, 0px) scale(1);
+			}
+		}
 
 		.img-wrapper {
 			position: absolute;
@@ -106,8 +113,8 @@
 			}
 
 			img {
-				width: 8rem;
-				height: 8rem;
+				width: var(--_size);
+				height: var(--_size);
 				object-fit: cover;
 				border-radius: 999px;
 				border: 1px var(--color-on-background) solid;
