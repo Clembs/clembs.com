@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Comment from './Comment.svelte';
 	import type { Comment as CommentType, User } from '$lib/db/types';
-	import LoginModal from '$lib/components/LoginModal.svelte';
+	import LoginModal from '$lib/components/Settings/LoginModal.svelte';
 	import CommentFormModal from './CommentFormModal.svelte';
 	import { rankComments } from '$lib/helpers/rankComments';
 	import Chip from '$lib/components/Chip.svelte';
@@ -153,7 +153,7 @@
 
 <style lang="scss">
 	.comments-page {
-		padding: 0 2rem;
+		padding: 0 1rem;
 		width: 100%;
 		margin: 0 auto;
 	}
