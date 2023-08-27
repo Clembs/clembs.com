@@ -10,24 +10,24 @@
 </p>
 
 <img
+	loading="lazy"
 	class="stylized-element"
 	src="https://s.clembs.com/ZmKBURU.png"
 	alt="Screenshot of the CRBT website landing page"
-	loading="lazy"
 />
 
 <div class="image-grid">
 	<img
+		loading="lazy"
 		class="stylized-element"
 		src="https://s.clembs.com/HrAKXuB.png"
 		alt="Screenshot of the CRBT website mobile landing page"
-		loading="lazy"
 	/>
 	<img
+		loading="lazy"
 		class="stylized-element"
 		src="https://s.clembs.com/jitjVXS.png"
 		alt="Screenshot of the CRBT website mobile landing page"
-		loading="lazy"
 	/>
 </div>
 
@@ -40,16 +40,16 @@
 
 <div class="image-grid">
 	<img
+		loading="lazy"
 		class="stylized-element"
 		src="https://s.clembs.com/ODcBCJR.png"
 		alt="Screenshot of the CRBT website interactive demo"
-		loading="lazy"
 	/>
 	<img
+		loading="lazy"
 		class="stylized-element"
 		src="https://s.clembs.com/Hbo4iTd.png"
 		alt="Screenshot of the CRBT website interactive demo"
-		loading="lazy"
 	/>
 </div>
 
@@ -62,22 +62,22 @@
 
 <div class="image-grid">
 	<img
+		loading="lazy"
 		class="stylized-element"
 		src="https://crbt.app/assets/welcome.svg"
 		alt="CRBT website illustration - Welcome & Farewell messages"
-		loading="lazy"
 	/>
 	<img
+		loading="lazy"
 		class="stylized-element"
 		src="https://crbt.app/assets/main-features.svg"
 		alt="CRBT website illustration - Polls, Giveaways, etc"
-		loading="lazy"
 	/>
 	<img
+		loading="lazy"
 		class="stylized-element"
 		src="https://crbt.app/assets/utilities.svg"
 		alt="CRBT website illustration - Utilities & Automation"
-		loading="lazy"
 	/>
 </div>
 

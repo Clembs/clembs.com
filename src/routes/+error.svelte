@@ -62,13 +62,13 @@
 					<div class="iframe-wrapper">
 						{#if iframeLoaded || showEasterEgg}
 							<iframe
+							loading="lazy"
 								class:hide={!showStatic}
 								bind:this={iframe}
 								class="dino-game"
 								title="Dino game"
 								src="https://wayou.github.io/t-rex-runner/"
 								scrolling="no"
-								loading="lazy"
 							/>
 						{/if}
 					</div>
