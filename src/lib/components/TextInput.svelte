@@ -71,8 +71,8 @@
 		textarea,
 		input {
 			border: 1px solid var(--color-on-background);
-			padding: 0.7rem 1rem;
-			border-radius: 0.5rem;
+			padding: 0.75rem 1rem;
+			border-radius: 0.75rem;
 			font-family: inherit;
 			font-size: inherit;
 			width: 100%;
@@ -80,7 +80,7 @@
 		}
 
 		textarea {
-			resize: vertical;
+			resize: none;
 			height: 200px;
 		}
 	}
