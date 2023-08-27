@@ -39,9 +39,9 @@
 		align-items: center;
 		justify-content: center;
 
-		height: max-content;
+		height: 2.5rem;
 		width: 100%;
-		padding: 0.6rem 1.2rem;
+		padding: 0.5rem 1rem;
 		gap: 0.7rem;
 
 		appearance: none;
@@ -117,8 +117,9 @@
 	}
 	@media (max-width: 450px) {
 		.button {
+			height: 2.25rem;
 			font-size: 0.9rem;
-			padding: 0.4rem 1rem;
+			padding: 0 0.75rem;
 		}
 	}
 </style>
