@@ -8,60 +8,61 @@
 </script>
 
 <Card
-	class="card project"
 	aria-label="View software details: {data.name}"
 	href="/software/{data.id}"
 	style="--delay: {index}"
 >
-	<div
-		class="software-icon-wrapper"
-		style="--project-from: {data.themeGradient.from}; --project-to: {data.themeGradient.to}; "
-	>
-		<div class="software-icon" style="background-image: url({data.iconThumbnailPath})">
-			<img src={data.iconPath} class:loaded alt="{data.name} icon" loading="lazy" />
+	<div class="software" slot="card-content">
+		<div
+			class="software-icon-wrapper"
+			style="--project-from: {data.themeGradient.from}; --project-to: {data.themeGradient.to}; "
+		>
+			<div class="software-icon" style="background-image: url({data.iconThumbnailPath})">
+				<img loading="lazy" src={data.iconPath} class:loaded alt="{data.name} icon" />
+			</div>
 		</div>
-	</div>
-	<div slot="card-content" class="software">
 		<div class="about">
-			<h3>
+			<div class="name">
 				{data.name}
-			</h3>
-			<p>{data.category}</p>
+			</div>
+			<span class="category">{data.category}</span>
 		</div>
-		<time datetime={data.createdAt.toDateString()}>
-			{data.createdAt.toLocaleString('en-US', {
-				month: 'long',
-				year: 'numeric',
-			})}
-		</time>
 	</div>
 </Card>
 
 <style lang="scss">
-	.software-icon-wrapper {
-		height: 7rem;
-		display: grid;
-		place-items: center;
-		width: 100%;
-		background: linear-gradient(to right, var(--project-from), var(--project-to));
-		border-bottom: 1px solid var(--color-on-background);
-
-		.software-icon {
-			width: 5rem;
-			height: 5rem;
-			border: 1px solid var(--color-on-background);
-			border-radius: 1.5rem;
-			overflow: hidden;
-		}
-	}
-
 	.software {
 		display: flex;
-		flex-direction: column;
-		gap: 1rem;
+		gap: 0.75rem;
+		align-items: center;
+		height: 100%;
+		min-width: min-content;
+		min-height: min-content;
 
-		.about > * {
-			margin: 0.25rem 0;
+		.software-icon-wrapper {
+			display: flex;
+
+			.software-icon {
+				width: 3rem;
+				height: auto;
+				border: 1px solid var(--color-on-background);
+				border-radius: 1rem;
+				overflow: hidden;
+			}
+		}
+
+		.about {
+			display: flex;
+			flex-direction: column;
+
+			.name {
+				font-weight: 500;
+			}
+
+			.category {
+				font-size: 0.85rem;
+				color: var(--color-on-surface);
+			}
 		}
 	}
 </style>

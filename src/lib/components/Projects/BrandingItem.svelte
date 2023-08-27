@@ -14,13 +14,13 @@
 	style="--delay: {index}"
 >
 	<div class="card-image" style="background-image: url({data.bannerThumbnailPath})">
-		<img src={data.bannerPath} class:loaded alt={data.brand} loading="lazy" />
+		<img loading="lazy" src={data.bannerPath} class:loaded alt={data.brand} />
 	</div>
 	<div slot="card-content" class="card-content">
-		<div class="title">
-			<h3>
+		<div class="text">
+			<div class="title">
 				{data.title}
-			</h3>
+			</div>
 			<span class="subtext">
 				{data.brief}
 			</span>
@@ -56,13 +56,16 @@
 		}
 	}
 
-	.title {
-		h3 {
+	.text {
+		.title {
+			font-size: 1.1rem;
+			font-weight: 500;
 			margin-bottom: 0.25rem;
 			text-wrap: balance;
 		}
 		.subtext {
 			color: var(--color-on-surface);
+			font-size: 0.9rem;
 		}
 	}
 </style>
