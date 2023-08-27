@@ -14,13 +14,26 @@ export interface Software {
 	links?: {
 		repoUrl?: string;
 		projectUrl?: string;
+		downloadUrl?: string;
+		downloadUrls?: {
+			android?: string;
+			ios?: string;
+			windows?: string;
+		};
 	};
 	createdAt: Date;
 	finishedAt?: Date;
 	themeGradient: {
-		from: `#${string}`;
-		to: `#${string}`;
+		from: string;
+		to: string;
 	};
+	credits?: {
+		name: string;
+		url?: string;
+	}[];
+	policy?: string;
+	terms?: string;
+	platforms?: ('web' | 'android' | 'ios' | 'windows' | 'linux')[];
 }
 
 export const softwareData: Software[] = [crbt, purplet, acknowledgements, messages].sort(
