@@ -23,6 +23,10 @@
 			href: '/comments',
 			label: $page.data.hasNameChange ? 'Clember' : 'Comments',
 		},
+		{
+			href: '/account',
+			label: $page.data?.userData ? 'Account' : 'Login',
+		},
 		// {
 		// 	href: '/contact',
 		// 	label: 'Contact',
@@ -100,12 +104,6 @@
 					</button>
 				{/if}
 			{/each}
-
-			{#if $page.data?.userData}
-				<a href="/account" class="nav-item"> Account </a>
-			{:else if $page.url.href === '/comments'}
-				<a href="/account" class="nav-item"> Login </a>
-			{/if}
 		</div>
 	</div>
 </nav>
@@ -114,7 +112,7 @@
 	nav {
 		position: sticky;
 		inset: 0;
-		z-index: 9;
+		z-index: 8;
 
 		width: 100%;
 		gap: 1rem;
@@ -133,12 +131,13 @@
 			padding: 1rem;
 			max-width: 1000px;
 			margin: 0 auto;
+			z-index: 9;
 
 			.main-elements {
 				display: flex;
 				justify-content: space-between;
 				width: 100%;
-				z-index: 10;
+				z-index: 11;
 
 				.home {
 					display: grid;
@@ -183,8 +182,8 @@
 				}
 
 				&.selected {
-					fill: white;
-					color: white;
+					fill: var(--color-background);
+					color: var(--color-background);
 					font-weight: 600;
 					font-variation-settings: 'wght' 600;
 					background: var(--color-on-background);

@@ -39,7 +39,7 @@
 		align-items: center;
 		justify-content: center;
 
-		height: 2.5rem;
+		height: 2.625rem;
 		width: 100%;
 		padding: 0.5rem 1rem;
 		gap: 0.7rem;
@@ -94,7 +94,13 @@
 
 		&.size-sm {
 			font-size: 0.75rem;
-			padding: 0.4rem;
+			padding: 0.315rem 0.615rem;
+			height: 2rem;
+
+			:global(svg) {
+				height: 18px;
+				width: auto;
+			}
 		}
 
 		&:hover,

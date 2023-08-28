@@ -36,15 +36,15 @@
 
 		&.primary {
 			--_bg: var(--color-on-background);
-			--_text_color: white;
+			--_text_color: var(--color-background);
 		}
 		&.outlined {
-			--_bg: white;
+			--_bg: transparent;
 			--_text_color: var(--color-on-background);
 		}
 		&.danger {
 			--_bg: var(--color-error);
-			--_text_color: white;
+			--_text_color: var(--color-background);
 		}
 		&.sticky {
 			position: absolute;

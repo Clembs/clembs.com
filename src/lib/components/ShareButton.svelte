@@ -6,6 +6,6 @@
 	export let url: string;
 </script>
 
-<Button style="text" size="sm" on:click={() => useShare(url)}>
+<Button style="outlined" on:click={() => useShare(url)}>
 	<IconShare />
 </Button>

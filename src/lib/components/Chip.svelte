@@ -32,7 +32,7 @@
 		cursor: pointer;
 		white-space: nowrap;
 
-		font-size: 1rem;
+		font-size: 0.95rem;
 		font-family: inherit;
 		font-weight: 500;
 		text-align: center;
@@ -41,13 +41,13 @@
 		background: var(--_bg);
 		color: var(--_text-color);
 		border: var(--_border);
-		border-radius: 99rem;
+		border-radius: 0.5rem;
 
 		transition: background-color 150ms ease-in-out;
 
 		&[aria-checked='true'] {
 			--_bg: var(--color-on-background);
-			--_text-color: white;
+			--_text-color: var(--color-background);
 			--_border: 1px solid var(--color-on-background);
 			--_hover-bg: var(--color-on-surface);
 		}

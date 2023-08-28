@@ -16,7 +16,7 @@
 	.projects {
 		display: grid;
 		gap: 0.75rem;
-		margin: 2rem 0;
+		margin: 1rem 0;
 		grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
 		transition: all cubic-bezier(0.64, 0.005, 0.43, 1.01) 200ms;
 

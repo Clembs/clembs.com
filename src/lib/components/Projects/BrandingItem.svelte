@@ -35,7 +35,7 @@
 		transition: transform ease-out 0.1s, box-shadow ease-out 0.1s;
 		border-bottom: 1px solid var(--color-on-background);
 		aspect-ratio: 16/9;
-		color: white;
+		color: var(--color-background);
 		display: grid;
 		place-items: center;
 		background-size: cover;

@@ -30,8 +30,8 @@
 <style lang="scss">
 	dialog {
 		appearance: none;
-		border: 1px solid var(--color-on-background);
-		background-color: white;
+		border: 1px solid var(--color-outline);
+		background-color: var(--color-background);
 		border-radius: 1rem;
 		max-width: 100%;
 		width: 600px;
