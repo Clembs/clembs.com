@@ -3,6 +3,14 @@ import { crbt } from './crbt';
 import { messages } from './messages';
 import { purplet } from './purplet';
 
+export const softwarePlatforms = {
+	windows: 'Windows',
+	Linux: 'Linux',
+	Android: 'Android',
+	iOS: 'iOS',
+	Web: 'Browser',
+} as const;
+
 export interface Software {
 	id: string;
 	name: string;
@@ -16,10 +24,14 @@ export interface Software {
 		projectUrl?: string;
 		downloadUrl?: string;
 		downloadUrls?: {
-			android?: string;
-			ios?: string;
-			windows?: string;
-		};
+			platform: keyof typeof softwarePlatforms;
+			url: string;
+		}[];
+		versionHistory?: {
+			label: string;
+			url: string;
+			createdAt: Date;
+		}[];
 	};
 	createdAt: Date;
 	finishedAt?: Date;
@@ -33,7 +45,7 @@ export interface Software {
 	}[];
 	policy?: string;
 	terms?: string;
-	platforms?: ('web' | 'android' | 'ios' | 'windows' | 'linux')[];
+	platforms?: (keyof typeof softwarePlatforms)[];
 }
 
 export const softwareData: Software[] = [crbt, purplet, acknowledgements, messages].sort(
