@@ -8,6 +8,7 @@ import { rateLimit } from '$lib/helpers/handleRateLimit';
 import { PROJECT_ID_REGEX } from '$lib/helpers/regex';
 import { brandingData } from '$lib/data/branding';
 import { softwareData } from '$lib/data/software';
+import { bannedWords } from '$lib/helpers/bannedWords';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.getSession();
@@ -41,11 +42,21 @@ export const actions: Actions = {
 			});
 		}
 
-		const content = formData.get('content')?.toString()?.trim();
+		const content = formData
+			.get('content')
+			?.toString()
+			?.trim()
+			?.replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/, '');
 
 		if (!content) {
 			return fail(400, {
 				message: 'Missing content',
+			});
+		}
+
+		if (bannedWords.find((word) => content.toLowerCase().includes(word))) {
+			return fail(400, {
+				message: 'Your comment includes words which are banned.',
 			});
 		}
 
@@ -72,8 +83,6 @@ export const actions: Actions = {
 		}
 
 		const projectId = formData.get('project-id')?.toString();
-
-		console.log(projectId);
 
 		if (projectId) {
 			const regex = projectId.match(PROJECT_ID_REGEX);
