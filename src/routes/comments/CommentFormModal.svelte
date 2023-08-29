@@ -66,6 +66,8 @@
 
 				return ({ result, update }) => {
 					loading = false;
+					content = '';
+					error = '';
 
 					if (result.type === 'success') {
 						showModal = false;
