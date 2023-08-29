@@ -37,6 +37,7 @@
 		"svelte-preprocess": "^5.0.4",
 		"tslib": "^2.6.0",
 		"typescript": "^5.1.6",
+		"valibot": "^0.13.1",
 		"vite": "^4.3.9"
 	},
 	"type": "module",
@@ -46,8 +47,8 @@
 		"@tabler/icons-svelte": "^2.23.0",
 		"drizzle-orm": "^0.28.2",
 		"insane": "^2.6.2",
+		"marked": "^7.0.5",
 		"postgres": "^3.3.5",
-		"snarkdown": "^2.0.0",
 		"svelte-french-toast": "^1.0.4-beta.0"
 	}
 }

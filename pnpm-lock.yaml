@@ -20,12 +20,12 @@ dependencies:
   insane:
     specifier: ^2.6.2
     version: 2.6.2
+  marked:
+    specifier: ^7.0.5
+    version: 7.0.5
   postgres:
     specifier: ^3.3.5
     version: 3.3.5
-  snarkdown:
-    specifier: ^2.0.0
-    version: 2.0.0
   svelte-french-toast:
     specifier: ^1.0.4-beta.0
     version: 1.0.4-beta.0(svelte@3.59.2)
@@ -103,6 +103,9 @@ devDependencies:
   typescript:
     specifier: ^5.1.6
     version: 5.1.6
+  valibot:
+    specifier: ^0.13.1
+    version: 0.13.1
   vite:
     specifier: ^4.3.9
     version: 4.3.9(sass@1.63.6)
@@ -2280,6 +2283,12 @@ packages:
       semver: 6.3.1
     dev: true
 
+  /marked@7.0.5:
+    resolution: {integrity: sha512-lwNAFTfXgqpt/XvK17a/8wY9/q6fcSPZT1aP6QW0u74VwaJF/Z9KbRcX23sWE4tODM+AolJNcUtErTkgOeFP/Q==}
+    engines: {node: '>= 16'}
+    hasBin: true
+    dev: false
+
   /mdsvex@0.11.0(svelte@3.59.2):
     resolution: {integrity: sha512-gJF1s0N2nCmdxcKn8HDn0LKrN8poStqAicp6bBcsKFd/zkUBGLP5e7vnxu+g0pjBbDFOscUyI1mtHz+YK2TCDw==}
     peerDependencies:
@@ -2883,10 +2892,6 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /snarkdown@2.0.0:
-    resolution: {integrity: sha512-MgL/7k/AZdXCTJiNgrO7chgDqaB9FGM/1Tvlcenenb7div6obaDATzs16JhFyHHBGodHT3B7RzRc5qk8pFhg3A==}
-    dev: false
-
   /sorcery@0.11.0:
     resolution: {integrity: sha512-J69LQ22xrQB1cIFJhPfgtLuI6BpWRiWu1Y3vSsIwK/eAScqJxd/+CJlUuHQRdX2C9NGFamq+KqNywGgaThwfHw==}
     hasBin: true
@@ -3234,6 +3239,10 @@ packages:
 
   /util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
+    dev: true
+
+  /valibot@0.13.1:
+    resolution: {integrity: sha512-SG2W1RHqE2LShl3p6tyERt6I+G6PQa9ZFVfkyNKXz01HBzL+tBeH5kXw/5AQeAzPJSjI3djVGBl1CyozA1kyBQ==}
     dev: true
 
   /vfile-message@2.0.4:
