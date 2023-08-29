@@ -32,11 +32,11 @@
 <header>
 	<div class="brands">
 		<div class="me">
-			<img draggable="false" alt="Clembs logo" src="/assets/logo-purplue.webp" />
+			<img draggable="false" alt="Clembs logo" src="/assets/logo-purplue.webp" title="That's me!" />
 		</div>
 		<IconPlus size={24} />
 		<div class="the-guys-im-working-for">
-			<img draggable="false" alt={data.brand} src={data.iconPath} />
+			<img draggable="false" alt={data.brand} src={data.iconPath} title={data.brand} />
 		</div>
 	</div>
 
@@ -87,7 +87,10 @@
 				<IconInstagram />
 			</Button>
 		{/if}
-		<Button style="outlined" href="#comments">
+		<Button
+			style="outlined"
+			on:click={() => document.querySelector('.comments-page')?.scrollIntoView()}
+		>
 			<IconMessageCircle />
 			Comments
 		</Button>
@@ -105,7 +108,7 @@
 	header {
 		border-radius: 1rem 1rem 0 0;
 		border-bottom: 1px solid var(--color-on-background);
-		padding: 2rem;
+		padding: 1.5rem;
 
 		.brands {
 			display: flex;
