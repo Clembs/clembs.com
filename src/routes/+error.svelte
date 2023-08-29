@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import Button from '$lib/components/Button.svelte';
+	import HabileScared from '$lib/svg/HabileScared.svelte';
 
 	const KonamiCode = [
 		'ArrowUp',
@@ -43,7 +44,8 @@
 	<div class="content" class:fourofour={$page.status === 404} class:easterEggShown={showEasterEgg}>
 		{#if $page.status === 404}
 			<div class="actual-page">
-				<img src="/assets/error-screens/404.svg" alt="404" />
+				<HabileScared />
+				<!-- <img src="/assets/error-screens/404.svg" alt="404" /> -->
 
 				<div class="message">
 					<h1>Page not found</h1>
@@ -62,7 +64,7 @@
 					<div class="iframe-wrapper">
 						{#if iframeLoaded || showEasterEgg}
 							<iframe
-							loading="lazy"
+								loading="lazy"
 								class:hide={!showStatic}
 								bind:this={iframe}
 								class="dino-game"
@@ -83,11 +85,14 @@
 			</div>
 		{:else}
 			<div class="woopsies">
-				<h1>{$page.status}</h1>
+				<HabileScared />
+
+				<h1>Error: {$page.error?.message ?? 'Unexpected error'}</h1>
 
 				<h2>
-					<pre>{$page.error?.message}</pre>
+					<pre>Status {$page.status}</pre>
 				</h2>
+
 				<pre>{JSON.stringify($page.error, null, 2)}</pre>
 			</div>
 		{/if}
@@ -95,6 +100,11 @@
 </main>
 
 <style lang="scss">
+	:global(svg) {
+		max-width: 128px;
+		height: auto;
+	}
+
 	main {
 		overflow-x: hidden;
 
@@ -122,9 +132,6 @@
 		justify-content: center;
 		width: 100%;
 		min-height: 600px;
-		img {
-			max-width: 300px;
-		}
 
 		ul {
 			text-align: left;
@@ -161,9 +168,16 @@
 
 	.woopsies {
 		display: flex;
+		padding: 2rem;
 		flex-direction: column;
-		padding: 1.5rem;
 		align-items: center;
+		justify-content: center;
 		width: 100%;
+		gap: 1rem;
+		min-height: 600px;
+
+		pre {
+			margin: 0;
+		}
 	}
 </style>
