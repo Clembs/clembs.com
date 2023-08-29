@@ -85,7 +85,7 @@
 		height: 20px;
 		filter: blur(30px);
 		top: -50px;
-		z-index: 0;
+		z-index: 10;
 		scale: 1.3;
 
 		&.move-gradient {

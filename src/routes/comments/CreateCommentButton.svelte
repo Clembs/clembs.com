@@ -22,10 +22,9 @@
 <style lang="scss">
 	.create-comment-button-wrapper {
 		display: flex;
-		width: 100%;
 		align-items: center;
 		gap: 0.5rem;
-		margin: 1rem 0;
+		margin: 1rem;
 
 		.user-avatar {
 			flex: 1;

@@ -92,9 +92,9 @@
 		.tile {
 			padding: 0 0.4rem;
 			margin-bottom: 0.1rem;
-			border: 1px solid var(--color-on-background);
+			border: 1px solid var(--color-outline);
 			border-radius: 0.2rem;
-			background-color: white;
+			background-color: var(--color-background);
 			max-width: fit-content;
 			display: flex;
 			flex-direction: column;

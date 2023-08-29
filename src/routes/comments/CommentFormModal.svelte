@@ -141,6 +141,10 @@
 {/if}
 
 <style lang="scss">
+	h1 {
+		margin-bottom: 1rem;
+	}
+
 	.parent-comment {
 		display: flex;
 		gap: 0.25rem;
@@ -199,7 +203,7 @@
 		.comment {
 			display: flex;
 			flex-direction: column;
-			gap: 0.5rem;
+			gap: 0.75rem;
 			width: 100%;
 
 			&-profile {
