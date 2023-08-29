@@ -1,11 +1,14 @@
+import type { UserPreferences } from '$lib/components/Settings/UserPreferences';
 import { relations } from 'drizzle-orm';
-import { boolean, pgTable, text } from 'drizzle-orm/pg-core';
+import { timestamp, boolean, jsonb, pgTable, text } from 'drizzle-orm/pg-core';
 
 export const users = pgTable('users', {
 	id: text('id').primaryKey(),
 	username: text('username').notNull(),
 	email: text('email'),
 	badges: text('badges', { enum: ['VERIFIED', 'BLOCKED', 'SUPPORTER', 'CLEMBS'] }).array(),
+	createdAt: timestamp('created_at').notNull().defaultNow(),
+	preferences: jsonb('preferences').$type<UserPreferences>(),
 });
 
 export const comments = pgTable('comments', {
@@ -14,6 +17,8 @@ export const comments = pgTable('comments', {
 	projectId: text('project_id'),
 	userId: text('user_id'),
 	parentId: text('parent_id'),
+	isPinned: boolean('pinned'),
+	isBlocked: boolean('blocked'),
 });
 
 export const usersRelations = relations(users, ({ many }) => ({
