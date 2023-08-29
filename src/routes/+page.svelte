@@ -9,24 +9,10 @@
 	import ToggleAvatar from '$lib/components/ToggleAvatar.svelte';
 	import SoftwareGrid from '$lib/components/Projects/SoftwareGrid.svelte';
 
-	let observer: IntersectionObserver;
-
 	onMount(() => {
 		const projects = document.querySelectorAll('.project');
 
-		// observe all projects to load them in nicely
-		observer = new IntersectionObserver((entries) => {
-			entries.forEach((entry) => {
-				if (entry.isIntersecting) {
-					entry.target.classList.add('show');
-				}
-			});
-		});
-
 		projects.forEach((project) => {
-			// observe 👁️👁️
-			observer.observe(project);
-
 			// load all card images and check when they've loaded to apply the nice blur out animation
 			const banner: HTMLImageElement = project.querySelector('.card-image img')!;
 
@@ -40,10 +26,6 @@
 				banner?.addEventListener('load', loaded);
 			}
 		});
-	});
-
-	onDestroy(() => {
-		if (observer) observer.disconnect();
 	});
 </script>
 
@@ -81,35 +63,46 @@ and express my love through design, code and video. Welcome to clembs.com!"
 		</div> -->
 	</header>
 
+	<section class="about-me">
+		<h2>Nice to meet you, I'm Clembs!</h2>
+
+		<p>
+			...or Clément IRL, a 17 y/o student from the south of France.<br />
+			I am passionate about computers and express my love through design, code and video.<br />
+			<br />
+			From Discord bots to web apps to brand design to livestreaming, anything goes on clembs.com. Welcome!
+		</p>
+	</section>
+
 	<section id="design">
 		<header>
 			<div class="top">
-				<h2>Graphic design</h2>
+				<h2>Latest graphic design projects</h2>
 
 				<Button style="outlined" href="/projects#design">View more <IconArrowRight /></Button>
 			</div>
 		</header>
 
-		<ProjectGrid projects={brandingData.slice(0, 3)} compact loaded={false} />
+		<ProjectGrid projects={brandingData.slice(0, 2)} />
 	</section>
 
 	<section id="software">
 		<header>
 			<div class="top">
-				<h2>Apps & tools</h2>
+				<h2>Latest apps & tools</h2>
 
 				<Button style="outlined" href="/projects#software">View more <IconArrowRight /></Button>
 			</div>
 		</header>
 
-		<SoftwareGrid projects={softwareData.slice(0, 3)} loaded={false} />
+		<SoftwareGrid projects={softwareData.slice(0, 3)} />
 	</section>
 
 	<span
 		aria-hidden="true"
 		style="
 	opacity: 0.15;
-	color: white;
+	color: var(--color-background);
 	text-align: left;
 	transform: rotateY(180deg);
 	"
@@ -161,6 +154,17 @@ and express my love through design, code and video. Welcome to clembs.com!"
 		// }
 	}
 
+	.about-me {
+		background-color: var(--color-surface);
+		padding: 1.5rem;
+		margin: 1rem -1rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+		border-radius: 1rem;
+		border: 1px solid var(--color-outline);
+	}
+
 	section {
 		header {
 			.top {
@@ -169,9 +173,10 @@ and express my love through design, code and video. Welcome to clembs.com!"
 				align-items: center;
 			}
 
-			h1 {
+			h2 {
 				font-size: clamp(1.25rem, 5vw, 2rem);
 				margin: 0;
+				flex: 1;
 			}
 		}
 	}
