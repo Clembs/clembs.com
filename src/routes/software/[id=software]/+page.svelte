@@ -1,6 +1,5 @@
 <script lang="ts">
-	// import '../../../styles/showcase.scss';
-	import { softwareData } from '$lib/data/software';
+	import { softwareData, softwarePlatforms } from '$lib/data/software';
 	import Button from '$lib/components/Button.svelte';
 	import { onDestroy, onMount } from 'svelte';
 	import { page } from '$app/stores';
@@ -9,9 +8,12 @@
 	import Comments from '../../comments/Comments.svelte';
 	import type { PageServerData } from './$types';
 	import SoftwareGrid from '$lib/components/Projects/SoftwareGrid.svelte';
+	import { slide } from 'svelte/transition';
+	import IconMessageCircle from '@tabler/icons-svelte/dist/svelte/icons/IconMessageCircle.svelte';
 
 	let observer: IntersectionObserver;
 	let viewedImage = 0;
+	let expandOtherDownloads = false;
 
 	onMount(() => {
 		if (!data.gallery) return;
@@ -58,10 +60,31 @@
 		<div class="about">
 			<h1 class="title">{data.name}</h1>
 
-			<span class="subtext">{data.category}</span>
+			<span class="subtext">
+				<time datetime={data.createdAt.toDateString()}>
+					{data.createdAt.toLocaleString('en-US', {
+						month: 'long',
+						day: 'numeric',
+						year: 'numeric',
+					})}
+				</time>
+				• {data.category}
+			</span>
 		</div>
 
 		<div class="buttons">
+			{#if (data.links?.downloadUrl || data.links?.downloadUrls) && data.platforms}
+				<Button href={data.links.downloadUrl || data.links?.downloadUrls?.[0]?.url}>
+					Download for {softwarePlatforms[
+						data.links?.downloadUrls?.[0]?.platform || data.platforms[0]
+					]}
+				</Button>
+			{/if}
+			{#if data.links?.versionHistory || data.links?.downloadUrls}
+				<Button style="outlined" on:click={() => (expandOtherDownloads = !expandOtherDownloads)}>
+					Other downloads
+				</Button>
+			{/if}
 			{#if data.links?.projectUrl}
 				<Button href={data.links?.projectUrl}>Check it out</Button>
 			{/if}
@@ -70,12 +93,41 @@
 					View source
 				</Button>
 			{/if}
-			<!-- <Button style="outlined" href="#comments">
+			<Button
+				style="outlined"
+				on:click={() => document.querySelector('.comments-page')?.scrollIntoView()}
+			>
 				<IconMessageCircle />
 				Comments
-			</Button> -->
+			</Button>
 			<ShareButton url={$page.url.href} />
 		</div>
+
+		{#if expandOtherDownloads}
+			<div class="other-downloads" transition:slide>
+				{#if data.links?.versionHistory}
+					<h3>Other versions</h3>
+					<ul>
+						{#each data.links.versionHistory as version}
+							<li>
+								<Button style="text" href={version.url}>
+									<span>
+										{version.label} •
+										<time datetime={version.createdAt.toDateString()}>
+											{version.createdAt.toLocaleString('en-US', {
+												month: 'long',
+												day: 'numeric',
+												year: 'numeric',
+											})}
+										</time>
+									</span>
+								</Button>
+							</li>
+						{/each}
+					</ul>
+				{/if}
+			</div>
+		{/if}
 	</div>
 </header>
 
@@ -116,9 +168,14 @@
 	{/if}
 </article>
 <div class="suggested-apps">
-	<h3>Other apps by Clembs</h3>
+	<h2>Other apps by Clembs</h2>
 
-	<SoftwareGrid projects={softwareData.filter(({ id }) => id !== data.id).slice(0, 3)} />
+	<SoftwareGrid
+		projects={softwareData
+			.filter(({ id }) => id !== data.id)
+			.sort(Math.random)
+			.slice(0, 4)}
+	/>
 </div>
 <!-- <time datetime={data.createdAt.toDateString()}>
 	{data.createdAt.toLocaleString('en-US', {
@@ -128,16 +185,18 @@
 	})}
 </time> -->
 
-<Comments projectId="{data.type}/{data.id}" comments={data.comments} userData={data.userData} />
+<div class="comments">
+	<Comments projectId="{data.type}/{data.id}" comments={data.comments} userData={data.userData} />
+</div>
 
 <style lang="scss">
 	header {
 		border-radius: 1rem 1rem 0 0;
 		border-bottom: 1px solid var(--color-on-surface);
-		padding: 1rem 1rem 2rem 1rem;
+		padding: 1rem;
 		display: flex;
 		gap: 2rem;
-		align-items: center;
+		// align-items: center;
 
 		.icon img {
 			border: 1px solid var(--color-outline);
@@ -145,6 +204,25 @@
 			height: auto;
 			border-radius: 2.5rem;
 			box-shadow: 0 2px 0 0 var(--color-on-background);
+		}
+
+		.other-downloads {
+			margin-top: 1rem;
+
+			ul {
+				list-style-type: none;
+				padding: 0;
+				margin: 1rem 0 0 -1rem;
+
+				li {
+					margin: 0;
+
+					time {
+						font-size: 0.9rem;
+						color: var(--color-on-surface);
+					}
+				}
+			}
 		}
 
 		.about-and-buttons {
@@ -237,8 +315,8 @@
 	}
 
 	.suggested-apps {
-		border-top: 1px solid var(--color-on-background);
-		padding: 0.5rem 1rem;
+		border-top: 1px solid var(--color-on-surface);
+		padding: 1rem 1rem 0 1rem;
 	}
 
 	@media (max-width: 768px) {
