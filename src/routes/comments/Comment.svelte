@@ -1,8 +1,10 @@
 <script lang="ts">
 	import type { Comment } from '$lib/db/types';
-	import IconArrowBackUp from '@tabler/icons-svelte/dist/svelte/icons/IconMessageCircle.svelte';
+	import IconMessageCircle from '@tabler/icons-svelte/dist/svelte/icons/IconMessageCircle.svelte';
 	import IconChevronDown from '@tabler/icons-svelte/dist/svelte/icons/IconChevronDown.svelte';
 	import IconTrash from '@tabler/icons-svelte/dist/svelte/icons/IconTrash.svelte';
+	import IconPinFilled from '@tabler/icons-svelte/dist/svelte/icons/IconPinFilled.svelte';
+	import IconPin from '@tabler/icons-svelte/dist/svelte/icons/IconPin.svelte';
 	import { createEventDispatcher } from 'svelte';
 	import GradientAvatar from '$lib/components/GradientAvatar/GradientAvatar.svelte';
 	import { page } from '$app/stores';
@@ -10,6 +12,8 @@
 	import { snowflakeToDate } from '$lib/helpers/snowflake';
 	import { relativeTimeFormat } from '$lib/helpers/relativeTimeFormat';
 	import { slide } from 'svelte/transition';
+	import insane from 'insane';
+	import { marked } from 'marked';
 
 	export let comment: Comment;
 	export let showActions = true;
@@ -21,6 +25,7 @@
 	let loadingComments = false;
 	let loadingDelete = false;
 	let commentDeleted = false;
+	let loadingPin = false;
 
 	let data = $page.data;
 
@@ -28,6 +33,21 @@
 	const date = snowflakeToDate(comment.id);
 
 	let username = comment.author?.username ?? 'anonymous user';
+
+	function findLastMediaLink() {
+		// const mediaRegex = /https?.*?\.(?:mp4|gif)/g;
+		const mediaRegex =
+			/(https?:\/\/(?:media\.giphy\.com\/media|giphy\.com\/gifs|tenor\.com\/view|tenor\.com\/(?:embed|view))\/[\w-]+)|(https?:\/\/[^\s/$.?#].[^\s]*)\.(?:gif|mp4)/gi;
+		const matches = comment.content.match(mediaRegex);
+
+		if (!matches) {
+			return null;
+		}
+
+		return matches[matches.length - 1];
+	}
+
+	const mediaUrl = findLastMediaLink();
 
 	async function accessUserInfo() {
 		dispatch('userinfo', comment.author);
@@ -64,6 +84,24 @@
 		}
 	}
 
+	async function pinComment() {
+		loadingPin = true;
+
+		try {
+			const res = await fetch(`/comments/api/${comment.id}/pin`, {
+				method: 'PATCH',
+			});
+
+			if (res.ok) {
+				toast.success(`Successfully (un)pinned.`);
+				loadingPin = false;
+				comment.isPinned = !comment.isPinned;
+			}
+		} catch (e) {
+			toast.error(`Something went wrong while trying to pin this comment.`);
+		}
+	}
+
 	async function loadChildComments() {
 		if (childCommentsExpanded) {
 			childCommentsExpanded = false;
@@ -87,6 +125,10 @@
 	}
 </script>
 
+<svelte:head>
+	<style src="../../styles/comment.scss"></style>
+</svelte:head>
+
 {#if !commentDeleted}
 	<div
 		class="comment-wrapper {showActions ? '' : 'no-hover'}"
@@ -97,28 +139,60 @@
 		<div class="comment">
 			{#if showActions}
 				<button on:click={accessUserInfo} class="comment-avatar">
-					<GradientAvatar user={comment.author} size={!nestingLevel ? '2.25rem' : '1.5rem'} />
+					<GradientAvatar user={comment.author} size={!nestingLevel ? '2rem' : '1.5rem'} />
 				</button>
 			{:else}
-				<GradientAvatar user={comment.author} size={!nestingLevel ? '2.25rem' : '1.5rem'} />
+				<GradientAvatar user={comment.author} size={!nestingLevel ? '2rem' : '1.5rem'} />
 			{/if}
 			<div class="comment-text">
 				<div class="comment-text-metadata">
-					{#if showActions}
-						<button on:click={accessUserInfo} class="comment-text-metadata-username">
-							{username}
-						</button>
-						<time datetime={date.toISOString()} class="comment-text-metadata-timestamp">
+					<div class="comment-text-metadata-left">
+						{#if showActions}
+							<button on:click={accessUserInfo} class="comment-text-metadata-left-username">
+								{username}
+							</button>
+						{:else}
+							<div class="comment-text-metadata-left-username">
+								{username}
+							</div>
+						{/if}
+						<time datetime={date.toISOString()} class="comment-text-metadata-left-timestamp">
 							{relativeTimeFormat(date)}
 						</time>
-					{:else}
-						<div class="comment-text-metadata-username">
-							{username}
-						</div>
-					{/if}
+					</div>
+					<div class="comment-text-metadata-right">
+						{#if comment.isPinned}
+							<div class="comment-text-metadata-right-pinned"><IconPinFilled /></div>
+						{/if}
+					</div>
 				</div>
 				<div class="comment-text-content">
-					{comment.content}
+					{#if !comment.projectId}
+						{@html insane(
+							marked(comment.content.replace(mediaUrl ?? '', ''), {
+								breaks: true,
+								gfm: true,
+							})
+						)}
+					{:else}
+						{comment.content}
+					{/if}
+
+					{#if showActions && !comment.projectId && mediaUrl}
+						<div class="comment-text-content-media">
+							{#if mediaUrl.endsWith('.mp4')}
+								<!-- svelte-ignore a11y-media-has-caption -->
+								<video src={mediaUrl} controls />
+							{:else}
+								<img
+									loading="lazy"
+									draggable="false"
+									src={!mediaUrl.endsWith('.gif') ? `${mediaUrl}.gif` : mediaUrl}
+									alt="GIF"
+								/>
+							{/if}
+						</div>
+					{/if}
 				</div>
 			</div>
 		</div>
@@ -126,8 +200,30 @@
 		{#if showActions}
 			<div class="actions">
 				<button class="action-button" on:click={replyComment}>
-					<IconArrowBackUp /> Reply
+					<IconMessageCircle />
+					Reply
 				</button>
+				{#if (data.userData && data.userData?.id === comment.author?.id) || data.userData?.badges?.includes('CLEMBS')}
+					<button class="action-button" on:click={deleteComment}>
+						{#if loadingDelete}
+							<LoaderIcon />
+						{:else}
+							<IconTrash />
+							Delete
+						{/if}
+					</button>
+				{/if}
+				{#if !comment.parentId && data.userData?.badges?.includes('CLEMBS')}
+					<button class="action-button" on:click={pinComment}>
+						{#if loadingPin}
+							<LoaderIcon />
+						{:else if comment.isPinned}
+							<IconPinFilled /> Unpin
+						{:else}
+							<IconPin /> Pin
+						{/if}
+					</button>
+				{/if}
 				{#if comment.childComments?.length}
 					<button class="action-button" on:click={loadChildComments}>
 						{#if loadingComments}
@@ -138,15 +234,6 @@
 							</div>
 							{comment.childComments?.length}
 							{comment.childComments?.length === 1 ? 'reply' : 'replies'}
-						{/if}
-					</button>
-				{/if}
-				{#if (data.userData && data.userData?.id === comment.author?.id) || data.userData?.badges?.includes('CLEMBS')}
-					<button class="action-button" on:click={deleteComment}>
-						{#if loadingDelete}
-							<LoaderIcon />
-						{:else}
-							<IconTrash /> Delete
 						{/if}
 					</button>
 				{/if}
@@ -196,7 +283,7 @@
 				cursor: default;
 			}
 
-			.comment-text-metadata-username {
+			.comment-text-metadata-left-username {
 				cursor: default;
 
 				&:hover {
@@ -213,8 +300,7 @@
 
 	.actions {
 		display: flex;
-		margin-left: 2.75rem;
-		margin-top: 0.25rem;
+		margin-left: 2.5rem;
 		font-family: monospace;
 		gap: 0.25rem;
 
@@ -225,7 +311,7 @@
 			border-radius: 0.75rem;
 			display: flex;
 			align-items: center;
-			padding: 0.315rem 0.5rem;
+			padding: 0.5rem 0.5rem;
 			cursor: pointer;
 			gap: 0.5rem;
 			font-size: 0.9rem;
@@ -272,33 +358,65 @@
 			flex: 1;
 			word-break: break-word;
 
+			&-content {
+				&-media {
+					margin-top: 0.5rem;
+
+					video,
+					img {
+						border-radius: 0.5rem;
+						border: 1px solid var(--color-outline);
+						box-shadow: 0 2px 0 0 var(--color-outline);
+						max-width: 200px;
+					}
+				}
+			}
+
 			&-metadata {
 				padding-bottom: 0.25rem;
 				display: flex;
 				justify-content: space-between;
-				align-items: baseline;
 
-				&-username {
-					appearance: none;
-					margin: 0;
-					border: 0;
-					padding: 0;
-					background-color: transparent;
-					font-size: inherit;
-					font-family: inherit;
-					border-radius: 0.5rem;
-					cursor: pointer;
-					font-weight: 500;
+				&-left {
+					display: flex;
+					gap: 0.5rem;
+					align-items: baseline;
 
-					&:hover {
-						text-decoration: underline;
+					&-username {
+						appearance: none;
+						margin: 0;
+						border: 0;
+						padding: 0;
+						background-color: transparent;
+						font-size: 1.1rem;
+						border-radius: 0.5rem;
+						font-weight: 500;
+
+						&:hover {
+							text-decoration: underline;
+						}
+					}
+
+					&-timestamp {
+						font-size: 0.9rem;
+						color: var(--color-on-surface);
 					}
 				}
 
-				&-timestamp {
-					font-size: 0.9rem;
-					margin-left: 0.5rem;
-					color: var(--color-on-surface);
+				&-right {
+					display: flex;
+					gap: 0.5rem;
+
+					&-pinned {
+						padding: 0.25rem;
+						border-radius: 99rem;
+						background-color: var(--color-primary);
+						color: var(--color-background);
+						height: 2rem;
+						width: 2rem;
+						position: absolute;
+						right: 0;
+					}
 				}
 			}
 		}
