@@ -6,11 +6,9 @@
 	import { rankComments } from '$lib/helpers/rankComments';
 	import Chip from '$lib/components/Chip.svelte';
 	import CreateCommentButton from './CreateCommentButton.svelte';
-	import InfoBox from '$lib/components/InfoBox.svelte';
 	import RestrictedFunctionalityModal from './RestrictedFunctionalityModal.svelte';
 	import autoAnimate from '@formkit/auto-animate';
 	import UserInfoModal from '$lib/components/UserInfoModal.svelte';
-	import { page } from '$app/stores';
 	import HabileNeutral from '$lib/svg/HabileNeutral.svelte';
 
 	export let userData: User | null | undefined;
@@ -85,6 +83,16 @@
 
 	<RestrictedFunctionalityModal bind:showModal={showRestrictedFunctionalityModal} />
 
+	<header>
+		<div class="title">
+			<h3>{projectId ? `Comments` : 'Main feed'}</h3>
+			<span class="count">
+				{sortedAndFiltered?.length || 0}
+				{sortedAndFiltered?.length === 1 ? 'comment' : 'comments'}
+			</span>
+		</div>
+	</header>
+
 	<CreateCommentButton
 		{userData}
 		on:blocked={handleRestrictedFunctionality}
@@ -98,42 +106,42 @@
 		}}
 	/>
 
-	{#if $page.data.hasNameChange}
-		<InfoBox type="note"><span slot="title">yo that website is clembing or what</span></InfoBox>
-	{:else}
-		<InfoBox type="note">
-			<span slot="title">Welcome to the Comments section!</span>
-			I created this so you can leave feedback, report bugs, ask questions and be chill.<br />
-			No spam or harmful content allowed. Use common sense.
-		</InfoBox>
-
-		<InfoBox type="danger">
-			<span slot="title">Comments is still in development</span>
-			Let me know if anything goes wrong, or if you'd like to see a feature added ;)
-		</InfoBox>
-	{/if}
-
-	<h3>{$page.data.hasNameChange ? 'Clembs' : 'Comments'} ({sortedAndFiltered?.length || 0})</h3>
-
 	{#if comments.length}
 		<div class="sort-and-filter">
-			<Chip
-				checked={selectedSortingMode === 'interactions'}
-				on:click={() =>
-					(selectedSortingMode = selectedSortingMode === 'recent' ? 'interactions' : 'recent')}
-			>
-				Most replied to
-			</Chip>
-			<Chip checked={!filters.anonymous} on:click={() => (filters.anonymous = !filters.anonymous)}>
-				Hide anonymous users
-			</Chip>
-			<Chip checked={filters.blocked} on:click={() => (filters.blocked = !filters.blocked)}>
-				Show blocked users
-			</Chip>
+			<div class="chips">
+				<Chip
+					checked={selectedSortingMode === 'interactions'}
+					on:click={() =>
+						(selectedSortingMode = selectedSortingMode === 'recent' ? 'interactions' : 'recent')}
+				>
+					Most replied to
+				</Chip>
+				<Chip
+					checked={!filters.anonymous}
+					on:click={() => (filters.anonymous = !filters.anonymous)}
+				>
+					Hide anonymous users
+				</Chip>
+				<Chip checked={filters.blocked} on:click={() => (filters.blocked = !filters.blocked)}>
+					Show blocked users
+				</Chip>
+			</div>
 		</div>
 
 		<ul class="comments" use:autoAnimate>
-			{#each sortedAndFiltered as comment (comment.id)}
+			{#each sortedAndFiltered.filter((c) => c.isPinned) as comment (comment.id)}
+				<Comment
+					{comment}
+					on:reply={handleReplyButton}
+					on:login={handleLoginRequiredButton}
+					on:blocked={handleRestrictedFunctionality}
+					on:userinfo={handleUserInfoButton}
+				/>
+			{/each}
+		</ul>
+
+		<ul class="comments" use:autoAnimate>
+			{#each sortedAndFiltered.filter((c) => !c.isPinned) as comment (comment.id)}
 				<Comment
 					{comment}
 					on:reply={handleReplyButton}
@@ -153,21 +161,47 @@
 
 <style lang="scss">
 	.comments-page {
-		padding: 0 1rem;
-		width: 100%;
-		margin: 0 auto;
+		margin: 2rem 0;
+		border-top: 1px solid var(--color-on-surface);
 	}
 
 	.sort-and-filter {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
 		margin-bottom: 0.5rem;
-		overflow-y: scroll;
+		overflow: auto;
+		max-width: 100%;
 		scrollbar-width: none;
+
+		.chips {
+			display: inline-flex;
+			align-items: center;
+			gap: 0.5rem;
+			padding: 0.5rem 1rem;
+		}
 
 		&::-webkit-scrollbar {
 			display: none;
+		}
+	}
+
+	header {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		margin: 1rem;
+
+		.title {
+			display: flex;
+			justify-content: space-between;
+			gap: 1rem;
+			align-items: center;
+
+			h3 {
+				font-size: 1.5rem;
+			}
+			.count {
+				font-size: 0.9rem;
+				color: var(--color-on-surface);
+			}
 		}
 	}
 
@@ -193,9 +227,9 @@
 	.comments {
 		list-style: none;
 		padding: 0;
-		margin: 1rem 0;
+		margin: 1rem;
 		display: flex;
 		flex-direction: column;
-		gap: 0.75rem;
+		gap: 1rem;
 	}
 </style>
