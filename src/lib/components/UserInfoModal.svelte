@@ -16,6 +16,18 @@
 		</div>
 
 		{#if userData}
+			<span>
+				Joined on <time class="user-info-created" datetime={userData.createdAt.toDateString()}>
+					{userData.createdAt.toLocaleString('en-US', {
+						month: 'long',
+						day: 'numeric',
+						year: 'numeric',
+						hour: '2-digit',
+						hour12: false,
+						minute: '2-digit',
+					})}
+				</time>
+			</span>
 			<code>{userData.id}</code>
 		{:else}
 			This comment has been sent by a user who hasn't logged in.
@@ -23,29 +35,31 @@
 	</header>
 
 	{#if userData?.badges}
-		<h2>Badges</h2>
+		<section class="badges-section">
+			<h2>Badges</h2>
 
-		<p>
-			These badges are either manually given by Clembs or automatically by self-verification, and
-			are used to show a user's status.
-		</p>
+			<p>
+				These badges are either manually given by Clembs or automatically by self-verification, and
+				are used to show a user's status.
+			</p>
 
-		<div class="badges">
-			{#each userData.badges as badgeName}
-				{@const badge = badges[badgeName]}
-				<div class="badge" style="--background:{badge.background};">
-					<svelte:component this={badge.icon} />
-					<div class="badge-info">
-						<div class="badge-info-label">
-							{badge.label}
+			<div class="badges">
+				{#each userData.badges as badgeName}
+					{@const badge = badges[badgeName]}
+					<div class="badge" style="--background:{badge.background};">
+						<svelte:component this={badge.icon} />
+						<div class="badge-info">
+							<div class="badge-info-label">
+								{badge.label}
+							</div>
+							<span class="badge-info-description">
+								{badge.description}
+							</span>
 						</div>
-						<span class="badge-info-description">
-							{badge.description}
-						</span>
 					</div>
-				</div>
-			{/each}
-		</div>
+				{/each}
+			</div>
+		</section>
 	{/if}
 </Modal>
 
@@ -55,11 +69,24 @@
 		gap: 0.5rem;
 		flex-direction: column;
 		align-items: center;
+		margin-bottom: 1rem;
 
 		&-name {
 			font-size: 2rem;
 			font-weight: 500;
 		}
+
+		&-created {
+			font-weight: 500;
+		}
+	}
+
+	.badges-section {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		padding-top: 1rem;
+		border-top: 1px solid var(--color-outline);
 	}
 
 	.badges {
