@@ -1,4 +1,6 @@
 export enum SocialName {
+	Kofi = 'ko-fi',
+	Fiverr = 'fiverr',
 	Discord = 'discord',
 	Instagram = 'instagram',
 	GitHub = 'github',
@@ -15,6 +17,18 @@ export interface Social {
 }
 
 export const socials = [
+	{
+		id: SocialName.Kofi,
+		name: 'Ko-fi',
+		url: 'https://ko-fi.com/clembs',
+		background: '#00AFF1',
+	},
+	{
+		id: SocialName.Fiverr,
+		name: 'Fiverr',
+		url: 'https://www.fiverr.com/clembs',
+		background: '#1DBF73',
+	},
 	{
 		id: SocialName.Discord,
 		name: 'Discord',

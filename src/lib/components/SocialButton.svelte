@@ -1,20 +1,25 @@
 <script lang="ts">
 	import type { Social } from '$lib/data/socials';
+	import Tooltip from './Tooltip.svelte';
 
 	export let social: Social;
 </script>
 
-<a
-	href={social.url}
-	class="social-button"
-	aria-label="Clembs on {social.name}"
-	style="--bg: {social.background}"
-	title={social.name}
-	rel="me"
-	target="_blank"
->
-	<img src="/assets/socials/{social.id}.svg" alt={social.name} />
-</a>
+<Tooltip>
+	<span slot="tooltip-content">
+		{social.name}
+	</span>
+	<a
+		href={social.url}
+		class="social-button"
+		aria-label="Clembs on {social.name}"
+		style="--bg: {social.background}"
+		rel="me"
+		target="_blank"
+	>
+		<img src="/assets/socials/{social.id}.svg" alt={social.name} />
+	</a>
+</Tooltip>
 
 <style lang="scss">
 	.social-button {
