@@ -55,6 +55,8 @@
 </script>
 
 <div class="comments-page" id="comments">
+	<UserInfoModal userData={selectedUser} bind:showModal={showUserInfoModal} />
+
 	{#if !userData}
 		<LoginModal
 			bind:showModal
@@ -67,8 +69,6 @@
 			}}
 		/>
 	{:else}
-		<UserInfoModal userData={selectedUser} bind:showModal={showUserInfoModal} />
-
 		<CommentFormModal
 			bind:showModal
 			{projectId}
