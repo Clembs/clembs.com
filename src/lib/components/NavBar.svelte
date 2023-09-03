@@ -20,12 +20,16 @@
 			label: 'Work',
 		},
 		{
+			href: '/donate',
+			label: 'Donate',
+		},
+		{
 			href: '/comments',
 			label: $page.data.hasNameChange ? 'Clember' : 'Comments',
 		},
 		{
-			href: '/account',
-			label: $page.data?.userData ? 'Account' : 'Login',
+			href: '/settings',
+			label: 'Settings',
 		},
 		// {
 		// 	href: '/contact',
@@ -92,6 +96,7 @@
 						href={link.href}
 						aria-disabled={link.href === '/contact'}
 						class="nav-item"
+						class:donate={link.href === '/donate'}
 						class:selected={!showSettingsModal &&
 							(link.href === '/' ? $page.url.pathname === '/' : $page.url.href.includes(link.href))}
 						aria-label={link.label}
@@ -173,6 +178,16 @@
 				--transition: var(--transition-duration) cubic-bezier(0, 0, 0.125, 1);
 				transition: font-variation-settings var(--transition), border var(--transition);
 				user-select: none;
+
+				&.donate {
+					color: #cc4493;
+
+					&::after {
+						content: '❤︎';
+						font-size: 1rem;
+						margin-left: 0.5rem;
+					}
+				}
 
 				&[aria-disabled='true'] {
 					pointer-events: none;
