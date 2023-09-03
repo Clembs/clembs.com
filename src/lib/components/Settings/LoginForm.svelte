@@ -24,9 +24,7 @@
 		return async ({ action, result, update }) => {
 			loading = false;
 
-			console.log(result);
-
-			if (result.type === 'redirect' && result.location === '/account') {
+			if (result.type === 'redirect' && result.location === '/settings/account') {
 				showModal = false;
 				return;
 			}
@@ -63,7 +61,6 @@
 		placeholder="example@clembs.com"
 		required={true}
 		readonly={otpEmailSent}
-		pattern={EMAIL_REGEX}
 	/>
 
 	{#if otpEmailSent}
@@ -75,7 +72,6 @@
 			placeholder="000000"
 			required={true}
 			maxlength={999999}
-			pattern={OTP_REGEX}
 		/>
 	{/if}
 

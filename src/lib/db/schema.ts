@@ -1,4 +1,4 @@
-import type { UserPreferences } from '$lib/components/Settings/UserPreferences';
+import type { UserPreferences } from './UserPreferences';
 import { relations } from 'drizzle-orm';
 import { timestamp, boolean, jsonb, pgTable, text } from 'drizzle-orm/pg-core';
 
