@@ -5,7 +5,7 @@
 	import { Toaster } from 'svelte-french-toast';
 	import Footer from '$lib/components/Footer.svelte';
 	import type DebugMenu from './DebugMenu.svelte';
-	import ShortcutsModal from './ShortcutsModal.svelte';
+	import ShortcutsModal from '../lib/components/ShortcutsModal/ShortcutsModal.svelte';
 	import { invalidate } from '$app/navigation';
 	import type { LayoutData } from './$types';
 	import { onMount } from 'svelte';
