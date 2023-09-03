@@ -1,8 +1,11 @@
 <script lang="ts">
 	import type { User } from '$lib/db/types';
 	import { badges } from '$lib/helpers/badges';
+	import { dateFormat } from '$lib/helpers/dateFormat';
+	import { rankBadges } from '$lib/helpers/rankBadges';
 	import GradientAvatar from './GradientAvatar/GradientAvatar.svelte';
 	import Modal from './Modal.svelte';
+	import Tooltip from './Tooltip.svelte';
 	export let showModal = false;
 
 	export let userData: User;
@@ -12,55 +15,40 @@
 	<header slot="title" class="user-info">
 		<GradientAvatar user={userData} showBadge={false} size="4rem" />
 		<div class="user-info-name">
-			{userData?.username ?? 'anonymous user'}
+			{userData?.username ?? 'anonymous'}
+			{#if userData?.badges}
+				<span class="badges">
+					{#each rankBadges(userData.badges) as badgeName}
+						{@const badge = badges[badgeName]}
+						<Tooltip>
+							<span class="badge" style="--background:{badge.background};">
+								<svelte:component this={badge.icon} />
+							</span>
+
+							<span class="tooltip-content" slot="tooltip-content">
+								<div class="label">
+									{badge.label}
+								</div>
+								<div class="description">
+									{badge.description}
+								</div>
+							</span>
+						</Tooltip>
+					{/each}
+				</span>
+			{/if}
 		</div>
 
 		{#if userData}
 			<span>
 				Joined on <time class="user-info-created" datetime={userData.createdAt.toDateString()}>
-					{userData.createdAt.toLocaleString('en-US', {
-						month: 'long',
-						day: 'numeric',
-						year: 'numeric',
-						hour: '2-digit',
-						hour12: false,
-						minute: '2-digit',
-					})}
+					{dateFormat(userData.createdAt)}
 				</time>
 			</span>
-			<code>{userData.id}</code>
 		{:else}
 			This comment has been sent by a user who hasn't logged in.
 		{/if}
 	</header>
-
-	{#if userData?.badges}
-		<section class="badges-section">
-			<h2>Badges</h2>
-
-			<p>
-				These badges are either manually given by Clembs or automatically by self-verification, and
-				are used to show a user's status.
-			</p>
-
-			<div class="badges">
-				{#each userData.badges as badgeName}
-					{@const badge = badges[badgeName]}
-					<div class="badge" style="--background:{badge.background};">
-						<svelte:component this={badge.icon} />
-						<div class="badge-info">
-							<div class="badge-info-label">
-								{badge.label}
-							</div>
-							<span class="badge-info-description">
-								{badge.description}
-							</span>
-						</div>
-					</div>
-				{/each}
-			</div>
-		</section>
-	{/if}
 </Modal>
 
 <style lang="scss">
@@ -68,8 +56,6 @@
 		display: flex;
 		gap: 0.5rem;
 		flex-direction: column;
-		align-items: center;
-		margin-bottom: 1rem;
 
 		&-name {
 			font-size: 2rem;
@@ -79,41 +65,33 @@
 		&-created {
 			font-weight: 500;
 		}
-	}
 
-	.badges-section {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
-		padding-top: 1rem;
-		border-top: 1px solid var(--color-outline);
-	}
+		.badges {
+			display: inline-flex;
+			gap: 0.25rem;
+			font-weight: 400;
+			font-size: 1rem;
 
-	.badges {
-		display: flex;
-		flex-direction: column;
-		margin: 0.5rem 0;
-		gap: 1rem;
+			.badge {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
 
-		.badge {
-			display: flex;
-			gap: 0.5rem;
-
-			&-info {
-				&-label {
-					font-size: 1rem;
-					font-weight: 500;
-				}
-				&-description {
-					font-size: 0.9rem;
-					color: var(--color-on-surface);
+				:global(svg) {
+					color: var(--background);
+					width: 1.5rem;
+					height: 1.5rem;
 				}
 			}
 
-			:global(svg) {
-				color: var(--background);
-				width: 2.25rem;
-				height: 2.25rem;
+			.label {
+				font-size: 1rem;
+				font-weight: 500;
+			}
+
+			.description {
+				font-size: 0.9rem;
+				color: var(--color-on-surface);
 			}
 		}
 	}
