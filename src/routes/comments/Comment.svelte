@@ -10,10 +10,12 @@
 	import { page } from '$app/stores';
 	import toast, { LoaderIcon } from 'svelte-french-toast';
 	import { snowflakeToDate } from '$lib/helpers/snowflake';
-	import { relativeTimeFormat } from '$lib/helpers/relativeTimeFormat';
+	import { dateFormat, relativeTimeFormat } from '$lib/helpers/dateFormat';
 	import { slide } from 'svelte/transition';
 	import insane from 'insane';
 	import { marked } from 'marked';
+	import { findMediaLinks } from '$lib/helpers/findMediaLinks';
+	import Tooltip from '$lib/components/Tooltip.svelte';
 
 	export let comment: Comment;
 	export let showActions = true;
@@ -32,22 +34,9 @@
 	const dispatch = createEventDispatcher();
 	const date = snowflakeToDate(comment.id);
 
-	let username = comment.author?.username ?? 'anonymous user';
+	let username = comment.author?.username ?? 'anonymous';
 
-	function findLastMediaLink() {
-		// const mediaRegex = /https?.*?\.(?:mp4|gif)/g;
-		const mediaRegex =
-			/(https?:\/\/(?:media\.giphy\.com\/media|giphy\.com\/gifs|tenor\.com\/view|tenor\.com\/(?:embed|view))\/[\w-]+)|(https?:\/\/[^\s/$.?#].[^\s]*)\.(?:gif|mp4)/gi;
-		const matches = comment.content.match(mediaRegex);
-
-		if (!matches) {
-			return null;
-		}
-
-		return matches[matches.length - 1];
-	}
-
-	const mediaUrl = findLastMediaLink();
+	const mediaUrl = findMediaLinks(comment.content)?.last;
 
 	async function accessUserInfo() {
 		dispatch('userinfo', comment.author);
@@ -156,13 +145,16 @@
 								{username}
 							</div>
 						{/if}
-						<time datetime={date.toISOString()} class="comment-text-metadata-left-timestamp">
-							{relativeTimeFormat(date)}
-						</time>
-					</div>
-					<div class="comment-text-metadata-right">
+						<Tooltip transitionDelay={500}>
+							<time datetime={date.toISOString()} class="comment-text-metadata-left-timestamp">
+								{relativeTimeFormat(date)}
+							</time>
+							<span slot="tooltip-content">
+								{dateFormat(date)}
+							</span>
+						</Tooltip>
 						{#if comment.isPinned}
-							<div class="comment-text-metadata-right-pinned"><IconPinFilled /></div>
+							<span class="comment-text-metadata-left-pinned">Pinned by Clembs</span>
 						{/if}
 					</div>
 				</div>
@@ -218,9 +210,11 @@
 						{#if loadingPin}
 							<LoaderIcon />
 						{:else if comment.isPinned}
-							<IconPinFilled /> Unpin
+							<IconPinFilled />
+							Unpin
 						{:else}
-							<IconPin /> Pin
+							<IconPin />
+							Pin
 						{/if}
 					</button>
 				{/if}
@@ -263,6 +257,8 @@
 		gap: 0.25rem;
 		border-radius: 1rem;
 		text-decoration: none;
+		position: relative;
+		width: 100%;
 
 		&.no-hover {
 			cursor: default;
@@ -381,6 +377,8 @@
 					display: flex;
 					gap: 0.5rem;
 					align-items: baseline;
+					font-size: 0.9rem;
+					color: var(--color-on-surface);
 
 					&-username {
 						appearance: none;
@@ -397,25 +395,12 @@
 						}
 					}
 
-					&-timestamp {
-						font-size: 0.9rem;
-						color: var(--color-on-surface);
-					}
-				}
-
-				&-right {
-					display: flex;
-					gap: 0.5rem;
-
 					&-pinned {
-						padding: 0.25rem;
-						border-radius: 99rem;
-						background-color: var(--color-primary);
-						color: var(--color-background);
-						height: 2rem;
-						width: 2rem;
-						position: absolute;
-						right: 0;
+						// background: var(--main-gradient);
+						// -webkit-background-clip: text;
+						// -webkit-text-fill-color: transparent;
+						color: var(--color-primary);
+						font-weight: 600;
 					}
 				}
 			}
