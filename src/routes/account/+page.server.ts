@@ -2,28 +2,13 @@ import { letterColors } from '$lib/components/GradientAvatar/letterColors';
 import type { Actions, PageServerLoad } from './$types';
 import { error, fail, redirect } from '@sveltejs/kit';
 import { db } from '$lib/db';
-import { users } from '$lib/db/schema';
+import { comments, users } from '$lib/db/schema';
 import { eq } from 'drizzle-orm';
-import { EMAIL_REGEX, OTP_REGEX } from '$lib/helpers/regex';
+import { EMAIL_REGEX, OTP_REGEX, USERNAME_REGEX } from '$lib/helpers/regex';
+import type { Comment } from '$lib/db/types';
 
 export const load: PageServerLoad = async ({ locals }) => {
-	const username = (await locals.getUserData())?.username;
-	if (!username) return;
-
-	const firstCharUsername = username[0];
-	const lastCharUsername = username.at(-1)!;
-
-	const avatarGradient = {
-		a: letterColors[firstCharUsername] ?? letterColors.a,
-		b: letterColors[lastCharUsername] ?? letterColors.z,
-	};
-
-	return {
-		themeGradient: {
-			from: avatarGradient.a,
-			to: avatarGradient.b,
-		},
-	};
+	throw redirect(303, '/settings/account');
 };
 
 export const actions: Actions = {
@@ -33,7 +18,7 @@ export const actions: Actions = {
 		if (session) {
 			await getUserData();
 
-			throw redirect(303, '/account');
+			throw redirect(303, '/settings/account');
 		}
 
 		const formData = await request.formData();
@@ -68,7 +53,7 @@ export const actions: Actions = {
 		if (session) {
 			await getUserData();
 
-			throw redirect(303, '/account');
+			throw redirect(303, '/settings/account');
 		}
 
 		const formData = await request.formData();
@@ -120,7 +105,7 @@ export const actions: Actions = {
 				.values({
 					id: userId,
 					email: userEmail,
-					username: 'verified anonymous user',
+					username: userId.replace('-', ''),
 					badges: ['VERIFIED'],
 				})
 				.onConflictDoNothing();
@@ -159,9 +144,25 @@ export const actions: Actions = {
 			});
 		}
 
-		if (!/^[a-zA-Z0-9 ._%+-]+$/.test(username)) {
+		if (username.includes(' ')) {
+			return fail(400, {
+				message: 'Username cannot have spaces.',
+			});
+		}
+
+		if (!USERNAME_REGEX.test(username)) {
 			return fail(400, {
 				message: 'Username contains invalid characters.',
+			});
+		}
+
+		const existingUserWithUsername = await db.query.users.findFirst({
+			where: ({ username: uname }, { eq }) => eq(uname, username),
+		});
+
+		if (existingUserWithUsername) {
+			return fail(400, {
+				message: `Username already taken! Try adding an extra number or swap hyphens for underscores.`,
 			});
 		}
 
@@ -178,7 +179,42 @@ export const actions: Actions = {
 		const session = await getSession();
 		if (session) {
 			await supabase.auth.signOut();
-			throw redirect(303, '/account');
+			throw redirect(303, '/settings/account');
+		}
+	},
+	deleteAccount: async ({ locals: { supabase, getSession } }) => {
+		const session = await getSession();
+
+		if (session) {
+			await supabase.auth.admin.deleteUser(session.user.id);
+
+			// delete replies to user comments recursively
+			function recursivelyDeleteComments(commentArray: Comment[]) {
+				commentArray.forEach(async (c) => {
+					const replies = await db.delete(comments).where(eq(comments.parentId, c.id));
+
+					recursivelyDeleteComments(replies);
+				});
+			}
+
+			// delete user comments
+			const userComments = await db
+				.delete(comments)
+				.where(eq(comments.userId, session.user.id))
+				.returning();
+
+			recursivelyDeleteComments(userComments);
+
+			// delete user
+			await db.delete(users).where(eq(users.id, session.user.id));
+
+			// sign out
+			await supabase.auth.signOut();
+
+			// delete user from supabase auth
+			await supabase.auth.admin.deleteUser(session.user.id);
+
+			throw redirect(303, '/settings/account');
 		}
 	},
 };
