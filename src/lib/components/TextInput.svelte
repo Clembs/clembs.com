@@ -24,6 +24,7 @@
 			on:input
 			on:focus
 			on:blur
+			on:keydown
 			{minlength}
 			{maxlength}
 			{placeholder}
@@ -41,6 +42,7 @@
 			on:input
 			on:focus
 			on:blur
+			on:keydown
 			{minlength}
 			{maxlength}
 			{placeholder}

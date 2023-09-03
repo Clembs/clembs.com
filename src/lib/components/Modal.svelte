@@ -20,11 +20,18 @@
 	on:click|self={() => dialog.close()}
 >
 	<div on:click|stopPropagation>
-		<slot name="title">
-			<h1>Modal Title</h1>
-		</slot>
+		{#if $$slots.title}
+			<slot name="title">
+				<h1>Modal Title</h1>
+			</slot>
+		{/if}
 		<slot />
 	</div>
+	{#if $$slots.buttons}
+		<div on:click|stopPropagation class="buttons">
+			<slot name="buttons" />
+		</div>
+	{/if}
 </dialog>
 
 <style lang="scss">
@@ -32,15 +39,27 @@
 		appearance: none;
 		border: 1px solid var(--color-outline);
 		background-color: var(--color-background);
-		border-radius: 1rem;
-		max-width: 100%;
-		width: 600px;
-		padding: 0;
+		box-shadow: 0 2px 0 0 var(--color-outline);
+		border-radius: 1.5rem;
+		width: clamp(600px, 40vw, 100%);
 		transition: scale 200ms ease-out, opacity 200ms ease-out;
-		padding: 1rem;
+		padding: 0;
+		overflow: visible;
 
+		div {
+			padding: 1.5rem;
+		}
+
+		.buttons {
+			display: flex;
+			gap: 0.75rem;
+			padding: 1rem 1.5rem;
+			border-top: 1px solid var(--color-outline);
+			justify-content: flex-end;
+		}
 		:global(h1) {
-			margin-top: 0.25rem;
+			margin-bottom: 1.5rem;
+			line-height: 1.2;
 		}
 
 		&[open] {

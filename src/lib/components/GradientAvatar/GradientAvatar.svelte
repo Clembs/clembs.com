@@ -1,13 +1,14 @@
 <script lang="ts">
 	import { letterColors } from './letterColors';
-	import type { User, UserBadge } from '$lib/db/types';
+	import type { User } from '$lib/db/types';
 	import { badges } from '$lib/helpers/badges';
+	import { rankBadges } from '$lib/helpers/rankBadges';
 
 	export let user: null | User = null;
 	export let showBadge = true;
 	export let size = '2.25rem';
 
-	$: username = user?.username ?? 'anonymous user';
+	$: username = user?.username ?? 'anonymous';
 
 	$: firstCharUsername = username[0].trim();
 	$: lastCharUsername = username.at(-1)?.trim()!;
@@ -16,24 +17,14 @@
 		a: letterColors[firstCharUsername] ?? letterColors.a,
 		b: letterColors[lastCharUsername] ?? letterColors.z,
 	};
-
-	function findMostImportantBadge(badges: Exclude<User['badges'], null>): UserBadge {
-		const badgeImportance: UserBadge[] = ['BLOCKED', 'CLEMBS', 'SUPPORTER', 'VERIFIED'];
-
-		const sortedBadges = [...badges].sort(
-			(a, b) => badgeImportance.indexOf(a) - badgeImportance.indexOf(b)
-		);
-
-		return sortedBadges[0];
-	}
 </script>
 
 <div
 	class="avatar"
-	style="--color-a: {avatarGradient.a}; --color-b: {avatarGradient.b}; --size: {size}"
+	style="--color-a: {avatarGradient.a}; --color-b: {avatarGradient.b}; --size: {size};"
 >
 	{#if user?.badges && showBadge}
-		{@const badge = badges[findMostImportantBadge(user.badges)]}
+		{@const badge = badges[rankBadges(user.badges)[0]]}
 		<div
 			aria-label="User top-most badge"
 			title={badge.label}
@@ -52,6 +43,12 @@
 		width: var(--size);
 		border-radius: 99rem;
 		background: linear-gradient(45deg, var(--color-a), var(--color-b));
+		// display: grid;
+		// place-items: center;
+		// color: white;
+		// font-weight: 600;
+		// text-shadow: 0 1px 0 0 var(--color-outline);
+		// background-size: cover;
 
 		&-badge {
 			position: absolute;
