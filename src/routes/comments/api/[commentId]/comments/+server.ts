@@ -11,6 +11,7 @@ export const GET: RequestHandler = async ({ params }) => {
 		with: {
 			author: true,
 			childComments: true,
+			score: true,
 		},
 	});
 

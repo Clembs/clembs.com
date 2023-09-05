@@ -18,6 +18,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 		with: {
 			author: true,
 			childComments: true,
+			score: true,
 		},
 		where: ({ parentId, projectId }, { and }) => and(isNull(parentId), isNull(projectId)),
 	});

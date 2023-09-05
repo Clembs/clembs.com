@@ -1,6 +1,6 @@
 import type { UserPreferences } from './UserPreferences';
 import { relations } from 'drizzle-orm';
-import { timestamp, boolean, jsonb, pgTable, text } from 'drizzle-orm/pg-core';
+import { timestamp, boolean, jsonb, pgTable, text, primaryKey } from 'drizzle-orm/pg-core';
 
 export const users = pgTable('users', {
 	id: text('id').primaryKey(),
@@ -17,6 +17,7 @@ export const comments = pgTable('comments', {
 	projectId: text('project_id'),
 	userId: text('user_id'),
 	parentId: text('parent_id'),
+	// referenceCommentId: text('reference_comment_id'),
 	isPinned: boolean('pinned'),
 	isBlocked: boolean('blocked'),
 });
@@ -37,5 +38,40 @@ export const commentsRelations = relations(comments, ({ one, many }) => ({
 	}),
 	childComments: many(comments, {
 		relationName: 'child_comments',
+	}),
+	// referenceComment: one(comments, {
+	// 	fields: [comments.referenceCommentId],
+	// 	references: [comments.id],
+	// 	relationName: 'reference_comment',
+	// }),
+	score: many(userCommentVote),
+}));
+
+export const userCommentVote = pgTable(
+	'user_comment_vote',
+	{
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id),
+		commentId: text('comment_id')
+			.notNull()
+			.references(() => comments.id),
+		type: text('type', {
+			enum: ['UPVOTE', 'DOWNVOTE'],
+		}),
+	},
+	(t) => ({
+		pk: primaryKey(t.userId, t.commentId),
+	})
+);
+
+export const userCommentVoteRelations = relations(userCommentVote, ({ one }) => ({
+	user: one(users, {
+		fields: [userCommentVote.userId],
+		references: [users.id],
+	}),
+	comment: one(comments, {
+		fields: [userCommentVote.commentId],
+		references: [comments.id],
 	}),
 }));
