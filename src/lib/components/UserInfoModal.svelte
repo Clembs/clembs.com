@@ -41,8 +41,11 @@
 
 		{#if userData}
 			<span>
-				Joined on <time class="user-info-created" datetime={userData.createdAt.toDateString()}>
-					{dateFormat(userData.createdAt)}
+				Joined on <time
+					class="user-info-created"
+					datetime={new Date(userData.createdAt).toDateString()}
+				>
+					{dateFormat(new Date(userData.createdAt))}
 				</time>
 			</span>
 		{:else}
