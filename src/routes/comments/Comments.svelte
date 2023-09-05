@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Comment from './Comment.svelte';
+	import Comment from './Comment/Comment.svelte';
 	import type { Comment as CommentType, User } from '$lib/db/types';
 	import LoginModal from '$lib/components/Settings/LoginModal.svelte';
 	import CommentFormModal from './CommentFormModal.svelte';
@@ -91,20 +91,20 @@
 				{sortedAndFiltered?.length === 1 ? 'comment' : 'comments'}
 			</span>
 		</div>
-	</header>
 
-	<CreateCommentButton
-		{userData}
-		on:blocked={handleRestrictedFunctionality}
-		on:click={() => {
-			if (userData?.badges?.includes('BLOCKED')) {
-				return handleRestrictedFunctionality();
-			}
-			handleReplyButton({
-				detail: parentComment,
-			});
-		}}
-	/>
+		<CreateCommentButton
+			{userData}
+			on:blocked={handleRestrictedFunctionality}
+			on:click={() => {
+				if (userData?.badges?.includes('BLOCKED')) {
+					return handleRestrictedFunctionality();
+				}
+				handleReplyButton({
+					detail: parentComment,
+				});
+			}}
+		/>
+	</header>
 
 	{#if comments.length}
 		<div class="sort-and-filter">
@@ -128,7 +128,7 @@
 			</div>
 		</div>
 
-		<ul class="comments" use:autoAnimate>
+		<div class="comments" use:autoAnimate>
 			{#each sortedAndFiltered.filter((c) => c.isPinned) as comment (comment.id)}
 				<Comment
 					{comment}
@@ -138,9 +138,9 @@
 					on:userinfo={handleUserInfoButton}
 				/>
 			{/each}
-		</ul>
+		</div>
 
-		<ul class="comments" use:autoAnimate>
+		<div class="comments" use:autoAnimate>
 			{#each sortedAndFiltered.filter((c) => !c.isPinned) as comment (comment.id)}
 				<Comment
 					{comment}
@@ -150,7 +150,7 @@
 					on:userinfo={handleUserInfoButton}
 				/>
 			{/each}
-		</ul>
+		</div>
 	{:else}
 		<div class="no-comments">
 			<HabileNeutral />
@@ -186,7 +186,7 @@
 	header {
 		display: flex;
 		flex-direction: column;
-		gap: 0.5rem;
+		gap: 1rem;
 		margin: 1rem;
 
 		.title {
@@ -230,6 +230,6 @@
 		margin: 1rem;
 		display: flex;
 		flex-direction: column;
-		gap: 1rem;
+		gap: 1.5rem;
 	}
 </style>

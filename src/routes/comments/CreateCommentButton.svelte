@@ -9,13 +9,11 @@
 
 <div class="create-comment-button-wrapper">
 	<div class="user-avatar">
-		<GradientAvatar user={userData} showBadge={false} size="3rem" />
+		<GradientAvatar user={userData} showBadge={false} size={reply ? '2rem' : '3rem'} />
 	</div>
 
 	<button on:click class="create-comment-button">
-		{reply
-			? 'Use constructive feedback, be kind and cool.'
-			: 'Rate the website, ask me anything...'}
+		{reply ? 'Reply to this comment' : 'Rate the website, ask me anything...'}
 	</button>
 </div>
 
@@ -24,7 +22,7 @@
 		display: flex;
 		align-items: center;
 		gap: 0.5rem;
-		margin: 1rem;
+		// margin: 1rem;
 
 		.user-avatar {
 			flex: 1;
