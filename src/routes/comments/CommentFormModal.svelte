@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Modal from '$lib/components/Modal.svelte';
 	import type { Comment as CommentType } from '$lib/db/types';
-	import Comment from './Comment.svelte';
+	import Comment from './Comment/Comment.svelte';
 	import Curve from '$lib/components/Curve.svelte';
 	import { onMount, tick } from 'svelte';
 	import { enhance } from '$app/forms';
@@ -193,7 +193,7 @@
 							</Button>
 						</Tooltip>
 
-						<Tooltip>
+						<!-- <Tooltip>
 							<span slot="tooltip-content">
 								Insert a GIF or .mp4 video URL to have it appear under your comment!
 							</span>
@@ -220,7 +220,7 @@
 									<IconPhoto /> GIF/Video
 								{/if}
 							</Button>
-						</Tooltip>
+						</Tooltip> -->
 					{/if}
 				</div>
 
