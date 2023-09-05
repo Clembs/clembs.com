@@ -3,6 +3,7 @@
 	import type { User } from '$lib/db/types';
 	import { badges } from '$lib/helpers/badges';
 	import { rankBadges } from '$lib/helpers/rankBadges';
+	import Tooltip from '../Tooltip.svelte';
 
 	export let user: null | User = null;
 	export let showBadge = true;
@@ -25,13 +26,13 @@
 >
 	{#if user?.badges && showBadge}
 		{@const badge = badges[rankBadges(user.badges)[0]]}
-		<div
-			aria-label="User top-most badge"
-			title={badge.label}
-			class="avatar-badge"
-			style="--background:{badge.background};"
-		>
-			<svelte:component this={badge.icon} />
+		<div class="avatar-badge" style="--background:{badge.background};">
+			<Tooltip>
+				<span slot="tooltip-content">{badge.label}</span>
+				<div aria-label="User top-most badge">
+					<svelte:component this={badge.icon} />
+				</div>
+			</Tooltip>
 		</div>
 	{/if}
 </div>
@@ -53,11 +54,11 @@
 		&-badge {
 			position: absolute;
 			border: none;
-			display: grid;
-			align-items: center;
 			bottom: -0.55rem;
 			right: -0.55rem;
 			color: var(--background);
+			width: 1.315rem;
+			height: 1.315rem;
 
 			:global(svg) {
 				width: 1.315rem;
