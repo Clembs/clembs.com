@@ -4,7 +4,7 @@ export enum SocialName {
 	Discord = 'discord',
 	Instagram = 'instagram',
 	GitHub = 'github',
-	Twitch = 'twitch',
+	// Twitch = 'twitch',
 	Mastodon = 'mastodon',
 	YouTube = 'youtube',
 }
@@ -35,12 +35,12 @@ export const socials = [
 		url: 'https://discord.gg/6uNwP46',
 		background: '#5865F2',
 	},
-	{
-		id: SocialName.Twitch,
-		name: 'Twitch',
-		url: 'https://twitch.tv/clembs',
-		background: '#9147FF',
-	},
+	// {
+	// 	id: SocialName.Twitch,
+	// 	name: 'Twitch',
+	// 	url: 'https://twitch.tv/clembs',
+	// 	background: '#9147FF',
+	// },
 	{
 		id: SocialName.GitHub,
 		name: 'GitHub',
