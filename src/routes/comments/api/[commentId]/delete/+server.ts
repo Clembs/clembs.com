@@ -1,7 +1,7 @@
 import { db } from '$lib/db';
 import { error } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { comments } from '$lib/db/schema';
+import { comments, mentions, userCommentVote } from '$lib/db/schema';
 import { eq } from 'drizzle-orm';
 
 export const DELETE: RequestHandler = async ({ params, locals: { getUserData } }) => {
@@ -27,11 +27,26 @@ export const DELETE: RequestHandler = async ({ params, locals: { getUserData } }
 		throw error(401);
 	}
 
-	// delete child comments
-	await db.delete(comments).where(eq(comments.parentId, params.commentId));
+	async function deleteCommentsAndChildren(commentId: string) {
+		// delete comment votes
+		await db.delete(userCommentVote).where(eq(userCommentVote.commentId, commentId));
 
-	// delete comment itself
-	await db.delete(comments).where(eq(comments.id, params.commentId));
+		// delete comment mentions
+		await db.delete(mentions).where(eq(mentions.commentId, commentId));
+
+		// find child comments
+		const childComments = await db.query.comments.findMany({
+			where: ({ parentId }, { eq }) => eq(parentId, commentId),
+		});
+
+		// delete comment itself
+		await db.delete(comments).where(eq(comments.id, commentId));
+
+		// recursively do that
+		await Promise.all(childComments.map((comment) => deleteCommentsAndChildren(comment.id)));
+	}
+
+	await deleteCommentsAndChildren(params.commentId);
 
 	return new Response(null, { status: 200 });
 };
