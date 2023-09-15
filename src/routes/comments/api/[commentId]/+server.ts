@@ -10,11 +10,13 @@ export const GET: RequestHandler = async ({ params }) => {
 		where: (comment, { eq }) => eq(comment.id, params.commentId!),
 		with: {
 			author: true,
-			userLikes: true,
+			score: true,
+			mentionedUsers: true,
 			childComments: {
 				with: {
 					author: true,
-					userLikes: true,
+					score: true,
+					mentionedUsers: true,
 				},
 			},
 		},

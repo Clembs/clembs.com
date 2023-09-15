@@ -1,5 +1,5 @@
 import { db } from '$lib/db';
-import { comments } from '$lib/db/schema';
+import { comments, mentions } from '$lib/db/schema';
 import { generateSnowflake } from '$lib/helpers/snowflake';
 import { fail } from '@sveltejs/kit';
 import { isNull, type InferModel } from 'drizzle-orm';
@@ -9,6 +9,7 @@ import { PROJECT_ID_REGEX } from '$lib/helpers/regex';
 import { brandingData } from '$lib/data/branding';
 import { softwareData } from '$lib/data/software';
 import { bannedWords } from '$lib/helpers/bannedWords';
+import { parseMentions, type ParserOutputUserStructure } from '$lib/helpers/parseMentions';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.getSession();
@@ -17,8 +18,17 @@ export const load: PageServerLoad = async ({ locals }) => {
 	const comments = await db.query.comments.findMany({
 		with: {
 			author: true,
-			childComments: true,
+			childComments: {
+				with: {
+					author: true,
+				},
+			},
 			score: true,
+			mentionedUsers: {
+				with: {
+					user: true,
+				},
+			},
 		},
 		where: ({ parentId, projectId }, { and }) => and(isNull(parentId), isNull(projectId)),
 	});
@@ -88,8 +98,6 @@ export const actions: Actions = {
 		if (projectId) {
 			const regex = projectId.match(PROJECT_ID_REGEX);
 
-			console.log(regex);
-
 			if (!regex) {
 				return fail(404, {
 					message: 'Cannot find project.',
@@ -116,6 +124,26 @@ export const actions: Actions = {
 		};
 
 		await db.insert(comments).values(input);
+
+		const parsedContent = parseMentions(content);
+		const mentionedUsers = parsedContent?.filter(
+			(v) => typeof v !== 'string' && v.type === 'user'
+		) as ParserOutputUserStructure[];
+
+		if (mentionedUsers.length) {
+			for (const mentionedUser of mentionedUsers) {
+				const userData = await db.query.users.findFirst({
+					where: ({ username }, { eq }) => eq(username, mentionedUser.username),
+				});
+
+				if (userData) {
+					await db.insert(mentions).values({
+						commentId: input.id,
+						userId: userData.id,
+					});
+				}
+			}
+		}
 
 		return { success: true };
 	},
