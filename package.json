@@ -50,5 +50,8 @@
 		"marked": "^7.0.5",
 		"postgres": "^3.3.5",
 		"svelte-french-toast": "^1.0.4-beta.0"
+	},
+	"volta": {
+		"node": "18.17.1"
 	}
 }
