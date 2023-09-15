@@ -120,7 +120,7 @@
 					checked={!filters.anonymous}
 					on:click={() => (filters.anonymous = !filters.anonymous)}
 				>
-					Hide anonymous users
+					Hide guest users
 				</Chip>
 				<Chip checked={filters.blocked} on:click={() => (filters.blocked = !filters.blocked)}>
 					Show blocked users
@@ -230,6 +230,6 @@
 		margin: 1rem;
 		display: flex;
 		flex-direction: column;
-		gap: 1.5rem;
+		gap: 2rem;
 	}
 </style>

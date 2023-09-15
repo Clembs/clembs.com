@@ -33,7 +33,7 @@
 						showCommentFormModal = true;
 					}}
 				>
-					Write anonymously
+					Write as Guest
 				</Button>
 			{/if}
 		</LoginForm>

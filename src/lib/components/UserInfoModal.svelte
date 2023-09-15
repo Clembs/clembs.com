@@ -15,7 +15,7 @@
 	<header slot="title" class="user-info">
 		<GradientAvatar user={userData} showBadge={false} size="4rem" />
 		<div class="user-info-name">
-			{userData?.username ?? 'anonymous'}
+			{userData?.username ?? 'Guest'}
 			{#if userData?.badges}
 				<span class="badges">
 					{#each rankBadges(userData.badges) as badgeName}

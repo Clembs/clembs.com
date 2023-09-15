@@ -179,7 +179,7 @@
 					showLoginModal = true;
 				}}
 			>
-				Write anonymously option
+				Write as a guest option
 			</Button>
 		</div>
 	</div>

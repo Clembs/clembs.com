@@ -96,7 +96,7 @@
 					size="5rem"
 					user={{
 						...$page.data?.userData,
-						username: username || 'anonymous',
+						username: username || 'Guest',
 					}}
 					showBadge={false}
 				/>
