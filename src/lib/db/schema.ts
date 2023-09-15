@@ -4,8 +4,8 @@ import { timestamp, boolean, jsonb, pgTable, text, primaryKey } from 'drizzle-or
 
 export const users = pgTable('users', {
 	id: text('id').primaryKey(),
-	username: text('username').notNull(),
-	email: text('email'),
+	username: text('username').unique().notNull(),
+	email: text('email').unique(),
 	badges: text('badges', { enum: ['VERIFIED', 'BLOCKED', 'SUPPORTER', 'CLEMBS'] }).array(),
 	createdAt: timestamp('created_at').notNull().defaultNow(),
 	preferences: jsonb('preferences').$type<UserPreferences>(),
@@ -24,6 +24,7 @@ export const comments = pgTable('comments', {
 
 export const usersRelations = relations(users, ({ many }) => ({
 	comments: many(comments),
+	mentionedInComments: many(mentions),
 }));
 
 export const commentsRelations = relations(comments, ({ one, many }) => ({
@@ -39,12 +40,8 @@ export const commentsRelations = relations(comments, ({ one, many }) => ({
 	childComments: many(comments, {
 		relationName: 'child_comments',
 	}),
-	// referenceComment: one(comments, {
-	// 	fields: [comments.referenceCommentId],
-	// 	references: [comments.id],
-	// 	relationName: 'reference_comment',
-	// }),
 	score: many(userCommentVote),
+	mentionedUsers: many(mentions),
 }));
 
 export const userCommentVote = pgTable(
@@ -64,6 +61,32 @@ export const userCommentVote = pgTable(
 		pk: primaryKey(t.userId, t.commentId),
 	})
 );
+
+export const mentions = pgTable(
+	'mentions',
+	{
+		commentId: text('comment_id')
+			.notNull()
+			.references(() => comments.id),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id),
+	},
+	(t) => ({
+		pk: primaryKey(t.userId, t.commentId),
+	})
+);
+
+export const mentionedUsersRelations = relations(mentions, ({ one }) => ({
+	user: one(users, {
+		fields: [mentions.userId],
+		references: [users.id],
+	}),
+	comment: one(comments, {
+		fields: [mentions.commentId],
+		references: [comments.id],
+	}),
+}));
 
 export const userCommentVoteRelations = relations(userCommentVote, ({ one }) => ({
 	user: one(users, {
