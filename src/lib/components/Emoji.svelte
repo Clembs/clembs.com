@@ -1,19 +1,23 @@
 <script lang="ts">
+	import Tooltip from './Tooltip.svelte';
+
 	export let src: string;
 	export let name: string;
 </script>
 
-<span class="emoji-wrapper">
-	<img aria-label=":{name}:" draggable="false" class="emoji" {src} alt=":{name}" title=":{name}:" />
-</span>
+<Tooltip transitionDelay={500}>
+	<span slot="tooltip-content">:{name}:</span>
+	<img aria-label=":{name}:" draggable="false" class="emoji" {src} alt=":{name}:" />
+</Tooltip>
 
 <style lang="scss">
 	.emoji {
 		display: inline-block;
 		object-fit: contain;
-		cursor: pointer;
-		width: 1.375em;
-		height: 1.375em;
+		width: 1.75em;
+		height: 1.75em;
+		vertical-align: bottom;
+		image-rendering: optimizequality;
 		vertical-align: bottom;
 	}
 </style>
