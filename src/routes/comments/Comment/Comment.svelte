@@ -17,6 +17,9 @@
 	import { findMediaLinks } from '$lib/helpers/findMediaLinks';
 	import Tooltip from '$lib/components/Tooltip.svelte';
 	import VoteButtons from './VoteButtons.svelte';
+	import { parseMentions } from '$lib/helpers/parseMentions';
+	import Mention from './Mention.svelte';
+	import Emoji from '$lib/components/Emoji.svelte';
 
 	export let comment: Comment;
 	export let showActions = true;
@@ -36,12 +39,12 @@
 	const dispatch = createEventDispatcher();
 	const date = snowflakeToDate(comment.id);
 
-	let username = comment.author?.username ?? 'anonymous';
+	let username = comment.author?.username ?? 'Guest';
 
 	const mediaUrl = findMediaLinks(comment.content)?.last;
 
-	async function accessUserInfo() {
-		dispatch('userinfo', comment.author);
+	async function accessUserInfo(user = comment.author) {
+		dispatch('userinfo', user);
 	}
 
 	async function replyComment() {
@@ -101,7 +104,7 @@
 
 		loadingComments = true;
 
-		if (!childComments || childComments.find((c) => c.userId && !c.author)) {
+		if (!childComments || childComments.find((c) => c.userId && !c.score)) {
 			try {
 				const req = await fetch(`/comments/api/${comment.id}/comments`);
 
@@ -129,7 +132,7 @@
 	>
 		<div class="comment">
 			{#if showActions}
-				<button on:click={accessUserInfo} class="comment-avatar">
+				<button on:click={() => accessUserInfo()} class="comment-avatar">
 					<GradientAvatar user={comment.author} size={!nestingLevel ? '2.5rem' : '1.5rem'} />
 				</button>
 			{:else}
@@ -140,7 +143,10 @@
 					<div class="comment-main-text-metadata">
 						<div class="comment-main-text-metadata-left">
 							{#if showActions}
-								<button on:click={accessUserInfo} class="comment-main-text-metadata-left-username">
+								<button
+									on:click={() => accessUserInfo()}
+									class="comment-main-text-metadata-left-username"
+								>
 									{username}
 								</button>
 							{:else}
@@ -167,12 +173,29 @@
 					</div>
 					<div class="comment-main-text-content">
 						{#if !comment.projectId}
-							{@html insane(
-								marked(comment.content.replace(mediaUrl ?? '', ''), {
-									breaks: true,
-									gfm: true,
-								})
-							)}
+							{#each parseMentions(comment.content) as part}
+								{#if typeof part === 'string'}
+									{@html insane(
+										marked.parseInline(part.replace(mediaUrl ?? '', ''), {
+											breaks: true,
+											gfm: true,
+										})
+									)}
+								{:else if part.type === 'user'}
+									{@const user = comment.mentionedUsers?.find(({ user }) =>
+										part.type === 'user' ? user.username === part.username : null
+									)?.user}
+									{#if user}
+										<Mention node={part} on:click={() => accessUserInfo(user)} />
+									{:else}
+										@{part.username}
+									{/if}
+								{:else if part.type === 'project'}
+									<Mention node={part} />
+								{:else if part.type === 'emoji'}
+									<Emoji name={part.emojiId} src="/assets/emotes/{part.emojiId}.webp" />
+								{/if}
+							{/each}
 						{:else}
 							{comment.content}
 						{/if}
@@ -233,8 +256,11 @@
 									<div class="expand-icon" aria-expanded={childCommentsExpanded}>
 										<IconChevronDown />
 									</div>
-									{comment.childComments?.length}
-									{comment.childComments?.length === 1 ? 'reply' : 'replies'}
+									{comment.childComments.length}
+									{comment.childComments.length === 1 ? 'reply' : 'replies'}
+									{#if comment.childComments.find(({ author }) => author && author?.badges?.includes('CLEMBS'))}
+										• Clembs replied
+									{/if}
 								{/if}
 							</button>
 						{/if}
@@ -271,6 +297,7 @@
 
 		&.no-hover {
 			cursor: default;
+			pointer-events: none;
 		}
 
 		&.reply {
