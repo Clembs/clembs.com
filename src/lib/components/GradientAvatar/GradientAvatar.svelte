@@ -5,11 +5,12 @@
 	import { rankBadges } from '$lib/helpers/rankBadges';
 	import Tooltip from '../Tooltip.svelte';
 
-	export let user: null | User = null;
+	export let user: null | Partial<User> = null;
 	export let showBadge = true;
+	export let showSilhouette = true;
 	export let size = '2.25rem';
 
-	$: username = user?.username ?? 'anonymous';
+	$: username = user?.username ?? 'Guest';
 
 	$: firstCharUsername = username[0].trim();
 	$: lastCharUsername = username.at(-1)?.trim()!;
@@ -22,6 +23,7 @@
 
 <div
 	class="avatar"
+	class:showSilhouette
 	style="--color-a: {avatarGradient.a}; --color-b: {avatarGradient.b}; --size: {size};"
 >
 	{#if user?.badges && showBadge}
@@ -44,6 +46,18 @@
 		width: var(--size);
 		border-radius: 99rem;
 		background: linear-gradient(45deg, var(--color-a), var(--color-b));
+
+		&.showSilhouette::after {
+			content: '';
+			display: block;
+			position: relative;
+			height: 100%;
+			width: 100%;
+			background-image: url('/assets/silhouette-black.webp');
+			background-size: cover;
+			opacity: 0.75;
+		}
+
 		// display: grid;
 		// place-items: center;
 		// color: white;
@@ -59,6 +73,7 @@
 			color: var(--background);
 			width: 1.315rem;
 			height: 1.315rem;
+			z-index: 5;
 
 			:global(svg) {
 				width: 1.315rem;
