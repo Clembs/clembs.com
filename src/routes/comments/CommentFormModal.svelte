@@ -10,19 +10,22 @@
 	import GradientAvatar from '$lib/components/GradientAvatar/GradientAvatar.svelte';
 	import TextInput from '$lib/components/TextInput.svelte';
 	import IconAlertCircleFilled from '@tabler/icons-svelte/dist/svelte/icons/IconAlertCircleFilled.svelte';
-	import IconPhoto from '@tabler/icons-svelte/dist/svelte/icons/IconPhoto.svelte';
-	import IconVideo from '@tabler/icons-svelte/dist/svelte/icons/IconVideo.svelte';
-	import IconGif from '@tabler/icons-svelte/dist/svelte/icons/IconGif.svelte';
+	// import IconPhoto from '@tabler/icons-svelte/dist/svelte/icons/IconPhoto.svelte';
+	// import IconVideo from '@tabler/icons-svelte/dist/svelte/icons/IconVideo.svelte';
+	// import IconGif from '@tabler/icons-svelte/dist/svelte/icons/IconGif.svelte';
 	import IconMoodSmile from '@tabler/icons-svelte/dist/svelte/icons/IconMoodSmile.svelte';
+	import IconHelpCircle from '@tabler/icons-svelte/dist/svelte/icons/IconHelpCircle.svelte';
 	import toast, { LoaderIcon } from 'svelte-french-toast';
 	import InfoBox from '$lib/components/InfoBox.svelte';
 	import { findMediaLinks } from '$lib/helpers/findMediaLinks';
-	import Key from '$lib/components/Key.svelte';
 	import Tooltip from '$lib/components/Tooltip.svelte';
+	import FormattingHelpModal from '$lib/components/FormattingHelpModal.svelte';
 
 	export let parentComment: CommentType | null = null;
 	export let projectId: string | null = null;
 	export let showModal = false;
+
+	let showHelpModal = false;
 
 	let error = '';
 	let content = '';
@@ -83,6 +86,10 @@
 		}
 	}}
 />
+
+{#if showHelpModal}
+	<FormattingHelpModal bind:showModal={showHelpModal} />
+{/if}
 
 {#if showModal}
 	<Modal on:close={(e) => (content = '')} bind:showModal>
@@ -153,7 +160,7 @@
 				<div class="comment-profile">
 					<GradientAvatar user={$page.data?.userData} size="2.25rem" />
 					<div class="comment-profile-username">
-						{$page.data?.userData?.username ?? 'anonymous'}
+						{$page.data?.userData?.username ?? 'Guest'}
 					</div>
 				</div>
 
@@ -168,15 +175,6 @@
 				/>
 			</div>
 
-			{#if !projectId}
-				<div class="keyboard-shortcuts">
-					<InfoBox type="info">
-						Press <Key>Ctrl/⌘</Key>
-						<Key>/</Key> for a list of message formatting shortcuts.
-					</InfoBox>
-				</div>
-			{/if}
-
 			{#if error}
 				<InfoBox type="danger">
 					{error}
@@ -190,6 +188,13 @@
 							<span slot="tooltip-content"> Coming soon 👀 </span>
 							<Button disabled style="outlined">
 								<IconMoodSmile />
+							</Button>
+						</Tooltip>
+
+						<Tooltip>
+							<span slot="tooltip-content"> Formatting help </span>
+							<Button style="outlined" on:click={() => (showHelpModal = true)}>
+								<IconHelpCircle />
 							</Button>
 						</Tooltip>
 
