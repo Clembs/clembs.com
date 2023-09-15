@@ -39,6 +39,7 @@
 			padding: 0.5rem 1rem;
 			border-radius: 1rem;
 			cursor: pointer;
+			background-color: var(--color-background);
 
 			&:hover {
 				background-color: var(--color-surface);
