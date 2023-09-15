@@ -41,7 +41,7 @@
 		background-color: var(--color-background);
 		box-shadow: 0 2px 0 0 var(--color-outline);
 		border-radius: 1.5rem;
-		width: clamp(600px, 40vw, 100%);
+		width: clamp(600px, 50vw, 100%);
 		transition: scale 200ms ease-out, opacity 200ms ease-out;
 		padding: 0;
 		overflow: visible;
