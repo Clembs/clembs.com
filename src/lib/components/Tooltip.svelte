@@ -1,14 +1,44 @@
 <script lang="ts">
+	import { fly } from 'svelte/transition';
+
 	export let transitionDelay = 120;
+	export let type: 'hover' | 'click' = 'hover';
+
+	export let showTooltip = false;
 </script>
 
-<div class="tooltip-container" style="--transition-delay: {transitionDelay}ms">
+<span
+	on:focus={() => type === 'hover' && (showTooltip = true)}
+	on:mouseover={() => type === 'hover' && (showTooltip = true)}
+	on:blur={() => type === 'hover' && (showTooltip = false)}
+	on:mouseleave={() => type === 'hover' && (showTooltip = false)}
+	class="tooltip-container {type}"
+	style="--transition-delay: {transitionDelay}ms"
+>
 	<slot />
 
-	<div class="tooltip-content" role="tooltip">
-		<slot name="tooltip-content" />
-	</div>
-</div>
+	<!-- type === 'click' &&  -->
+	{#if showTooltip}
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
+		<span
+			in:fly={{
+				delay: transitionDelay,
+				duration: 100,
+				y: 10,
+			}}
+			on:keypress={(ev) => {
+				console.log(ev.key);
+				if (ev.key === 'Escape') {
+					showTooltip = false;
+				}
+			}}
+			class="tooltip-content"
+			role="tooltip"
+		>
+			<slot name="tooltip-content" />
+		</span>
+	{/if}
+</span>
 
 <style lang="scss">
 	.tooltip-container {
@@ -16,7 +46,7 @@
 		display: inline-block;
 
 		.tooltip-content {
-			pointer-events: none;
+			// pointer-events: none;
 			position: absolute;
 			bottom: calc(100% + 7px);
 			left: 50%;
@@ -27,11 +57,11 @@
 			padding: 0.5rem 1rem;
 			border-radius: 0.5rem;
 			z-index: 1;
-			opacity: 0;
+			// opacity: 0;
 			font-size: 0.9rem;
-			transform: translate(-50%, 10px) scale(0.9);
-			transition: transform 100ms ease, opacity 50ms ease;
-			transition-delay: 100ms;
+			transform: translate(-50%);
+			// transition: transform 100ms ease, opacity 50ms ease;
+			// transition-delay: 100ms;
 			inline-size: max-content;
 			max-inline-size: 30ch;
 
@@ -49,10 +79,10 @@
 			}
 		}
 
-		&:is(:hover, :focus-within) .tooltip-content {
-			opacity: 1;
-			transform: translate(-50%, 0) scale(1);
-			transition-delay: var(--transition-delay);
-		}
+		// &.hover:is(:hover, :focus-within) .tooltip-content {
+		// 	opacity: 1;
+		// 	transform: translate(-50%, 0) scale(1);
+		// 	transition-delay: var(--transition-delay);
+		// }
 	}
 </style>
