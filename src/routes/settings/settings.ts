@@ -16,15 +16,15 @@ export type SettingsTab = {
 export const settingsTabs: SettingsTab[] = [
 	{
 		icon: IconSettings,
-		label: 'General',
-		title: 'General Settings',
+		label: 'Account',
+		title: 'Account Settings',
 		url: '/settings',
 	},
 	{
 		icon: IconUserCircle,
 		label: 'Account',
 		title: 'Account Settings',
-		url: '/settings/account',
+		url: '/settings',
 	},
 	{
 		icon: IconPaint,

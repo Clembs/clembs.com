@@ -1,34 +1,40 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import Button from '$lib/components/Button.svelte';
-	import { onMount } from 'svelte';
-	import { settingsTabs, settingsStore } from './settings';
-	import { fly, slide } from 'svelte/transition';
-	import { enhance } from '$app/forms';
+	// import Button from '$lib/components/Button.svelte';
+	// import { onMount } from 'svelte';
+	import {
+		settingsTabs,
+		// , settingsStore
+	} from './settings';
+	import {
+		// fly,
+		slide,
+	} from 'svelte/transition';
+	// import { enhance } from '$app/forms';
 
-	let dirty = false;
+	// let dirty = false;
 
-	$: originalSettings = $page.data.userData?.preferences;
+	// $: originalSettings = $page.data.userData?.preferences;
 
-	settingsStore?.subscribe((v) => {
-		if (originalSettings && JSON.stringify(v) !== JSON.stringify(originalSettings)) {
-			dirty = true;
-		} else {
-			dirty = false;
-		}
-	});
+	// settingsStore?.subscribe((v) => {
+	// 	if (originalSettings && JSON.stringify(v) !== JSON.stringify(originalSettings)) {
+	// 		dirty = true;
+	// 	} else {
+	// 		dirty = false;
+	// 	}
+	// });
 
-	let error: string;
+	// let error: string;
 
-	onMount(() => {
-		if (!originalSettings && localStorage.getItem('preferences')) {
-			originalSettings = JSON.parse(localStorage.getItem('preferences')!);
-		}
-	});
+	// onMount(() => {
+	// 	if (!originalSettings && localStorage.getItem('preferences')) {
+	// 		originalSettings = JSON.parse(localStorage.getItem('preferences')!);
+	// 	}
+	// });
 </script>
 
 <main>
-	<nav class:dirty>
+	<!-- <nav class:dirty>
 		<ul>
 			{#each settingsTabs as tab, i}
 				<li class:selected={$page.url.pathname === tab.url}>
@@ -41,7 +47,7 @@
 				</li>
 			{/each}
 		</ul>
-	</nav>
+	</nav> -->
 
 	<div class="main-panel">
 		<div class="selected-tab" transition:slide>
@@ -53,7 +59,7 @@
 		</div>
 	</div>
 
-	{#if dirty}
+	<!-- {#if dirty}
 		<form
 			transition:fly={{ opacity: 1, y: 100, duration: 150 }}
 			method="POST"
@@ -84,7 +90,7 @@
 				<Button type="submit">Save Settings</Button>
 			</div>
 		</form>
-	{/if}
+	{/if} -->
 </main>
 
 <style lang="scss">
@@ -94,49 +100,49 @@
 		gap: 1.5rem;
 		height: 100%;
 
-		nav {
-			min-width: 250px;
+		// nav {
+		// 	min-width: 250px;
 
-			ul {
-				display: flex;
-				flex-direction: column;
-				margin: 0;
-				list-style: none;
-				padding: 0;
+		// 	ul {
+		// 		display: flex;
+		// 		flex-direction: column;
+		// 		margin: 0;
+		// 		list-style: none;
+		// 		padding: 0;
 
-				li {
-					padding: 0;
-					margin: 0 0 0.25rem 0;
-					a {
-						display: flex;
-						padding: 0.5rem 0.75rem;
-						gap: 0.5rem;
-						align-items: center;
-						width: 100%;
-						border-radius: 0.75rem;
-						transition: all 150ms cubic-bezier(0, 0, 0.125, 1);
-						font-variation-settings: 'wght' 400;
-						white-space: nowrap;
-						text-decoration: none;
-					}
+		// 		li {
+		// 			padding: 0;
+		// 			margin: 0 0 0.25rem 0;
+		// 			a {
+		// 				display: flex;
+		// 				padding: 0.5rem 0.75rem;
+		// 				gap: 0.5rem;
+		// 				align-items: center;
+		// 				width: 100%;
+		// 				border-radius: 0.75rem;
+		// 				transition: all 150ms cubic-bezier(0, 0, 0.125, 1);
+		// 				font-variation-settings: 'wght' 400;
+		// 				white-space: nowrap;
+		// 				text-decoration: none;
+		// 			}
 
-					&:hover {
-						a {
-							background-color: var(--color-surface);
-							font-variation-settings: 'wght' 500;
-						}
-					}
+		// 			&:hover {
+		// 				a {
+		// 					background-color: var(--color-surface);
+		// 					font-variation-settings: 'wght' 500;
+		// 				}
+		// 			}
 
-					&.selected {
-						a {
-							background-color: var(--color-on-background);
-							color: var(--color-background);
-							font-variation-settings: 'wght' 600;
-						}
-					}
-				}
-			}
-		}
+		// 			&.selected {
+		// 				a {
+		// 					background-color: var(--color-on-background);
+		// 					color: var(--color-background);
+		// 					font-variation-settings: 'wght' 600;
+		// 				}
+		// 			}
+		// 		}
+		// 	}
+		// }
 
 		.main-panel {
 			width: 100%;
@@ -195,41 +201,41 @@
 				bottom: 3rem;
 			}
 
-			nav {
-				position: fixed;
-				bottom: 0;
-				left: 0;
-				right: 0;
-				padding: 0.25rem;
-				margin: 0.5rem;
-				background-color: var(--color-background);
-				border: 1px solid var(--color-outline);
-				z-index: 9;
-				border-radius: 1rem;
-				box-shadow: 0 1px 0 0 var(--color-outline);
+			// nav {
+			// 	position: fixed;
+			// 	bottom: 0;
+			// 	left: 0;
+			// 	right: 0;
+			// 	padding: 0.25rem;
+			// 	margin: 0.5rem;
+			// 	background-color: var(--color-background);
+			// 	border: 1px solid var(--color-outline);
+			// 	z-index: 9;
+			// 	border-radius: 1rem;
+			// 	box-shadow: 0 1px 0 0 var(--color-outline);
 
-				&.dirty {
-					filter: brightness(0.7);
-				}
+			// 	&.dirty {
+			// 		filter: brightness(0.7);
+			// 	}
 
-				ul {
-					flex-direction: row;
-					gap: 0.5rem;
+			// 	ul {
+			// 		flex-direction: row;
+			// 		gap: 0.5rem;
 
-					li {
-						width: 100%;
-						margin: 0;
+			// 		li {
+			// 			width: 100%;
+			// 			margin: 0;
 
-						a {
-							align-items: center;
-							justify-content: center;
-							flex-direction: column;
-							gap: 0.25rem;
-							font-size: 0.9rem;
-						}
-					}
-				}
-			}
+			// 			a {
+			// 				align-items: center;
+			// 				justify-content: center;
+			// 				flex-direction: column;
+			// 				gap: 0.25rem;
+			// 				font-size: 0.9rem;
+			// 			}
+			// 		}
+			// 	}
+			// }
 		}
 	}
 </style>

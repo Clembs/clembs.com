@@ -1,12 +1,18 @@
-<script lang="ts">
+<script>
+	import AccountSettings from './account/AccountSettings.svelte';
+</script>
+
+<AccountSettings />
+
+<!-- <script lang="ts">
 	import Switch from '$lib/components/Switch.svelte';
 	import { settingsStore } from './settings';
 	import IconVolume from '@tabler/icons-svelte/dist/svelte/icons/IconVolume.svelte';
 
 	let soundEnabled = $settingsStore?.soundEnabled || true;
-</script>
+</script> -->
 
-{#if $settingsStore}
+<!-- {#if $settingsStore}
 	<Switch bind:checked={$settingsStore.soundEnabled}>
 		<span class="switch-label">
 			<IconVolume />
@@ -29,4 +35,4 @@
 		gap: 0.5rem;
 		align-items: center;
 	}
-</style>
+</style> -->
