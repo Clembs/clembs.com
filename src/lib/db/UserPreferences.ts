@@ -7,6 +7,7 @@ export const UserPreferencesSchema = object({
 		allReplies: boolean(),
 		clembsReplies: boolean(),
 		popularComment: boolean(),
+		mentioned: boolean(),
 	}),
 });
 
@@ -16,8 +17,9 @@ export const defaultUserPreferences: UserPreferences = {
 	soundEnabled: true,
 	theme: 'light',
 	email: {
-		allReplies: false,
+		allReplies: true,
 		clembsReplies: false,
 		popularComment: false,
+		mentioned: true,
 	},
 };
