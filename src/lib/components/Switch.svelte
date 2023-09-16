@@ -66,7 +66,7 @@
 
 			&::before {
 				content: '';
-				cursor: pointer;
+				cursor: inherit;
 				pointer-events: auto;
 				grid-area: track;
 				inline-size: var(--thumb-size);
@@ -80,11 +80,16 @@
 				transition: transform 200ms ease, scale 150ms ease;
 			}
 
-			&:hover::before {
+			&:disabled {
+				opacity: 0.315;
+				cursor: not-allowed;
+			}
+
+			&:not(:disabled):hover::before {
 				scale: 1.1;
 			}
 
-			&:active::before {
+			&:not(:disabled):active::before {
 				scale: 0.9;
 			}
 
@@ -96,11 +101,11 @@
 					scale: 1;
 				}
 
-				&:hover::before {
+				&:not(:disabled):hover::before {
 					scale: 1.1;
 				}
 
-				&:active::before {
+				&:not(:disabled):active::before {
 					scale: 0.9;
 				}
 			}
