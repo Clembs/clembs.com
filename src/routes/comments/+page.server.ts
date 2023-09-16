@@ -10,6 +10,11 @@ import { brandingData } from '$lib/data/branding';
 import { softwareData } from '$lib/data/software';
 import { bannedWords } from '$lib/helpers/bannedWords';
 import { parseMentions, type ParserOutputUserStructure } from '$lib/helpers/parseMentions';
+import { sendEmail } from '$lib/helpers/sendEmail';
+import { defaultUserPreferences } from '$lib/db/UserPreferences';
+import { marked } from 'marked';
+import insane from 'insane';
+import { dateFormat } from '$lib/helpers/dateFormat';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.getSession();
@@ -141,6 +146,78 @@ export const actions: Actions = {
 						commentId: input.id,
 						userId: userData.id,
 					});
+
+					if (
+						userData.id !== currentUser?.id &&
+						(userData.preferences ?? defaultUserPreferences).email.mentioned
+					) {
+						await sendEmail(
+							{
+								subject: `${
+									currentUser?.username ? `@${currentUser.username}` : 'A guest user'
+								} mentioned you in a comment.`,
+								html: `
+<!DOCTYPE html>
+<body style="background-color: #f0f0f0">
+	<main
+		style="
+			font-family: sans-serif;
+			padding: 16px;
+			border-radius: 16px;
+			border: 1px solid black;
+			background-color: white;
+			box-shadow: 0 2px 0 0 black;
+			max-width: max-content;
+			margin: 32px auto;
+		"
+	>
+		<img
+			style="height: 52px"
+			alt="Habile smiling"
+			src="https://c.clembs.com/files/67dafdd960982dba38.png"
+		/>
+								
+
+		<h2>${currentUser?.username ?? 'A guest user'} mentioned you in a clembs.com comment.</h2>
+
+		<div
+			style="
+				border: 1px solid black;
+				box-shadow: 0 1px 0 0 black;
+				padding: 12px;
+				margin-bottom: 32px;
+				border-radius: 8px;
+				max-width: max-content;
+			"
+		>
+			<h3 style="margin: 0">
+			  ${currentUser?.username ?? 'Guest'} 
+				<span style="font-size: 12px; color: #6e6d7a">
+					• ${dateFormat(new Date())}
+				</span>
+			</h3>
+			<p style="margin: 0; margin-top: 6px">
+				${insane(
+					marked.parseInline(input.content, {
+						gfm: true,
+						breaks: true,
+					})
+				)}
+			</p>
+		</div>
+
+		<p style="margin-top: 32px; font-size: 12px; color: #6e6d7a">
+			You received this email because you've opted into the "When anyone mentions me." email
+			notification.<br />
+			<a href="https://clembs.com/settings" style="color: inherit"> Unsubscribe </a>
+		</p>
+	</main>
+</body>
+`,
+							},
+							userData.email!
+						);
+					}
 				}
 			}
 		}
