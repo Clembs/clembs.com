@@ -7,6 +7,7 @@
 	import { page } from '$app/stores';
 	import toast from 'svelte-french-toast';
 	import type { Comment } from '$lib/db/types';
+	import { calculateScore } from '$lib/helpers/calculateScore';
 
 	const dispatch = createEventDispatcher();
 
@@ -18,8 +19,7 @@
 		? comment.score?.find((e) => e.userId === data?.userData?.id)?.type
 		: null;
 
-	const originalScore =
-		comment?.score?.reduce((acc, cur) => (acc = acc + (cur.type === 'UPVOTE' ? 1 : -1)), 0) || 0;
+	const originalScore = calculateScore(comment);
 
 	const scoreWithoutUser = originalScore + (vote === 'UPVOTE' ? -1 : vote === 'DOWNVOTE' ? 1 : 0);
 
@@ -78,11 +78,11 @@
 <div
 	class="vote-buttons"
 	class:voted={vote}
-	style="--main-color: var({!vote
-		? '--color-on-surface'
+	style="--main-color: {!vote
+		? 'var(--color-on-surface)'
 		: vote === 'UPVOTE'
-		? '--color-primary'
-		: '--color-error'})"
+		? '#654fff'
+		: 'var(--color-error)'}"
 >
 	<button on:click={upvote} data-action="upvote" class:active={vote === 'UPVOTE'}>
 		{#if vote === 'UPVOTE'}
@@ -107,10 +107,12 @@
 	.vote-buttons {
 		display: flex;
 		border-radius: 99rem;
-		background-color: var(--color-surface);
+		// background-color: var(--color-surface);
 		align-items: center;
 		font-weight: 500;
 		font-size: 0.8rem;
+		border: 1px solid var(--color-outline);
+		user-select: none;
 
 		&.voted {
 			font-weight: 800;
@@ -130,7 +132,7 @@
 			border-radius: 99rem;
 
 			&:hover {
-				background-color: #e2e7e979;
+				background-color: var(--color-surface);
 			}
 
 			&.active {

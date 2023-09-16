@@ -3,8 +3,8 @@
 	import IconMessageCircle from '@tabler/icons-svelte/dist/svelte/icons/IconMessageCircle.svelte';
 	import IconChevronDown from '@tabler/icons-svelte/dist/svelte/icons/IconChevronDown.svelte';
 	import IconTrash from '@tabler/icons-svelte/dist/svelte/icons/IconTrash.svelte';
-	import IconPinFilled from '@tabler/icons-svelte/dist/svelte/icons/IconPinFilled.svelte';
-	import IconPin from '@tabler/icons-svelte/dist/svelte/icons/IconPin.svelte';
+	import IconStarFilled from '@tabler/icons-svelte/dist/svelte/icons/IconStarFilled.svelte';
+	import IconStar from '@tabler/icons-svelte/dist/svelte/icons/IconStar.svelte';
 	import { createEventDispatcher } from 'svelte';
 	import GradientAvatar from '$lib/components/GradientAvatar/GradientAvatar.svelte';
 	import { page } from '$app/stores';
@@ -130,7 +130,7 @@
 		class:reply={nestingLevel}
 		class:no-actions={!showActions}
 	>
-		<div class="comment">
+		<div class="comment" class:pinned={comment.isPinned}>
 			{#if showActions}
 				<button on:click={() => accessUserInfo()} class="comment-avatar">
 					<GradientAvatar user={comment.author} size={!nestingLevel ? '2.5rem' : '1.5rem'} />
@@ -167,7 +167,7 @@
 								</span>
 							</Tooltip>
 							{#if comment.isPinned}
-								<span class="comment-main-text-metadata-left-pinned">Pinned by Clembs</span>
+								<span class="comment-main-text-metadata-left-pinned">Featured</span>
 							{/if}
 						</div>
 					</div>
@@ -240,9 +240,9 @@
 									{#if loadingPin}
 										<LoaderIcon />
 									{:else if comment.isPinned}
-										<IconPinFilled />
+										<IconStarFilled />
 									{:else}
-										<IconPin />
+										<IconStar />
 									{/if}
 								</button>
 							{/if}
@@ -289,7 +289,7 @@
 	.comment-wrapper {
 		display: flex;
 		flex-direction: column;
-		gap: 0.75rem;
+		// gap: 0.75rem;
 		border-radius: 1rem;
 		text-decoration: none;
 		position: relative;
@@ -324,7 +324,7 @@
 	.child-comments {
 		display: flex;
 		flex-direction: column;
-		gap: 1rem;
+		gap: 0.5rem;
 
 		&.margin-left {
 			margin-left: 3.25rem;
@@ -334,6 +334,12 @@
 	.comment {
 		display: flex;
 		gap: 1rem;
+		border-radius: 1rem;
+		padding: 0.5rem;
+
+		&.pinned {
+			background: linear-gradient(10deg, rgb(255 0 0 / 0.01), rgb(255 0 0 / 0.05));
+		}
 
 		&-avatar {
 			appearance: none;
@@ -391,6 +397,8 @@
 							font-size: 1.1rem;
 							border-radius: 0.5rem;
 							font-weight: 500;
+							user-select: text;
+							display: inline-block;
 
 							&:hover {
 								text-decoration: underline;
@@ -401,7 +409,7 @@
 							// background: var(--main-gradient);
 							// -webkit-background-clip: text;
 							// -webkit-text-fill-color: transparent;
-							color: var(--color-primary);
+							color: var(--color-error);
 							font-weight: 600;
 						}
 					}
@@ -422,7 +430,7 @@
 				.action-button {
 					border: none;
 					color: var(--color-on-surface);
-					background-color: var(--color-surface);
+					// background-color: var(--color-background);
 					border-radius: 9rem;
 					display: flex;
 					align-items: center;
@@ -432,6 +440,7 @@
 					font-size: 0.8rem;
 					max-width: max-content;
 					font-weight: 500;
+					border: 1px solid var(--color-outline);
 
 					&:hover {
 						background-color: var(--color-surface);
@@ -441,6 +450,7 @@
 						margin-top: 0.25rem;
 						padding: 0.25rem 0.5rem;
 						background-color: transparent;
+						border: none;
 
 						&:hover {
 							background-color: var(--color-surface);
