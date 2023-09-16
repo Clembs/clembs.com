@@ -25,7 +25,7 @@
 		align-items: center;
 		justify-content: center;
 
-		padding: 0.5rem 0.75rem;
+		padding: 0.315rem 0.75rem;
 		gap: 0.5rem;
 
 		user-select: none;
