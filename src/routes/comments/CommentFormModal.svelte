@@ -88,7 +88,7 @@
 />
 
 {#if showHelpModal}
-	<FormattingHelpModal bind:showModal={showHelpModal} />
+	<FormattingHelpModal showMarkdown={!projectId} bind:showModal={showHelpModal} />
 {/if}
 
 {#if showModal}
@@ -183,22 +183,21 @@
 
 			<div class="actions">
 				<div class="left">
-					{#if !projectId}
-						<Tooltip>
-							<span slot="tooltip-content"> Coming soon 👀 </span>
-							<Button disabled style="outlined">
-								<IconMoodSmile />
-							</Button>
-						</Tooltip>
+					<Tooltip>
+						<span slot="tooltip-content"> Coming soon 👀 </span>
+						<Button disabled style="outlined">
+							<IconMoodSmile />
+						</Button>
+					</Tooltip>
 
-						<Tooltip>
-							<span slot="tooltip-content"> Formatting help </span>
-							<Button style="outlined" on:click={() => (showHelpModal = true)}>
-								<IconHelpCircle />
-							</Button>
-						</Tooltip>
+					<Tooltip>
+						<span slot="tooltip-content"> Formatting help </span>
+						<Button style="outlined" on:click={() => (showHelpModal = true)}>
+							<IconHelpCircle />
+						</Button>
+					</Tooltip>
 
-						<!-- <Tooltip>
+					<!-- <Tooltip>
 							<span slot="tooltip-content">
 								Insert a GIF or .mp4 video URL to have it appear under your comment!
 							</span>
@@ -226,7 +225,6 @@
 								{/if}
 							</Button>
 						</Tooltip> -->
-					{/if}
 				</div>
 
 				<div class="right">
@@ -331,12 +329,6 @@
 					font-weight: 500;
 				}
 			}
-		}
-	}
-
-	@media (max-width: 768px) {
-		.keyboard-shortcuts {
-			display: none;
 		}
 	}
 </style>

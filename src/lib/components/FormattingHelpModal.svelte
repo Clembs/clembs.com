@@ -6,6 +6,7 @@
 	import Modal from './Modal.svelte';
 
 	export let showModal = false;
+	export let showMarkdown = true;
 </script>
 
 <Modal bind:showModal>
@@ -54,43 +55,47 @@
 			</td>
 		</tr>
 
-		<tr>
-			<td>Bold text</td>
-			<td> <code>**text**</code> </td>
-			<td> <strong>WOW!!!</strong> </td>
-		</tr>
+		{#if showMarkdown}
+			<tr>
+				<td>Bold text</td>
+				<td> <code>**text**</code> </td>
+				<td> <strong>WOW!!!</strong> </td>
+			</tr>
 
-		<tr>
-			<td>Italic text</td>
-			<td> <code>_text_</code> </td>
-			<td> <em>so subtle...</em> </td>
-		</tr>
+			<tr>
+				<td>Italic text</td>
+				<td> <code>_text_</code> </td>
+				<td> <em>so subtle...</em> </td>
+			</tr>
 
-		<tr>
-			<td>Strikethrough text</td>
-			<td> <code>~~text~~</code> </td>
-			<td> <s>not here</s> </td>
-		</tr>
+			<tr>
+				<td>Strikethrough text</td>
+				<td> <code>~~text~~</code> </td>
+				<td> <s>not here</s> </td>
+			</tr>
 
-		<tr>
-			<td>Underline text</td>
-			<td> <code>__text__</code> </td>
-			<td> <u>real</u> </td>
-		</tr>
+			<tr>
+				<td>Underline text</td>
+				<td> <code>__text__</code> </td>
+				<td> <u>real</u> </td>
+			</tr>
 
-		<tr>
-			<td>Masked links</td>
-			<td> <code>&lbrack;text&rbrack;(link)</code> </td>
-			<td> <a target="_blank" href="https://startpage.com">Startpage!</a> </td>
-		</tr>
+			<tr>
+				<td>Masked links</td>
+				<td> <code>&lbrack;text&rbrack;(link)</code> </td>
+				<td> <a target="_blank" href="https://startpage.com">Startpage!</a> </td>
+			</tr>
+		{/if}
 	</table>
 
-	<div class="keyboard-shortcuts">
-		<InfoBox type="info">
-			Press <Key>Ctrl/⌘</Key>
-			<Key>/</Key> for a list of comment formatting shortcuts.
-		</InfoBox>
-	</div>
+	{#if showMarkdown}
+		<div class="keyboard-shortcuts">
+			<InfoBox type="info">
+				Press <Key>Ctrl/⌘</Key>
+				<Key>/</Key> for a list of comment formatting shortcuts.
+			</InfoBox>
+		</div>
+	{/if}
 </Modal>
 
 <style lang="scss">
