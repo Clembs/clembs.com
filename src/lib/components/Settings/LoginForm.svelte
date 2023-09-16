@@ -24,7 +24,7 @@
 		return async ({ action, result, update }) => {
 			loading = false;
 
-			if (result.type === 'redirect' && result.location === '/settings/account') {
+			if (result.type === 'redirect' && result.location === '/settings') {
 				showModal = false;
 				return;
 			}

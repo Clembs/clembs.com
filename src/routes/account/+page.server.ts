@@ -8,7 +8,7 @@ import { EMAIL_REGEX, OTP_REGEX, USERNAME_REGEX } from '$lib/helpers/regex';
 import type { Comment } from '$lib/db/types';
 
 export const load: PageServerLoad = async ({ locals }) => {
-	throw redirect(303, '/settings/account');
+	throw redirect(303, '/settings');
 };
 
 export const actions: Actions = {
@@ -18,7 +18,7 @@ export const actions: Actions = {
 		if (session) {
 			await getUserData();
 
-			throw redirect(303, '/settings/account');
+			throw redirect(303, '/settings');
 		}
 
 		const formData = await request.formData();
@@ -53,7 +53,7 @@ export const actions: Actions = {
 		if (session) {
 			await getUserData();
 
-			throw redirect(303, '/settings/account');
+			throw redirect(303, '/settings');
 		}
 
 		const formData = await request.formData();
@@ -179,7 +179,7 @@ export const actions: Actions = {
 		const session = await getSession();
 		if (session) {
 			await supabase.auth.signOut();
-			throw redirect(303, '/settings/account');
+			throw redirect(303, '/settings');
 		}
 	},
 	deleteAccount: async ({ locals: { supabase, getSession } }) => {
@@ -214,7 +214,7 @@ export const actions: Actions = {
 			// delete user from supabase auth
 			await supabase.auth.admin.deleteUser(session.user.id);
 
-			throw redirect(303, '/settings/account');
+			throw redirect(303, '/settings');
 		}
 	},
 };
