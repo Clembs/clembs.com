@@ -3,13 +3,14 @@
 	import type { Comment as CommentType, User } from '$lib/db/types';
 	import LoginModal from '$lib/components/Settings/LoginModal.svelte';
 	import CommentFormModal from './CommentFormModal.svelte';
-	import { rankComments } from '$lib/helpers/rankComments';
+	import { rankComments, type CommentRankingFilters } from '$lib/helpers/rankComments';
 	import Chip from '$lib/components/Chip.svelte';
 	import CreateCommentButton from './CreateCommentButton.svelte';
 	import RestrictedFunctionalityModal from './RestrictedFunctionalityModal.svelte';
 	import autoAnimate from '@formkit/auto-animate';
 	import UserInfoModal from '$lib/components/UserInfoModal.svelte';
 	import HabileNeutral from '$lib/svg/HabileNeutral.svelte';
+	import HabileScared from '$lib/svg/HabileScared.svelte';
 
 	export let userData: User | null | undefined;
 	export let parentComment: CommentType | null | undefined = null;
@@ -17,9 +18,13 @@
 	export let comments: CommentType[];
 	export let showModal = false;
 
-	let filters = {
+	let filters: CommentRankingFilters = {
 		anonymous: true,
 		blocked: false,
+		upvoted: false,
+		mentionsMe: false,
+		clembsReplied: false,
+		pinned: false,
 	};
 
 	let selectedSortingMode: 'interactions' | 'recent' = 'recent';
@@ -110,47 +115,69 @@
 		<div class="sort-and-filter">
 			<div class="chips">
 				<Chip
-					checked={selectedSortingMode === 'interactions'}
-					on:click={() =>
-						(selectedSortingMode = selectedSortingMode === 'recent' ? 'interactions' : 'recent')}
+					checked={selectedSortingMode === 'recent'}
+					on:click={() => (selectedSortingMode = selectedSortingMode = 'recent')}
 				>
-					Most replied to
+					🕒 Recent
 				</Chip>
+				<Chip
+					checked={selectedSortingMode === 'interactions'}
+					on:click={() => (selectedSortingMode = 'interactions')}
+				>
+					🔥 Popular
+				</Chip>
+				<span class="divider" />
+
+				<Chip checked={filters.pinned} on:click={() => (filters.pinned = !filters.pinned)}>
+					⭐ Featured
+				</Chip>
+				<Chip
+					checked={filters.clembsReplied}
+					on:click={() => (filters.clembsReplied = !filters.clembsReplied)}
+				>
+					💬 Clembs replied
+				</Chip>
+				{#if userData}
+					<Chip checked={filters.upvoted} on:click={() => (filters.upvoted = !filters.upvoted)}>
+						⬆️ Upvoted
+					</Chip>
+					<Chip
+						checked={filters.mentionsMe}
+						on:click={() => (filters.mentionsMe = !filters.mentionsMe)}
+					>
+						@ Mentions me
+					</Chip>
+				{/if}
 				<Chip
 					checked={!filters.anonymous}
 					on:click={() => (filters.anonymous = !filters.anonymous)}
 				>
-					Hide guest users
+					🕵️ Hide guests
 				</Chip>
 				<Chip checked={filters.blocked} on:click={() => (filters.blocked = !filters.blocked)}>
-					Show blocked users
+					🚫 Show blocked users
 				</Chip>
 			</div>
 		</div>
 
-		<div class="comments" use:autoAnimate>
-			{#each sortedAndFiltered.filter((c) => c.isPinned) as comment (comment.id)}
-				<Comment
-					{comment}
-					on:reply={handleReplyButton}
-					on:login={handleLoginRequiredButton}
-					on:blocked={handleRestrictedFunctionality}
-					on:userinfo={handleUserInfoButton}
-				/>
-			{/each}
-		</div>
-
-		<div class="comments" use:autoAnimate>
-			{#each sortedAndFiltered.filter((c) => !c.isPinned) as comment (comment.id)}
-				<Comment
-					{comment}
-					on:reply={handleReplyButton}
-					on:login={handleLoginRequiredButton}
-					on:blocked={handleRestrictedFunctionality}
-					on:userinfo={handleUserInfoButton}
-				/>
-			{/each}
-		</div>
+		{#if sortedAndFiltered.length}
+			<div class="comments" use:autoAnimate>
+				{#each sortedAndFiltered as comment (comment.id)}
+					<Comment
+						{comment}
+						on:reply={handleReplyButton}
+						on:login={handleLoginRequiredButton}
+						on:blocked={handleRestrictedFunctionality}
+						on:userinfo={handleUserInfoButton}
+					/>
+				{/each}
+			</div>
+		{:else}
+			<div class="no-comments">
+				<HabileScared />
+				You might've filtered too much...
+			</div>
+		{/if}
 	{:else}
 		<div class="no-comments">
 			<HabileNeutral />
@@ -161,7 +188,7 @@
 
 <style lang="scss">
 	.comments-page {
-		margin: 2rem 0;
+		// padding: 2rem 0;
 		border-top: 1px solid var(--color-on-surface);
 	}
 
@@ -176,6 +203,13 @@
 			align-items: center;
 			gap: 0.5rem;
 			padding: 0.5rem 1rem;
+
+			.divider {
+				width: 1px;
+				height: 1.5rem;
+				display: block;
+				background-color: var(--color-on-surface);
+			}
 		}
 
 		&::-webkit-scrollbar {
@@ -230,6 +264,6 @@
 		margin: 1rem;
 		display: flex;
 		flex-direction: column;
-		gap: 2rem;
+		gap: 0.5rem;
 	}
 </style>
