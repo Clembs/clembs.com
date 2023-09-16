@@ -15,6 +15,7 @@
 	import DeleteAccountModal from './DeleteAccountModal.svelte';
 
 	let usernameChangeLoading = false;
+	let notificationsLoading = false;
 	let signOutLoading = false;
 	let error = '';
 	let username = $page.data?.userData?.username;
@@ -105,26 +106,67 @@
 	</SettingsSection>
 
 	<SettingsSection>
-		<h2>Email notifications</h2>
+		<form
+			method="POST"
+			action="/settings?/updateSettings"
+			use:enhance={() => {
+				notificationsLoading = true;
+				return async ({ result, update }) => {
+					notificationsLoading = false;
+					update({
+						reset: false,
+					});
+					toast.success('Settings updated successfully!');
+				};
+			}}
+		>
+			<h2>Email notifications</h2>
 
-		<p>You can choose to receive emails for specific events.</p>
+			<p>You can choose to receive emails for specific events.</p>
 
-		{#if $settingsStore}
-			<Switch bind:checked={$settingsStore.email.allReplies}>
-				When anyone replies to my comments
-			</Switch>
+			{#if $settingsStore}
+				<input type="hidden" name="preferences" value={JSON.stringify($settingsStore)} />
 
-			<Switch bind:checked={$settingsStore.email.clembsReplies}>
-				When Clembs replies to my comments
-			</Switch>
-		{:else}
-			<LoaderIcon />
-		{/if}
+				<div class="switches">
+					<Switch required={false} bind:checked={$settingsStore.email.allReplies}>
+						When anyone replies to my comments
+					</Switch>
 
-		<!-- <Switch bind:checked={$settings?.email.popularComment}>
+					<Switch
+						required={false}
+						disabled={$settingsStore.email.allReplies}
+						bind:checked={$settingsStore.email.clembsReplies}
+					>
+						<!-- bind:checked={$settingsStore.email.clembsReplies -->
+						When Clembs replies to my comments
+					</Switch>
+
+					<Switch required={false} bind:checked={$settingsStore.email.mentioned}
+						>When anyone @mentions me</Switch
+					>
+				</div>
+			{:else}
+				<LoaderIcon />
+			{/if}
+
+			<Button
+				disabled={!$settingsStore ||
+					notificationsLoading ||
+					JSON.stringify($page.data.userData?.preferences) === JSON.stringify($settingsStore)}
+				type="submit"
+			>
+				{#if usernameChangeLoading}
+					<LoaderIcon />
+				{:else}
+					Update settings
+				{/if}
+			</Button>
+
+			<!-- <Switch bind:checked={$settings?.email.popularComment}>
 			When any of my comments gets popular
 		</Switch> -->
-	</SettingsSection>
+		</form></SettingsSection
+	>
 
 	<SettingsSection>
 		<h2>Danger Zone</h2>
@@ -187,6 +229,13 @@
 			flex-direction: column;
 			gap: 0.5rem;
 		}
+	}
+
+	.switches {
+		margin: 1rem 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
 	}
 
 	.buttons {
