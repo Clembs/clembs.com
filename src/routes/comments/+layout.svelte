@@ -21,11 +21,6 @@
 				I created this so you can leave feedback, report bugs, ask questions and be chill.<br />
 				No spam or harmful content allowed. Use common sense.
 			</InfoBox>
-
-			<InfoBox type="danger">
-				<span slot="title">Comments is still in development</span>
-				Let me know if anything goes wrong, or if you'd like to see a feature added ;)
-			</InfoBox>
 		{/if}
 	</header>
 
