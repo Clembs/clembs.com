@@ -5,15 +5,16 @@
 	import { page } from '$app/stores';
 	import ShareButton from '$lib/components/ShareButton.svelte';
 	import MetaTags from '$lib/components/MetaTags.svelte';
-	import Comments from '../../comments/Comments.svelte';
 	import type { PageServerData } from './$types';
 	import SoftwareGrid from '$lib/components/Projects/SoftwareGrid.svelte';
 	import { slide } from 'svelte/transition';
 	import IconMessageCircle from '@tabler/icons-svelte/dist/svelte/icons/IconMessageCircle.svelte';
+	import CommentsBottomSheet from '../../comments/CommentsBottomSheet.svelte';
 
 	let observer: IntersectionObserver;
 	let viewedImage = 0;
 	let expandOtherDownloads = false;
+	let showComments = false;
 
 	onMount(() => {
 		if (!data.gallery) return;
@@ -93,12 +94,10 @@
 					View source
 				</Button>
 			{/if}
-			<Button
-				style="outlined"
-				on:click={() => document.querySelector('.comments-page')?.scrollIntoView()}
-			>
+			<Button style="outlined" on:click={() => (showComments = true)}>
+				<!-- on:click={() => document.querySelector('.comments-page')?.scrollIntoView()} -->
 				<IconMessageCircle />
-				Comments
+				Comments ({data.comments.length})
 			</Button>
 			<ShareButton url={$page.url.href} />
 		</div>
@@ -186,7 +185,12 @@
 </time> -->
 
 <div class="comments">
-	<Comments projectId="{data.type}/{data.id}" comments={data.comments} userData={data.userData} />
+	<CommentsBottomSheet
+		bind:showSheet={showComments}
+		projectId="{data.type}/{data.id}"
+		comments={data.comments}
+		userData={data.userData}
+	/>
 </div>
 
 <style lang="scss">
@@ -196,7 +200,7 @@
 		padding: 1rem;
 		display: flex;
 		gap: 2rem;
-		// align-items: center;
+		padding-bottom: 3rem;
 
 		.icon img {
 			border: 1px solid var(--color-outline);
@@ -316,7 +320,7 @@
 
 	.suggested-apps {
 		border-top: 1px solid var(--color-on-surface);
-		padding: 1rem 1rem 0 1rem;
+		padding: 1.5rem;
 	}
 
 	@media (max-width: 768px) {
@@ -325,13 +329,13 @@
 			text-align: center;
 			gap: 1rem;
 
+			.icon {
+				align-self: center;
+			}
+
 			.buttons {
 				justify-content: center;
 			}
-		}
-
-		.suggested-apps {
-			padding: 0.25rem 1rem;
 		}
 	}
 </style>

@@ -10,7 +10,9 @@
 	import ShareButton from '$lib/components/ShareButton.svelte';
 	import MetaTags from '$lib/components/MetaTags.svelte';
 	import type { LayoutServerData } from './$types';
-	import Comments from '../../comments/Comments.svelte';
+	import CommentsBottomSheet from '../../comments/CommentsBottomSheet.svelte';
+
+	let showCommentsSheet = false;
 
 	export let data: LayoutServerData;
 </script>
@@ -87,12 +89,9 @@
 				<IconInstagram />
 			</Button>
 		{/if}
-		<Button
-			style="outlined"
-			on:click={() => document.querySelector('.comments-page')?.scrollIntoView()}
-		>
+		<Button style="outlined" on:click={() => (showCommentsSheet = true)}>
 			<IconMessageCircle />
-			Comments
+			Comments ({data.comments.length})
 		</Button>
 		<ShareButton url={$page.url.href} />
 	</div>
@@ -102,7 +101,12 @@
 	<slot />
 </article>
 
-<Comments projectId="{data.type}/{data.id}" comments={data.comments} userData={data.userData} />
+<CommentsBottomSheet
+	bind:showSheet={showCommentsSheet}
+	projectId="{data.type}/{data.id}"
+	comments={data.comments}
+	userData={data.userData}
+/>
 
 <style lang="scss">
 	header {
