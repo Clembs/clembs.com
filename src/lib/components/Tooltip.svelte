@@ -8,10 +8,12 @@
 </script>
 
 <span
-	on:focus={() => type === 'hover' && (showTooltip = true)}
-	on:mouseover={() => type === 'hover' && (showTooltip = true)}
-	on:blur={() => type === 'hover' && (showTooltip = false)}
-	on:mouseleave={() => type === 'hover' && (showTooltip = false)}
+	on:focus={() => (type === 'hover' ? (showTooltip = true) : null)}
+	on:mouseover={() => (type === 'hover' ? (showTooltip = true) : null)}
+	on:blur={() => (type === 'hover' ? (showTooltip = false) : null)}
+	on:mouseleave={() => (type === 'hover' ? (showTooltip = false) : null)}
+	on:click={() => (type === 'click' ? (showTooltip = true) : null)}
+	on:keydown={(ev) => (ev.key === 'Enter' && type === 'click' ? (showTooltip = true) : null)}
 	class="tooltip-container {type}"
 	style="--transition-delay: {transitionDelay}ms"
 >
