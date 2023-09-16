@@ -29,7 +29,7 @@
 		},
 		{
 			href: '/settings',
-			label: 'Settings',
+			label: $page.data.userData ? 'Account' : 'Login',
 		},
 		// {
 		// 	href: '/contact',
