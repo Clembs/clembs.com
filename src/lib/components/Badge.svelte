@@ -1,6 +1,6 @@
 <script lang="ts">
 	export let color = '';
-	export let style: 'primary' | 'outlined' | 'danger' = 'primary';
+	export let style: 'primary' | 'secondary' | 'outlined' | 'danger' = 'primary';
 	export let disabled = false;
 	export let stickTo: 'left top' | 'left bottom' | 'right top' | 'right bottom' | null = null;
 </script>
@@ -37,6 +37,10 @@
 		&.primary {
 			--_bg: var(--color-on-background);
 			--_text_color: var(--color-background);
+		}
+		&.secondary {
+			--_bg: var(--color-background);
+			--_text_color: var(--color-on-background);
 		}
 		&.outlined {
 			--_bg: transparent;
