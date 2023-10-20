@@ -20,6 +20,8 @@
 	import { parseMentions } from '$lib/helpers/parseMentions';
 	import Mention from './Mention.svelte';
 	import Emoji from '$lib/components/Emoji.svelte';
+	import { enhance } from '$app/forms';
+	import '../../../styles/comment.scss';
 
 	export let comment: Comment;
 	export let showActions = true;
@@ -29,7 +31,6 @@
 	let childComments = comment.childComments;
 	let loadingComments = false;
 	let loadingDelete = false;
-	let commentDeleted = false;
 	let loadingPin = false;
 
 	export let childCommentsExpanded = false;
@@ -43,10 +44,6 @@
 
 	const mediaUrl = findMediaLinks(comment.content)?.last;
 
-	async function accessUserInfo(user = comment.author) {
-		dispatch('userinfo', user);
-	}
-
 	async function replyComment() {
 		if (data.userData?.badges?.includes('BLOCKED')) {
 			dispatch('blocked');
@@ -56,45 +53,45 @@
 		dispatch('reply', comment);
 	}
 
-	async function deleteComment() {
-		loadingDelete = true;
+	// async function deleteComment() {
+	// 	loadingDelete = true;
 
-		try {
-			const res = await fetch(`/comments/api/${comment.id}/delete`, {
-				method: 'DELETE',
-			});
+	// 	try {
+	// 		const res = await fetch(`/comments/api/${comment.id}/delete`, {
+	// 			method: 'DELETE',
+	// 		});
 
-			if (res.ok) {
-				toast.success(`Successfully deleted.`);
-				loadingDelete = false;
-				commentDeleted = true;
-			}
-		} catch (e) {
-			toast.error(
-				`Something went wrong while trying to delete this ${
-					$page.data.hasNameChange ? 'clemb' : 'comment'
-				}.`
-			);
-		}
-	}
+	// 		if (res.ok) {
+	// 			toast.success(`Successfully deleted.`);
+	// 			loadingDelete = false;
+	// 			commentDeleted = true;
+	// 		}
+	// 	} catch (e) {
+	// 		toast.error(
+	// 			`Something went wrong while trying to delete this ${
+	// 				$page.data.hasNameChange ? 'clemb' : 'comment'
+	// 			}.`
+	// 		);
+	// 	}
+	// }
 
-	async function pinComment() {
-		loadingPin = true;
+	// async function pinComment() {
+	// 	loadingPin = true;
 
-		try {
-			const res = await fetch(`/comments/api/${comment.id}/pin`, {
-				method: 'PATCH',
-			});
+	// 	try {
+	// 		const res = await fetch(`/comments/api/${comment.id}/pin`, {
+	// 			method: 'PATCH',
+	// 		});
 
-			if (res.ok) {
-				toast.success(`Successfully (un)pinned.`);
-				loadingPin = false;
-				comment.isPinned = !comment.isPinned;
-			}
-		} catch (e) {
-			toast.error(`Something went wrong while trying to pin this comment.`);
-		}
-	}
+	// 		if (res.ok) {
+	// 			toast.success(`Successfully (un)pinned.`);
+	// 			loadingPin = false;
+	// 			comment.isPinned = !comment.isPinned;
+	// 		}
+	// 	} catch (e) {
+	// 		toast.error(`Something went wrong while trying to pin this comment.`);
+	// 	}
+	// }
 
 	async function loadChildComments() {
 		if (childCommentsExpanded) {
@@ -119,124 +116,123 @@
 	}
 </script>
 
-<svelte:head>
+<!-- <svelte:head>
 	<style src="../../../styles/comment.scss"></style>
-</svelte:head>
+</svelte:head> -->
 
-{#if !commentDeleted}
-	<div
-		class="comment-wrapper {showActions ? '' : 'no-hover'}"
-		id="comment-{comment.id}"
-		class:reply={nestingLevel}
-		class:no-actions={!showActions}
-	>
-		<div class="comment" class:pinned={comment.isPinned}>
-			{#if showActions}
-				<button on:click={() => accessUserInfo()} class="comment-avatar">
-					<GradientAvatar user={comment.author} size={!nestingLevel ? '2.5rem' : '1.5rem'} />
-				</button>
-			{:else}
-				<GradientAvatar user={comment.author} size="1.5rem" />
-			{/if}
-			<div class="comment-main">
-				<div class="comment-main-text">
-					<div class="comment-main-text-metadata">
-						<div class="comment-main-text-metadata-left">
-							{#if showActions}
-								<button
-									on:click={() => accessUserInfo()}
-									class="comment-main-text-metadata-left-username"
-								>
-									{username}
-								</button>
-							{:else}
-								<div class="comment-main-text-metadata-left-username">
-									{username}
-								</div>
-							{/if}
-							•
-							<Tooltip transitionDelay={500}>
-								<time
-									datetime={date.toISOString()}
-									class="comment-main-text-metadata-left-timestamp"
-								>
-									{relativeTimeFormat(date)}
-								</time>
-								<span slot="tooltip-content">
-									{dateFormat(date)}
-								</span>
-							</Tooltip>
-							{#if comment.isPinned}
-								<span class="comment-main-text-metadata-left-pinned">Featured</span>
-							{/if}
-						</div>
-					</div>
-					<div class="comment-main-text-content">
-						{#if !comment.projectId}
-							{#each parseMentions(comment.content) as part}
-								{#if typeof part === 'string'}
-									{@html insane(
-										marked.parseInline(part.replace(mediaUrl ?? '', ''), {
-											breaks: true,
-											gfm: true,
-										})
-									)}
-								{:else if part.type === 'user'}
-									{@const user = comment.mentionedUsers?.find(({ user }) =>
-										part.type === 'user' ? user.username === part.username : null
-									)?.user}
-									{#if user}
-										<Mention node={part} on:click={() => accessUserInfo(user)} />
-									{:else}
-										@{part.username}
-									{/if}
-								{:else if part.type === 'project'}
-									<Mention node={part} />
-								{:else if part.type === 'emoji'}
-									<Emoji name={part.emojiId} src="/assets/emotes/{part.emojiId}.webp" />
-								{/if}
-							{/each}
+<div
+	class="comment-wrapper {showActions ? '' : 'no-hover'}"
+	id="comment-{comment.id}"
+	class:reply={nestingLevel}
+	class:no-actions={!showActions}
+>
+	<div class="comment" class:pinned={comment.isPinned}>
+		{#if showActions && comment.author}
+			<a href="/users/{comment.author?.username}" class="comment-avatar">
+				<GradientAvatar user={comment.author} size={!nestingLevel ? '2.5rem' : '1.5rem'} />
+			</a>
+		{:else}
+			<GradientAvatar user={comment.author} size={!nestingLevel ? '2.5rem' : '1.5rem'} />
+		{/if}
+		<div class="comment-main">
+			<div class="comment-main-text">
+				<div class="comment-main-text-metadata">
+					<div class="comment-main-text-metadata-left">
+						{#if showActions && comment.author}
+							<a
+								href="/users/{comment.author?.username}"
+								class="comment-main-text-metadata-left-username"
+							>
+								{username}
+							</a>
 						{:else}
-							{comment.content}
-						{/if}
-
-						{#if showActions && !comment.projectId && mediaUrl}
-							<div class="comment-main-text-content-media">
-								{#if mediaUrl.endsWith('.mp4')}
-									<!-- svelte-ignore a11y-media-has-caption -->
-									<video src={mediaUrl} controls />
-								{:else}
-									<img
-										loading="lazy"
-										draggable="false"
-										src={!mediaUrl.endsWith('.gif') ? `${mediaUrl}.gif` : mediaUrl}
-										alt="GIF"
-									/>
-								{/if}
+							<div class="comment-main-text-metadata-left-username">
+								{username}
 							</div>
+						{/if}
+						•
+						<Tooltip transitionDelay={500}>
+							<time datetime={date.toISOString()} class="comment-main-text-metadata-left-timestamp">
+								{relativeTimeFormat(date)}
+							</time>
+							<span slot="tooltip-content">
+								{dateFormat(date)}
+							</span>
+						</Tooltip>
+						{#if comment.isPinned}
+							<span class="comment-main-text-metadata-left-pinned">Featured</span>
 						{/if}
 					</div>
 				</div>
+				<div class="comment-main-text-content">
+					{#if !comment.projectId}
+						{#each parseMentions(comment.content) as part}
+							{#if typeof part === 'string'}
+								{@html insane(
+									marked.parseInline(part.replace(mediaUrl ?? '', ''), {
+										breaks: true,
+										gfm: true,
+									})
+								)}
+							{:else if part.type === 'user'}
+								{@const user = comment.mentionedUsers?.find(({ user }) =>
+									part.type === 'user' ? user.username === part.username : null
+								)?.user}
+								{#if user}
+									<Mention node={part} />
+								{:else}
+									@{part.username}
+								{/if}
+							{:else if part.type === 'project'}
+								<Mention node={part} />
+							{:else if part.type === 'emoji'}
+								<Emoji name={part.emojiId} src="/assets/emotes/{part.emojiId}.webp" />
+							{/if}
+						{/each}
+					{:else}
+						{comment.content}
+					{/if}
 
-				{#if showActions}
-					<div class="comment-main-actions">
-						<div class="comment-main-actions-row">
-							<VoteButtons {comment} on:login on:blocked />
-							<button class="action-button" on:click={replyComment}>
-								<IconMessageCircle />
-								Reply
-							</button>
-							{#if (data.userData && data.userData?.id === comment.author?.id) || data.userData?.badges?.includes('CLEMBS')}
-								<button class="action-button" on:click={deleteComment}>
+					{#if showActions && !comment.projectId && mediaUrl}
+						<div class="comment-main-text-content-media">
+							{#if mediaUrl.endsWith('.mp4')}
+								<!-- svelte-ignore a11y-media-has-caption -->
+								<video src={mediaUrl} controls />
+							{:else}
+								<img
+									loading="lazy"
+									draggable="false"
+									src={!mediaUrl.endsWith('.gif') ? `${mediaUrl}.gif` : mediaUrl}
+									alt="GIF"
+								/>
+							{/if}
+						</div>
+					{/if}
+				</div>
+			</div>
+
+			{#if showActions}
+				<div class="comment-main-actions">
+					<div class="comment-main-actions-row">
+						<VoteButtons {comment} on:login on:blocked />
+						<button class="action-button" on:click={replyComment}>
+							<IconMessageCircle />
+							Reply
+						</button>
+						{#if (data.userData && data.userData?.id === comment.author?.id) || data.userData?.badges?.includes('CLEMBS')}
+							<form use:enhance method="POST" action="/comments/{comment.id}?/delete">
+								<button class="action-button" type="submit">
 									{#if loadingDelete}
 										<LoaderIcon />
 									{:else}
 										<IconTrash />
 									{/if}
 								</button>
-							{/if}
-							{#if !comment.parentId && data.userData?.badges?.includes('CLEMBS')}
-								<button class="action-button" on:click={pinComment}>
+							</form>
+						{/if}
+						{#if !comment.parentId && data.userData?.badges?.includes('CLEMBS')}
+							<form use:enhance action="/comments/{comment.id}?/pin" method="post">
+								<button class="action-button" type="submit">
 									{#if loadingPin}
 										<LoaderIcon />
 									{:else if comment.isPinned}
@@ -245,45 +241,45 @@
 										<IconStar />
 									{/if}
 								</button>
-							{/if}
-						</div>
-
-						{#if comment.childComments?.length}
-							<button class="action-button view-replies" on:click={loadChildComments}>
-								{#if loadingComments}
-									<LoaderIcon />
-								{:else}
-									<div class="expand-icon" aria-expanded={childCommentsExpanded}>
-										<IconChevronDown />
-									</div>
-									{comment.childComments.length}
-									{comment.childComments.length === 1 ? 'reply' : 'replies'}
-									{#if comment.childComments.find(({ author }) => author && author?.badges?.includes('CLEMBS'))}
-										• Clembs replied
-									{/if}
-								{/if}
-							</button>
+							</form>
 						{/if}
 					</div>
-				{/if}
-			</div>
-		</div>
 
-		{#if showActions && childComments?.length && childCommentsExpanded}
-			<div class="child-comments" class:margin-left={nestingLevel < 5} transition:slide>
-				{#each childComments as comment}
-					<svelte:self
-						{comment}
-						initialNestingLevel={nestingLevel + 1}
-						on:blocked
-						on:userinfo
-						on:reply
-					/>
-				{/each}
-			</div>
-		{/if}
+					{#if comment.childComments?.length}
+						<button class="action-button view-replies" on:click={loadChildComments}>
+							{#if loadingComments}
+								<LoaderIcon />
+							{:else}
+								<div class="expand-icon" aria-expanded={childCommentsExpanded}>
+									<IconChevronDown />
+								</div>
+								{comment.childComments.length}
+								{comment.childComments.length === 1 ? 'reply' : 'replies'}
+								{#if comment.childComments.find(({ author }) => author && author?.badges?.includes('CLEMBS'))}
+									• Clembs replied
+								{/if}
+							{/if}
+						</button>
+					{/if}
+				</div>
+			{/if}
+		</div>
 	</div>
-{/if}
+
+	{#if showActions && childComments?.length && childCommentsExpanded}
+		<div class="child-comments" class:margin-left={nestingLevel < 5} transition:slide>
+			{#each childComments as comment}
+				<svelte:self
+					{comment}
+					initialNestingLevel={nestingLevel + 1}
+					on:blocked
+					on:userinfo
+					on:reply
+				/>
+			{/each}
+		</div>
+	{/if}
+</div>
 
 <style lang="scss">
 	.comment-wrapper {
@@ -366,13 +362,13 @@
 					&-media {
 						margin-top: 0.5rem;
 
-						video,
-						img {
-							border-radius: 0.5rem;
-							border: 1px solid var(--color-outline);
-							box-shadow: 0 2px 0 0 var(--color-outline);
-							max-width: 250px;
-						}
+						// video,
+						// img {
+						// 	border-radius: 0.5rem;
+						// 	border: 1px solid var(--color-outline);
+						// 	box-shadow: 0 2px 0 0 var(--color-outline);
+						// 	max-width: 250px;
+						// }
 					}
 				}
 
@@ -399,6 +395,7 @@
 							font-weight: 500;
 							user-select: text;
 							display: inline-block;
+							color: var(--color-outline);
 
 							&:hover {
 								text-decoration: underline;
