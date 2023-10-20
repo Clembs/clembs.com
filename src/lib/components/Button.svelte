@@ -92,6 +92,11 @@
 			--_hover-bg: var(--color-error);
 		}
 
+		:global(svg) {
+			height: 24px;
+			width: auto;
+		}
+
 		&.size-sm {
 			font-size: 0.75rem;
 			padding: 0.315rem 0.615rem;
