@@ -165,6 +165,7 @@
 				</div>
 
 				<TextInput
+					autofocus
 					on:keydown={handleTextboxShortcuts}
 					bind:value={content}
 					name="content"
