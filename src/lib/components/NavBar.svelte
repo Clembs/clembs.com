@@ -37,7 +37,7 @@
 		// },
 	];
 
-	let scrolled = false;
+	let scrolled = true;
 	let click_sound: HTMLAudioElement;
 	let disabled_sound: HTMLAudioElement;
 	let transition_up_sound: HTMLAudioElement;
