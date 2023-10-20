@@ -18,16 +18,11 @@
 
 {#if showModal}
 	<Modal bind:showModal>
-		<h1 slot="title">Sign in to clembs.com</h1>
-
-		<p>Like comments and get yours verified and personalized with a clembs.com account!</p>
-		<p>Create an account or log back into it, no passwords required!</p>
-
 		<LoginForm>
 			{#if skipToComment}
 				<Button
+					size="sm"
 					style="text"
-					inline={false}
 					on:click={() => {
 						showModal = false;
 						showCommentFormModal = true;

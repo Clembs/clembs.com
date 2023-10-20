@@ -1,9 +1,11 @@
 import type { UserPreferences } from './UserPreferences';
-import { relations } from 'drizzle-orm';
-import { timestamp, boolean, jsonb, pgTable, text, primaryKey } from 'drizzle-orm/pg-core';
+import { relations, sql } from 'drizzle-orm';
+import { timestamp, boolean, jsonb, pgTable, text, primaryKey, integer } from 'drizzle-orm/pg-core';
 
 export const users = pgTable('users', {
 	id: text('id').primaryKey(),
+	challenge: text('challenge'),
+	challengeExpiresAt: timestamp('challenge_expires_at'),
 	username: text('username').unique().notNull(),
 	email: text('email').unique(),
 	badges: text('badges', { enum: ['VERIFIED', 'BLOCKED', 'SUPPORTER', 'CLEMBS'] }).array(),
@@ -22,9 +24,37 @@ export const comments = pgTable('comments', {
 	isBlocked: boolean('blocked'),
 });
 
+export const passkeys = pgTable('passkeys', {
+	credentialId: text('credential_id').primaryKey(),
+	publicKey: text('public_key').notNull(),
+	counter: integer('counter').notNull(),
+	userId: text('user_id').notNull(),
+	name: text('name').notNull(),
+	createdAt: timestamp('created_at').notNull().defaultNow(),
+});
+
+export const sessions = pgTable('sessions', {
+	id: text('id')
+		.default(sql`gen_random_uuid()`)
+		.primaryKey(),
+	userId: text('user_id').notNull(),
+	expiresAt: timestamp('expires_at').notNull(),
+});
+
+export const otps = pgTable('otps', {
+	id: text('id')
+		.default(sql`gen_random_uuid()`)
+		.primaryKey(),
+	otp: integer('otp').notNull(),
+	email: text('email').unique().notNull(),
+	expiresAt: timestamp('expires_at').notNull(),
+});
+
 export const usersRelations = relations(users, ({ many }) => ({
 	comments: many(comments),
 	mentionedInComments: many(mentions),
+	sessions: many(sessions),
+	passkeys: many(passkeys),
 }));
 
 export const commentsRelations = relations(comments, ({ one, many }) => ({
@@ -42,6 +72,20 @@ export const commentsRelations = relations(comments, ({ one, many }) => ({
 	}),
 	score: many(userCommentVote),
 	mentionedUsers: many(mentions),
+}));
+
+export const sessionsRelations = relations(sessions, ({ one }) => ({
+	user: one(users, {
+		fields: [sessions.userId],
+		references: [users.id],
+	}),
+}));
+
+export const passkeysRelations = relations(passkeys, ({ one }) => ({
+	user: one(users, {
+		fields: [passkeys.userId],
+		references: [users.id],
+	}),
 }));
 
 export const userCommentVote = pgTable(

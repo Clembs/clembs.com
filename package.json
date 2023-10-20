@@ -15,7 +15,7 @@
 	"devDependencies": {
 		"@purplet/utils": "^1.0.0",
 		"@sapphire/snowflake": "^3.5.1",
-		"@supabase/auth-helpers-sveltekit": "^0.10.2",
+		"@simplewebauthn/server": "^8.1.1",
 		"@sveltejs/adapter-netlify": "^2.0.8",
 		"@sveltejs/adapter-vercel": "^3.0.3",
 		"@sveltejs/kit": "^1.8.3",
@@ -44,7 +44,7 @@
 	"dependencies": {
 		"@formkit/auto-animate": "^0.7.0",
 		"@neodrag/svelte": "^2.0.3",
-		"@supabase/supabase-js": "^2.32.0",
+		"@simplewebauthn/browser": "^8.0.2",
 		"@tabler/icons-svelte": "^2.23.0",
 		"drizzle-orm": "^0.28.2",
 		"insane": "^2.6.2",

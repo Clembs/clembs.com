@@ -6,40 +6,22 @@
 	import Footer from '$lib/components/Footer.svelte';
 	import type DebugMenu from './DebugMenu.svelte';
 	import ShortcutsModal from '../lib/components/ShortcutsModal/ShortcutsModal.svelte';
-	import { invalidate } from '$app/navigation';
-	import type { LayoutData } from './$types';
-	import { onMount } from 'svelte';
-
-	export let data: LayoutData;
-
-	let { supabase, session } = data;
-	$: ({ supabase, session } = data);
 
 	let colors = $page.data?.themeGradient;
 
 	// don't import this right away, it's pretty heavy
 	let debugMenu: typeof DebugMenu | null = null;
 
-	page.subscribe((p) => {
-		if (p.error) {
+	page.subscribe(({ error, data }) => {
+		if (error) {
 			colors = {
 				from: '#8a0000',
 				to: '#480000',
 			};
 		}
-		if (p.data?.themeGradient) {
-			colors = p.data.themeGradient;
+		if (data?.themeGradient) {
+			colors = data.themeGradient;
 		}
-	});
-
-	onMount(() => {
-		const { data } = supabase.auth.onAuthStateChange((event, _session) => {
-			if (_session?.expires_at !== session?.expires_at) {
-				invalidate('supabase:auth');
-			}
-		});
-
-		return () => data.subscription.unsubscribe();
 	});
 </script>
 

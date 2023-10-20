@@ -1,8 +1,11 @@
-<script>
+<script lang="ts">
+	import type { PageServerData } from './$types';
 	import AccountSettings from './account/AccountSettings.svelte';
+
+	export let data: PageServerData;
 </script>
 
-<AccountSettings />
+<AccountSettings {data} />
 
 <!-- <script lang="ts">
 	import Switch from '$lib/components/Switch.svelte';

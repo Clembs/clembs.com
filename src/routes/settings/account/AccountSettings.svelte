@@ -10,20 +10,30 @@
 	import SettingsSection from '../SettingsSection.svelte';
 	import IconAlertTriangleFilled from '@tabler/icons-svelte/dist/svelte/icons/IconAlertTriangleFilled.svelte';
 	import IconLogout from '@tabler/icons-svelte/dist/svelte/icons/IconLogout.svelte';
+	import IconTrash from '@tabler/icons-svelte/dist/svelte/icons/IconTrash.svelte';
 	import Switch from '$lib/components/Switch.svelte';
-	import { settingsStore } from '../settings';
 	import DeleteAccountModal from './DeleteAccountModal.svelte';
+	import type { PageServerData } from '../$types';
+	import Passkey from '$lib/svg/Passkey.svelte';
+	import { dateFormat } from '$lib/helpers/dateFormat';
+	import Tooltip from '$lib/components/Tooltip.svelte';
+	import Badge from '$lib/components/Badge.svelte';
+
+	export let data: PageServerData;
 
 	let usernameChangeLoading = false;
 	let notificationsLoading = false;
 	let signOutLoading = false;
 	let error = '';
-	let username = $page.data?.userData?.username;
+	let username = data?.userData?.username;
+	let emailAllReplies = data?.userData?.preferences?.email?.allReplies;
 
 	let showDeleteModal = false;
+
+	let editPasskeyId = '';
 </script>
 
-{#if $page.data?.userData}
+{#if data?.userData}
 	<DeleteAccountModal bind:showDeleteModal />
 
 	<SettingsSection>
@@ -46,9 +56,7 @@
 					}
 
 					error = '';
-					update({
-						reset: false,
-					});
+					await update();
 					toast.success('Username changed successfully!');
 				};
 			}}
@@ -108,76 +116,151 @@
 	<SettingsSection>
 		<form
 			method="POST"
-			action="/settings?/updateSettings"
+			action="/settings?/updateEmailSettings"
 			use:enhance={() => {
 				notificationsLoading = true;
 				return async ({ result, update }) => {
 					notificationsLoading = false;
-					update({
-						reset: false,
-					});
-					toast.success('Settings updated successfully!');
+					if (result.type === 'success') {
+						toast.success('Settings updated successfully!');
+					}
+					if (result.type === 'failure') {
+						toast.error(result.data?.message);
+					}
+					if (result.type === 'error') {
+						toast.error(result.error?.message);
+					}
+					await update();
 				};
 			}}
 		>
 			<h2>Email notifications</h2>
 
-			<p>You can choose to receive emails for specific events.</p>
+			<p>You can choose to receive emails for specific events within the site.</p>
 
-			{#if $settingsStore}
-				<input type="hidden" name="preferences" value={JSON.stringify($settingsStore)} />
+			<!-- {#if $settingsStore} -->
+			<!-- <input type="hidden" name="preferences" value={JSON.stringify($settingsStore)} /> -->
 
-				<div class="switches">
-					<Switch required={false} bind:checked={$settingsStore.email.allReplies}>
-						When anyone replies to my comments
-					</Switch>
+			<div class="switches">
+				<Switch required={false} name="allReplies" bind:checked={emailAllReplies}>
+					When anyone replies to my comments
+				</Switch>
 
-					<Switch
-						required={false}
-						disabled={$settingsStore.email.allReplies}
-						bind:checked={$settingsStore.email.clembsReplies}
-					>
-						<!-- bind:checked={$settingsStore.email.clembsReplies -->
-						When Clembs replies to my comments
-					</Switch>
+				<Switch required={false} name="clembsReplies" disabled={emailAllReplies}>
+					When Clembs replies to my comments
+				</Switch>
 
-					<Switch required={false} bind:checked={$settingsStore.email.mentioned}
-						>When anyone @mentions me</Switch
-					>
-				</div>
-			{:else}
-				<LoaderIcon />
-			{/if}
+				<Switch required={false} name="mentioned">When anyone @mentions me</Switch>
+			</div>
 
-			<Button
-				disabled={!$settingsStore ||
-					notificationsLoading ||
-					JSON.stringify($page.data.userData?.preferences) === JSON.stringify($settingsStore)}
-				type="submit"
-			>
-				{#if usernameChangeLoading}
+			<Button type="submit">
+				{#if notificationsLoading}
 					<LoaderIcon />
 				{:else}
-					Update settings
+					Update email settings
 				{/if}
 			</Button>
 
 			<!-- <Switch bind:checked={$settings?.email.popularComment}>
 			When any of my comments gets popular
 		</Switch> -->
-		</form></SettingsSection
-	>
+		</form>
+	</SettingsSection>
 
 	<SettingsSection>
-		<h2>Danger Zone</h2>
+		<h2>Passkeys <Badge>New</Badge></h2>
+
+		<p>
+			Passkeys are a new, more secure and safer way to sign into websites using your device's PIN,
+			fingerprint or face lock. Manage your passkeys here.
+		</p>
+
+		{#if data.userData?.passkeys?.length}
+			{#each data.userData.passkeys as passkey}
+				<form
+					use:enhance={() => {
+						return async ({ result, update }) => {
+							if (result.type === 'success') {
+								toast.success('Passkey deleted successfully!');
+							}
+							if (result.type === 'failure') {
+								toast.error(result.data?.message);
+							}
+							if (result.type === 'error') {
+								toast.error(result.error?.message);
+							}
+							await update();
+						};
+					}}
+					method="post"
+					class="passkey"
+					action="/account?/deletePasskey"
+				>
+					<div class="passkey-profile">
+						<input type="hidden" name="id" value={passkey.credentialId} />
+						<Passkey />
+						<div class="passkey-profile-info">
+							<span class="passkey-profile-info-name">
+								{passkey.name}
+							</span>
+							<span class="passkey-profile-info-subtext">
+								Registered on {dateFormat(passkey.createdAt)}
+							</span>
+						</div>
+					</div>
+
+					<Tooltip>
+						<span slot="tooltip-content">Delete passkey</span>
+						<Button
+							type="submit"
+							disabled={!!editPasskeyId && editPasskeyId !== passkey.credentialId}
+							size="sm"
+							style="text"
+						>
+							<IconTrash />
+						</Button>
+					</Tooltip>
+				</form>
+			{/each}
+		{:else}
+			<div class="no-passkeys">You haven't created any passkey! Create one to sign in faster.</div>
+		{/if}
+
+		<Button href="/account/create-passkey">
+			<Passkey />
+			Create a passkey
+		</Button>
+	</SettingsSection>
+
+	<!-- <SettingsSection>
+		<h2>Sessions</h2>
+
+		<p>
+			Here are all the devices you're logged in on. You can log out of them individually, or log out
+			all of them at once.
+		</p>
+
+		{#if data.userData?.passkeys?.length}
+			{#each data.userData.passkeys as passkey}
+				<div class="passkey">
+					{passkey.name}
+				</div>
+			{/each}
+		{:else}
+			You haven't saved a passkey!
+		{/if}
+	</SettingsSection> -->
+
+	<SettingsSection>
+		<h2>Danger zone</h2>
 
 		<div class="buttons">
 			<form
 				use:enhance={() => {
 					signOutLoading = true;
-					return ({ update }) => {
+					return async ({ update }) => {
 						signOutLoading = false;
-						update();
+						await update();
 					};
 				}}
 				action="/account?/signOut"
@@ -201,14 +284,6 @@
 	</SettingsSection>
 {:else}
 	<SettingsSection>
-		<h2>Do more with a clembs.com account</h2>
-
-		<p>
-			Choose your username, post verified comments, sync your settings and more with a clembs.com
-			account.
-		</p>
-		<p>Create an account or log back into it, no passwords required!</p>
-
 		<LoginForm />
 	</SettingsSection>
 {/if}
@@ -241,5 +316,42 @@
 	.buttons {
 		display: flex;
 		gap: 0.5rem;
+	}
+
+	.passkey {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.5rem;
+		margin: 0.5rem 0;
+
+		&-profile {
+			display: flex;
+			align-items: center;
+
+			&-info {
+				display: flex;
+				flex-direction: column;
+
+				&-name {
+					font-weight: 500;
+				}
+
+				&-subtext {
+					font-size: 0.9rem;
+					color: var(--color-on-surface);
+				}
+			}
+
+			:global(svg) {
+				margin-right: 1rem;
+				width: 2rem;
+				height: 2rem;
+			}
+		}
+	}
+
+	.no-passkeys {
+		margin: 0.5rem 0;
 	}
 </style>

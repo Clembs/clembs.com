@@ -1,120 +1,56 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
-	import { EMAIL_REGEX, OTP_REGEX } from '$lib/helpers/regex';
-	import { LoaderIcon } from 'svelte-french-toast';
-	import Button from '../Button.svelte';
+	import { onMount } from 'svelte';
+	import EmailLogin from './EmailLoginForm.svelte';
 	import InfoBox from '../InfoBox.svelte';
-	import TextInput from '../TextInput.svelte';
+	import OtpInput from './OTPInputForm.svelte';
 
 	export let showModal = false;
+	export let error = '';
 
-	let email = '';
-	let otp = '';
-	let error = '';
-	let otpEmailSent = false;
-	let loading = false;
+	let canUsePasskeys: boolean;
+	let screen: 'login' | 'verify-otp' | 'create-passkey' = 'login';
+	let email: string;
+	let isNewUser: boolean;
+
+	onMount(async () => {
+		const { browserSupportsWebAuthn } = await import('@simplewebauthn/browser');
+		canUsePasskeys = browserSupportsWebAuthn();
+	});
 </script>
 
-<form
-	action={otpEmailSent ? '/account?/verifyOTP' : '/account?/login'}
-	use:enhance={() => {
-		error = '';
-		loading = true;
-
-		return async ({ action, result, update }) => {
-			loading = false;
-
-			if (result.type === 'redirect' && result.location === '/settings') {
-				showModal = false;
-				return;
-			}
-			if (result.type === 'failure') {
-				error = result.data?.message;
-				return;
-			}
-			if (result.type === 'error') {
-				error = result.error?.message;
-				return;
-			}
-			if (action.search === '?/login' && result.type === 'success') {
-				otpEmailSent = true;
-			}
-			if (action.search === '?/verifyOTP' && result.type === 'success') {
-				showModal = false;
-			}
-			if ('message' in result) {
-				error = String(result.message);
-			}
-
-			update({
-				reset: false,
-			});
-		};
-	}}
-	method="post"
->
-	<TextInput
-		bind:value={email}
-		name="email"
-		label="Email"
-		type="email"
-		placeholder="example@clembs.com"
-		required={true}
-		readonly={otpEmailSent}
-	/>
-
-	{#if otpEmailSent}
-		<TextInput
-			bind:value={otp}
-			name="otp"
-			label="One-time password"
-			type="number"
-			placeholder="000000"
-			required={true}
-			maxlength={999999}
-		/>
+<div class="login-form">
+	{#if error}
+		<InfoBox type="danger">
+			{error}
+		</InfoBox>
 	{/if}
 
-	<div class="actions">
-		{#if error}
-			<InfoBox type="danger">
-				<div slot="title">An error occured.</div>
-				{error}
-			</InfoBox>
-		{:else if otpEmailSent}
-			<InfoBox type="success">
-				<div class="title">One-time password sent!</div>
-				To log in, simply enter the code sent to you via email.
-			</InfoBox>
-		{/if}
+	{#if screen === 'login'}
+		<EmailLogin
+			on:otpSent={(ev) => {
+				isNewUser = ev.detail.isNewUser;
+				email = ev.detail.email;
+				screen = 'verify-otp';
+			}}
+			{canUsePasskeys}
+			bind:showModal
+			bind:error
+		/>
+	{:else}
+		<OtpInput {email} {isNewUser} bind:showModal bind:error />
+	{/if}
 
-		{#if !otpEmailSent}
-			<Button type="submit" disabled={otpEmailSent || !EMAIL_REGEX.test(email)} inline={false}>
-				{#if loading}
-					<LoaderIcon />
-				{:else}
-					{otpEmailSent ? 'Log in' : 'Send one-time password'}
-				{/if}
-			</Button>
-		{:else}
-			<Button type="submit" disabled={!OTP_REGEX.test(otp)} inline={false}>
-				{#if loading}
-					<LoaderIcon />
-				{:else}
-					{otpEmailSent ? 'Log in' : 'Send one-time password'}
-				{/if}
-			</Button>
-		{/if}
-
-		<slot />
-	</div>
-</form>
+	<!-- {#if canUsePasskeys}
+		<PasskeyLogin bind:showModal bind:error />
+	{/if} -->
+</div>
 
 <style lang="scss">
-	.actions {
+	.login-form {
 		display: flex;
 		flex-direction: column;
-		gap: 0.5rem;
-		align-items: center;
+		max-width: 600px;
+		margin: 0 auto;
+		gap: 1rem;
 	}
 </style>

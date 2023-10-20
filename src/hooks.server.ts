@@ -1,29 +1,41 @@
-import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '$env/static/public';
 import { db } from '$lib/db';
-import { createSupabaseServerClient } from '@supabase/auth-helpers-sveltekit';
+import { renewSession } from '$lib/helpers/account';
 import type { Handle } from '@sveltejs/kit';
 
 export const handle: Handle = async ({ event, resolve }) => {
-	event.locals.supabase = createSupabaseServerClient({
-		supabaseUrl: PUBLIC_SUPABASE_URL,
-		supabaseKey: PUBLIC_SUPABASE_ANON_KEY,
-		event,
-	});
+	const sessionId = event.cookies.get('session_id');
 
 	event.locals.getSession = async () => {
-		const {
-			data: { session },
-		} = await event.locals.supabase.auth.getSession();
+		if (!sessionId) return null;
+
+		const session = await db.query.sessions.findFirst({
+			where: ({ id }, { eq }) => eq(id, sessionId),
+			with: {
+				user: true,
+			},
+		});
+
+		if (!session) return null;
+		if (Date.now() >= session.expiresAt.getTime()) {
+			return null;
+		}
+
+		await renewSession(session);
+
 		return session;
 	};
 
 	event.locals.getUserData = async () => {
 		const session = await event.locals.getSession();
 
-		if (!session || !session.user?.id) return null;
+		if (!session || !session.user) return null;
 
 		return await db.query.users.findFirst({
-			where: ({ id }, { eq }) => eq(id, session.user.id),
+			where: ({ id }, { eq }) => eq(id, session.user!.id),
+			with: {
+				passkeys: true,
+				sessions: true,
+			},
 		});
 	};
 
