@@ -1,6 +1,6 @@
 export enum SocialName {
 	Kofi = 'ko-fi',
-	Fiverr = 'fiverr',
+	// Fiverr = 'fiverr',
 	Discord = 'discord',
 	Instagram = 'instagram',
 	GitHub = 'github',
@@ -23,17 +23,23 @@ export const socials = [
 		url: 'https://ko-fi.com/clembs',
 		background: '#00AFF1',
 	},
-	{
-		id: SocialName.Fiverr,
-		name: 'Fiverr',
-		url: 'https://www.fiverr.com/clembs',
-		background: '#1DBF73',
-	},
+	// {
+	// 	id: SocialName.Fiverr,
+	// 	name: 'Fiverr',
+	// 	url: 'https://www.fiverr.com/clembs',
+	// 	background: '#1DBF73',
+	// },
 	{
 		id: SocialName.Discord,
 		name: 'Discord',
 		url: 'https://discord.gg/6uNwP46',
 		background: '#5865F2',
+	},
+	{
+		id: SocialName.YouTube,
+		name: 'YouTube',
+		url: 'https://youtube.com/@ClembsV',
+		background: '#FF0000',
 	},
 	// {
 	// 	id: SocialName.Twitch,
