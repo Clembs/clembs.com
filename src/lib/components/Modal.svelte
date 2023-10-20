@@ -1,4 +1,5 @@
 <script lang="ts">
+	import IconX from '@tabler/icons-svelte/dist/svelte/icons/IconX.svelte';
 	import { createEventDispatcher } from 'svelte';
 
 	export let showModal: boolean;
@@ -10,16 +11,19 @@
 	$: if (dialog && showModal) dialog.showModal();
 </script>
 
-<!-- svelte-ignore a11y-click-events-have-key-events -->
 <dialog
 	bind:this={dialog}
 	on:close={() => {
 		dispatch('close');
 		showModal = false;
 	}}
-	on:click|self={() => dialog.close()}
 >
-	<div on:click|stopPropagation>
+	<form class="close-button" method="dialog">
+		<button>
+			<IconX />
+		</button>
+	</form>
+	<div>
 		{#if $$slots.title}
 			<slot name="title">
 				<h1>Modal Title</h1>
@@ -28,7 +32,7 @@
 		<slot />
 	</div>
 	{#if $$slots.buttons}
-		<div on:click|stopPropagation class="buttons">
+		<div class="buttons">
 			<slot name="buttons" />
 		</div>
 	{/if}
@@ -41,10 +45,31 @@
 		background-color: var(--color-background);
 		box-shadow: 0 2px 0 0 var(--color-outline);
 		border-radius: 1.5rem;
-		width: clamp(600px, 50vw, 100%);
+		width: clamp(500px, 50vw, 100%);
 		transition: scale 200ms ease-out, opacity 200ms ease-out;
 		padding: 0;
+		position: relative;
 		overflow: visible;
+
+		.close-button {
+			position: absolute;
+			right: -1.25rem;
+			top: -1.25rem;
+			width: min-content;
+
+			button {
+				display: grid;
+				place-items: center;
+				padding: 0.5rem;
+				border: 1px solid var(--color-outline);
+				background-color: var(--color-background);
+				border-radius: 99rem;
+
+				&:hover {
+					background-color: var(--color-surface);
+				}
+			}
+		}
 
 		div {
 			padding: 1.5rem;
