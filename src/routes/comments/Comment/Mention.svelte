@@ -11,7 +11,7 @@
 </script>
 
 {#if node.type === 'user'}
-	<button on:click class="inline-mention {node.type}">
+	<a href="/users/{node.username}" class="inline-mention {node.type}">
 		<GradientAvatar
 			showSilhouette={false}
 			user={{ username: node.username }}
@@ -19,7 +19,7 @@
 			showBadge={false}
 		/>
 		{node.username}
-	</button>
+	</a>
 {:else}
 	<a target="_blank" class="inline-mention {node.type}" href="/{node.projectType}/{node.projectId}">
 		{#if node.projectType === 'branding'}
