@@ -2,6 +2,7 @@ import IconCircleCheckFilled from '@tabler/icons-svelte/dist/svelte/icons/IconCi
 import IconDiscountCheckFilled from '@tabler/icons-svelte/dist/svelte/icons/IconDiscountCheckFilled.svelte';
 import IconAlertOctagonFilled from '@tabler/icons-svelte/dist/svelte/icons/IconAlertOctagonFilled.svelte';
 import IconHeartFilled from '@tabler/icons-svelte/dist/svelte/icons/IconHeartFilled.svelte';
+import IconRobot from '@tabler/icons-svelte/dist/svelte/icons/IconRobot.svelte';
 import type { UserBadge } from '$lib/db/types';
 
 export const badges: Record<
@@ -23,13 +24,19 @@ export const badges: Record<
 		label: 'Clembs',
 		background: 'var(--color-primary)',
 		icon: IconDiscountCheckFilled,
-		description: 'This is Clembs. The one and only.',
+		description: 'This is Clembs, the one and only.',
 	},
+	// HABILE: {
+	// 	label: 'Habile',
+	// 	background: 'var(--color-primary)',
+	// 	icon: IconRobot,
+	// 	description: "The quirky cat robot who's helping with moderation.",
+	// },
 	SUPPORTER: {
 		label: 'Supporter',
 		background: 'var(--color-success)',
 		icon: IconHeartFilled,
-		description: 'This user gave their financial support through Ko-fi. Thanks!',
+		description: 'This user gave their financial support through Ko-fi or Boosty. Thanks!',
 	},
 	VERIFIED: {
 		label: 'Email verified',
