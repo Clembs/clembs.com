@@ -25,10 +25,11 @@
 	class="avatar"
 	class:showSilhouette
 	style="--color-a: {avatarGradient.a}; --color-b: {avatarGradient.b}; --size: {size};"
+	title={username}
 >
 	{#if user?.badges && showBadge}
 		{@const badge = badges[rankBadges(user.badges)[0]]}
-		<div class="avatar-badge" style="--background:{badge.background};">
+		<div class="avatar-badge" style="--background:{badge.background};" title={badge.label}>
 			<Tooltip>
 				<span slot="tooltip-content">{badge.label}</span>
 				<div aria-label="User top-most badge">
@@ -46,6 +47,7 @@
 		width: var(--size);
 		border-radius: 99rem;
 		background: linear-gradient(45deg, var(--color-a), var(--color-b));
+		border: 1px solid var(--color-outline);
 
 		&.showSilhouette::after {
 			content: '';
