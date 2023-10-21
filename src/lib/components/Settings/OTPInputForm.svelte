@@ -5,6 +5,7 @@
 	import Button from '$lib/components/Button.svelte';
 	import { LoaderIcon } from 'svelte-french-toast';
 	import { OTP_REGEX } from '$lib/helpers/regex';
+	import { goto } from '$app/navigation';
 
 	export let email: string;
 	export let isNewUser: boolean;
@@ -34,6 +35,13 @@
 			if (result.type === 'error') {
 				error = result.error?.message;
 				return;
+			}
+			if (result.type === 'redirect') {
+				const { browserSupportsWebAuthn } = await import('@simplewebauthn/browser');
+
+				if (browserSupportsWebAuthn()) {
+					goto(result.location);
+				}
 			}
 
 			showModal = false;

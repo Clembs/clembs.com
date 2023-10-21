@@ -13,13 +13,14 @@
 	import IconTrash from '@tabler/icons-svelte/dist/svelte/icons/IconTrash.svelte';
 	import Switch from '$lib/components/Switch.svelte';
 	import DeleteAccountModal from './DeleteAccountModal.svelte';
-	import type { PageServerData } from '../$types';
 	import Passkey from '$lib/svg/Passkey.svelte';
 	import { dateFormat } from '$lib/helpers/dateFormat';
 	import Tooltip from '$lib/components/Tooltip.svelte';
 	import Badge from '$lib/components/Badge.svelte';
+	import { onMount } from 'svelte';
+	import type { PageData } from '../$types';
 
-	export let data: PageServerData;
+	export let data: PageData;
 
 	let usernameChangeLoading = false;
 	let notificationsLoading = false;
@@ -27,10 +28,16 @@
 	let error = '';
 	let username = data?.userData?.username;
 	let emailAllReplies = data?.userData?.preferences?.email?.allReplies;
-
 	let showDeleteModal = false;
 
-	let editPasskeyId = '';
+	let canUsePasskeys = false;
+	let passkeyUseLoading = true;
+
+	onMount(async () => {
+		const { browserSupportsWebAuthn } = await import('@simplewebauthn/browser');
+		canUsePasskeys = browserSupportsWebAuthn();
+		passkeyUseLoading = false;
+	});
 </script>
 
 {#if data?.userData}
@@ -211,12 +218,7 @@
 
 					<Tooltip>
 						<span slot="tooltip-content">Delete passkey</span>
-						<Button
-							type="submit"
-							disabled={!!editPasskeyId && editPasskeyId !== passkey.credentialId}
-							size="sm"
-							style="text"
-						>
+						<Button type="submit" size="sm" style="text">
 							<IconTrash />
 						</Button>
 					</Tooltip>
@@ -226,10 +228,17 @@
 			<div class="no-passkeys">You haven't created any passkey! Create one to sign in faster.</div>
 		{/if}
 
-		<Button href="/account/create-passkey">
-			<Passkey />
-			Create a passkey
-		</Button>
+		{#if passkeyUseLoading}
+			<LoaderIcon />
+		{:else}
+			{#if !canUsePasskeys}
+				<p>Your browser doesn't support passkeys. You can still sign in with email verification.</p>
+			{/if}
+			<Button disabled={!canUsePasskeys} href="/account/create-passkey">
+				<Passkey />
+				Create a passkey
+			</Button>
+		{/if}
 	</SettingsSection>
 
 	<!-- <SettingsSection>

@@ -9,9 +9,16 @@
 	import IconLock from '@tabler/icons-svelte/dist/svelte/icons/IconLock.svelte';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
 
 	let error = '';
 	let loading = false;
+	let canUsePasskeys = false;
+
+	onMount(async () => {
+		const { browserSupportsWebAuthn } = await import('@simplewebauthn/browser');
+		canUsePasskeys = browserSupportsWebAuthn();
+	});
 </script>
 
 <form
@@ -63,6 +70,7 @@
 				error = result.data?.message;
 			}
 
+			loading = false;
 			await update();
 		};
 	}}
@@ -98,7 +106,10 @@
 		</ul>
 	</header>
 
-	<Button type="submit" disabled={loading}>
+	{#if !canUsePasskeys}
+		<p>Your browser doesn't support passkeys. You can still sign in with email verification.</p>
+	{/if}
+	<Button type="submit" disabled={!canUsePasskeys || loading}>
 		{#if loading}
 			<LoaderIcon />
 		{:else}
