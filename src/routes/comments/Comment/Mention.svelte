@@ -8,10 +8,15 @@
 	import IconCode from '@tabler/icons-svelte/dist/svelte/icons/IconCode.svelte';
 
 	export let node: Partial<ParserOutputProjectStructure> | ParserOutputUserStructure;
+	export let clickable = true;
 </script>
 
 {#if node.type === 'user'}
-	<a href="/users/{node.username}" class="inline-mention {node.type}">
+	<svelte:element
+		this={clickable ? 'a' : 'div'}
+		href="/users/{node.username}"
+		class="inline-mention {node.type}"
+	>
 		<GradientAvatar
 			showSilhouette={false}
 			user={{ username: node.username }}
@@ -19,16 +24,21 @@
 			showBadge={false}
 		/>
 		{node.username}
-	</a>
+	</svelte:element>
 {:else}
-	<a target="_blank" class="inline-mention {node.type}" href="/{node.projectType}/{node.projectId}">
+	<svelte:element
+		this={clickable ? 'a' : 'div'}
+		target="_blank"
+		class="inline-mention {node.type}"
+		href="/{node.projectType}/{node.projectId}"
+	>
 		{#if node.projectType === 'branding'}
 			<IconBrush size={16} />
 		{:else}
 			<IconCode size={16} />
 		{/if}
 		{node.projectId}
-	</a>
+	</svelte:element>
 {/if}
 
 <style lang="scss">
