@@ -10,7 +10,9 @@
 </script>
 
 <label for={id.toString()}>
-	<slot />
+	<div class="label">
+		<slot />
+	</div>
 	<input
 		bind:checked
 		on:change
@@ -41,6 +43,12 @@
 		user-select: none;
 
 		font-size: 1.1rem;
+
+		.label {
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+		}
 
 		input {
 			--thumb-position: 0%;
