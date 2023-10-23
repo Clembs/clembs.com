@@ -92,7 +92,12 @@ export const actions: Actions = {
 		const session = await stripeApi.checkout.sessions.create({
 			mode: 'payment',
 			allow_promotion_codes: true,
-			payment_method_types: ['card', 'paypal'],
+			payment_method_types: [
+				'card',
+				'link',
+				'klarna',
+				// , 'paypal'
+			],
 			line_items: [
 				{
 					price: priceId,
