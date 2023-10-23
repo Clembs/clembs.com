@@ -269,6 +269,12 @@ export const actions: Actions = {
 			},
 		});
 
+		if (!userData) {
+			return fail(401, {
+				message: 'No user found with that email address.',
+			});
+		}
+
 		const options = await generateAuthenticationOptions({
 			rpID: url.hostname,
 			userVerification: 'required',
@@ -279,10 +285,13 @@ export const actions: Actions = {
 			timeout: 60000,
 		});
 
-		await db.update(users).set({
-			challenge: options.challenge,
-			challengeExpiresAt: new Date(Date.now() + (options.timeout || 60000)),
-		});
+		await db
+			.update(users)
+			.set({
+				challenge: options.challenge,
+				challengeExpiresAt: new Date(Date.now() + (options.timeout || 60000)),
+			})
+			.where(eq(users.id, userData.id));
 
 		return { options };
 	},
@@ -309,10 +318,13 @@ export const actions: Actions = {
 			timeout: 60000,
 		});
 
-		await db.update(users).set({
-			challenge: options.challenge,
-			challengeExpiresAt: new Date(Date.now() + (options.timeout || 60000)),
-		});
+		await db
+			.update(users)
+			.set({
+				challenge: options.challenge,
+				challengeExpiresAt: new Date(Date.now() + (options.timeout || 60000)),
+			})
+			.where(eq(users.id, userData.id));
 
 		return { options };
 	},
