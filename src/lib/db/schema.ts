@@ -1,6 +1,16 @@
 import type { UserPreferences } from './UserPreferences';
 import { relations, sql } from 'drizzle-orm';
-import { timestamp, boolean, jsonb, pgTable, text, primaryKey, integer } from 'drizzle-orm/pg-core';
+import {
+	timestamp,
+	boolean,
+	jsonb,
+	pgTable,
+	text,
+	primaryKey,
+	integer,
+	real,
+} from 'drizzle-orm/pg-core';
+import type { HabileChatData } from './HabileChatData';
 
 export const users = pgTable('users', {
 	id: text('id').primaryKey(),
@@ -11,6 +21,8 @@ export const users = pgTable('users', {
 	badges: text('badges', { enum: ['VERIFIED', 'BLOCKED', 'SUPPORTER', 'CLEMBS'] }).array(),
 	createdAt: timestamp('created_at').notNull().defaultNow(),
 	preferences: jsonb('preferences').$type<UserPreferences>(),
+	habileChatData: jsonb('habile_chat_data').$type<HabileChatData>(),
+	discordUserId: text('discord_user_id'),
 });
 
 export const comments = pgTable('comments', {
@@ -50,11 +62,24 @@ export const otps = pgTable('otps', {
 	expiresAt: timestamp('expires_at').notNull(),
 });
 
+export const habileChatData = pgTable('habile_chat_data', {
+	tokens: real('tokens').notNull(),
+	used: real('used').notNull(),
+	messages: integer('messages').notNull(),
+});
+
+export const purchases = pgTable('purchases', {
+	checkoutSessionId: text('checkout_session_id').unique().notNull(),
+	userId: text('user_id').notNull(),
+	createdAt: timestamp('created_at').notNull().defaultNow(),
+});
+
 export const usersRelations = relations(users, ({ many }) => ({
 	comments: many(comments),
 	mentionedInComments: many(mentions),
 	sessions: many(sessions),
 	passkeys: many(passkeys),
+	purchases: many(purchases),
 }));
 
 export const commentsRelations = relations(comments, ({ one, many }) => ({
@@ -84,6 +109,13 @@ export const sessionsRelations = relations(sessions, ({ one }) => ({
 export const passkeysRelations = relations(passkeys, ({ one }) => ({
 	user: one(users, {
 		fields: [passkeys.userId],
+		references: [users.id],
+	}),
+}));
+
+export const purchasesRelations = relations(purchases, ({ one }) => ({
+	user: one(users, {
+		fields: [purchases.userId],
 		references: [users.id],
 	}),
 }));
