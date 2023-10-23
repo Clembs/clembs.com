@@ -2,7 +2,7 @@ import { stripeApi } from '$lib/stripe';
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { db } from '$lib/db';
-import { DISCORD_BOT_TOKEN } from '$env/static/private';
+import { DISCORD_BOT_TOKEN, VERCEL } from '$env/static/private';
 import type { APIUser } from 'discord-api-types/v10';
 import { otps, users } from '$lib/db/schema';
 import { eq } from 'drizzle-orm';
@@ -11,17 +11,23 @@ import { randomInt } from 'crypto';
 const skus = [
 	{
 		value: 50,
-		sku: 'prod_On0xk7anmEMrzK',
+		sku: {
+			test: 'prod_On0xk7anmEMrzK',
+			live: 'prod_OsHVyQ7k0AsRP8',
+		},
 	},
 	{
 		value: 200,
-		sku: 'prod_OrUxCyntf42thJ',
+		sku: {
+			test: 'prod_OrUxCyntf42thJ',
+			live: 'prod_OsHWizAFim9Kts',
+		},
 	},
 ];
 
 export const load: PageServerLoad = async ({ parent, getClientAddress, fetch }) => {
 	const products = await stripeApi.products.list({
-		ids: skus.map(({ sku }) => sku),
+		ids: skus.map(({ sku }) => (VERCEL ? sku.live : sku.test)),
 	});
 	const prices = await stripeApi.prices.list();
 	const parentData = await parent();
