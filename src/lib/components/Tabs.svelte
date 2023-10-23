@@ -5,12 +5,13 @@
 	export let entries: { label: string; href?: string; id: string }[];
 	export let vertical = false;
 
-	export let activeTab: string;
+	export let activeTab: (typeof entries)[number]['id'] = entries[0].id;
 
 	const dispatch = createEventDispatcher();
 
 	function changeTab(newEntryId: string) {
 		dispatch('change', newEntryId);
+		activeTab = newEntryId;
 	}
 </script>
 
@@ -25,8 +26,6 @@
 <style lang="scss">
 	ul {
 		display: flex;
-		border-radius: 1.35rem;
-		border: 1px solid var(--color-on-background);
 		margin: 0;
 		padding: 0;
 		scrollbar-width: none;
