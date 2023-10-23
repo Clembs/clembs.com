@@ -44,13 +44,14 @@
 		}
 
 		&:hover {
-			transform: translateY(-4px) !important;
-			box-shadow: 0 4px 0 0 var(--color-on-background);
+			transform: translateY(-3px);
+			box-shadow: 0 3px 0 0 var(--color-outline);
 		}
+
 		&:active {
-			background-color: var(--color-surface);
 			transform: translateY(0px);
-			box-shadow: 0 0 0 0 var(--color-on-background);
+			box-shadow: 0 0px 0 0 var(--color-outline);
+			background-color: var(--color-surface);
 		}
 	}
 </style>
