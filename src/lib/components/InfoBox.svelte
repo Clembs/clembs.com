@@ -19,13 +19,20 @@
 	<div class="icon">
 		<svelte:component this={icons[type]} />
 	</div>
-	<div class="text">
-		<div class="title">
-			<slot name="title" />
+	<div class="right">
+		<div class="text">
+			<div class="title">
+				<slot name="title" />
+			</div>
+			<span class="description">
+				<slot />
+			</span>
 		</div>
-		<span class="description">
-			<slot />
-		</span>
+		{#if $$slots.actions}
+			<div class="actions">
+				<slot name="actions" />
+			</div>
+		{/if}
 	</div>
 </div>
 
@@ -48,14 +55,22 @@
 			width: 24px;
 		}
 
-		.title {
-			font-size: 1.1rem;
-			font-weight: 500;
-		}
+		.right {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			gap: 0.5rem;
+			flex: 1;
 
-		.description {
-			font-size: 0.9rem;
-			opacity: 0.9;
+			.title {
+				font-size: 1.1rem;
+				font-weight: 500;
+			}
+
+			.description {
+				font-size: 0.9rem;
+				opacity: 0.9;
+			}
 		}
 
 		&.danger {
