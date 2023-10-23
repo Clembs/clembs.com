@@ -14,8 +14,8 @@
 	.emoji {
 		display: inline-block;
 		object-fit: contain;
-		width: 1.75em;
-		height: 1.75em;
+		width: 1.315em;
+		height: 1.315em;
 		vertical-align: bottom;
 		image-rendering: optimizequality;
 		vertical-align: bottom;
