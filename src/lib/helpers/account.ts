@@ -54,6 +54,7 @@ export async function createSession({ cookies }: RequestEvent, userId: string) {
 	cookies.set('session_id', newSession.id, {
 		httpOnly: true,
 		secure: true,
+		path: '/',
 		sameSite: 'strict',
 		priority: 'high',
 		expires: expiresAt,
