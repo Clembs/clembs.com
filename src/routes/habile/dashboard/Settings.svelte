@@ -1,0 +1,227 @@
+<script lang="ts">
+	import { enhance } from '$app/forms';
+	import Button from '$lib/components/Button.svelte';
+	import Switch from '$lib/components/Switch.svelte';
+	import type { PageServerData } from './$types';
+	import IconCircleCheck from '@tabler/icons-svelte/dist/svelte/icons/IconCircleCheck.svelte';
+	import IconAbacus from '@tabler/icons-svelte/dist/svelte/icons/IconAbacus.svelte';
+	import IconUnlink from '@tabler/icons-svelte/dist/svelte/icons/IconUnlink.svelte';
+	import IconAlertTriangleFilled from '@tabler/icons-svelte/dist/svelte/icons/IconAlertTriangleFilled.svelte';
+	import IconInfoCircleFilled from '@tabler/icons-svelte/dist/svelte/icons/IconInfoCircleFilled.svelte';
+	import IconLink from '@tabler/icons-svelte/dist/svelte/icons/IconLink.svelte';
+	import { dateFormat } from '$lib/helpers/dateFormat';
+	import HabileHappy from '$lib/svg/HabileHappy.svelte';
+	import DiscordLinkModal from './DiscordLinkModal.svelte';
+	import { LoaderIcon } from 'svelte-french-toast';
+
+	export let data: PageServerData;
+
+	let conversationSettingsForm: HTMLFormElement;
+	let showLinkModal = false;
+	let linkLoading = false;
+	let linkOtp: number;
+</script>
+
+{#if showLinkModal}
+	<DiscordLinkModal otp={linkOtp} bind:showModal={showLinkModal} />
+{/if}
+
+<section id="settings">
+	<h2>Settings</h2>
+
+	<section>
+		<h3>Discord profile</h3>
+
+		<p>
+			Habile Chat is only available on <a href="/discord">Habile's Lounge</a>, while your Discord
+			profile is linked to your clembs.com account.
+		</p>
+
+		{#if data.discordData}
+			<p class="status">
+				<IconCircleCheck />
+				<span>
+					Your Discord profile (<strong>
+						@{data.discordData.username}{data.discordData.discriminator !== '0'
+							? `#${data.discordData.discriminator}`
+							: ''}</strong
+					>) is linked to your clembs.com account. Mention @Habile in any channel to get started.
+				</span>
+			</p>
+
+			<div class="buttons">
+				<form use:enhance action="?/discordUnlink" method="post">
+					<Button style="danger" type="submit">
+						<IconUnlink />
+						Unlink Discord profile
+					</Button>
+				</form>
+				<Button style="outlined" href="/discord">
+					<HabileHappy />
+					Join Habile's Lounge
+				</Button>
+			</div>
+		{:else}
+			<p class="status">
+				<IconInfoCircleFilled />
+				<span>
+					Link your Discord profile to your clembs.com account to use Habile Chat!
+					<br />
+					Note: no Discord user data is saved on us, besides your Discord ID (to retrieve your clembs.com
+					profile from Habile).
+				</span>
+			</p>
+
+			<form
+				use:enhance={() => {
+					linkLoading = true;
+					return async ({ result, update }) => {
+						if (result.type === 'success' && result.data?.otp) {
+							showLinkModal = true;
+							linkOtp = result.data.otp;
+						}
+
+						linkLoading = false;
+						await update();
+					};
+				}}
+				action="?/createLinkOtp"
+				method="post"
+			>
+				<Button type="submit">
+					{#if linkLoading}
+						<LoaderIcon />
+					{:else}
+						<IconLink />
+						Link Discord profile
+					{/if}
+				</Button>
+			</form>
+		{/if}
+	</section>
+
+	<section>
+		<h3>Transaction history</h3>
+
+		{#if !data.userData?.purchases.length}
+			<p class="status">You have no transactions yet.</p>
+		{:else}
+			<ul class="transactions">
+				{#each data.userData.purchases as purchase, i}
+					<li class="transaction">
+						<img src="/assets/hydrollar.webp" alt="Hydrollar" height={32} width={32} />
+						<div class="transaction-details">
+							<span class="title">
+								Order {i + 1}
+							</span>
+							<pre>{purchase.checkoutSessionId}</pre>
+							<span class="subtext">
+								Ordered on {dateFormat(purchase.createdAt)}
+							</span>
+						</div>
+					</li>
+				{/each}
+			</ul>
+		{/if}
+	</section>
+
+	<section>
+		<h3>Conversations</h3>
+
+		<p>
+			The last 10 messages Habile and you exchanged are saved to enable continued conversations.<br
+			/>
+			Past this point, Habile saves key things about you so she remembers you better.
+		</p>
+
+		<form use:enhance action="?/editSettings" method="post" bind:this={conversationSettingsForm}>
+			<Switch
+				on:change={(ev) => conversationSettingsForm.submit()}
+				checked={data.userData?.habileChatData?.dismissedUsageBanner || false}
+				required={true}
+				name="dismissedUsageBanner"
+			>
+				<IconAbacus />
+				Show my usage below Habile's messages
+			</Switch>
+		</form>
+		<form action="?/resetKnowledge">
+			<Button style="danger" type="submit">
+				<IconAlertTriangleFilled />
+				Delete what Habile knows about me
+			</Button>
+		</form>
+	</section>
+</section>
+
+<style lang="scss">
+	#settings {
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+
+		section {
+			display: flex;
+			flex-direction: column;
+			gap: 0.75rem;
+		}
+
+		.status {
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+			padding: 0.5rem;
+			border-radius: 0.5rem;
+			background-color: var(--color-surface);
+			border: 1px solid var(--color-outline);
+
+			span {
+				flex: 1;
+			}
+		}
+
+		.buttons {
+			display: flex;
+			gap: 0.5rem;
+			flex-wrap: wrap;
+		}
+
+		.transactions {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+			display: flex;
+			flex-direction: column;
+			gap: 0.25rem;
+
+			.transaction {
+				display: flex;
+				align-items: center;
+				gap: 0.75rem;
+
+				.transaction-details {
+					display: flex;
+					flex-direction: column;
+					gap: 0.25rem;
+
+					.title {
+						font-weight: bold;
+						word-break: break-all;
+
+						pre {
+							display: inline;
+							background-color: var(--color-surface);
+							padding: 0.25rem;
+							border-radius: 0.5rem;
+						}
+					}
+
+					.subtext {
+						font-size: 0.9rem;
+						color: var(--color-on-surface);
+					}
+				}
+			}
+		}
+	}
+</style>
