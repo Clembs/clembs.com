@@ -28,7 +28,18 @@ export const POST: RequestHandler = async ({ request }) => {
 		throw error(404, 'OTP expired');
 	}
 
-	const userData = await db
+	const userData = await db.query.users.findFirst({
+		where: ({ discordUserId }, { eq }) => eq(discordUserId, userId),
+	});
+
+	if (!!userData) {
+		throw error(
+			409,
+			"You've already linked your Discord profile. To use a different account, unlink your current one from the Dashboard."
+		);
+	}
+
+	const [newUserData] = await db
 		.update(users)
 		.set({
 			discordUserId: userId,
@@ -37,7 +48,7 @@ export const POST: RequestHandler = async ({ request }) => {
 		.returning();
 
 	return json({
-		username: userData[0].username,
-		habileChatData: userData[0].habileChatData,
+		username: newUserData.username,
+		habileChatData: newUserData.habileChatData,
 	});
 };
