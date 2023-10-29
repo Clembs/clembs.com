@@ -119,11 +119,21 @@ export const actions: Actions = {
 
 		const otp = randomInt(100000, 999999);
 
-		await db.insert(otps).values({
-			otp,
-			email: userData.email!,
-			expiresAt: new Date(Date.now() + 1000 * 60 * 5),
-		});
+		await db
+			.insert(otps)
+			.values({
+				otp,
+				email: userData.email!,
+				expiresAt: new Date(Date.now() + 1000 * 60 * 5),
+			})
+			.onConflictDoUpdate({
+				where: eq(otps.email, userData.email!),
+				set: {
+					otp,
+					expiresAt: new Date(Date.now() + 1000 * 60 * 5),
+				},
+				target: [otps.otp, otps.expiresAt],
+			});
 
 		return { otp };
 	},
