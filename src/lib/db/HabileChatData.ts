@@ -4,7 +4,6 @@ export type HabileChatData = {
 	messagesSent: number;
 	knowledge: string;
 	dismissedUsageBanner: boolean;
-	paymentType: 'worldwide' | 'russia';
 	lastMessages: {
 		id: string;
 		userId: string;
@@ -18,6 +17,5 @@ export const defaultHabileChatData: HabileChatData = {
 	messagesSent: 0,
 	knowledge: '',
 	dismissedUsageBanner: false,
-	paymentType: 'worldwide',
 	lastMessages: [],
 };
