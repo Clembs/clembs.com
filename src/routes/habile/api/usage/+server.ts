@@ -20,7 +20,5 @@ export const GET: RequestHandler = async ({ request }) => {
 
 	if (!userData) throw error(404, 'User not found');
 
-	console.log({ userData, userId });
-
 	return json(userData.habileChatData);
 };
