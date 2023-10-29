@@ -13,8 +13,8 @@ export const POST: RequestHandler = async ({ request }) => {
 	const userId = request.headers.get('X-User-Id');
 	const body = await request.json();
 
-	if (secret !== HABILE_SECRET) throw error(401, 'Invalid secret');
-	if (!userId) throw error(401, 'Invalid user id');
+	if (secret !== HABILE_SECRET) throw error(400, 'Invalid secret');
+	if (!userId) throw error(400, 'Invalid user id');
 	if (!body) throw error(400, 'Invalid body');
 	if (!body.content) throw error(400, 'Invalid message');
 	if (!body.username) throw error(400, 'Invalid username');
@@ -25,7 +25,8 @@ export const POST: RequestHandler = async ({ request }) => {
 		where: ({ discordUserId }, { eq }) => eq(discordUserId, userId),
 	});
 
-	if (!userData) throw error(401, 'User has not linked their Discord profile');
+	if (!userData)
+		throw error(401, "You haven't linked you Discord profile! Go to the Dashboard to link it.");
 
 	const globalHabileChatData = (await db.query.habileChatData.findFirst())!;
 
@@ -118,11 +119,6 @@ export const POST: RequestHandler = async ({ request }) => {
 		})
 		.where(eq(users.discordUserId, userId))
 		.returning();
-
-	console.log({
-		completion,
-		userData: newUserData,
-	});
 
 	return json({
 		completion,
