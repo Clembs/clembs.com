@@ -23,7 +23,8 @@
 
 <style lang="scss">
 	.card {
-		display: block;
+		display: flex;
+		flex-direction: column;
 
 		appearance: none;
 		overflow: hidden;
@@ -41,6 +42,7 @@
 
 		.card-content {
 			margin: 1rem;
+			flex: 1;
 		}
 
 		&:hover {
