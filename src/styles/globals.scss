@@ -3,10 +3,6 @@
 html {
 	scroll-behavior: smooth;
 	scroll-padding-top: 5rem;
-
-	&:has(dialog[open]) {
-		overflow: hidden;
-	}
 }
 
 * {
