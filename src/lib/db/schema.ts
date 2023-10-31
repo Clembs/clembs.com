@@ -69,9 +69,16 @@ export const habileChatData = pgTable('habile_chat_data', {
 });
 
 export const purchases = pgTable('purchases', {
-	checkoutSessionId: text('checkout_session_id').unique().notNull(),
+	checkoutSessionId: text('checkout_session_id').primaryKey(),
 	userId: text('user_id').notNull(),
 	createdAt: timestamp('created_at').notNull().defaultNow(),
+	amount: integer('amount'),
+	currency: text('currency'),
+	productId: text('product_id'),
+	quantity: integer('quantity'),
+	platform: text('platform', {
+		enum: ['STRIPE', 'BOOSTY'],
+	}).default('STRIPE'),
 });
 
 export const usersRelations = relations(users, ({ many }) => ({
