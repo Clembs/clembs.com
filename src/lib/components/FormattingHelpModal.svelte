@@ -4,6 +4,7 @@
 	import InfoBox from './InfoBox.svelte';
 	import Key from './Key.svelte';
 	import Modal from './Modal.svelte';
+	import Table from './Table/Table.svelte';
 
 	export let showModal = false;
 	export let showMarkdown = true;
@@ -12,7 +13,7 @@
 <Modal bind:showModal>
 	<h1 slot="title">Comment formatting help</h1>
 
-	<table>
+	<Table>
 		<tr>
 			<th />
 			<th>Syntax</th>
@@ -86,7 +87,7 @@
 				<td> <a target="_blank" href="https://startpage.com">Startpage!</a> </td>
 			</tr>
 		{/if}
-	</table>
+	</Table>
 
 	{#if showMarkdown}
 		<div class="keyboard-shortcuts">
@@ -98,7 +99,7 @@
 	{/if}
 </Modal>
 
-<style lang="scss">
+<!-- <style lang="scss">
 	table {
 		text-align: left;
 		padding: 0;
@@ -156,4 +157,4 @@
 			}
 		}
 	}
-</style>
+</style> -->
