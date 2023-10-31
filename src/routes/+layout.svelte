@@ -50,9 +50,9 @@
 
 <NavBar />
 
-<main>
+<div class="content">
 	<slot />
-</main>
+</div>
 <Footer />
 
 <style lang="scss">
@@ -76,10 +76,9 @@
 		}
 	}
 
-	main {
+	.content {
 		margin: 0 auto;
 		max-width: 1000px;
-		height: 100%;
 		width: 100%;
 		z-index: 2;
 		position: relative;
