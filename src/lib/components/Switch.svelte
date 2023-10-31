@@ -30,6 +30,7 @@
 <style lang="scss">
 	label {
 		--thumb-size: 1.5rem;
+		--thumb-color: var(--color-on-surface);
 		--track-size: calc(var(--thumb-size) * 2);
 		--track-padding: 2px;
 
@@ -81,8 +82,8 @@
 				block-size: var(--thumb-size);
 				border-radius: 99rem;
 				transform: translateX(var(--thumb-position));
-				scale: 0.75;
-				background-color: var(--color-background);
+				scale: 0.625;
+				background-color: var(--thumb-color);
 				outline: 1px solid var(--color-outline);
 
 				transition: transform 200ms ease, scale 150ms ease;
@@ -94,27 +95,30 @@
 			}
 
 			&:not(:disabled):hover::before {
-				scale: 1.1;
+				scale: 0.875;
 			}
 
 			&:not(:disabled):active::before {
-				scale: 0.9;
+				scale: 0.5;
 			}
 
 			&:checked {
 				background: var(--color-outline);
 				--thumb-position: calc(var(--track-size) - 100%);
+				--thumb-color: var(--color-background);
 
 				&::before {
 					scale: 1;
 				}
 
 				&:not(:disabled):hover::before {
-					scale: 1.1;
+					scale: 1.125;
+					--thumb-position: calc(var(--track-size) - 110%);
 				}
 
 				&:not(:disabled):active::before {
-					scale: 0.9;
+					scale: 0.75;
+					--thumb-position: calc(var(--track-size) - 65%);
 				}
 			}
 		}
