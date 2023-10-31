@@ -83,5 +83,7 @@
 		width: 100%;
 		z-index: 2;
 		position: relative;
+		border-left: 1px solid var(--color-outline);
+		border-right: 1px solid var(--color-outline);
 	}
 </style>
