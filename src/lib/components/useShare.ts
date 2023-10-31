@@ -22,3 +22,20 @@ export function useShare(text: string) {
 			);
 	}
 }
+
+export function useCopy(text: string) {
+	if (!navigator) return;
+
+	navigator.clipboard
+		.writeText(text)
+		.then((e) =>
+			toast('Copied to clipboard!', {
+				icon: CheckmarkIcon,
+			})
+		)
+		.catch((e) =>
+			toast('Failed to copy to clipboard.', {
+				icon: ErrorIcon,
+			})
+		);
+}
