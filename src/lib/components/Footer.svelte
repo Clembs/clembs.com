@@ -4,22 +4,23 @@
 </script>
 
 <footer>
-	<span class="copyright">
-		&copy; {new Date().getFullYear()} Clembs
-	</span>
-
 	<div class="socials">
 		{#each socials as social}
 			<SocialButton {social} />
 		{/each}
+	</div>
+
+	<div class="copyright">
+		&copy; 2020-{new Date().getFullYear()} Clembs
 	</div>
 </footer>
 
 <style lang="scss">
 	footer {
 		display: flex;
-		justify-content: space-between;
+		flex-direction: column;
 		align-items: center;
+		justify-content: center;
 		padding: 1rem;
 		border-top: 1px solid var(--color-on-background);
 		gap: 0.5rem;
@@ -31,10 +32,9 @@
 		}
 	}
 
-	@media (max-width: 768px) {
+	@media (max-width: 600px) {
 		footer {
-			flex-direction: column;
-			justify-content: center;
+			margin-bottom: 5rem;
 		}
 	}
 </style>
