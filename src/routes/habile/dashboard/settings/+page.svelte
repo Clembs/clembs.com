@@ -2,19 +2,17 @@
 	import { enhance } from '$app/forms';
 	import Button from '$lib/components/Button.svelte';
 	import Switch from '$lib/components/Switch.svelte';
-	import type { PageServerData } from './$types';
 	import IconCircleCheck from '@tabler/icons-svelte/dist/svelte/icons/IconCircleCheck.svelte';
 	import IconAbacus from '@tabler/icons-svelte/dist/svelte/icons/IconAbacus.svelte';
 	import IconUnlink from '@tabler/icons-svelte/dist/svelte/icons/IconUnlink.svelte';
 	import IconAlertTriangleFilled from '@tabler/icons-svelte/dist/svelte/icons/IconAlertTriangleFilled.svelte';
 	import IconInfoCircleFilled from '@tabler/icons-svelte/dist/svelte/icons/IconInfoCircleFilled.svelte';
 	import IconLink from '@tabler/icons-svelte/dist/svelte/icons/IconLink.svelte';
-	import { dateFormat } from '$lib/helpers/dateFormat';
 	import HabileHappy from '$lib/svg/HabileHappy.svelte';
 	import DiscordLinkModal from './DiscordLinkModal.svelte';
 	import { LoaderIcon } from 'svelte-french-toast';
 
-	export let data: PageServerData;
+	export let data;
 
 	let conversationSettingsForm: HTMLFormElement;
 	let showLinkModal = false;
@@ -101,31 +99,6 @@
 	</section>
 
 	<section>
-		<h3>Transaction history</h3>
-
-		{#if !data.userData?.purchases.length}
-			<p class="status">You have no transactions yet.</p>
-		{:else}
-			<ul class="transactions">
-				{#each data.userData.purchases as purchase, i}
-					<li class="transaction">
-						<img src="/assets/hydrollar.webp" alt="Hydrollar" height={32} width={32} />
-						<div class="transaction-details">
-							<span class="title">
-								Order {i + 1}
-							</span>
-							<pre>{purchase.checkoutSessionId}</pre>
-							<span class="subtext">
-								Ordered on {dateFormat(purchase.createdAt)}
-							</span>
-						</div>
-					</li>
-				{/each}
-			</ul>
-		{/if}
-	</section>
-
-	<section>
 		<h3>Conversations</h3>
 
 		<p>
@@ -159,6 +132,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 2rem;
+		margin: 1.5rem;
 
 		section {
 			display: flex;
@@ -184,44 +158,6 @@
 			display: flex;
 			gap: 0.5rem;
 			flex-wrap: wrap;
-		}
-
-		.transactions {
-			list-style: none;
-			padding: 0;
-			margin: 0;
-			display: flex;
-			flex-direction: column;
-			gap: 0.25rem;
-
-			.transaction {
-				display: flex;
-				align-items: center;
-				gap: 0.75rem;
-
-				.transaction-details {
-					display: flex;
-					flex-direction: column;
-					gap: 0.25rem;
-
-					.title {
-						font-weight: bold;
-						word-break: break-all;
-
-						pre {
-							display: inline;
-							background-color: var(--color-surface);
-							padding: 0.25rem;
-							border-radius: 0.5rem;
-						}
-					}
-
-					.subtext {
-						font-size: 0.9rem;
-						color: var(--color-on-surface);
-					}
-				}
-			}
 		}
 	}
 </style>
