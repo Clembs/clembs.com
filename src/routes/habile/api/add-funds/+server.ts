@@ -53,6 +53,11 @@ export const POST: RequestHandler = async ({ request }) => {
 		await db.insert(purchases).values({
 			checkoutSessionId: sessionWithLineItems.id,
 			userId: userData.id,
+			amount: sessionWithLineItems.amount_total || 0,
+			productId: productId,
+			currency: sessionWithLineItems.currency || 'usd',
+			platform: 'STRIPE',
+			quantity: 1,
 		});
 
 		await sendEmail(
