@@ -31,13 +31,17 @@ export function relativeTimeFormat(date: Date | number): string {
 	return rtf.format(Math.floor(deltaSeconds / divisor), units[unitIndex]);
 }
 
-export function dateFormat(date: Date) {
+export function dateFormat(date: Date, showTime = true) {
 	return date.toLocaleString('en-US', {
 		month: 'long',
 		day: 'numeric',
 		year: 'numeric',
-		hour: '2-digit',
-		hour12: false,
-		minute: '2-digit',
+		...(showTime
+			? {
+					hour: '2-digit',
+					hour12: false,
+					minute: '2-digit',
+			  }
+			: {}),
 	});
 }
