@@ -89,16 +89,16 @@
 			{#if data.links?.projectUrl}
 				<Button href={data.links?.projectUrl}>Check it out</Button>
 			{/if}
-			{#if data.links?.repoUrl}
-				<Button style={data.links?.projectUrl ? 'outlined' : 'filled'} href={data.links?.repoUrl}>
-					View source
-				</Button>
-			{/if}
 			<Button style="outlined" on:click={() => (showComments = true)}>
 				<!-- on:click={() => document.querySelector('.comments-page')?.scrollIntoView()} -->
 				<IconMessageCircle />
 				Comments ({data.comments.length})
 			</Button>
+			{#if data.links?.repoUrl}
+				<Button style={data.links?.projectUrl ? 'outlined' : 'filled'} href={data.links?.repoUrl}>
+					View source
+				</Button>
+			{/if}
 			<ShareButton url={$page.url.href} />
 		</div>
 
@@ -136,8 +136,10 @@
 	<p>
 		{@html data.description}
 	</p>
+</article>
 
-	{#if data.gallery}
+{#if data.gallery}
+	<section id="gallery">
 		<h2>Gallery</h2>
 
 		<div class="gallery-images">
@@ -164,9 +166,10 @@
 				</button>
 			{/each}
 		</div>
-	{/if}
-</article>
-<div class="suggested-apps">
+	</section>
+{/if}
+
+<section id="suggested-apps">
 	<h2>Other apps by Clembs</h2>
 
 	<SoftwareGrid
@@ -175,32 +178,23 @@
 			.sort(Math.random)
 			.slice(0, 4)}
 	/>
-</div>
-<!-- <time datetime={data.createdAt.toDateString()}>
-	{data.createdAt.toLocaleString('en-US', {
-		month: 'long',
-		day: 'numeric',
-		year: 'numeric',
-	})}
-</time> -->
+</section>
 
-<div class="comments">
-	<CommentsBottomSheet
-		bind:showSheet={showComments}
-		projectId="{data.type}/{data.id}"
-		comments={data.comments}
-		userData={data.userData}
-	/>
-</div>
+<CommentsBottomSheet
+	bind:showSheet={showComments}
+	projectId="{data.type}/{data.id}"
+	comments={data.comments}
+	userData={data.userData}
+/>
 
 <style lang="scss">
 	header {
 		border-radius: 1rem 1rem 0 0;
 		border-bottom: 1px solid var(--color-on-surface);
-		padding: 1rem;
+		padding: 2rem 1rem;
 		display: flex;
 		gap: 2rem;
-		padding-bottom: 3rem;
+		justify-content: center;
 
 		.icon img {
 			border: 1px solid var(--color-outline);
@@ -254,6 +248,16 @@
 			}
 		}
 	}
+
+	section {
+		border-top: 1px solid var(--color-outline);
+		padding: 1.5rem;
+	}
+
+	#gallery {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
 
 	.gallery-images {
 		display: flex;
@@ -317,11 +321,7 @@
 			}
 		}
 	}
-
-	.suggested-apps {
-		border-top: 1px solid var(--color-on-surface);
-		padding: 1.5rem;
-	}
+}
 
 	@media (max-width: 768px) {
 		header {
