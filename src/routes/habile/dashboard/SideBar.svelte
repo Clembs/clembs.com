@@ -4,6 +4,7 @@
 	import IconShoppingBag from '@tabler/icons-svelte/dist/svelte/icons/IconShoppingBag.svelte';
 	import IconReceipt from '@tabler/icons-svelte/dist/svelte/icons/IconReceipt.svelte';
 	import IconSettings from '@tabler/icons-svelte/dist/svelte/icons/IconSettings.svelte';
+	import Badge from '$lib/components/Badge.svelte';
 
 	const menus = [
 		{
@@ -31,7 +32,10 @@
 
 <aside>
 	<div class="header">
-		<div class="logo">Habile Chat</div>
+		<div class="logo">
+			Habile Chat
+			<Badge style="outlined">Preview</Badge>
+		</div>
 
 		<a href="/habile/dashboard/settings" class="account">
 			{#if $page.data?.discordData}
@@ -83,9 +87,14 @@
 			margin-bottom: 1rem;
 
 			.logo {
-				padding: 1.25rem;
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: center;
+				align-items: center;
+				gap: 0.5rem;
+				padding: 1rem;
 				font-weight: 500;
-				font-size: 2rem;
+				font-size: 1.75rem;
 				text-align: center;
 			}
 
@@ -93,7 +102,7 @@
 				display: flex;
 				align-items: center;
 				gap: 0.5rem;
-				margin-top: -1rem;
+				// margin-top: -1rem;
 				border-radius: 99rem;
 				padding: 0.25rem;
 				padding-right: 0.5rem;
@@ -192,9 +201,6 @@
 				flex-direction: row;
 				justify-content: space-between;
 				margin-bottom: 0;
-				.account {
-					margin-top: 0;
-				}
 			}
 
 			ul {
