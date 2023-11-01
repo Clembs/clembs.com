@@ -17,7 +17,7 @@
 			{data.product?.metadata.value} Hydrollars
 		</strong>!
 	</p>
-
+	<!-- 
 	<div class="details">
 		<h2>Balance</h2>
 
@@ -39,7 +39,7 @@
 				</span>
 			</div>
 		</div>
-	</div>
+	</div> -->
 
 	<div class="details">
 		<h2>Order details</h2>
@@ -99,11 +99,8 @@
 	<Button href="/habile/dashboard">Back to dashboard</Button>
 
 	<p class="subtext">
-		Not refundable. Question about your purchase, or you didn't receive your Hydrollars? <a
-			href="mailto:clembs@clembs.com"
-		>
-			Contact me
-		</a>.
+		Not refundable. Question about your purchase, or you didn't receive your Hydrollars?
+		<a href="mailto:clembs@clembs.com"> Contact me </a>.
 	</p>
 </div>
 
@@ -160,17 +157,17 @@
 					.value {
 						word-break: break-all;
 
-						&.green {
-							color: var(--color-success);
-							font-weight: 600;
-							font-size: 1rem;
-						}
+						// &.green {
+						// 	color: var(--color-success);
+						// 	font-weight: 600;
+						// 	font-size: 1rem;
+						// }
 
-						&.red {
-							color: var(--color-error);
-							font-weight: 600;
-							font-size: 1rem;
-						}
+						// &.red {
+						// 	color: var(--color-error);
+						// 	font-weight: 600;
+						// 	font-size: 1rem;
+						// }
 					}
 				}
 			}

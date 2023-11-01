@@ -3,8 +3,8 @@ import type { PageServerLoad } from './$types';
 import { stripeApi } from '$lib/stripe';
 
 export const load: PageServerLoad = async ({ url, locals: { getUserData } }) => {
-	const userData = await getUserData();
-	if (!userData) throw error(401);
+	// const userData = await getUserData();
+	// if (!userData) throw error(401);
 
 	const sessionId = url.searchParams.get('session_id');
 	if (!sessionId) throw error(400, { message: 'Invalid request' });
@@ -19,7 +19,7 @@ export const load: PageServerLoad = async ({ url, locals: { getUserData } }) => 
 	return {
 		product,
 		session: sessionWithLineItems,
-		userData,
+		// userData,
 		themeGradient: {
 			from: 'var(--color-success)',
 			to: 'var(--color-success)',
