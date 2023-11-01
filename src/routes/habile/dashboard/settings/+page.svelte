@@ -10,7 +10,8 @@
 	import IconLink from '@tabler/icons-svelte/dist/svelte/icons/IconLink.svelte';
 	import HabileHappy from '$lib/svg/HabileHappy.svelte';
 	import DiscordLinkModal from './DiscordLinkModal.svelte';
-	import { LoaderIcon } from 'svelte-french-toast';
+	import toast, { LoaderIcon } from 'svelte-french-toast';
+	import { defaultHabileChatData } from '$lib/db/HabileChatData';
 
 	export let data;
 
@@ -102,24 +103,61 @@
 		<h3>Conversations</h3>
 
 		<p>
-			The last 10 messages Habile and you exchanged are saved to enable continued conversations.<br
-			/>
+			The last 10 messages Habile and you exchanged are saved to enable continued conversations.
+			<br />
 			Past this point, Habile saves key things about you so she remembers you better.
 		</p>
 
-		<form use:enhance action="?/editSettings" method="post" bind:this={conversationSettingsForm}>
+		<form
+			use:enhance={() =>
+				({ result, update }) => {
+					if (result.type === 'success') {
+						toast.success('Your preferences have been updated.');
+					} else {
+						toast.error('Something went wrong. Please try again later.');
+					}
+					update({
+						reset: false,
+					});
+				}}
+			action="?/editSettings"
+			method="post"
+			bind:this={conversationSettingsForm}
+		>
+			<!-- on:change={() => conversationSettingsForm.submit()} -->
 			<Switch
-				on:change={(ev) => conversationSettingsForm.submit()}
-				checked={data.userData?.habileChatData?.dismissedUsageBanner || false}
-				required={true}
+				checked={!(data.userData?.habileChatData || defaultHabileChatData)?.dismissedUsageBanner}
 				name="dismissedUsageBanner"
+				required={false}
 			>
 				<IconAbacus />
 				Show my usage below Habile's messages
 			</Switch>
+			<Button type="submit">Update preferences</Button>
 		</form>
-		<form action="?/resetKnowledge">
-			<Button style="danger" type="submit">
+		<form
+			use:enhance={() =>
+				({ update, result }) => {
+					if (result.type === 'success') {
+						toast.success("Habile's knowledge about you has been reset.");
+					} else {
+						toast.error('Something went wrong. Please try again later.');
+					}
+					update();
+				}}
+			method="post"
+			action="?/resetKnowledge"
+		>
+			{#if !data.userData?.habileChatData?.knowledge}
+				<p class="status">
+					<IconAlertTriangleFilled />
+					<span>
+						Habile doesn't know anything about you yet. @mention her in Habile's Lounge to chat with
+						her!
+					</span>
+				</p>
+			{/if}
+			<Button disabled={!data.userData?.habileChatData?.knowledge} style="danger" type="submit">
 				<IconAlertTriangleFilled />
 				Delete what Habile knows about me
 			</Button>
@@ -135,6 +173,12 @@
 		margin: 1.5rem;
 
 		section {
+			display: flex;
+			flex-direction: column;
+			gap: 0.75rem;
+		}
+
+		form {
 			display: flex;
 			flex-direction: column;
 			gap: 0.75rem;
