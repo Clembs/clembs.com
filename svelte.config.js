@@ -2,6 +2,7 @@ import adapter from '@sveltejs/adapter-vercel';
 import { mdsvex } from 'mdsvex';
 import { getHighlighter } from 'shiki';
 import preprocess from 'svelte-preprocess';
+import { imagetools } from '@zerodevx/svelte-img/vite';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -9,6 +10,7 @@ const config = {
 	preprocess: [
 		mdsvex({
 			extensions: ['.mdx'],
+			smartypants: true,
 			highlight: {
 				async highlighter(code, lang, meta) {
 					const highlighter = await getHighlighter({
@@ -20,6 +22,7 @@ const config = {
 			},
 		}),
 		preprocess(),
+		imagetools(),
 	],
 
 	kit: {
