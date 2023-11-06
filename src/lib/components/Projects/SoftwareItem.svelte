@@ -18,14 +18,24 @@
 			style="--project-from: {data.themeGradient.from}; --project-to: {data.themeGradient.to}; "
 		>
 			<div class="software-icon" style="background-image: url({data.iconThumbnailPath})">
-				<img loading="lazy" src={data.iconPath} class:loaded alt="{data.name} icon" />
+				<img
+					loading="lazy"
+					src={data.iconPath}
+					class:loaded
+					alt="{data.name} icon"
+					height={48}
+					width={48}
+				/>
+			</div>
+			<div class="subtext">
+				{data.createdAt.getFullYear()}
 			</div>
 		</div>
 		<div class="about">
 			<div class="name">
 				{data.name}
 			</div>
-			<span class="category">{data.category}</span>
+			<span class="subtext">{data.category}</span>
 		</div>
 	</div>
 </Card>
@@ -33,14 +43,17 @@
 <style lang="scss">
 	.software {
 		display: flex;
+		flex-direction: column;
 		gap: 0.75rem;
-		align-items: center;
+		justify-content: center;
 		height: 100%;
 		min-width: min-content;
 		min-height: min-content;
 
 		.software-icon-wrapper {
 			display: flex;
+			justify-content: space-between;
+			width: 100%;
 
 			.software-icon {
 				width: 3rem;
@@ -52,16 +65,8 @@
 		}
 
 		.about {
-			display: flex;
-			flex-direction: column;
-
 			.name {
 				font-weight: 500;
-			}
-
-			.category {
-				font-size: 0.85rem;
-				color: var(--color-on-surface);
 			}
 		}
 	}
