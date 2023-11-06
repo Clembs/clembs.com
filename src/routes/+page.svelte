@@ -1,32 +1,16 @@
 <script lang="ts">
 	import Button from '$lib/components/Button.svelte';
-	import ProjectGrid from '$lib/components/Projects/ProjectGrid.svelte';
 	import { brandingData } from '$lib/data/branding';
 	import { softwareData } from '$lib/data/software';
-	import { onDestroy, onMount } from 'svelte';
-	import IconArrowRight from '@tabler/icons-svelte/dist/svelte/icons/IconArrowRight.svelte';
+	import { onMount } from 'svelte';
+	import IconMessageCircle from '@tabler/icons-svelte/dist/svelte/icons/IconMessageCircle.svelte';
+	import IconBrush from '@tabler/icons-svelte/dist/svelte/icons/IconBrush.svelte';
+	import IconCode from '@tabler/icons-svelte/dist/svelte/icons/IconCode.svelte';
 	import MetaTags from '$lib/components/MetaTags.svelte';
 	import ToggleAvatar from '$lib/components/ToggleAvatar.svelte';
-	import SoftwareGrid from '$lib/components/Projects/SoftwareGrid.svelte';
-
-	onMount(() => {
-		const projects = document.querySelectorAll('.project');
-
-		projects.forEach((project) => {
-			// load all card images and check when they've loaded to apply the nice blur out animation
-			const banner: HTMLImageElement = project.querySelector('.card-image img')!;
-
-			function loaded() {
-				banner?.classList.add('loaded');
-			}
-
-			if (banner?.complete || false) {
-				loaded();
-			} else {
-				banner?.addEventListener('load', loaded);
-			}
-		});
-	});
+	import SoftwareItem from '$lib/components/Projects/SoftwareItem.svelte';
+	import BrandingItem from '$lib/components/Projects/BrandingItem.svelte';
+	import Card from '$lib/components/Card.svelte';
 </script>
 
 <MetaTags
@@ -34,138 +18,195 @@
 and express my love through design, code and video. Welcome to clembs.com!"
 />
 
-<main>
-	<header class="intro">
-		<div class="intro-text">
-			<h1>
-				Worlds made from<br />
-				design, code and heart.
-			</h1>
+<header id="intro">
+	<div class="intro-text">
+		<h1>
+			Worlds made from<br />
+			design, code and heart.
+		</h1>
 
-			<div class="buttons">
-				<Button href="#design">View projects</Button>
-				<Button href="/contact" disabled style="outlined">Contact me</Button>
-			</div>
+		<div class="buttons">
+			<Button href="#design">View projects</Button>
+			<Button href="/contact" style="outlined">Contact me</Button>
 		</div>
+	</div>
+</header>
 
-		<ToggleAvatar />
-
-		<!-- <div class="text">
-			<h3>Nice to meet you, I'm</h3>
-			<div>
-				<Wordmark />
+<section id="projects">
+	<div id="project-grid">
+		{#each brandingData.slice(0, 2) as branding, i}
+			{#if i % 2 === 0}
+				<div class="grid-item">
+					<BrandingItem loaded data={branding} index={i} />
+				</div>
+				<div class="grid-item columns">
+					{#each softwareData.slice(i * 2, i * 2 + 2) as software, i}
+						<SoftwareItem loaded data={software} index={i} />
+					{/each}
+				</div>
+			{:else}
+				<div class="grid-item columns">
+					{#each softwareData.slice(i * 2, i * 2 + 2) as software, i}
+						<SoftwareItem loaded data={software} index={i} />
+					{/each}
+				</div>
+				<div class="grid-item">
+					<BrandingItem loaded data={branding} index={i} />
+				</div>
+			{/if}
+		{/each}
+	</div>
+	<div id="quick-links">
+		<Card href="/projects#software">
+			<div class="link" slot="card-content">
+				<IconCode />
+				All projects
 			</div>
-			<p>
-				or Clément IRL, a 17 y/o student from the south of France. I am passionate about computers
-				and express my love through design, code and video.<br /><br />From Discord bots to web apps
-				to brand design to livestreaming, anything goes on clembs.com. Welcome!
-			</p>
-		</div> -->
+		</Card>
+		<Card href="/projects#design">
+			<div class="link" slot="card-content">
+				<IconBrush />
+				All design
+			</div>
+		</Card>
+		<Card href="/comments">
+			<div class="link" slot="card-content">
+				<IconMessageCircle />
+				Comments
+			</div>
+		</Card>
+	</div>
+</section>
+
+<section id="about-me">
+	<header>
+		<h2>A little about me</h2>
+
+		<p>Nice to meet you, I'm Clément "Clembs", a 17 y/o student from the south of France.</p>
+		<ul>
+			<li>I'm a student in a Computer Science university in Toulouse, France.</li>
+			<li>I'm primarily coding in TypeScript, and I'm currently learning Go.</li>
+			<li>
+				My website launched in 2020 to showcase design and programming projects. It's been reworked
+				a few times, with this version being coded with <a
+					href="https://kit.svelte.dev"
+					target="_blank"
+					rel="noopener noreferrer">SvelteKit</a
+				>, which is a blessing to use.<br />
+			</li>
+		</ul>
 	</header>
 
-	<section class="about-me">
-		<h2>Nice to meet you, I'm Clembs!</h2>
+	<ToggleAvatar />
+</section>
 
-		<p>
-			...or Clément IRL, a 17 y/o student from the south of France.<br />
-			I am passionate about computers and express my love through design, code and video.<br />
-			<br />
-			From Discord bots to web apps to brand design to livestreaming, anything goes on clembs.com. Welcome!
-		</p>
-	</section>
-
-	<section id="design">
-		<header>
-			<div class="top">
-				<h2>Latest graphic design projects</h2>
-
-				<Button style="outlined" href="/projects#design">View more <IconArrowRight /></Button>
-			</div>
-		</header>
-
-		<ProjectGrid projects={brandingData.slice(0, 2)} />
-	</section>
-
-	<section id="software">
-		<header>
-			<div class="top">
-				<h2>Latest apps & tools</h2>
-
-				<Button style="outlined" href="/projects#software">View more <IconArrowRight /></Button>
-			</div>
-		</header>
-
-		<SoftwareGrid projects={softwareData.slice(0, 3)} />
-	</section>
-
-	<span
-		aria-hidden="true"
-		style="
+<span
+	aria-hidden="true"
+	style="
 	opacity: 0.15;
 	color: var(--color-background);
 	text-align: left;
 	transform: rotateY(180deg);
 	"
-	>
-		Strange, isn't it?
-	</span>
-</main>
+>
+	Strange, isn't it?
+</span>
 
 <style lang="scss">
-	main {
-		padding: 1rem;
+	#intro {
 		display: flex;
 		flex-direction: column;
-		height: 100%;
-		gap: 0.5rem;
-	}
-
-	.intro {
-		padding: 5rem 0;
-		display: flex;
-		gap: 1rem;
 		font-size: clamp(1rem, 2vw, 1.15rem);
-		justify-content: space-between;
 		align-items: center;
+		text-align: center;
+		width: 100%;
 
-		&-text {
+		.intro-text {
+			padding: 3rem 0;
+			width: 100%;
+
 			h1 {
 				font-size: clamp(2rem, 5vw, 3rem);
-				line-height: 1.28;
+				line-height: 1.25;
 			}
 
 			.buttons {
 				display: flex;
 				gap: 1rem;
 				margin-top: 1rem;
+				justify-content: center;
+			}
+		}
+	}
+
+	#projects {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		#project-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(min(400px, 100%), 1fr));
+			gap: 1rem;
+
+			.grid-item {
+				&.columns {
+					display: grid;
+					grid-template-columns: repeat(auto-fit, minmax(min(450px, 100%), 1fr));
+					gap: 1rem;
+				}
 			}
 		}
 
-		// .text {
-		// 	display: flex;
-		// 	flex-direction: column;
-		// 	gap: 1rem;
-		// 	max-width: 42ch;
+		#quick-links {
+			display: grid;
+			grid-template-columns: 1fr 1fr 1fr;
+			gap: 1rem;
+			width: 100%;
 
-		// 	h3,
-		// 	p {
-		// 		margin: 0;
-		// 	}
-		// }
+			.link {
+				display: flex;
+				gap: 0.25rem;
+				font-size: clamp(1rem, 3vw, 1.25rem);
+				font-weight: 500;
+				align-items: center;
+				justify-content: center;
+				flex-wrap: wrap;
+				text-align: center;
+			}
+		}
 	}
 
-	.about-me {
-		background-color: var(--color-surface);
-		padding: 1.5rem;
-		margin: 1rem -1rem;
+	#about-me {
 		display: flex;
-		flex-direction: column;
-		gap: 0.75rem;
-		border-radius: 1rem;
-		border: 1px solid var(--color-outline);
+		gap: 2rem;
+		justify-content: space-between;
+		width: 100%;
+		align-items: center;
+		flex-wrap: wrap;
+
+		header {
+			max-width: 70ch;
+
+			h2 {
+				margin-bottom: 1rem;
+			}
+
+			ul {
+				margin: 0;
+
+				li {
+					margin-bottom: 0;
+				}
+			}
+		}
 	}
 
 	section {
+		padding: 1.5rem 1rem;
+		max-width: 890px;
+		margin: 0 auto;
+		// border-top: 1px solid var(--color-outline);
+
 		header {
 			.top {
 				display: flex;
@@ -181,15 +222,10 @@ and express my love through design, code and video. Welcome to clembs.com!"
 		}
 	}
 
-	@media (max-width: 939px) {
-		.intro {
-			flex-direction: column-reverse;
-			align-items: center;
-			text-align: center;
-
-			.buttons {
-				justify-content: center;
-			}
-		}
-	}
+	// @media (max-width: 939px) {
+	// 	.intro {
+	// 		align-items: center;
+	// 		text-align: center;
+	// 	}
+	// }
 </style>
