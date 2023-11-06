@@ -1,5 +1,6 @@
 import { acknowledgements } from './acknowledgements';
 import { crbt } from './crbt';
+import { habileChat } from './habile-chat';
 import { messages } from './messages';
 import { purplet } from './purplet';
 
@@ -48,6 +49,10 @@ export interface Software {
 	platforms?: (keyof typeof softwarePlatforms)[];
 }
 
-export const softwareData: Software[] = [crbt, purplet, acknowledgements, messages].sort(
-	(a, b) => b.createdAt.getTime() - a.createdAt.getTime()
-);
+export const softwareData: Software[] = [
+	crbt,
+	purplet,
+	acknowledgements,
+	messages,
+	habileChat,
+].sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
