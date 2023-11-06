@@ -2,10 +2,10 @@ export enum SocialName {
 	Kofi = 'ko-fi',
 	// Fiverr = 'fiverr',
 	Discord = 'discord',
-	Instagram = 'instagram',
+	// Instagram = 'instagram',
 	GitHub = 'github',
 	// Twitch = 'twitch',
-	Mastodon = 'mastodon',
+	// Mastodon = 'mastodon',
 	YouTube = 'youtube',
 }
 
@@ -53,16 +53,16 @@ export const socials = [
 		url: 'https://github.com/clembs',
 		background: '#202020',
 	},
-	{
-		id: SocialName.Instagram,
-		name: 'Instagram',
-		url: 'https://instagram.com/clembs.v',
-		background: '#FD0074',
-	},
-	{
-		id: SocialName.Mastodon,
-		name: 'Mastodon',
-		url: 'https://mastodon.social/@clembs',
-		background: '#6364FF',
-	},
+	// {
+	// 	id: SocialName.Instagram,
+	// 	name: 'Instagram',
+	// 	url: 'https://instagram.com/clembs.v',
+	// 	background: '#FD0074',
+	// },
+	// {
+	// 	id: SocialName.Mastodon,
+	// 	name: 'Mastodon',
+	// 	url: 'https://mastodon.social/@clembs',
+	// 	background: '#6364FF',
+	// },
 ] satisfies Social[];
