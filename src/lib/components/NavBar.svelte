@@ -1,12 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import Clembs from '$lib/icons/Clembs.svelte';
-	import IconAt from '@tabler/icons-svelte/dist/svelte/icons/IconAt.svelte';
-	import IconStack2 from '@tabler/icons-svelte/dist/svelte/icons/IconStack2.svelte';
-	import IconUser from '@tabler/icons-svelte/dist/svelte/icons/IconUser.svelte';
-	import GradientAvatar from './GradientAvatar/GradientAvatar.svelte';
-
-	let showSettingsModal = false;
 
 	const navLinks = [
 		{
@@ -14,76 +7,130 @@
 			icon: Clembs,
 			label: 'Home',
 		},
-		{
-			href: '/contact',
-			icon: IconAt,
-			label: 'Contact',
-		},
-		{
-			icon: IconStack2,
-			label: 'Work',
-			categories: [
-				{
-					label: 'Projects',
-					items: [
-						{
-							label: 'Design',
-							description: 'UI, UX, logo design and case studies.',
-							img: 'https://m.clembs.com/placeholder-image.png',
-							href: '/design',
-						},
-						{
-							label: 'Software',
-							description: 'Apps, tools, bots and the like.',
-							img: 'https://m.clembs.com/placeholder-image.png',
-							href: '/software',
-						},
-					],
-				},
-				{
-					label: 'Apps',
-					items: [
-						{
-							label: 'Comments',
-							description: 'Community-driven feed of clembs.com.',
-							img: 'https://m.clembs.com/placeholder-image.png',
-							href: '/comments',
-						},
-						{
-							label: 'Habile Chat',
-							description: 'Your cute, smart and friendly Discord chatbot.',
-							img: 'https://m.clembs.com/placeholder-image.png',
-							href: '/habile/dashboard',
-						},
-					],
-				},
-			],
-		},
+
+		// {
+		// 	icon: IconStack2,
+		// 	label: 'Work',
+		// 	categories: [
+		// 		{
+		// 			label: 'Projects',
+		// 			items: [
+		// 				{
+		// 					label: 'Design',
+		// 					description: 'UI, UX, logo design and case studies.',
+		// 					img: 'https://m.clembs.com/placeholder-image.png',
+		// 					href: '/design',
+		// 				},
+		// 				{
+		// 					label: 'Software',
+		// 					description: 'Apps, tools, bots and the like.',
+		// 					img: 'https://m.clembs.com/placeholder-image.png',
+		// 					href: '/software',
+		// 				},
+		// 			],
+		// 		},
+		// 		{
+		// 			label: 'Pages',
+		// 			items: [
+		// 				{
+		// 					label: 'Comments',
+		// 					description: 'Community-driven feed of clembs.com.',
+		// 					img: 'https://m.clembs.com/placeholder-image.png',
+		// 					href: '/comments',
+		// 				},
+		// 				{
+		// 					label: 'Habile Chat',
+		// 					description: 'Your cute, smart and friendly Discord chatbot.',
+		// 					img: 'https://m.clembs.com/placeholder-image.png',
+		// 					href: '/habile/dashboard',
+		// 				},
+		// 			],
+		// 		},
+		// 	],
+		// },
+		// {
+		// },
 		// {
 		// 	href: '/comments',
 		// 	label: $page.data.hasNameChange ? 'Clember' : 'Comments',
 		// },
-		{
-			href: '/settings',
-			icon: IconUser,
-			label: 'Account',
-		},
+		// {
+		// 	href: '/settings',
+		// 	icon: IconUser,
+		// 	label: 'Account',
+		// },
 	];
+
+	const titles = [
+		'Developer & designer',
+		'Obsessed with details',
+		'Available for hire',
+		'IT Student in Toulouse, France',
+		'Frenchman with a weird accent',
+		'Nice guy',
+		'Water addict',
+		'Streamer, sometimes',
+		'Working on new projects',
+		'Loading new projects...',
+		'JavaScript is the best',
+		'Svelte enthusiast',
+		'this is a random title',
+		'also known as Clément',
+		'also known as Clembs',
+		'[object Object]',
+		'undefined',
+		'Sleepy at day, awake at night',
+		'Svelte FTW',
+		'A different title on every click!',
+	];
+
+	let title = titles[0];
+	let previousTitles: string[] = [];
+
+	function randomTitle() {
+		// always get a new title that's not been used before
+		while (previousTitles.includes(title)) {
+			title = titles[Math.floor(Math.random() * titles.length)];
+		}
+		previousTitles.push(title);
+		// empty the array if all titles have been used
+		if (previousTitles.length === titles.length) {
+			previousTitles = [];
+		}
+	}
+	// let workMenuOpen: boolean;
 </script>
 
 <nav>
 	<div class="nav-contents">
-		<a href="/" class="home">
-			<Clembs />
+		<a href="/" id="profile">
+			<img src="./assets/logo-purplue.webp" height={32} width={32} alt="Clembs" />
+			<!-- <Clembs /> -->
+			<div id="profile-text">
+				<span id="my-name-lolz"> Clembs </span>
+				<button
+					on:click|stopPropagation|preventDefault={randomTitle}
+					id="random-title"
+					class="subtext"
+				>
+					{title}
+				</button>
+			</div>
 		</a>
 
 		<ul class="links">
-			<input id="work" type="checkbox" aria-hidden={true} tabindex={-1} />
-			{#each navLinks as link}
+			<!-- <input
+				id="work"
+				type="checkbox"
+				aria-hidden={true}
+				tabindex={-1}
+				bind:checked={workMenuOpen}
+			/> -->
+			<!-- {#each navLinks as link}
 				{#if link.href && ($page.data.userData || link.href !== '/settings')}
-					<!-- aria-current={!showSettingsModal &&
-							(linkg.href === '/' ? $page.url.pathname === '/' : $page.url.href.includes(link.href))} -->
-					<a
+				<a
+				aria-current={!showSettingsModal &&
+				(link.href === '/' ? $page.url.pathname === '/' : $page.url.href.includes(link.href))}
 						href={link.href}
 						class="nav-item"
 						class:clembs={link.href === '/'}
@@ -101,15 +148,20 @@
 						</div>
 					</a>
 				{:else if link.categories}
-					<!-- svelte-ignore a11y-no-noninteractive-element-to-interactive-role -->
-					<label for="work" class="nav-item" role="button" aria-label={link.label} tabindex={0}>
+					<label
+						for="work"
+						class="nav-item"
+						role="button"
+						aria-label={link.label}
+						tabindex={0}
+						on:click|self={() => (workMenuOpen = false)}
+					>
 						<div class="icon">
 							<svelte:component this={link.icon} />
 						</div>
 						<div class="label">
 							{link.label}
 						</div>
-						<!-- svelte-ignore a11y-autofocus -->
 						<ul
 							class="dropdown-menu"
 							autofocus={true}
@@ -151,22 +203,57 @@
 						</ul>
 					</label>
 				{/if}
-			{/each}
+			{/each}-->
 		</ul>
 	</div>
 </nav>
 
 <style lang="scss">
 	nav {
-		position: sticky;
-		inset: 0;
-		z-index: 8;
+		// position: sticky;
+		// inset: 0;
+		// z-index: 8;
 
 		width: 100%;
 		gap: 1rem;
 
-		background-color: var(--color-background);
-		border-bottom: 1px solid var(--color-outline);
+		// background-color: var(--color-background);
+		// border-bottom: 1px solid var(--color-outline);
+
+		#profile {
+			display: flex;
+			gap: 0.75rem;
+			align-items: center;
+			text-decoration: none;
+			border-radius: 0.5rem;
+			padding: 0.25rem 0.5rem;
+
+			img {
+				border-radius: 99rem;
+				border: 1px solid var(--color-outline);
+			}
+
+			&-text {
+				display: flex;
+				flex-direction: column;
+				// gap: 0.25rem;
+				// justify-content: center;
+				font-size: 1.25rem;
+				font-weight: 500;
+
+				#random-title {
+					width: max-content;
+					display: inline-block;
+					padding: 0.25rem 0.5rem;
+					margin: -0.25rem -0.5rem;
+					border-radius: 99rem;
+
+					&:hover {
+						background-color: var(--color-surface);
+					}
+				}
+			}
+		}
 
 		.nav-contents {
 			display: flex;
@@ -211,7 +298,7 @@
 				user-select: none;
 
 				.icon {
-					display: grid;
+					display: none;
 					place-items: center;
 				}
 
@@ -337,6 +424,8 @@
 			bottom: 0;
 			border-top: 1px solid var(--color-outline);
 			border-bottom: none;
+			background-color: var(--color-background);
+			z-index: 9;
 
 			.nav-contents {
 				padding: 0.25rem;
