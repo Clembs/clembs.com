@@ -6,21 +6,32 @@
 	import Footer from '$lib/components/Footer.svelte';
 	import type DebugMenu from './DebugMenu.svelte';
 	import ShortcutsModal from '../lib/components/ShortcutsModal/ShortcutsModal.svelte';
+	import { interpolate } from 'd3-interpolate';
+	import { tweened } from 'svelte/motion';
 
-	let colors = $page.data?.themeGradient;
+	const baseColors = {
+		from: '#643FFF',
+		to: '#31C0FF',
+	};
+
+	let colors = $page.data?.themeGradient ?? baseColors;
+
+	// this is literally too easy
+	const colorProgress = tweened(colors, {
+		interpolate: interpolate,
+	});
 
 	// don't import this right away, it's pretty heavy
 	let debugMenu: typeof DebugMenu | null = null;
 
 	page.subscribe(({ error, data }) => {
 		if (error) {
-			colors = {
+			colorProgress.set({
 				from: '#8a0000',
 				to: '#480000',
-			};
-		}
-		if (data?.themeGradient) {
-			colors = data.themeGradient;
+			});
+		} else {
+			colorProgress.set(data?.themeGradient ?? baseColors);
 		}
 	});
 </script>
@@ -43,9 +54,9 @@
 <Toaster />
 
 <div
+	inert
 	class="background-piece"
-	style="--from: {colors?.from ?? '#643FFF'}; --to: {colors?.to ?? '#31C0FF'}"
-	class:move-gradient={!!$page.data?.themeGradient || $page.error}
+	style="--from: {$colorProgress.from}; --to: {$colorProgress.to}"
 />
 
 <NavBar />
@@ -57,23 +68,16 @@
 
 <style lang="scss">
 	.background-piece {
-		transition: left 0.5s ease-out;
-		background: linear-gradient(to right, #643fff, #31c0ff, var(--from), var(--to));
-		width: 300%;
-		overflow: hidden;
-		position: fixed;
-		inset: 0;
+		position: absolute;
 		pointer-events: none;
-		height: 20px;
-		filter: blur(30px);
-		top: -50px;
-		z-index: 10;
-		scale: 1.3;
 
-		&.move-gradient {
-			left: -200%;
-			transition: left 0.5s ease-out;
-		}
+		top: -35px;
+		left: -10%;
+		width: 120%;
+		height: 20px;
+
+		background: linear-gradient(to right, var(--from), var(--to));
+		filter: blur(30px);
 	}
 
 	.content {
