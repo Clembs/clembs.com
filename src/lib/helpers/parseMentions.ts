@@ -2,7 +2,7 @@ import { brandingData, type BrandingPost } from '$lib/data/branding';
 import { softwareData, type Software } from '$lib/data/software';
 import { EMOJI_MENTION_REGEX, PROJECT_MENTION_REGEX, USERNAME_MENTION_REGEX } from './regex';
 
-export const emojiList = ['flushed', 'happy', 'laugh', 'neutral', 'scared'];
+export const emojiList = ['flushed', 'happy', 'laugh', 'neutral', 'scared', 'encarada'];
 
 type ParserOutputBaseStructure =
 	| string
