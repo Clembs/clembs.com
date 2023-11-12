@@ -2,19 +2,29 @@
 	export let href = '';
 	export let checked: boolean;
 	export let disabled = false;
-
-	let props = {
-		class: 'chip',
-		['aria-disabled']: disabled,
-	};
 </script>
 
 {#if href}
-	<a on:click {href} {...props} {...$$restProps} role="radio" aria-checked={checked}>
+	<a
+		class="chip"
+		aria-disabled={disabled}
+		on:click
+		{href}
+		role="radio"
+		aria-checked={checked}
+		{...$$restProps}
+	>
 		<slot />
 	</a>
 {:else}
-	<button on:click {...props} {...$$restProps} role="radio" aria-checked={checked}>
+	<button
+		class="chip"
+		aria-disabled={disabled}
+		on:click
+		role="radio"
+		aria-checked={checked}
+		{...$$restProps}
+	>
 		<slot />
 	</button>
 {/if}
