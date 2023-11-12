@@ -1,27 +1,21 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import Badge from '$lib/components/Badge.svelte';
-	import InfoBox from '$lib/components/InfoBox.svelte';
 	import type { PageData } from './$types';
+	import IconArrowLeft from '@tabler/icons-svelte/dist/svelte/icons/IconArrowLeft.svelte';
 
 	export let data: PageData;
 </script>
 
 <main>
-	<header>
+	<header class:show-back-btn={!$page.url.href.endsWith('/comments')}>
+		<a href="/comments" class="back-btn">
+			<IconArrowLeft />
+		</a>
 		<h1>
 			{data.hasNameChange ? 'Clember (C)' : 'Comments'}
 			<Badge style="outlined">Preview</Badge>
 		</h1>
-
-		{#if data.hasNameChange}
-			<InfoBox type="note"><span slot="title">yo that website is clembing or what</span></InfoBox>
-		{:else}
-			<InfoBox type="note">
-				<span slot="title">Welcome to the Comments section!</span>
-				I created this so you can leave feedback, report bugs, ask questions and be chill.<br />
-				No spam or harmful content allowed. Use common sense.
-			</InfoBox>
-		{/if}
 	</header>
 
 	<slot />
@@ -29,13 +23,44 @@
 
 <style lang="scss">
 	header {
-		margin: 1rem;
+		--back-btn-size: 3rem;
+		display: flex;
+		text-decoration: none;
+		align-items: center;
+		gap: 0.5rem;
+		margin: 1rem 0;
+		margin-left: calc(-1 * var(--back-btn-size));
+		transition: margin-left 150ms ease-in-out;
 
+		&.show-back-btn {
+			margin-left: 0;
+
+			.back-btn {
+				opacity: 1;
+				pointer-events: all;
+			}
+		}
+
+		.back-btn {
+			width: var(--back-btn-size);
+			height: var(--back-btn-size);
+			display: grid;
+			place-items: center;
+			border-radius: 50%;
+			opacity: 0;
+			pointer-events: none;
+			transition:
+				opacity 150ms ease-in-out,
+				background-color 150ms ease-in-out;
+
+			&:hover {
+				background-color: var(--color-surface);
+			}
+		}
 		h1 {
 			display: flex;
 			gap: 0.5rem;
 			align-items: center;
-			margin-bottom: 1rem;
 		}
 	}
 </style>
