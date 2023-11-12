@@ -4,6 +4,53 @@ import { error, fail } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
 import type { PageServerLoad, RequestEvent } from './$types';
 
+export const load: PageServerLoad = async ({
+	params,
+	locals: { getUserData },
+	parent,
+	setHeaders,
+}) => {
+	const userData = await getUserData();
+
+	const commentData = await db.query.comments.findFirst({
+		where: ({ id }, { eq }) => eq(id, params.commentId),
+		with: {
+			author: true,
+			childComments: {
+				with: {
+					author: true,
+					score: true,
+				},
+			},
+			parentComment: {
+				with: {
+					author: true,
+				},
+			},
+			score: true,
+			mentionedUsers: {
+				with: {
+					user: true,
+				},
+			},
+		},
+	});
+
+	setHeaders({
+		'Cache-Control': 'public, max-age=60',
+	});
+
+	if (!commentData) {
+		throw error(404);
+	}
+
+	return {
+		comment: commentData,
+		user: userData,
+		...(await parent()),
+	};
+};
+
 async function vote(
 	{ params, locals: { getUserData } }: RequestEvent,
 	voteType: 'UPVOTE' | 'DOWNVOTE'
