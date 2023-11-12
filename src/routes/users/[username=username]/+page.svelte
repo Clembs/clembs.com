@@ -21,7 +21,7 @@
 					{#each rankBadges(data.user.badges) as badgeName}
 						{@const badge = badges[badgeName]}
 						<Tooltip>
-							<span class="badge" style="--background:{badge.background};">
+							<span class="badge">
 								<svelte:component this={badge.icon} />
 							</span>
 
@@ -29,7 +29,7 @@
 								<div class="label">
 									{badge.label}
 								</div>
-								<div class="description">
+								<div class="subtext">
 									{badge.description}
 								</div>
 							</span>
@@ -47,9 +47,19 @@
 				{dateFormat(new Date(data.user.createdAt))}
 			</time>
 		</span>
+		{#if data.discordData}
+			<span>
+				Discord: <strong> @{data.discordData?.username}</strong>
+			</span>
+		{/if}
 	</header>
 
-	<Comments comments={data.user.comments} userData={data.userData} />
+	<Comments
+		hideCreateForm={true}
+		showContext={true}
+		comments={data.user.comments}
+		userData={data.userData}
+	/>
 </main>
 
 <style lang="scss">
@@ -80,7 +90,6 @@
 				align-items: center;
 
 				:global(svg) {
-					color: var(--background);
 					width: 1.5rem;
 					height: 1.5rem;
 				}
@@ -89,11 +98,6 @@
 			.label {
 				font-size: 1rem;
 				font-weight: 500;
-			}
-
-			.description {
-				font-size: 0.9rem;
-				color: var(--color-on-surface);
 			}
 		}
 	}
