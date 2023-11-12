@@ -1,9 +1,70 @@
 import { db } from '$lib/db/index.js';
 import { userCommentVote, mentions, comments } from '$lib/db/schema';
-import { error } from '@sveltejs/kit';
-import { eq } from 'drizzle-orm';
+import { error, fail } from '@sveltejs/kit';
+import { and, eq } from 'drizzle-orm';
+import type { PageServerLoad, RequestEvent } from './$types';
+
+async function vote(
+	{ params, locals: { getUserData } }: RequestEvent,
+	voteType: 'UPVOTE' | 'DOWNVOTE'
+) {
+	const userData = await getUserData();
+	if (!userData) return fail(401);
+	if (userData?.badges?.includes('BLOCKED')) return fail(403);
+
+	const commentData = await db.query.comments.findFirst({
+		where: ({ id }, { eq }) => eq(id, params.commentId),
+	});
+	if (!commentData) throw error(404);
+
+	const originalVote = await db.query.userCommentVote.findFirst({
+		where: ({ commentId, userId }, { eq, and }) =>
+			and(eq(commentId, params.commentId), eq(userId, userData.id)),
+	});
+
+	if (originalVote) {
+		if (originalVote.type === voteType) {
+			await db
+				.delete(userCommentVote)
+				.where(
+					and(
+						eq(userCommentVote.commentId, params.commentId),
+						eq(userCommentVote.userId, userData.id)
+					)
+				);
+		} else {
+			await db
+				.update(userCommentVote)
+				.set({
+					commentId: params.commentId,
+					userId: userData.id,
+					type: voteType,
+				})
+				.where(
+					and(
+						eq(userCommentVote.commentId, params.commentId),
+						eq(userCommentVote.userId, userData.id)
+					)
+				);
+		}
+	} else {
+		await db.insert(userCommentVote).values({
+			commentId: params.commentId,
+			userId: userData.id,
+			type: voteType,
+		});
+	}
+
+	return { success: true };
+}
 
 export const actions = {
+	upvote: async (event) => {
+		return vote(event, 'UPVOTE');
+	},
+	downvote: async (event) => {
+		return vote(event, 'DOWNVOTE');
+	},
 	delete: async ({ params, locals: { getUserData } }) => {
 		const userData = await getUserData();
 

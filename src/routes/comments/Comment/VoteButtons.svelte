@@ -8,6 +8,8 @@
 	import toast from 'svelte-french-toast';
 	import type { Comment } from '$lib/db/types';
 	import { calculateScore } from '$lib/helpers/calculateScore';
+	import { enhance } from '$app/forms';
+	import type { ActionResult } from '@sveltejs/kit';
 
 	const dispatch = createEventDispatcher();
 
@@ -20,59 +22,54 @@
 		: null;
 
 	const originalScore = calculateScore(comment);
+	const scoreExcludingCurrentUser =
+		originalScore - (vote === 'UPVOTE' ? 1 : vote === 'DOWNVOTE' ? -1 : 0);
+	let currentScore = originalScore;
+	let previousVote = vote;
+	let previousScore = currentScore;
 
-	const scoreWithoutUser = originalScore + (vote === 'UPVOTE' ? -1 : vote === 'DOWNVOTE' ? 1 : 0);
-
-	let score = originalScore;
-
-	async function castVote(type: 'UPVOTE' | 'DOWNVOTE') {
+	function castVote(voteType: 'UPVOTE' | 'DOWNVOTE') {
 		if (!data?.userData) {
 			dispatch('login');
 			return;
 		}
 
-		if (data.userData?.badges?.includes('BLOCKED')) {
+		if (data.userData.badges?.includes('BLOCKED')) {
 			dispatch('blocked');
 			return;
 		}
+		previousVote = vote;
+		previousScore = currentScore;
 
-		const previousVote = vote;
-		const previousScore = score;
-		const removeVote = vote === type;
-
-		if (
-			removeVote ||
-			(type === 'UPVOTE' && previousVote === 'DOWNVOTE') ||
-			(type === 'DOWNVOTE' && previousVote === 'UPVOTE')
-		) {
-			score = scoreWithoutUser;
-		}
-
-		vote = removeVote ? null : type;
-		score += vote === null ? 0 : type === 'UPVOTE' ? 1 : -1;
-
-		try {
-			const req = await fetch(`/comments/api/${comment.id}/vote?type=${type}`, {
-				method: 'PATCH',
-			});
-
-			if (req.ok) {
-				return;
-			}
-
-			// return;
-			vote = previousVote;
-			score = previousScore;
-			toast.error(`Something went wrong while trying to vote this comment. Try again later.`);
-		} catch (e) {
-			vote = previousVote;
-			score = previousScore;
-			toast.error(`Something went wrong while trying to vote this comment. Try again later.`);
+		if (vote === voteType) {
+			vote = null;
+			currentScore = scoreExcludingCurrentUser;
+		} else {
+			vote = voteType;
+			currentScore = scoreExcludingCurrentUser + (voteType === 'UPVOTE' ? 1 : -1);
 		}
 	}
 
-	const upvote = () => castVote('UPVOTE');
-	const downvote = () => castVote('DOWNVOTE');
+	function handleVoteError(result: ActionResult) {
+		if (result.type === 'error') {
+			resetVote();
+			toast.error(`Something went wrong while trying to vote on this comment. Try again later.`);
+		}
+		if (result.type === 'failure') {
+			resetVote();
+			if (result.status === 401) {
+				dispatch('login');
+			}
+			if (result.status === 403) {
+				dispatch('blocked');
+			}
+		}
+	}
+
+	function resetVote() {
+		vote = previousVote;
+		currentScore = previousScore;
+	}
 </script>
 
 <div
@@ -84,65 +81,166 @@
 		? '#654fff'
 		: 'var(--color-error)'}"
 >
-	<button on:click={upvote} data-action="upvote" class:active={vote === 'UPVOTE'}>
-		{#if vote === 'UPVOTE'}
-			<IconArrowBigUpFilled />
-		{:else}
-			<IconArrowBigUp />
-		{/if}
-	</button>
+	<form
+		use:enhance={() => {
+			castVote('UPVOTE');
+			return async ({ result, update }) => {
+				handleVoteError(result);
+				await update();
+			};
+		}}
+		action="/comments/{comment.id}?/upvote"
+		method="POST"
+	>
+		<button
+			type="submit"
+			aria-label="Upvote comment"
+			data-action="upvote"
+			class:active={vote === 'UPVOTE'}
+		>
+			{#if vote === 'UPVOTE'}
+				<IconArrowBigUpFilled />
+			{:else}
+				<IconArrowBigUp />
+			{/if}
+		</button>
+	</form>
 	<span class="score">
-		{score}
+		{currentScore}
 	</span>
-	<button on:click={downvote} data-action="downvote" class:active={vote === 'DOWNVOTE'}>
-		{#if vote === 'DOWNVOTE'}
-			<IconArrowBigDownFilled />
-		{:else}
-			<IconArrowBigDown />
-		{/if}
-	</button>
+	<form
+		use:enhance={() => {
+			castVote('DOWNVOTE');
+			return async ({ result, update }) => {
+				handleVoteError(result);
+				await update();
+			};
+		}}
+		action="/comments/{comment.id}?/downvote"
+		method="POST"
+	>
+		<button
+			type="submit"
+			aria-label="Downvote comment"
+			data-action="downvote"
+			class:active={vote === 'DOWNVOTE'}
+		>
+			{#if vote === 'DOWNVOTE'}
+				<IconArrowBigDownFilled />
+			{:else}
+				<IconArrowBigDown />
+			{/if}
+		</button>
+	</form>
 </div>
 
 <style lang="scss">
 	.vote-buttons {
 		display: flex;
 		border-radius: 99rem;
-		// background-color: var(--color-surface);
+		background-color: var(--color-background);
 		align-items: center;
 		font-weight: 500;
-		font-size: 0.8rem;
+		font-size: 0.875rem;
 		border: 1px solid var(--color-outline);
 		user-select: none;
 
 		&.voted {
-			font-weight: 800;
+			font-weight: 600;
 			color: var(--color-on-background);
 		}
 
 		.score {
 			text-align: center;
-			min-width: 0.8rem;
+			min-width: 0.615rem;
 			color: var(--main-color, var(--color-on-background));
 		}
 
 		button {
 			display: grid;
 			place-items: center;
-			padding: 0.45rem;
+			padding: 0.5rem;
 			border-radius: 99rem;
+
+			:global(svg) {
+				width: 18px;
+				height: 18px;
+				transition: transform 100ms ease-in-out;
+			}
 
 			&:hover {
 				background-color: var(--color-surface);
+				:global(svg) {
+					transform: scale(1.1);
+				}
+			}
+
+			&:active {
+				background-color: var(--color-surface);
+				&[data-action='upvote'] :global(svg) {
+					transform: translateY(0.15rem) scale(0.9);
+				}
+
+				&[data-action='downvote'] :global(svg) {
+					transform: translateY(-0.15rem) scale(0.9);
+				}
 			}
 
 			&.active {
 				color: var(--main-color);
+
+				&[data-action='upvote'] :global(svg) {
+					animation: upvote 300ms ease-in-out;
+				}
+
+				&[data-action='downvote'] :global(svg) {
+					animation: downvote 300ms ease-in-out;
+				}
+			}
+		}
+
+		@keyframes upvote {
+			0%,
+			20% {
+				transform: translateY(0);
+			}
+			30%,
+			70% {
+				transform: translateY(-0.5rem) scale(1.2);
+			}
+			80%,
+			100% {
+				transform: translateY(0);
+			}
+		}
+
+		@keyframes downvote {
+			0%,
+			20% {
+				transform: translateY(0);
+			}
+			30%,
+			70% {
+				transform: translateY(0.5rem) scale(1.2);
+			}
+			80%,
+			100% {
+				transform: translateY(0);
 			}
 		}
 
 		:global(svg) {
 			height: 20px;
 			width: 20px;
+		}
+	}
+
+	@media (prefers-reduced-motion) {
+		.vote-buttons {
+			:global(svg) {
+				transform: none !important;
+				animation: none !important;
+			}
 		}
 	}
 </style>
