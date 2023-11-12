@@ -16,7 +16,7 @@ import { marked } from 'marked';
 import insane from 'insane';
 import { dateFormat } from '$lib/helpers/dateFormat';
 
-export const load: PageServerLoad = async ({ locals }) => {
+export const load: PageServerLoad = async ({ locals, setHeaders }) => {
 	const session = await locals.getSession();
 	const user = session?.user ?? null;
 
@@ -36,6 +36,10 @@ export const load: PageServerLoad = async ({ locals }) => {
 			},
 		},
 		where: ({ parentId, projectId }, { and }) => and(isNull(parentId), isNull(projectId)),
+	});
+
+	setHeaders({
+		'Cache-Control': 'public, max-age=60',
 	});
 
 	return { comments, user };
