@@ -18,6 +18,7 @@
 	.badge {
 		display: inline-flex;
 		align-items: center;
+		vertical-align: bottom;
 
 		padding: 0.25rem 0.5rem;
 		gap: 0.5rem;
@@ -26,7 +27,6 @@
 		font-family: inherit;
 		font-weight: 500;
 		text-align: center;
-
 		user-select: none;
 
 		background: var(--custom-color, var(--_bg));
