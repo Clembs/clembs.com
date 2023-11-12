@@ -13,28 +13,25 @@
 	import { snowflakeToDate } from '$lib/helpers/snowflake';
 	import { dateFormat, relativeTimeFormat } from '$lib/helpers/dateFormat';
 	import { slide } from 'svelte/transition';
-	import insane from 'insane';
-	import { marked } from 'marked';
-	import { findMediaLinks } from '$lib/helpers/findMediaLinks';
 	import Tooltip from '$lib/components/Tooltip.svelte';
 	import VoteButtons from './VoteButtons.svelte';
-	import { parseMentions } from '$lib/helpers/parseMentions';
-	import Mention from './Mention.svelte';
-	import Emoji from '$lib/components/Emoji.svelte';
 	import { enhance } from '$app/forms';
 	import '../../../styles/comment.scss';
 	import { useShare } from '$lib/components/useShare';
 	import ActionButton from './ActionButton.svelte';
+	import CommentContent from './CommentContent.svelte';
+	import ContextBlurb from './ContextBlurb.svelte';
 
 	export let comment: Comment;
 	export let showActions = true;
 	export let initialNestingLevel = 0;
+	export let showContext = false;
 
 	let nestingLevel = initialNestingLevel;
 	let childComments = comment.childComments;
 	let loadingComments = false;
 
-	export let childCommentsExpanded = false;
+	export let childCommentsExpanded = true;
 
 	let data = $page.data;
 
@@ -42,8 +39,6 @@
 	const date = snowflakeToDate(comment.id);
 
 	let username = comment.author?.username ?? 'Guest';
-
-	const mediaUrl = findMediaLinks(comment.content)?.last;
 
 	async function replyComment() {
 		if (data.userData?.badges?.includes('BLOCKED')) {
@@ -83,6 +78,9 @@
 	class:reply={nestingLevel}
 	class:no-actions={!showActions}
 >
+	{#if showContext}
+		<ContextBlurb {comment} />
+	{/if}
 	<div class="comment" class:pinned={comment.isPinned}>
 		{#if showActions && comment.author}
 			<a href="/users/{comment.author?.username}" class="comment-avatar">
@@ -92,76 +90,30 @@
 			<GradientAvatar user={comment.author} size={!nestingLevel ? '2.5rem' : '1.5rem'} />
 		{/if}
 		<div class="comment-main">
-			<div class="comment-main-text">
-				<header class="comment-main-text-metadata">
-					{#if showActions && comment.author}
-						<a href="/users/{comment.author?.username}" class="comment-main-text-metadata-username">
-							{username}
-						</a>
-					{:else}
-						<div class="comment-main-text-metadata-username">
-							{username}
-						</div>
-					{/if}
+			<header class="comment-main-metadata">
+				{#if showActions && comment.author}
+					<a href="/users/{comment.author?.username}" class="comment-main-metadata-username">
+						{username}
+					</a>
+				{:else}
+					<div class="comment-main-metadata-username">
+						{username}
+					</div>
+				{/if}
 
-					<Tooltip transitionDelay={500}>
-						<time datetime={date.toISOString()} class="subtext">
-							{relativeTimeFormat(date)}
-						</time>
-						<span slot="tooltip-content">
-							{dateFormat(date)}
-						</span>
-					</Tooltip>
-					{#if comment.isPinned}
-						<span class="subtext comment-main-text-metadata-pinned">Featured</span>
-					{/if}
-				</header>
-				<div class="comment-main-text-content">
-					{#if !comment.projectId}
-						{#each parseMentions(comment.content) as part}
-							{#if typeof part === 'string'}
-								{@html insane(
-									marked.parseInline(part.replace(mediaUrl ?? '', ''), {
-										breaks: true,
-										gfm: true,
-									})
-								)}
-							{:else if part.type === 'user'}
-								{@const user = comment.mentionedUsers?.find(({ user }) =>
-									part.type === 'user' ? user.username === part.username : null
-								)?.user}
-								{#if user}
-									<Mention node={part} />
-								{:else}
-									@{part.username}
-								{/if}
-							{:else if part.type === 'project'}
-								<Mention node={part} />
-							{:else if part.type === 'emoji'}
-								<Emoji name={part.emojiId} src="/assets/emotes/{part.emojiId}.webp" />
-							{/if}
-						{/each}
-					{:else}
-						{comment.content}
-					{/if}
-
-					{#if showActions && !comment.projectId && mediaUrl}
-						<div class="comment-main-text-content-media">
-							{#if mediaUrl.endsWith('.mp4')}
-								<!-- svelte-ignore a11y-media-has-caption -->
-								<video src={mediaUrl} controls />
-							{:else}
-								<img
-									loading="lazy"
-									draggable="false"
-									src={!mediaUrl.endsWith('.gif') ? `${mediaUrl}.gif` : mediaUrl}
-									alt="GIF"
-								/>
-							{/if}
-						</div>
-					{/if}
-				</div>
-			</div>
+				<Tooltip transitionDelay={500}>
+					<time datetime={date.toISOString()} class="subtext">
+						{relativeTimeFormat(date)}
+					</time>
+					<span slot="tooltip-content">
+						{dateFormat(date)}
+					</span>
+				</Tooltip>
+				{#if comment.isPinned}
+					<span class="subtext comment-main-metadata-pinned">Featured</span>
+				{/if}
+			</header>
+			<CommentContent {comment} dynamicContent={!comment.projectId} showMedia={showActions} />
 
 			{#if showActions}
 				<div class="comment-main-actions">
@@ -198,13 +150,21 @@
 					</div>
 
 					{#if comment.childComments?.length}
-						<button class="view-replies-button" on:click={loadChildComments}>
+						<button class="view-replies-button" on:click|stopPropagation={loadChildComments}>
 							{#if loadingComments}
 								<LoaderIcon />
 							{:else}
-								<div class="expand-icon" aria-expanded={childCommentsExpanded}>
-									<IconChevronDown />
-								</div>
+								{#if !childCommentsExpanded}
+									<div class="profiles">
+										{#each comment.childComments.slice(0, 3) as childComment}
+											<GradientAvatar user={childComment.author} size="1rem" showBadge={false} />
+										{/each}
+									</div>
+								{:else}
+									<div class="expand-icon" aria-expanded={childCommentsExpanded}>
+										<IconChevronDown />
+									</div>
+								{/if}
 								{comment.childComments.length}
 								{comment.childComments.length === 1 ? 'reply' : 'replies'}
 								{#if comment.childComments.find(({ author }) => author && author?.badges?.includes('CLEMBS'))}
@@ -223,7 +183,9 @@
 			{#each childComments as comment}
 				<svelte:self
 					{comment}
+					showContext={false}
 					initialNestingLevel={nestingLevel + 1}
+					childCommentsExpanded={false}
 					on:blocked
 					on:userinfo
 					on:reply
@@ -256,7 +218,7 @@
 				cursor: default;
 			}
 
-			.comment-main-text-metadata-username {
+			.comment-main-metadata-username {
 				cursor: default;
 
 				&:hover {
@@ -270,6 +232,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 0.5rem;
+		margin-top: 0.5rem;
 
 		&.margin-left {
 			margin-left: 3.25rem;
@@ -303,45 +266,27 @@
 			flex: 1;
 			word-break: break-word;
 
-			&-text {
-				&-content {
-					font-size: 15px;
+			&-metadata {
+				margin-bottom: -0.25rem;
+				display: flex;
+				align-items: baseline;
+				gap: 0.5rem;
 
-					&-media {
-						margin-top: 0.5rem;
+				&-username {
+					border-radius: 0.5rem;
+					font-weight: 500;
+					user-select: text;
+					display: inline-block;
+					color: var(--color-on-background);
 
-						// video,
-						// img {
-						// 	border-radius: 0.5rem;
-						// 	border: 1px solid var(--color-outline);
-						// 	box-shadow: 0 2px 0 0 var(--color-outline);
-						// 	max-width: 250px;
-						// }
+					&:hover {
+						text-decoration: underline;
 					}
 				}
 
-				&-metadata {
-					padding-bottom: 0.25rem;
-					display: flex;
-					align-items: baseline;
-					gap: 0.5rem;
-
-					&-username {
-						border-radius: 0.5rem;
-						font-weight: 500;
-						user-select: text;
-						display: inline-block;
-						color: var(--color-on-background);
-
-						&:hover {
-							text-decoration: underline;
-						}
-					}
-
-					&-pinned {
-						color: var(--color-error);
-						font-weight: 500;
-					}
+				&-pinned {
+					color: var(--color-error);
+					font-weight: 500;
 				}
 			}
 
@@ -350,6 +295,7 @@
 				flex-direction: column;
 				gap: 0.25rem;
 				margin-left: -0.25rem;
+				margin-top: 0.25rem;
 
 				&-row {
 					display: flex;
@@ -375,6 +321,14 @@
 					&:hover {
 						background-color: var(--color-surface);
 						text-decoration: underline;
+					}
+
+					.profiles {
+						display: flex;
+
+						:global(.avatar) {
+							margin-left: -0.25rem;
+						}
 					}
 
 					.expand-icon {
