@@ -12,6 +12,7 @@
 	export let multiline = false;
 	export let name = '';
 	export let label = '';
+	export let height = '200px';
 </script>
 
 <div class="text-input">
@@ -20,6 +21,7 @@
 	{/if}
 	{#if multiline}
 		<textarea
+			style:--height={height}
 			bind:value
 			on:input
 			on:focus
@@ -83,7 +85,7 @@
 
 		textarea {
 			resize: none;
-			height: 200px;
+			height: var(--height);
 		}
 	}
 </style>

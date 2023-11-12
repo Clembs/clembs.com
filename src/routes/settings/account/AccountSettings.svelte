@@ -73,9 +73,9 @@
 			<div class="settings-item">
 				<h3>Username</h3>
 
-				<p class="description">
-					Your username needs to be 2 to 32 characters long, and can only contain roman letters,
-					numbers and some special characters.
+				<p class="subtext">
+					A unique name that's up to 32 characters long, made of alphanumerical characters and some
+					special characters.
 				</p>
 
 				<TextInput bind:value={username} minlength={2} maxlength={32} name="username" />
@@ -103,9 +103,9 @@
 			<div class="settings-item">
 				<h3>Avatar</h3>
 
-				<p class="description">
-					Your avatar is generated based on the first and last characters of your username. Change
-					it and see the colors change!
+				<p class="subtext">
+					With colors based off the first and last characters of your username. Change it and see
+					the colors change!
 				</p>
 
 				<GradientAvatar
@@ -143,7 +143,7 @@
 		>
 			<h2>Email notifications</h2>
 
-			<p>You can choose to receive emails for specific events within the site.</p>
+			<p class="subtext">Receive emails for events that happen on clembs.com.</p>
 
 			<!-- {#if $settingsStore} -->
 			<!-- <input type="hidden" name="preferences" value={JSON.stringify($settingsStore)} /> -->
@@ -175,11 +175,11 @@
 	</SettingsSection>
 
 	<SettingsSection>
-		<h2>Passkeys <Badge>New</Badge></h2>
+		<h2>Passkeys <Badge style="secondary">Recommended</Badge></h2>
 
-		<p>
-			Passkeys are a new, more secure and safer way to sign into websites using your device's PIN,
-			fingerprint or face lock. Manage your passkeys here.
+		<p class="subtext">
+			Passkeys are a new and safer way to sign in using your device's screen lock. Manage your
+			passkeys here.
 		</p>
 
 		{#if data.userData?.passkeys?.length}
@@ -210,7 +210,7 @@
 							<span class="passkey-profile-info-name">
 								{passkey.name}
 							</span>
-							<span class="passkey-profile-info-subtext">
+							<span class="subtext">
 								Registered on {dateFormat(passkey.createdAt)}
 							</span>
 						</div>
@@ -298,11 +298,6 @@
 {/if}
 
 <style lang="scss">
-	.description {
-		font-size: 0.9rem;
-		color: var(--color-on-surface);
-	}
-
 	.edit-profile {
 		display: flex;
 		flex-direction: column;
@@ -344,11 +339,6 @@
 
 				&-name {
 					font-weight: 500;
-				}
-
-				&-subtext {
-					font-size: 0.9rem;
-					color: var(--color-on-surface);
 				}
 			}
 

@@ -14,7 +14,6 @@
 	let observer: IntersectionObserver;
 	let viewedImage = 0;
 	let expandOtherDownloads = false;
-	let showComments = false;
 
 	onMount(() => {
 		if (!data.gallery) return;
@@ -89,7 +88,7 @@
 			{#if data.links?.projectUrl}
 				<Button href={data.links?.projectUrl}>Check it out</Button>
 			{/if}
-			<Button style="outlined" on:click={() => (showComments = true)}>
+			<Button style="outlined" href="#comments">
 				<!-- on:click={() => document.querySelector('.comments-page')?.scrollIntoView()} -->
 				<IconMessageCircle />
 				Comments ({data.comments.length})

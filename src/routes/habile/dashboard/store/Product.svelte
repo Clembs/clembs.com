@@ -13,6 +13,7 @@
 
 <li>
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
+	<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 	<form
 		bind:this={form}
 		use:enhance
@@ -30,7 +31,7 @@
 			</h3>
 		</header>
 
-		<p>
+		<p class="subtext">
 			About
 			{Math.round((Number(product.metadata.value) / 4 + Number(product.metadata.value) / 3) / 2)}
 			messages<sup>1</sup> to send to Habile!
@@ -77,7 +78,9 @@
 			border: 1px solid var(--color-outline);
 			user-select: none;
 			cursor: pointer;
-			transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+			transition:
+				transform 0.1s ease-in-out,
+				box-shadow 0.1s ease-in-out;
 
 			header {
 				display: flex;
@@ -90,8 +93,6 @@
 			}
 
 			p {
-				font-size: 0.9rem;
-				color: var(--color-on-surface);
 				margin-bottom: 0.5rem;
 			}
 

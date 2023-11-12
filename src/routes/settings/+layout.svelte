@@ -50,13 +50,11 @@
 	</nav> -->
 
 	<div class="main-panel">
-		<div class="selected-tab" transition:slide>
-			<h1>{settingsTabs.find(({ url }) => $page.url.pathname === url)?.title}</h1>
+		<!-- <div class="selected-tab" transition:slide> -->
+		<h1>{settingsTabs.find(({ url }) => $page.url.pathname === url)?.title}</h1>
 
-			<hr />
-
-			<slot />
-		</div>
+		<slot />
+		<!-- </div> -->
 	</div>
 
 	<!-- {#if dirty}
@@ -96,9 +94,9 @@
 <style lang="scss">
 	main {
 		margin: 1rem;
-		display: flex;
-		gap: 1.5rem;
-		height: 100%;
+		// display: flex;
+		// gap: 1.5rem;
+		// height: 100%;
 
 		// nav {
 		// 	min-width: 250px;
@@ -150,92 +148,86 @@
 			h1 {
 				margin-bottom: 1.5rem;
 			}
-
-			hr {
-				height: 1px;
-				color: var(--color-surface);
-				margin-bottom: 1rem;
-			}
 		}
 	}
 
-	.settings-changed-bar {
-		position: fixed;
-		width: max-content;
-		display: flex;
-		align-items: center;
-		gap: 2rem;
-		background-color: var(--color-background);
-		border: 1px solid var(--color-outline);
-		box-shadow: 0 2px 0 0 var(--color-outline);
-		left: 0;
-		right: 0;
-		bottom: 1rem;
-		margin: 0 auto;
-		padding: 0.75rem;
-		padding-left: 1rem;
-		border-radius: 99rem;
-		z-index: 9;
+	// .settings-changed-bar {
+	// 	position: fixed;
+	// 	width: max-content;
+	// 	display: flex;
+	// 	align-items: center;
+	// 	gap: 2rem;
+	// 	background-color: var(--color-background);
+	// 	border: 1px solid var(--color-outline);
+	// 	box-shadow: 0 2px 0 0 var(--color-outline);
+	// 	left: 0;
+	// 	right: 0;
+	// 	bottom: 1rem;
+	// 	margin: 0 auto;
+	// 	padding: 0.75rem;
+	// 	padding-left: 1rem;
+	// 	border-radius: 99rem;
+	// 	z-index: 9;
 
-		.title {
-			display: flex;
-			flex-direction: column;
+	// 	.title {
+	// 		display: flex;
+	// 		flex-direction: column;
 
-			.error {
-				font-size: 0.9rem;
-				color: var(--color-error);
-			}
-		}
+	// 		.error {
+	// 			font-size: 0.9rem;
+	// 			color: var(--color-error);
+	// 		}
+	// 	}
 
-		.buttons {
-			display: flex;
-			gap: 0.5rem;
-		}
-	}
+	// 	.buttons {
+	// 		display: flex;
+	// 		gap: 0.5rem;
+	// 	}
+	// }
 
-	@media (max-width: 768px) {
-		main {
-			flex-direction: column;
+	// @media (max-width: 768px) {
+	// 	main {
+	// 		flex-direction: column;
 
-			.settings-changed-bar {
-				bottom: 3rem;
-			}
+	// 		.settings-changed-bar {
+	// 			bottom: 3rem;
+	// 		}
 
-			// nav {
-			// 	position: fixed;
-			// 	bottom: 0;
-			// 	left: 0;
-			// 	right: 0;
-			// 	padding: 0.25rem;
-			// 	margin: 0.5rem;
-			// 	background-color: var(--color-background);
-			// 	border: 1px solid var(--color-outline);
-			// 	z-index: 9;
-			// 	border-radius: 1rem;
-			// 	box-shadow: 0 1px 0 0 var(--color-outline);
+	// 		// nav {
+	// 		// 	position: fixed;
+	// 		// 	bottom: 0;
+	// 		// 	left: 0;
+	// 		// 	right: 0;
+	// 		// 	padding: 0.25rem;
+	// 		// 	margin: 0.5rem;
+	// 		// 	background-color: var(--color-background);
+	// 		// 	border: 1px solid var(--color-outline);
+	// 		// 	z-index: 9;
+	// 		// 	border-radius: 1rem;
+	// 		// 	box-shadow: 0 1px 0 0 var(--color-outline);
 
-			// 	&.dirty {
-			// 		filter: brightness(0.7);
-			// 	}
+	// 		// 	&.dirty {
+	// 		// 		filter: brightness(0.7);
+	// 		// 	}
 
-			// 	ul {
-			// 		flex-direction: row;
-			// 		gap: 0.5rem;
+	// 		// 	ul {
+	// 		// 		flex-direction: row;
+	// 		// 		gap: 0.5rem;
 
-			// 		li {
-			// 			width: 100%;
-			// 			margin: 0;
+	// 		// 		li {
+	// 		// 			width: 100%;
+	// 		// 			margin: 0;
 
-			// 			a {
-			// 				align-items: center;
-			// 				justify-content: center;
-			// 				flex-direction: column;
-			// 				gap: 0.25rem;
-			// 				font-size: 0.9rem;
-			// 			}
-			// 		}
-			// 	}
-			// }
-		}
-	}
+	// 		// 			a {
+	// 		// 				align-items: center;
+	// 		// 				justify-content: center;
+	// 		// 				flex-direction: column;
+	// 		// 				gap: 0.25rem;
+	// 		// 				font-size: 0.9rem;
+	// 		// 			}
+	// 		// 		}
+	// 		// 	}
+	// 		// }
+	// 	}
+	// }
 </style>

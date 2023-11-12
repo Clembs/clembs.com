@@ -104,7 +104,7 @@
 <nav>
 	<div class="nav-contents">
 		<a href="/" id="profile">
-			<img src="./assets/logo-purplue.webp" height={32} width={32} alt="Clembs" />
+			<img src="/assets/logo-purplue.webp" height={32} width={32} alt="Clembs" />
 			<!-- <Clembs /> -->
 			<div id="profile-text">
 				<span id="my-name-lolz"> Clembs </span>
@@ -336,7 +336,8 @@
 					position: absolute;
 					top: 90%;
 					right: 0;
-					transition: opacity 300ms cubic-bezier(0.64, 0.005, 0.43, 1.01),
+					transition:
+						opacity 300ms cubic-bezier(0.64, 0.005, 0.43, 1.01),
 						top 300ms cubic-bezier(0.64, 0.005, 0.43, 1.01);
 					opacity: 0;
 					pointer-events: none;
@@ -461,7 +462,8 @@
 						opacity: 0;
 						height: max-content;
 						width: 100%;
-						transition: opacity 150ms cubic-bezier(0.64, 0.005, 0.43, 1.01),
+						transition:
+							opacity 150ms cubic-bezier(0.64, 0.005, 0.43, 1.01),
 							bottom 150ms cubic-bezier(0.64, 0.005, 0.43, 1.01);
 						z-index: -1;
 						border-radius: 2rem 2rem 0 0;

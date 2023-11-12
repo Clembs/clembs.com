@@ -29,7 +29,7 @@
 								<div class="label">
 									{badge.label}
 								</div>
-								<div class="description">
+								<div class="subtext">
 									{badge.description}
 								</div>
 							</span>
@@ -90,11 +90,6 @@
 			.label {
 				font-size: 1rem;
 				font-weight: 500;
-			}
-
-			.description {
-				font-size: 0.9rem;
-				color: var(--color-on-surface);
 			}
 		}
 	}

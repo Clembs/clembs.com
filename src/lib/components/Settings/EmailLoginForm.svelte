@@ -51,9 +51,11 @@
 	<header>
 		<HabileHappy />
 
-		<h1>Sign in with to clembs.com</h1>
+		<h1>Sign in to clembs.com</h1>
 
-		<p>Create a clembs.com account or sign into it to post comments, like them, and more!</p>
+		<p>
+			Create a clembs.com account or sign into it to post comments, up or downvote them, and more!
+		</p>
 	</header>
 
 	<TextInput
@@ -77,7 +79,7 @@
 </form>
 
 {#if canUsePasskeys}
-	<PasskeyLogin disabled={!EMAIL_REGEX.test(email)} bind:error bind:showModal bind:email />
+	<PasskeyLogin bind:error bind:showModal bind:email />
 {/if}
 
 <style lang="scss">

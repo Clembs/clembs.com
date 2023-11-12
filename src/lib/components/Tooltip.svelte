@@ -58,7 +58,7 @@
 			box-shadow: 0 1px 0 0 var(--color-outline);
 			padding: 0.5rem 1rem;
 			border-radius: 0.5rem;
-			z-index: 1;
+			z-index: 9;
 			// opacity: 0;
 			font-size: 0.9rem;
 			transform: translate(-50%);
