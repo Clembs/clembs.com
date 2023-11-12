@@ -1,14 +1,12 @@
-import IconCircleCheckFilled from '@tabler/icons-svelte/dist/svelte/icons/IconCircleCheckFilled.svelte';
-import IconDiscountCheckFilled from '@tabler/icons-svelte/dist/svelte/icons/IconDiscountCheckFilled.svelte';
-import IconAlertOctagonFilled from '@tabler/icons-svelte/dist/svelte/icons/IconAlertOctagonFilled.svelte';
-import IconHeartFilled from '@tabler/icons-svelte/dist/svelte/icons/IconHeartFilled.svelte';
-import IconRobot from '@tabler/icons-svelte/dist/svelte/icons/IconRobot.svelte';
 import type { UserBadge } from '$lib/db/types';
+import Clembs from '$lib/icons/badges/clembs.svelte';
+import Supporter from '$lib/icons/badges/supporter.svelte';
+import Verified from '$lib/icons/badges/verified.svelte';
+import Blocked from '$lib/icons/badges/blocked.svelte';
 
 export const badges: Record<
 	UserBadge,
 	{
-		background: string;
 		icon: any;
 		label: string;
 		description: string;
@@ -16,14 +14,12 @@ export const badges: Record<
 > = {
 	BLOCKED: {
 		label: 'Blocked',
-		background: 'var(--color-error)',
-		icon: IconAlertOctagonFilled,
-		description: 'This user was manually blocked for breaking the Comments rules.',
+		icon: Blocked,
+		description: 'This user was blocked for breaking the Comments rules.',
 	},
 	CLEMBS: {
 		label: 'Clembs',
-		background: 'var(--color-primary)',
-		icon: IconDiscountCheckFilled,
+		icon: Clembs,
 		description: 'This is Clembs, the one and only.',
 	},
 	// HABILE: {
@@ -34,14 +30,12 @@ export const badges: Record<
 	// },
 	SUPPORTER: {
 		label: 'Supporter',
-		background: 'var(--color-success)',
-		icon: IconHeartFilled,
-		description: 'This user gave their financial support through Ko-fi or Boosty. Thanks!',
+		icon: Supporter,
+		description: 'This user supported me through Ko-fi or Boosty. Thanks!',
 	},
 	VERIFIED: {
 		label: 'Email verified',
-		background: 'var(--color-on-background)',
-		icon: IconCircleCheckFilled,
+		icon: Verified,
 		description: 'This user has signed in and verified their email.',
 	},
 };
