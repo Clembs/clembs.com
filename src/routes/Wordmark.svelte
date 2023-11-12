@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { toast } from 'svelte-french-toast';
-  import type_01 from "../sounds/type_01.wav";
-  import type_02 from "../sounds/type_02.wav";
-  import type_03 from "../sounds/type_03.wav";
-  import type_04 from "../sounds/type_04.wav";
-  import type_05 from "../sounds/type_05.wav";
-  import celebration from "../sounds/celebration.wav";
+	// import type_01 from "../sounds/type_01.wav";
+	// import type_02 from "../sounds/type_02.wav";
+	// import type_03 from "../sounds/type_03.wav";
+	// import type_04 from "../sounds/type_04.wav";
+	// import type_05 from "../sounds/type_05.wav";
+	// import celebration from "../sounds/celebration.wav";
 	import { onMount } from 'svelte';
-	
+
 	let secretCode = '';
 	let win = false;
 	let clicksToTrueDarkMode = 0;
@@ -91,16 +91,15 @@
 		// clearInterval(longPressInterval);
 	}
 
-	const randomSound = () => [type_01, type_02, type_03, type_04, type_05].sort(Math.random)[0];
-	let audios: Record<string, HTMLAudioElement>;
-	let celebrationAudio: HTMLAudioElement;
+	// const randomSound = () => [type_01, type_02, type_03, type_04, type_05].sort(Math.random)[0];
+	// let audios: Record<string, HTMLAudioElement>;
+	// let celebrationAudio: HTMLAudioElement;
 
-	onMount(() => {
-		audios = 'clembs'.split('').reduce((acc, l) => ({ ...acc, [l]: new Audio(randomSound()) }), {});
-		celebrationAudio = new Audio(celebration);
-	})
+	// onMount(() => {
+	// 	audios = 'clembs'.split('').reduce((acc, l) => ({ ...acc, [l]: new Audio(randomSound()) }), {});
+	// 	celebrationAudio = new Audio(celebration);
+	// })
 	// const typeSound = useSound([type_01, type_02, type_03, type_04, type_05].sort(Math.random)[0], ['keydown']);
-
 </script>
 
 <svelte:window
@@ -108,13 +107,13 @@
 		if (!win) {
 			if ('clembs'.startsWith(`${secretCode}${e.key}`)) {
 				secretCode += e.key;
-				audios[e.key].play();
+				// audios[e.key].play();
 			} else {
 				secretCode = '';
 			}
 			if (secretCode === 'clembs') {
 				win = true;
-				celebrationAudio.play()
+				// celebrationAudio.play()
 			}
 		}
 		if (e.key === 'Escape' && screenFilters.trueDarkMode) {
@@ -376,7 +375,9 @@
 
 <style lang="scss">
 	:global(body) {
-		transition: transform ease-in-out 0.6s, filter ease-in-out 0.4s;
+		transition:
+			transform ease-in-out 0.6s,
+			filter ease-in-out 0.4s;
 	}
 	:global(body.flip) {
 		transform: rotateY(180deg);
@@ -482,7 +483,9 @@
 			}
 
 			#wordmark > g {
-				transition: transform ease-in 150ms, stroke-width ease-in 150ms;
+				transition:
+					transform ease-in 150ms,
+					stroke-width ease-in 150ms;
 				&:hover:not(.fall) {
 					stroke: var(--color-on-background);
 					stroke-width: 2px;

@@ -1,12 +1,6 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import swipe_wav from '../../sounds/swipe.wav';
 	let currentFace: 'logo' | 'irl' = 'irl';
 	let isAnimating = false;
-
-	let click_sound: HTMLAudioElement;
-
-	onMount(() => (click_sound = new Audio(swipe_wav)));
 </script>
 
 <button
@@ -14,7 +8,6 @@
 	disabled={isAnimating}
 	on:click={() => {
 		if (isAnimating) return;
-		click_sound.play();
 		isAnimating = true;
 		setTimeout(() => (isAnimating = false), 500);
 		currentFace = currentFace === 'irl' ? 'logo' : 'irl';
