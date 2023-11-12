@@ -9,7 +9,7 @@
 	import SoftwareGrid from '$lib/components/Projects/SoftwareGrid.svelte';
 	import { slide } from 'svelte/transition';
 	import IconMessageCircle from '@tabler/icons-svelte/dist/svelte/icons/IconMessageCircle.svelte';
-	import CommentsBottomSheet from '../../comments/CommentsBottomSheet.svelte';
+	import Comments from '../../comments/Comments.svelte';
 
 	let observer: IntersectionObserver;
 	let viewedImage = 0;
@@ -180,12 +180,7 @@
 	/>
 </section>
 
-<CommentsBottomSheet
-	bind:showSheet={showComments}
-	projectId="{data.type}/{data.id}"
-	comments={data.comments}
-	userData={data.userData}
-/>
+<Comments projectId="{data.type}/{data.id}" comments={data.comments} userData={data.userData} />
 
 <style lang="scss">
 	header {
@@ -259,69 +254,69 @@
 		flex-direction: column;
 		gap: 1rem;
 
-	.gallery-images {
-		display: flex;
-		gap: 0.5rem;
-		overflow-x: auto;
-		scroll-snap-type: x mandatory;
-		scroll-behavior: smooth;
-		-webkit-overflow-scrolling: touch;
-		align-items: center;
-		scrollbar-width: none;
+		.gallery-images {
+			display: flex;
+			gap: 0.5rem;
+			overflow-x: auto;
+			scroll-snap-type: x mandatory;
+			scroll-behavior: smooth;
+			-webkit-overflow-scrolling: touch;
+			align-items: center;
+			scrollbar-width: none;
 
-		img {
-			width: 100%;
-			scroll-snap-align: start;
-			flex-shrink: 0;
-		}
-	}
-
-	.pagination {
-		display: flex;
-		justify-content: center;
-		gap: 0.1rem;
-
-		.go-to-button {
-			appearance: none;
-			border: none;
-			background-color: transparent;
-			display: grid;
-			place-items: center;
-			height: 1.25rem;
-			width: 1.25rem;
-			border-radius: 0.25rem;
-
-			&:hover {
-				background-color: var(--color-surface);
-				box-shadow: none;
-
-				.dot {
-					transform: scale(1.3);
-				}
-			}
-			&:active,
-			&:focus-within {
-				box-shadow: none;
-				.dot {
-					transform: scale(0.9);
-				}
-			}
-
-			.dot {
-				height: 0.5rem;
-				width: 0.5rem;
-				border-radius: 999rem;
-				background-color: var(--color-on-surface);
-				transition: transform ease-in-out 100ms;
-
-				&.selected {
-					background-color: var(--color-on-background);
-					transform: scale(1.5);
-				}
+			img {
+				width: 100%;
+				scroll-snap-align: start;
+				flex-shrink: 0;
 			}
 		}
+
+		.pagination {
+			display: flex;
+			justify-content: center;
+			gap: 0.1rem;
+
+			.go-to-button {
+				appearance: none;
+				border: none;
+				background-color: transparent;
+				display: grid;
+				place-items: center;
+				height: 1.25rem;
+				width: 1.25rem;
+				border-radius: 0.25rem;
+
+				&:hover {
+					background-color: var(--color-surface);
+					box-shadow: none;
+
+					.dot {
+						transform: scale(1.3);
+					}
+				}
+				&:active,
+				&:focus-within {
+					box-shadow: none;
+					.dot {
+						transform: scale(0.9);
+					}
+				}
+
+				.dot {
+					height: 0.5rem;
+					width: 0.5rem;
+					border-radius: 999rem;
+					background-color: var(--color-on-surface);
+					transition: transform ease-in-out 100ms;
+
+					&.selected {
+						background-color: var(--color-on-background);
+						transform: scale(1.5);
+					}
+				}
+			}
+		}
 	}
-}
 
 	@media (max-width: 768px) {
 		header {
