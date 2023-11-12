@@ -19,6 +19,8 @@
 	export let projectId: string | null = null;
 	export let comments: CommentType[];
 	export let showModal = false;
+	export let showContext = false;
+	export let hideCreateForm = false;
 
 	let filters: CommentRankingFilters = {
 		anonymous: true,
@@ -89,7 +91,15 @@
 	<header>
 		<div class="title">
 			<div class="title-text">
-				<h3>{projectId ? `Comments` : 'Main feed'}</h3>
+				<h3>
+					{#if projectId}
+						Comments
+					{:else if parentComment}
+						Replies
+					{:else}
+						Main feed
+					{/if}
+				</h3>
 				<span class="subtext">
 					{sortedAndFiltered?.length || 0}
 					{sortedAndFiltered?.length === 1 ? 'comment' : 'comments'}
@@ -105,7 +115,9 @@
 				</Tooltip>
 			{/if}
 		</div>
-		<CommentForm bind:showModal {projectId} parentComment={selectedParentComment} />
+		{#if !hideCreateForm}
+			<CommentForm bind:showModal {projectId} parentComment={selectedParentComment} />
+		{/if}
 	</header>
 
 	{#if comments.length}
@@ -162,6 +174,7 @@
 				{#each sortedAndFiltered as comment (comment.id)}
 					<Comment
 						{comment}
+						{showContext}
 						on:reply={handleReplyButton}
 						on:login={handleLoginRequiredButton}
 						on:blocked={handleRestrictedFunctionality}
