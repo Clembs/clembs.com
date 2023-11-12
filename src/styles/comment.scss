@@ -1,28 +1,3 @@
-h1 {
-	font-size: 1.6rem;
-}
-
-h2 {
-	font-size: 1.4rem;
-}
-
-h3 {
-	font-size: 1.2rem;
-}
-
-h4 {
-	font-size: 1.1rem;
-}
-
-h5,
-h6 {
-	font-size: 1rem;
-}
-
-strong {
-	font-weight: 600;
-}
-
 .comment a {
 	color: var(--color-primary);
 	font-weight: 500;
@@ -33,13 +8,38 @@ strong {
 	}
 }
 
-.comment-main-text-content img:not(.emoji),
-video {
-	border-radius: 0.5rem;
-	max-width: 250px;
+.comment-content {
+	h1 {
+		font-size: 1.6rem;
+	}
+
+	h2 {
+		font-size: 1.4rem;
+	}
+
+	h3 {
+		font-size: 1.2rem;
+	}
+
+	h4 {
+		font-size: 1.1rem;
+	}
+
+	h5,
+	h6 {
+		font-size: 1rem;
+	}
+
+	img:not(.emoji),
+	video {
+		border-radius: 0.5rem;
+		max-width: 250px;
+	}
 }
 
-.comment-wrapper.no-actions img,
-video {
-	display: none;
+.comment-wrapper.no-actions {
+	img:not(.emoji),
+	video {
+		display: none;
+	}
 }
