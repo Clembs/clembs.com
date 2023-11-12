@@ -2,15 +2,17 @@
 	import Comment from './Comment/Comment.svelte';
 	import type { Comment as CommentType, User } from '$lib/db/types';
 	import LoginModal from '$lib/components/Settings/LoginModal.svelte';
-	import CommentFormModal from './CommentFormModal.svelte';
+	import CommentFormModal from './CommentForm/CommentFormModal.svelte';
 	import { rankComments, type CommentRankingFilters } from '$lib/helpers/rankComments';
 	import Chip from '$lib/components/Chip.svelte';
-	import CreateCommentButton from './CreateCommentButton.svelte';
 	import RestrictedFunctionalityModal from './RestrictedFunctionalityModal.svelte';
 	import autoAnimate from '@formkit/auto-animate';
 	import UserInfoModal from '$lib/components/UserInfoModal.svelte';
 	import HabileNeutral from '$lib/svg/HabileNeutral.svelte';
 	import HabileScared from '$lib/svg/HabileScared.svelte';
+	import CommentForm from './CommentForm/CommentForm.svelte';
+	import GradientAvatar from '$lib/components/GradientAvatar/GradientAvatar.svelte';
+	import Tooltip from '$lib/components/Tooltip.svelte';
 
 	export let userData: User | null | undefined;
 	export let parentComment: CommentType | null | undefined = null;
@@ -29,7 +31,6 @@
 
 	let selectedSortingMode: 'interactions' | 'recent' = 'recent';
 	let selectedParentComment = parentComment;
-	let skipToComment = true;
 	let showRestrictedFunctionalityModal = false;
 	let showUserInfoModal = false;
 	let selectedUser: User;
@@ -40,12 +41,10 @@
 		if (event) {
 			selectedParentComment = event.detail;
 		}
-		skipToComment = true;
 		showModal = true;
 	}
 
 	function handleLoginRequiredButton() {
-		skipToComment = false;
 		showModal = true;
 	}
 
@@ -66,7 +65,6 @@
 		<LoginModal
 			bind:showModal
 			parentComment={selectedParentComment}
-			{skipToComment}
 			on:close={() => {
 				if (!parentComment) {
 					selectedParentComment = null;
@@ -90,25 +88,24 @@
 
 	<header>
 		<div class="title">
-			<h3>{projectId ? `Comments` : 'Main feed'}</h3>
-			<span class="count">
-				{sortedAndFiltered?.length || 0}
-				{sortedAndFiltered?.length === 1 ? 'comment' : 'comments'}
-			</span>
+			<div class="title-text">
+				<h3>{projectId ? `Comments` : 'Main feed'}</h3>
+				<span class="subtext">
+					{sortedAndFiltered?.length || 0}
+					{sortedAndFiltered?.length === 1 ? 'comment' : 'comments'}
+				</span>
+			</div>
+			<div class="title-account"></div>
+			{#if userData}
+				<Tooltip>
+					<span slot="tooltip-content"> Account settings </span>
+					<a href="/settings">
+						<GradientAvatar user={userData} showBadge={false} size="2.75rem" />
+					</a>
+				</Tooltip>
+			{/if}
 		</div>
-
-		<CreateCommentButton
-			{userData}
-			on:blocked={handleRestrictedFunctionality}
-			on:click={() => {
-				if (userData?.badges?.includes('BLOCKED')) {
-					return handleRestrictedFunctionality();
-				}
-				handleReplyButton({
-					detail: parentComment,
-				});
-			}}
-		/>
+		<CommentForm bind:showModal {projectId} parentComment={selectedParentComment} />
 	</header>
 
 	{#if comments.length}
@@ -131,29 +128,29 @@
 				<Chip checked={filters.pinned} on:click={() => (filters.pinned = !filters.pinned)}>
 					⭐ Featured
 				</Chip>
-				<Chip
+				<!-- <Chip
 					checked={filters.clembsReplied}
 					on:click={() => (filters.clembsReplied = !filters.clembsReplied)}
 				>
 					💬 Clembs replied
-				</Chip>
+				</Chip> -->
 				{#if userData}
 					<Chip checked={filters.upvoted} on:click={() => (filters.upvoted = !filters.upvoted)}>
 						⬆️ Upvoted
 					</Chip>
-					<Chip
+					<!-- <Chip
 						checked={filters.mentionsMe}
 						on:click={() => (filters.mentionsMe = !filters.mentionsMe)}
 					>
 						@ Mentions me
-					</Chip>
+					</Chip> -->
 				{/if}
-				<Chip
+				<!-- <Chip
 					checked={!filters.anonymous}
 					on:click={() => (filters.anonymous = !filters.anonymous)}
 				>
 					🕵️ Hide guests
-				</Chip>
+				</Chip> -->
 				<Chip checked={filters.blocked} on:click={() => (filters.blocked = !filters.blocked)}>
 					🚫 Show blocked users
 				</Chip>
@@ -175,7 +172,7 @@
 		{:else}
 			<div class="no-comments">
 				<HabileScared />
-				You might've filtered too much...
+				You've filtered too much...
 			</div>
 		{/if}
 	{:else}
@@ -198,11 +195,22 @@
 		max-width: 100%;
 		scrollbar-width: none;
 
+		&::-webkit-scrollbar {
+			display: none;
+		}
+
+		&:hover {
+			scrollbar-width: thin;
+			::-webkit-scrollbar {
+				width: 3px;
+			}
+		}
+
 		.chips {
 			display: inline-flex;
 			align-items: center;
 			gap: 0.5rem;
-			padding: 0.5rem 1rem;
+			padding: 0.25rem 1rem;
 
 			.divider {
 				width: 1px;
@@ -211,30 +219,22 @@
 				background-color: var(--color-on-surface);
 			}
 		}
-
-		&::-webkit-scrollbar {
-			display: none;
-		}
 	}
 
 	header {
 		display: flex;
 		flex-direction: column;
-		gap: 1rem;
+		gap: 0.5rem;
 		margin: 1rem;
 
 		.title {
 			display: flex;
-			justify-content: space-between;
-			gap: 1rem;
 			align-items: center;
+			justify-content: space-between;
+			gap: 0.25rem;
 
 			h3 {
 				font-size: 1.5rem;
-			}
-			.count {
-				font-size: 0.9rem;
-				color: var(--color-on-surface);
 			}
 		}
 	}
@@ -264,6 +264,6 @@
 		margin: 1rem;
 		display: flex;
 		flex-direction: column;
-		gap: 0.5rem;
+		gap: 1rem;
 	}
 </style>
