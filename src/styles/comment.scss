@@ -36,7 +36,10 @@ strong {
 .comment-main-text-content img:not(.emoji),
 video {
 	border-radius: 0.5rem;
-	border: 1px solid var(--color-outline);
-	box-shadow: 0 2px 0 0 var(--color-outline);
 	max-width: 250px;
+}
+
+.comment-wrapper.no-actions img,
+video {
+	display: none;
 }
