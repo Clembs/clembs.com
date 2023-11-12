@@ -5,6 +5,7 @@
 	import IconTrash from '@tabler/icons-svelte/dist/svelte/icons/IconTrash.svelte';
 	import IconStarFilled from '@tabler/icons-svelte/dist/svelte/icons/IconStarFilled.svelte';
 	import IconStar from '@tabler/icons-svelte/dist/svelte/icons/IconStar.svelte';
+	import IconLink from '@tabler/icons-svelte/dist/svelte/icons/IconLink.svelte';
 	import { createEventDispatcher } from 'svelte';
 	import GradientAvatar from '$lib/components/GradientAvatar/GradientAvatar.svelte';
 	import { page } from '$app/stores';
@@ -22,6 +23,8 @@
 	import Emoji from '$lib/components/Emoji.svelte';
 	import { enhance } from '$app/forms';
 	import '../../../styles/comment.scss';
+	import { useShare } from '$lib/components/useShare';
+	import ActionButton from './ActionButton.svelte';
 
 	export let comment: Comment;
 	export let showActions = true;
@@ -30,8 +33,6 @@
 	let nestingLevel = initialNestingLevel;
 	let childComments = comment.childComments;
 	let loadingComments = false;
-	let loadingDelete = false;
-	let loadingPin = false;
 
 	export let childCommentsExpanded = false;
 
@@ -52,46 +53,6 @@
 
 		dispatch('reply', comment);
 	}
-
-	// async function deleteComment() {
-	// 	loadingDelete = true;
-
-	// 	try {
-	// 		const res = await fetch(`/comments/api/${comment.id}/delete`, {
-	// 			method: 'DELETE',
-	// 		});
-
-	// 		if (res.ok) {
-	// 			toast.success(`Successfully deleted.`);
-	// 			loadingDelete = false;
-	// 			commentDeleted = true;
-	// 		}
-	// 	} catch (e) {
-	// 		toast.error(
-	// 			`Something went wrong while trying to delete this ${
-	// 				$page.data.hasNameChange ? 'clemb' : 'comment'
-	// 			}.`
-	// 		);
-	// 	}
-	// }
-
-	// async function pinComment() {
-	// 	loadingPin = true;
-
-	// 	try {
-	// 		const res = await fetch(`/comments/api/${comment.id}/pin`, {
-	// 			method: 'PATCH',
-	// 		});
-
-	// 		if (res.ok) {
-	// 			toast.success(`Successfully (un)pinned.`);
-	// 			loadingPin = false;
-	// 			comment.isPinned = !comment.isPinned;
-	// 		}
-	// 	} catch (e) {
-	// 		toast.error(`Something went wrong while trying to pin this comment.`);
-	// 	}
-	// }
 
 	async function loadChildComments() {
 		if (childCommentsExpanded) {
@@ -116,11 +77,7 @@
 	}
 </script>
 
-<!-- <svelte:head>
-	<style src="../../../styles/comment.scss"></style>
-</svelte:head> -->
-
-<div
+<article
 	class="comment-wrapper {showActions ? '' : 'no-hover'}"
 	id="comment-{comment.id}"
 	class:reply={nestingLevel}
@@ -136,34 +93,29 @@
 		{/if}
 		<div class="comment-main">
 			<div class="comment-main-text">
-				<div class="comment-main-text-metadata">
-					<div class="comment-main-text-metadata-left">
-						{#if showActions && comment.author}
-							<a
-								href="/users/{comment.author?.username}"
-								class="comment-main-text-metadata-left-username"
-							>
-								{username}
-							</a>
-						{:else}
-							<div class="comment-main-text-metadata-left-username">
-								{username}
-							</div>
-						{/if}
-						•
-						<Tooltip transitionDelay={500}>
-							<time datetime={date.toISOString()} class="comment-main-text-metadata-left-timestamp">
-								{relativeTimeFormat(date)}
-							</time>
-							<span slot="tooltip-content">
-								{dateFormat(date)}
-							</span>
-						</Tooltip>
-						{#if comment.isPinned}
-							<span class="comment-main-text-metadata-left-pinned">Featured</span>
-						{/if}
-					</div>
-				</div>
+				<header class="comment-main-text-metadata">
+					{#if showActions && comment.author}
+						<a href="/users/{comment.author?.username}" class="comment-main-text-metadata-username">
+							{username}
+						</a>
+					{:else}
+						<div class="comment-main-text-metadata-username">
+							{username}
+						</div>
+					{/if}
+
+					<Tooltip transitionDelay={500}>
+						<time datetime={date.toISOString()} class="subtext">
+							{relativeTimeFormat(date)}
+						</time>
+						<span slot="tooltip-content">
+							{dateFormat(date)}
+						</span>
+					</Tooltip>
+					{#if comment.isPinned}
+						<span class="subtext comment-main-text-metadata-pinned">Featured</span>
+					{/if}
+				</header>
 				<div class="comment-main-text-content">
 					{#if !comment.projectId}
 						{#each parseMentions(comment.content) as part}
@@ -215,38 +167,38 @@
 				<div class="comment-main-actions">
 					<div class="comment-main-actions-row">
 						<VoteButtons {comment} on:login on:blocked />
-						<button class="action-button" on:click={replyComment}>
+						<ActionButton aria-label="Reply to comment" on:click={replyComment}>
 							<IconMessageCircle />
 							Reply
-						</button>
-						{#if (data.userData && data.userData?.id === comment.author?.id) || data.userData?.badges?.includes('CLEMBS')}
-							<form use:enhance method="POST" action="/comments/{comment.id}?/delete">
-								<button class="action-button" type="submit">
-									{#if loadingDelete}
-										<LoaderIcon />
-									{:else}
-										<IconTrash />
-									{/if}
-								</button>
-							</form>
-						{/if}
+						</ActionButton>
+						<ActionButton
+							aria-label="Share permalink to comment"
+							on:click={() => useShare(`${$page.url.origin}/comments/${comment.id}`)}
+						>
+							<IconLink />
+						</ActionButton>
 						{#if !comment.parentId && data.userData?.badges?.includes('CLEMBS')}
-							<form use:enhance action="/comments/{comment.id}?/pin" method="post">
-								<button class="action-button" type="submit">
-									{#if loadingPin}
-										<LoaderIcon />
-									{:else if comment.isPinned}
+							<form use:enhance action="/comments/{comment.id}?/pin" method="POST">
+								<ActionButton aria-label="Feature comment">
+									{#if comment.isPinned}
 										<IconStarFilled />
 									{:else}
 										<IconStar />
 									{/if}
-								</button>
+								</ActionButton>
+							</form>
+						{/if}
+						{#if (data.userData && data.userData?.id === comment.author?.id) || data.userData?.badges?.includes('CLEMBS')}
+							<form use:enhance method="POST" action="/comments/{comment.id}?/delete">
+								<ActionButton aria-label="Delete comment">
+									<IconTrash />
+								</ActionButton>
 							</form>
 						{/if}
 					</div>
 
 					{#if comment.childComments?.length}
-						<button class="action-button view-replies" on:click={loadChildComments}>
+						<button class="view-replies-button" on:click={loadChildComments}>
 							{#if loadingComments}
 								<LoaderIcon />
 							{:else}
@@ -279,13 +231,12 @@
 			{/each}
 		</div>
 	{/if}
-</div>
+</article>
 
 <style lang="scss">
 	.comment-wrapper {
 		display: flex;
 		flex-direction: column;
-		// gap: 0.75rem;
 		border-radius: 1rem;
 		text-decoration: none;
 		position: relative;
@@ -296,10 +247,8 @@
 			pointer-events: none;
 		}
 
-		&.reply {
-			.child-comments.margin-left {
-				margin-left: 2.5rem;
-			}
+		&.reply .child-comments.margin-left {
+			margin-left: 2.5rem;
 		}
 
 		&.no-actions {
@@ -307,7 +256,7 @@
 				cursor: default;
 			}
 
-			.comment-main-text-metadata-left-username {
+			.comment-main-text-metadata-username {
 				cursor: default;
 
 				&:hover {
@@ -331,7 +280,6 @@
 		display: flex;
 		gap: 1rem;
 		border-radius: 1rem;
-		padding: 0.5rem;
 
 		&.pinned {
 			background: linear-gradient(10deg, rgb(255 0 0 / 0.01), rgb(255 0 0 / 0.05));
@@ -375,40 +323,24 @@
 				&-metadata {
 					padding-bottom: 0.25rem;
 					display: flex;
-					justify-content: space-between;
+					align-items: baseline;
+					gap: 0.5rem;
 
-					&-left {
-						display: flex;
-						gap: 0.5rem;
-						align-items: baseline;
-						font-size: 0.9rem;
-						color: var(--color-on-surface);
+					&-username {
+						border-radius: 0.5rem;
+						font-weight: 500;
+						user-select: text;
+						display: inline-block;
+						color: var(--color-on-background);
 
-						&-username {
-							appearance: none;
-							margin: 0;
-							border: 0;
-							padding: 0;
-							background-color: transparent;
-							font-size: 1.1rem;
-							border-radius: 0.5rem;
-							font-weight: 500;
-							user-select: text;
-							display: inline-block;
-							color: var(--color-outline);
-
-							&:hover {
-								text-decoration: underline;
-							}
+						&:hover {
+							text-decoration: underline;
 						}
+					}
 
-						&-pinned {
-							// background: var(--main-gradient);
-							// -webkit-background-clip: text;
-							// -webkit-text-fill-color: transparent;
-							color: var(--color-error);
-							font-weight: 600;
-						}
+					&-pinned {
+						color: var(--color-error);
+						font-weight: 500;
 					}
 				}
 			}
@@ -417,57 +349,47 @@
 				display: flex;
 				flex-direction: column;
 				gap: 0.25rem;
-				margin-left: -0.5rem;
+				margin-left: -0.25rem;
 
 				&-row {
 					display: flex;
 					gap: 0.25rem;
 				}
 
-				.action-button {
+				.view-replies-button {
 					border: none;
 					color: var(--color-on-surface);
-					// background-color: var(--color-background);
+					background-color: var(--color-background);
 					border-radius: 9rem;
 					display: flex;
 					align-items: center;
-					padding: 0.45rem 0.615rem;
 					cursor: pointer;
 					gap: 0.5rem;
 					font-size: 0.8rem;
 					max-width: max-content;
 					font-weight: 500;
-					border: 1px solid var(--color-outline);
+					margin-top: 0.25rem;
+					padding: 0.25rem 0.5rem;
+					background-color: transparent;
 
 					&:hover {
 						background-color: var(--color-surface);
+						text-decoration: underline;
 					}
 
-					&.view-replies {
-						margin-top: 0.25rem;
-						padding: 0.25rem 0.5rem;
-						background-color: transparent;
-						border: none;
+					.expand-icon {
+						display: grid;
+						align-items: center;
+						transition: rotate cubic-bezier(0.64, 0.005, 0.43, 1.01) 150ms;
 
-						&:hover {
-							background-color: var(--color-surface);
-							text-decoration: underline;
+						:global(svg) {
+							width: 1rem;
+							height: 1rem;
 						}
 
-						.expand-icon {
-							display: grid;
-							align-items: center;
-							transition: rotate cubic-bezier(0.64, 0.005, 0.43, 1.01) 150ms;
-
-							&[aria-expanded='true'] {
-								rotate: 180deg;
-							}
+						&[aria-expanded='true'] {
+							rotate: 180deg;
 						}
-					}
-
-					:global(svg) {
-						width: 20px;
-						height: 20px;
 					}
 				}
 			}
