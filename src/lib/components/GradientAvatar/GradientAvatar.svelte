@@ -4,6 +4,8 @@
 	import { badges } from '$lib/helpers/badges';
 	import { rankBadges } from '$lib/helpers/rankBadges';
 	import Tooltip from '../Tooltip.svelte';
+	import { tweened } from 'svelte/motion';
+	import { interpolate } from 'd3-interpolate';
 
 	export let user: null | Partial<User> = null;
 	export let showBadge = true;
@@ -15,21 +17,35 @@
 	$: firstCharUsername = username[0].trim();
 	$: lastCharUsername = username.at(-1)?.trim()!;
 
-	$: avatarGradient = {
-		a: letterColors[firstCharUsername] ?? letterColors.a,
-		b: letterColors[lastCharUsername] ?? letterColors.z,
-	};
+	const avatarGradient = tweened(
+		{
+			a: firstCharUsername,
+			b: lastCharUsername,
+		},
+		{
+			duration: 200,
+			interpolate,
+		}
+	);
+
+	// update the gradient when the username changes
+	$: updateUsername = avatarGradient.set({
+		a: letterColors[username?.[0]?.trim()] ?? letterColors.a,
+		b: letterColors[username?.at(-1)?.trim()!] ?? letterColors.b,
+	});
 </script>
 
 <div
 	class="avatar"
 	class:showSilhouette
-	style="--color-a: {avatarGradient.a}; --color-b: {avatarGradient.b}; --size: {size};"
+	style="--color-a: {$avatarGradient.a ||
+		letterColors[firstCharUsername]}; --color-b: {$avatarGradient.b ||
+		letterColors[lastCharUsername]}; --size: {size};"
 	title={username}
 >
 	{#if user?.badges && showBadge}
 		{@const badge = badges[rankBadges(user.badges)[0]]}
-		<div class="avatar-badge" style="--background:{badge.background};" title={badge.label}>
+		<div class="avatar-badge" title={badge.label}>
 			<Tooltip>
 				<span slot="tooltip-content">{badge.label}</span>
 				<div aria-label="User top-most badge">
@@ -70,16 +86,15 @@
 		&-badge {
 			position: absolute;
 			border: none;
-			bottom: -0.55rem;
-			right: -0.55rem;
-			color: var(--background);
-			width: 1.315rem;
-			height: 1.315rem;
+			bottom: -8px;
+			right: -8px;
+			width: 18px;
+			height: 18px;
 			z-index: 5;
 
 			:global(svg) {
-				width: 1.315rem;
-				height: 1.315rem;
+				width: 18px;
+				height: 18px;
 			}
 		}
 	}
