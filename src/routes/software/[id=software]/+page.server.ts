@@ -15,7 +15,11 @@ export const load: PageServerLoad = async ({ params, url, locals: { getUserData 
 	const comments = await db.query.comments.findMany({
 		with: {
 			author: true,
-			childComments: true,
+			childComments: {
+				with: {
+					author: true,
+				},
+			},
 		},
 		where: ({ projectId, parentId }, { and, eq }) =>
 			and(eq(projectId, `${type}/${project.id}`), isNull(parentId)),

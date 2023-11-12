@@ -1,8 +1,10 @@
+import { DISCORD_BOT_TOKEN } from '$env/static/private';
 import { letterColors } from '$lib/components/GradientAvatar/letterColors.js';
 import { db } from '$lib/db';
 import { error } from '@sveltejs/kit';
+import type { APIUser } from 'discord-api-types/v10.js';
 
-export const load = async ({ params, parent }) => {
+export const load = async ({ params, parent, setHeaders }) => {
 	if (!params.username) {
 		throw error(400);
 	}
@@ -12,7 +14,11 @@ export const load = async ({ params, parent }) => {
 		with: {
 			comments: {
 				with: {
-					parentComment: true,
+					parentComment: {
+						with: {
+							author: true,
+						},
+					},
 					author: true,
 					childComments: {
 						with: {
@@ -30,13 +36,29 @@ export const load = async ({ params, parent }) => {
 		},
 	});
 
-	if (!user) {
-		throw error(500);
+	let discordData: APIUser | undefined = undefined;
+
+	if (user?.discordUserId) {
+		discordData = await (
+			await fetch(`https://discord.com/api/users/${user.discordUserId}`, {
+				headers: {
+					Authorization: `Bot ${DISCORD_BOT_TOKEN}`,
+					'Cache-Control': 'public, max-age=c',
+				},
+			})
+		).json();
 	}
+
+	if (!user) throw error(404);
+
+	setHeaders({
+		'Cache-Control': 'public, max-age=60',
+	});
 
 	return {
 		user,
 		...(await parent()),
+		discordData,
 		themeGradient: {
 			from: letterColors[user.username[0]],
 			to: letterColors[user.username[0]],
