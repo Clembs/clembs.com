@@ -20,12 +20,12 @@ export type UserCommentVote = InferModel<typeof userCommentVote>;
 
 export type UserBadge = Exclude<User['badges'], null>[number];
 
-export type Comment = InferModel<typeof comments> & {
+export type Comment = typeof comments._.inferSelect & {
 	author?: User | null | undefined;
 	childComments?: Partial<Comment>[] | null | undefined;
 	parentComment?: Comment | null | undefined;
 	score?: UserCommentVote[];
-	mentionedUsers?: (Mention & {
+	mentionedUsers?: {
 		user: User;
-	})[];
+	}[];
 };
