@@ -2,9 +2,10 @@
 	import { LoaderIcon } from 'svelte-french-toast';
 
 	export let loading = false;
+	export let big = false;
 </script>
 
-<button on:click {...$$restProps}>
+<button class:big on:click|stopPropagation {...$$restProps}>
 	{#if loading}
 		<LoaderIcon />
 	{:else}
@@ -38,6 +39,17 @@
 		:global(svg) {
 			width: 18px;
 			height: 18px;
+		}
+
+		&.big {
+			font-size: 0.9rem;
+			padding: 0.5rem 0.75rem;
+			height: auto;
+
+			:global(svg) {
+				width: 24px;
+				height: 24px;
+			}
 		}
 	}
 </style>

@@ -14,6 +14,7 @@
 	const dispatch = createEventDispatcher();
 
 	export let comment: Comment;
+	export let big = false;
 
 	let data = $page.data;
 
@@ -74,6 +75,7 @@
 
 <div
 	class="vote-buttons"
+	class:big
 	class:voted={vote}
 	style="--main-color: {!vote
 		? 'var(--color-on-surface)'
@@ -93,6 +95,7 @@
 		method="POST"
 	>
 		<button
+			on:click|stopPropagation
 			type="submit"
 			aria-label="Upvote comment"
 			data-action="upvote"
@@ -120,6 +123,7 @@
 		method="POST"
 	>
 		<button
+			on:click|stopPropagation
 			type="submit"
 			aria-label="Downvote comment"
 			data-action="downvote"
@@ -144,6 +148,11 @@
 		font-size: 0.875rem;
 		border: 1px solid var(--color-outline);
 		user-select: none;
+
+		:global(svg) {
+			height: 20px;
+			width: 20px;
+		}
 
 		&.voted {
 			font-weight: 600;
@@ -229,9 +238,13 @@
 			}
 		}
 
-		:global(svg) {
-			height: 20px;
-			width: 20px;
+		&.big {
+			font-size: 0.95rem;
+
+			:global(svg) {
+				width: 24px !important;
+				height: 24px !important;
+			}
 		}
 	}
 
