@@ -1,6 +1,6 @@
 import adapter from '@sveltejs/adapter-vercel';
 import { mdsvex } from 'mdsvex';
-import { getHighlighter } from 'shiki';
+import { getHighlighter } from 'shikiji';
 import preprocess from 'svelte-preprocess';
 import { imagetools } from '@zerodevx/svelte-img/vite';
 
@@ -14,7 +14,8 @@ const config = {
 			highlight: {
 				async highlighter(code, lang, meta) {
 					const highlighter = await getHighlighter({
-						theme: 'github-dark-dimmed',
+						langs: [lang || 'plaintext'],
+						themes: ['github-dark-dimmed'],
 					});
 
 					return highlighter.codeToHtml(code, { lang });
