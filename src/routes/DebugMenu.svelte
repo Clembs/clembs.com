@@ -39,10 +39,6 @@
 	}}
 />
 
-<svelte:head>
-	<link rel="stylesheet" href="/pesticide.min.css" />
-</svelte:head>
-
 <div class="debug-menu-wrapper">
 	<div class="tiles">
 		<div class="tile-group">
