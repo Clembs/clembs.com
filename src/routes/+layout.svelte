@@ -17,7 +17,7 @@
 	let colors = $page.data?.themeGradient ?? baseColors;
 
 	// this is literally too easy
-	const colorProgress = tweened(colors, {
+	const colorProgress = tweened<typeof $page.data.themeGradient>(colors, {
 		interpolate: interpolate,
 	});
 
@@ -56,7 +56,7 @@
 <div
 	inert
 	class="background-piece"
-	style="--from: {$colorProgress.from}; --to: {$colorProgress.to}"
+	style="--from: {$colorProgress?.from}; --to: {$colorProgress?.to}"
 />
 
 <NavBar />
@@ -68,16 +68,16 @@
 
 <style lang="scss">
 	.background-piece {
-		position: absolute;
 		pointer-events: none;
-
-		top: -35px;
+		top: -40px;
 		left: -10%;
 		width: 120%;
-		height: 20px;
-
+		height: 50px;
 		background: linear-gradient(to right, var(--from), var(--to));
-		filter: blur(30px);
+		filter: blur(50px);
+		z-index: -1;
+		position: fixed;
+		opacity: 0.5;
 	}
 
 	.content {
