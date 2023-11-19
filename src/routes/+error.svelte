@@ -100,9 +100,12 @@
 </main>
 
 <style lang="scss">
-	:global(svg) {
-		max-width: 128px;
-		height: auto;
+	.woopsies,
+	.actual-page {
+		:global(svg) {
+			max-width: 128px;
+			height: auto;
+		}
 	}
 
 	main {
