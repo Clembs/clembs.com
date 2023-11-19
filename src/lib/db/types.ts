@@ -1,31 +1,29 @@
-import type { InferModel } from 'drizzle-orm';
 import type { comments, passkeys, sessions, userCommentVote, users } from './schema';
-import type Mention from '../../routes/comments/Comment/Mention.svelte';
 
-export type Passkey = InferModel<typeof passkeys> & {
+export type Passkey = typeof passkeys.$inferSelect & {
 	user?: User;
 };
 
-export type Session = InferModel<typeof sessions> & {
+export type Session = typeof sessions.$inferSelect & {
 	user?: User;
 };
 
-export type User = InferModel<typeof users> & {
+export type User = typeof users.$inferSelect & {
 	comments?: Comment[];
 	passkeys?: Passkey[];
 	sessions?: Session[];
 };
 
-export type UserCommentVote = InferModel<typeof userCommentVote>;
+export type UserCommentVote = typeof userCommentVote.$inferSelect;
 
 export type UserBadge = Exclude<User['badges'], null>[number];
 
-export type Comment = typeof comments._.inferSelect & {
-	author?: User | null | undefined;
-	childComments?: Partial<Comment>[] | null | undefined;
+export type Comment = typeof comments.$inferSelect & {
+	author?: Partial<User> | null | undefined;
+	childComments?: Comment[] | null | undefined;
 	parentComment?: Comment | null | undefined;
-	score?: UserCommentVote[];
+	score?: Partial<UserCommentVote>[];
 	mentionedUsers?: {
-		user: User;
+		user: Partial<User>;
 	}[];
 };
