@@ -7,7 +7,10 @@
 	import IconBrush from '@tabler/icons-svelte/dist/svelte/icons/IconBrush.svelte';
 	import IconCode from '@tabler/icons-svelte/dist/svelte/icons/IconCode.svelte';
 
-	export let node: Partial<ParserOutputProjectStructure> | ParserOutputUserStructure;
+	export let node:
+		| Partial<ParserOutputProjectStructure>
+		| ParserOutputUserStructure
+		| { type: 'other'; text: string; icon: any; color: string };
 	export let clickable = true;
 </script>
 
@@ -25,7 +28,7 @@
 		/>
 		{node.username}
 	</svelte:element>
-{:else}
+{:else if node.type === 'project'}
 	<svelte:element
 		this={clickable ? 'a' : 'div'}
 		target="_blank"
@@ -38,6 +41,15 @@
 			<IconCode size={16} />
 		{/if}
 		{node.projectId}
+	</svelte:element>
+{:else if node.type === 'other'}
+	<svelte:element
+		this={clickable ? 'a' : 'div'}
+		class="inline-mention {node.type}"
+		style="background-color: {node.color}"
+	>
+		<svelte:component this={node.icon} />
+		{node.text}
 	</svelte:element>
 {/if}
 
@@ -57,6 +69,11 @@
 		user-select: text;
 		cursor: pointer;
 		text-decoration: none;
+
+		:global(svg) {
+			width: 16px;
+			height: 16px;
+		}
 
 		&::after {
 			content: '';
