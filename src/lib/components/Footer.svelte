@@ -1,40 +1,17 @@
-<script>
-	import { socials } from '$lib/data/socials';
-	import SocialButton from './SocialButton.svelte';
-</script>
-
 <footer>
-	<div class="socials">
-		{#each socials as social}
-			<SocialButton {social} />
-		{/each}
-	</div>
-
-	<div class="copyright">
-		&copy; 2020-{new Date().getFullYear()} Clembs
-	</div>
+	&copy; 2020-{new Date().getFullYear()} Clembs. Made in France with love and
+	<a href="https://kit.svelte.dev" target="_blank" rel="noreferrer noopener"> SvelteKit</a>.
+	<br />
+	<a href="mailto://clembs@clembs.com">clembs@clembs.com</a> • <a href="/contact">Contact me</a>
 </footer>
 
 <style lang="scss">
 	footer {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
+		margin: 1rem;
 		padding: 1rem;
-		border-top: 1px solid var(--color-on-background);
-		gap: 0.5rem;
-		flex-wrap: wrap;
 		width: 100%;
-		.socials {
-			display: flex;
-			gap: 0.5rem;
-		}
-	}
+		border-top: 1px solid var(--color-outline);
 
-	@media (max-width: 600px) {
-		footer {
-			margin-bottom: 5rem;
-		}
+		text-align: center;
 	}
 </style>
