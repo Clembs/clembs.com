@@ -1,6 +1,6 @@
-import type { BrandingPost } from '.';
+import type { DesignPost } from '.';
 
-export const delegue: BrandingPost = {
+export const delegue: DesignPost = {
 	id: 'delegue',
 	brand: 'Ensemble vers la réussite',
 	title: 'Ensemble vers la réussite - Class rep campaign',

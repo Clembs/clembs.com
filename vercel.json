@@ -6,6 +6,7 @@
 		{ "source": "/boosty", "destination": "https://boosty.to/clembs" },
 
 		{ "source": "/questions", "destination": "/messages" },
+		{ "source": "/branding/:path*", "destination": "/design/:path*" },
 		{ "source": "/branding", "destination": "/projects#design" },
 		{ "source": "/software", "destination": "/projects#software" },
 

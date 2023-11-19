@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { brandingData } from '$lib/data/branding';
+	import { designPosts } from '$lib/data/design';
 	import { softwareData } from '$lib/data/software';
 	import type { Comment } from '$lib/db/types';
 	import IconMessageCircle from '@tabler/icons-svelte/dist/svelte/icons/IconMessageCircle.svelte';
@@ -27,7 +27,7 @@
 	{@const [projectType, projectId] = comment.projectId.split('/')}
 	{@const project =
 		projectType === 'branding'
-			? brandingData.find(({ id }) => id === projectId)
+			? designPosts.find(({ id }) => id === projectId)
 			: softwareData.find(({ id }) => id === projectId)}
 	{#if project}
 		<a href="/{projectType}/{projectId}" class="context-blurb subtext">

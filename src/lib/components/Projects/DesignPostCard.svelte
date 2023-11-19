@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type { BrandingPost } from '$lib/data/branding';
+	import type { DesignPost } from '$lib/data/design';
 	import Card from '../Card.svelte';
 
-	export let data: BrandingPost;
+	export let data: DesignPost;
 	export let index: number;
 	export let loaded = false;
 </script>
@@ -10,7 +10,7 @@
 <Card
 	class="card project"
 	aria-label="View design project: {data.title}"
-	href="/branding/{data.id}"
+	href="/design/{data.id}"
 	style="--delay: {index}"
 >
 	<div class="card-image" style="background-image: url({data.bannerThumbnailPath})">
@@ -32,7 +32,9 @@
 <style lang="scss">
 	.card-image {
 		position: relative;
-		transition: transform ease-out 0.1s, box-shadow ease-out 0.1s;
+		transition:
+			transform ease-out 0.1s,
+			box-shadow ease-out 0.1s;
 		border-bottom: 1px solid var(--color-on-background);
 		aspect-ratio: 16/9;
 		color: var(--color-background);

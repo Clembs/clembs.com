@@ -1,6 +1,6 @@
-import type { BrandingPost } from '.';
+import type { DesignPost } from '.';
 
-export const vbot: BrandingPost = {
+export const vbot: DesignPost = {
 	id: 'vbot',
 	brand: 'Vbot',
 	title: 'Vbot',

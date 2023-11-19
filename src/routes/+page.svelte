@@ -1,15 +1,14 @@
 <script lang="ts">
 	import Button from '$lib/components/Button.svelte';
-	import { brandingData } from '$lib/data/branding';
+	import { designPosts } from '$lib/data/design';
 	import { softwareData } from '$lib/data/software';
-	import { onMount } from 'svelte';
 	import IconMessageCircle from '@tabler/icons-svelte/dist/svelte/icons/IconMessageCircle.svelte';
 	import IconBrush from '@tabler/icons-svelte/dist/svelte/icons/IconBrush.svelte';
 	import IconCode from '@tabler/icons-svelte/dist/svelte/icons/IconCode.svelte';
 	import MetaTags from '$lib/components/MetaTags.svelte';
 	import ToggleAvatar from '$lib/components/ToggleAvatar.svelte';
 	import SoftwareItem from '$lib/components/Projects/SoftwareItem.svelte';
-	import BrandingItem from '$lib/components/Projects/BrandingItem.svelte';
+	import DesignPostCard from '$lib/components/Projects/DesignPostCard.svelte';
 	import Card from '$lib/components/Card.svelte';
 </script>
 
@@ -26,7 +25,7 @@ and express my love through design, code and video. Welcome to clembs.com!"
 		</h1>
 
 		<div class="buttons">
-			<Button href="#design">View projects</Button>
+			<Button href="#projects">View projects</Button>
 			<Button href="/contact" style="outlined">Contact me</Button>
 		</div>
 	</div>
@@ -34,10 +33,10 @@ and express my love through design, code and video. Welcome to clembs.com!"
 
 <section id="projects">
 	<div id="project-grid">
-		{#each brandingData.slice(0, 2) as branding, i}
+		{#each designPosts.slice(0, 2) as branding, i}
 			{#if i % 2 === 0}
 				<div class="grid-item">
-					<BrandingItem loaded data={branding} index={i} />
+					<DesignPostCard loaded data={branding} index={i} />
 				</div>
 				<div class="grid-item columns">
 					{#each softwareData.slice(i * 2, i * 2 + 2) as software, i}
@@ -51,7 +50,7 @@ and express my love through design, code and video. Welcome to clembs.com!"
 					{/each}
 				</div>
 				<div class="grid-item">
-					<BrandingItem loaded data={branding} index={i} />
+					<DesignPostCard loaded data={branding} index={i} />
 				</div>
 			{/if}
 		{/each}

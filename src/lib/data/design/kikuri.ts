@@ -1,6 +1,6 @@
-import type { BrandingPost } from '.';
+import type { DesignPost } from '.';
 
-export const kikuri: BrandingPost = {
+export const kikuri: DesignPost = {
 	id: 'kikuri',
 	brand: 'Kikuri',
 	title: 'Kikuri - The fun and casual card collecting Discord bot.',

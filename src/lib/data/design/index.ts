@@ -2,7 +2,7 @@ import { crbt2023 } from './crbt-2023';
 import { kikuri } from './kikuri';
 import { clembs } from './clembs';
 
-export interface BrandingPost {
+export interface DesignPost {
 	id: string;
 	brand: string;
 	title: string;
@@ -11,6 +11,7 @@ export interface BrandingPost {
 	iconPath: string;
 	brief: string;
 	category: string;
+	tags?: string[];
 	links?: {
 		projectUrl?: string;
 		assetsUrl?: string;
@@ -26,6 +27,6 @@ export interface BrandingPost {
 	};
 }
 
-export const brandingData: BrandingPost[] = [kikuri, crbt2023, clembs].sort(
+export const designPosts: DesignPost[] = [kikuri, crbt2023, clembs].sort(
 	(a, b) => b.createdAt.getTime() - a.createdAt.getTime()
 );

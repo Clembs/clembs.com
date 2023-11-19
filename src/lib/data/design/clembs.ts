@@ -1,6 +1,6 @@
-import type { BrandingPost } from '.';
+import type { DesignPost } from '.';
 
-export const clembs: BrandingPost = {
+export const clembs: DesignPost = {
 	id: 'clembs',
 	brand: 'Clembs',
 	title: 'Clembs - Nice to meet you, again.',

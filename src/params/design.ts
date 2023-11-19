@@ -1,6 +1,6 @@
-import { brandingData } from '$lib/data/branding';
+import { designPosts } from '$lib/data/design';
 import type { ParamMatcher } from '@sveltejs/kit';
 
 export const match: ParamMatcher = (param: string) => {
-	return !!brandingData.find(({ id }) => id === param);
+	return !!designPosts.find(({ id }) => id === param);
 };

@@ -7,7 +7,7 @@ export const habileChat: Software = {
 	createdAt: new Date('2023-11-01'),
 	description: `
 Habile was created 2 years ago as a mascot for my livestreaming career and as a Twitch bot to entertain viewers and assist me with my livestreams.<br><br>
-Fast forward to today, she represents the [Clembs brand](/branding/clembs) proudly and is the centerpiece of my [Discord server](/discord).<br><br>
+Fast forward to today, she represents the [Clembs brand](/design/clembs) proudly and is the centerpiece of my [Discord server](/discord).<br><br>
 As I wanted to use OpenAI's GPT-4 model for a big project coming somewhere in the future, I needed a less ambitious project to test the waters and see how I could come up with a way to charge users for the usage of the model.<br><br>
 I chose Habile as the perfect candidate for an AI-centric project, as I could easily add a chatbot feature à-la ChatGPT by training the AI with her attitude, her knowledge and personality.<br><br>
 Since GPT-4 is a paid service, I came up with a way to abstract real life money with a virtual currency, named "Hydrollars" (mix of "Hydro" and "Dollars"). A user normally gets 80 Hydrollars of usage for free (130 for previous [supporters](/donate)) and can buy more with real money.<br><br>

@@ -1,10 +1,10 @@
 <script lang="ts">
-	import type { BrandingPost } from '$lib/data/branding';
+	import type { DesignPost } from '$lib/data/design';
 	import type { Software } from '$lib/data/software';
-	import BrandingItem from './BrandingItem.svelte';
+	import DesignPostCard from './DesignPostCard.svelte';
 	import SoftwareItem from './SoftwareItem.svelte';
 
-	export let projects: BrandingPost[] | Software[];
+	export let projects: DesignPost[] | Software[];
 	export let compact = false;
 	export let loaded = true;
 </script>
@@ -12,7 +12,7 @@
 <div class="projects" class:compact class:loaded>
 	{#each projects as project, index}
 		{#if 'title' in project}
-			<BrandingItem {loaded} data={project} {index} />
+			<DesignPostCard {loaded} data={project} {index} />
 		{:else}
 			<SoftwareItem {loaded} data={project} {index} />
 		{/if}

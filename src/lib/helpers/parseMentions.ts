@@ -1,4 +1,4 @@
-import { brandingData, type BrandingPost } from '$lib/data/branding';
+import { designPosts, type DesignPost } from '$lib/data/design';
 import { softwareData, type Software } from '$lib/data/software';
 import { EMOJI_MENTION_REGEX, PROJECT_MENTION_REGEX, USERNAME_MENTION_REGEX } from './regex';
 
@@ -28,7 +28,7 @@ type ParserOutputBaseProjectStructure = ParserOutputBaseStructure & {
 
 type ParserOutputBrandingStructure = ParserOutputBaseProjectStructure & {
 	projectType: 'branding';
-	details: BrandingPost;
+	details: DesignPost;
 };
 
 type ParserOutputSoftwareStructure = ParserOutputBaseProjectStructure & {
@@ -98,13 +98,13 @@ export function parseMentions(text: string): ParserOutputStructure[] {
 
 				const projectId = match[1];
 				// Check the project type
-				const projectType = brandingData.find(({ id }) => id === projectId)
+				const projectType = designPosts.find(({ id }) => id === projectId)
 					? 'branding'
 					: 'software';
 				// Find the project's data
 				const details =
 					projectType === 'branding'
-						? brandingData.find(({ id }) => id === projectId)
+						? designPosts.find(({ id }) => id === projectId)
 						: softwareData.find(({ id }) => id === projectId);
 
 				if (details) {

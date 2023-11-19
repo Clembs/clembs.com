@@ -1,6 +1,6 @@
-import type { BrandingPost } from '.';
+import type { DesignPost } from '.';
 
-export const purplet2022: BrandingPost = {
+export const purplet2022: DesignPost = {
 	id: 'purplet-2022',
 	brand: 'Purplet',
 	title: 'Purplet - Next-gen tools to build modern Discord apps.',
