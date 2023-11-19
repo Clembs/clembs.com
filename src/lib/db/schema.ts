@@ -9,6 +9,8 @@ import {
 	primaryKey,
 	integer,
 	real,
+	date,
+	varchar,
 } from 'drizzle-orm/pg-core';
 import type { HabileChatData } from './HabileChatData';
 
@@ -81,12 +83,30 @@ export const purchases = pgTable('purchases', {
 	}).default('STRIPE'),
 });
 
-export const usersRelations = relations(users, ({ many }) => ({
+export const donations = pgTable('donations', {
+	id: text('id')
+		.default(sql`gen_random_uuid()`)
+		.primaryKey(),
+	username: text('username').notNull(),
+	amount: integer('amount').notNull(),
+	currency: varchar('currency', {
+		length: 3,
+	}).notNull(),
+	createdAt: date('created_at').notNull().defaultNow(),
+	isSubscription: boolean('is_subscription').notNull().default(false),
+	platform: text('platform', {
+		enum: ['KOFI', 'PAYPAL', 'BOOSTY', 'BUYMEACOFFEE', 'TWITCH', 'OTHER'],
+	}).notNull(),
+	userId: text('user_id').references(() => users.id),
+});
+
+export const usersRelations = relations(users, ({ many, one }) => ({
 	comments: many(comments),
 	mentionedInComments: many(mentions),
 	sessions: many(sessions),
 	passkeys: many(passkeys),
 	purchases: many(purchases),
+	donations: many(donations),
 }));
 
 export const commentsRelations = relations(comments, ({ one, many }) => ({
@@ -123,6 +143,13 @@ export const passkeysRelations = relations(passkeys, ({ one }) => ({
 export const purchasesRelations = relations(purchases, ({ one }) => ({
 	user: one(users, {
 		fields: [purchases.userId],
+		references: [users.id],
+	}),
+}));
+
+export const donationsRelations = relations(donations, ({ one }) => ({
+	user: one(users, {
+		fields: [donations.userId],
 		references: [users.id],
 	}),
 }));
