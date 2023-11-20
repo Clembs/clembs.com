@@ -1,6 +1,5 @@
 {
 	"redirects": [
-		{ "source": "/donate?go", "destination": "/kofi" },
 		{ "source": "/buymeacoffee", "destination": "/kofi" },
 		{ "source": "/kofi", "destination": "https://ko-fi.com/clembs" },
 		{ "source": "/boosty", "destination": "https://boosty.to/clembs" },
