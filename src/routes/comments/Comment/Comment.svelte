@@ -26,12 +26,15 @@
 	export let showActions = true;
 	export let initialNestingLevel = 0;
 	export let showContext = false;
+	export let parentComment = comment.parentComment;
 
 	let nestingLevel = initialNestingLevel;
 	let childComments = comment.childComments;
 	let loadingComments = false;
+	let loadingDelete = false;
+	let loadingPin = false;
 
-	export let childCommentsExpanded = true;
+	export let childCommentsExpanded = !!comment.content;
 
 	let data = $page.data;
 
@@ -57,7 +60,11 @@
 
 		loadingComments = true;
 
-		if (!childComments || childComments.find((c) => c.userId && !c.score)) {
+		if (
+			!childComments ||
+			childComments.find((c) => !c.content) ||
+			(parentComment && parentComment?.childComments?.length !== childComments?.length)
+		) {
 			try {
 				const req = await fetch(`/comments/api/${comment.id}/comments`);
 
@@ -130,9 +137,18 @@
 							<IconLink />
 						</ActionButton>
 						{#if !comment.parentId && data.userData?.badges?.includes('CLEMBS')}
-							<form use:enhance action="/comments/{comment.id}?/pin" method="POST">
+							<form
+								use:enhance={() => {
+									loadingPin = true;
+									return () => (loadingPin = false);
+								}}
+								action="/comments/{comment.id}?/pin"
+								method="POST"
+							>
 								<ActionButton aria-label="Feature comment">
-									{#if comment.isPinned}
+									{#if loadingPin}
+										<LoaderIcon />
+									{:else if comment.isPinned}
 										<IconStarFilled />
 									{:else}
 										<IconStar />
@@ -141,9 +157,20 @@
 							</form>
 						{/if}
 						{#if (data.userData && data.userData?.id === comment.author?.id) || data.userData?.badges?.includes('CLEMBS')}
-							<form use:enhance method="POST" action="/comments/{comment.id}?/delete">
+							<form
+								use:enhance={() => {
+									loadingDelete = true;
+									return () => (loadingDelete = false);
+								}}
+								method="POST"
+								action="/comments/{comment.id}?/delete"
+							>
 								<ActionButton aria-label="Delete comment">
-									<IconTrash />
+									{#if loadingDelete}
+										<LoaderIcon />
+									{:else}
+										<IconTrash />
+									{/if}
 								</ActionButton>
 							</form>
 						{/if}
@@ -180,9 +207,10 @@
 
 	{#if showActions && childComments?.length && childCommentsExpanded}
 		<div class="child-comments" class:margin-left={nestingLevel < 5} transition:slide>
-			{#each childComments as comment}
+			{#each childComments as childComment}
 				<svelte:self
-					{comment}
+					parentComment={comment}
+					comment={childComment}
 					showContext={false}
 					initialNestingLevel={nestingLevel + 1}
 					childCommentsExpanded={false}
