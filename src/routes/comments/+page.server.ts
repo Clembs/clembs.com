@@ -2,11 +2,10 @@ import { db } from '$lib/db';
 import { comments, mentions } from '$lib/db/schema';
 import { generateSnowflake } from '$lib/helpers/snowflake';
 import { fail } from '@sveltejs/kit';
-import { isNull, type InferModel } from 'drizzle-orm';
 import type { Actions, PageServerLoad } from './$types';
 import { rateLimit } from '$lib/helpers/handleRateLimit';
 import { PROJECT_ID_REGEX } from '$lib/helpers/regex';
-import { brandingData } from '$lib/data/branding';
+import { designPosts } from '$lib/data/design';
 import { softwareData } from '$lib/data/software';
 import { bannedWords } from '$lib/helpers/bannedWords';
 import { parseMentions, type ParserOutputUserStructure } from '$lib/helpers/parseMentions';
@@ -15,34 +14,25 @@ import { defaultUserPreferences } from '$lib/db/UserPreferences';
 import { marked } from 'marked';
 import insane from 'insane';
 import { dateFormat } from '$lib/helpers/dateFormat';
+import { getComments, getCommentsCount } from '$lib/helpers/getComments';
 
 export const load: PageServerLoad = async ({ locals, setHeaders }) => {
 	const session = await locals.getSession();
 	const user = session?.user ?? null;
 
-	const comments = await db.query.comments.findMany({
-		with: {
-			author: true,
-			childComments: {
-				with: {
-					author: true,
-				},
-			},
-			score: true,
-			mentionedUsers: {
-				with: {
-					user: true,
-				},
-			},
-		},
-		where: ({ parentId, projectId }, { and }) => and(isNull(parentId), isNull(projectId)),
+	const comments = await getComments({
+		onlyParentComments: true,
+	});
+
+	const count = await getCommentsCount({
+		onlyParentComments: true,
 	});
 
 	setHeaders({
 		'Cache-Control': 'public, max-age=60',
 	});
 
-	return { comments, user };
+	return { comments, user, count };
 };
 
 export const actions: Actions = {
@@ -113,7 +103,7 @@ export const actions: Actions = {
 				});
 			}
 
-			const project = [...(regex[1] === 'branding' ? brandingData : softwareData)].find(
+			const project = [...(regex[1] === 'design' ? designPosts : softwareData)].find(
 				({ id }) => id === regex[2]
 			);
 
@@ -124,7 +114,7 @@ export const actions: Actions = {
 			}
 		}
 
-		const input: InferModel<typeof comments, 'insert'> = {
+		const input: typeof comments.$inferInsert = {
 			id: generateSnowflake(),
 			content: content,
 			userId: currentUser?.id,

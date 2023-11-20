@@ -3,6 +3,8 @@ import { userCommentVote, mentions, comments } from '$lib/db/schema';
 import { error, fail } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
 import type { PageServerLoad, RequestEvent } from './$types';
+import { getComments } from '$lib/helpers/getComments';
+import type { Comment } from '$lib/db/types';
 
 export const load: PageServerLoad = async ({
 	params,
@@ -12,40 +14,26 @@ export const load: PageServerLoad = async ({
 }) => {
 	const userData = await getUserData();
 
-	const commentData = await db.query.comments.findFirst({
-		where: ({ id }, { eq }) => eq(id, params.commentId),
-		with: {
-			author: true,
-			childComments: {
-				with: {
-					author: true,
-					score: true,
-				},
-			},
-			parentComment: {
-				with: {
-					author: true,
-				},
-			},
-			score: true,
-			mentionedUsers: {
-				with: {
-					user: true,
-				},
-			},
-		},
+	const commentsData = await getComments({
+		parentId: params.commentId,
+		includeParentComment: true,
 	});
 
 	setHeaders({
 		'Cache-Control': 'public, max-age=60',
 	});
 
-	if (!commentData) {
+	if (!commentsData.length) {
 		throw error(404);
 	}
 
+	const comment = {
+		...commentsData[0].parentComment,
+		childComments: commentsData,
+	} as Comment;
+
 	return {
-		comment: commentData,
+		comment,
 		user: userData,
 		...(await parent()),
 	};

@@ -16,19 +16,43 @@ export const load = async ({ params, parent, setHeaders }) => {
 				with: {
 					parentComment: {
 						with: {
-							author: true,
+							author: {
+								columns: {
+									id: true,
+									username: true,
+									badges: true,
+								},
+							},
 						},
 					},
-					author: true,
+					author: {
+						columns: {
+							id: true,
+							username: true,
+							badges: true,
+						},
+					},
 					childComments: {
 						with: {
-							author: true,
+							author: {
+								columns: {
+									id: true,
+									username: true,
+									badges: true,
+								},
+							},
 						},
 					},
 					score: true,
 					mentionedUsers: {
 						with: {
-							user: true,
+							user: {
+								columns: {
+									id: true,
+									username: true,
+									badges: true,
+								},
+							},
 						},
 					},
 				},

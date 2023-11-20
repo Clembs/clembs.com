@@ -36,6 +36,11 @@ export const comments = pgTable('comments', {
 	// referenceCommentId: text('reference_comment_id'),
 	isPinned: boolean('pinned'),
 	isBlocked: boolean('blocked'),
+	createdAt: timestamp('created_at', {
+		withTimezone: true,
+	})
+		.notNull()
+		.defaultNow(),
 });
 
 export const passkeys = pgTable('passkeys', {

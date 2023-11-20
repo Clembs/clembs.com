@@ -1,4 +1,4 @@
-import { db } from '$lib/db';
+import { getComments } from '$lib/helpers/getComments';
 import { error, json, type RequestHandler } from '@sveltejs/kit';
 
 export const GET: RequestHandler = async ({ params }) => {
@@ -6,18 +6,8 @@ export const GET: RequestHandler = async ({ params }) => {
 		throw error(400);
 	}
 
-	const comments = await db.query.comments.findMany({
-		where: (comment, { eq }) => eq(comment.parentId, params.commentId!),
-		with: {
-			author: true,
-			childComments: true,
-			score: true,
-			mentionedUsers: {
-				with: {
-					user: true,
-				},
-			},
-		},
+	const comments = await getComments({
+		parentId: params.commentId,
 	});
 
 	if (!comments) {
