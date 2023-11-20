@@ -129,3 +129,10 @@ pre {
 strong {
 	font-weight: 500;
 }
+
+dfn,
+abbr {
+	font-style: normal;
+	text-decoration: underline dotted;
+	cursor: help;
+}
