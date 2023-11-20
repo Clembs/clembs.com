@@ -35,7 +35,7 @@
 		class="inline-mention {node.type}"
 		href="/{node.projectType}/{node.projectId}"
 	>
-		{#if node.projectType === 'branding'}
+		{#if node.projectType === 'design'}
 			<IconBrush size={16} />
 		{:else}
 			<IconCode size={16} />

@@ -26,14 +26,14 @@
 {:else if comment.projectId}
 	{@const [projectType, projectId] = comment.projectId.split('/')}
 	{@const project =
-		projectType === 'branding'
+		projectType === 'design'
 			? designPosts.find(({ id }) => id === projectId)
 			: softwareData.find(({ id }) => id === projectId)}
 	{#if project}
 		<a href="/{projectType}/{projectId}" class="context-blurb subtext">
 			<Curve />
 			<div>
-				{#if projectType === 'branding'}
+				{#if projectType === 'design'}
 					<IconBrush />
 				{:else}
 					<IconCode />
