@@ -23,11 +23,11 @@ export type ParserOutputEmojiStructure = ParserOutputBaseStructure & {
 type ParserOutputBaseProjectStructure = ParserOutputBaseStructure & {
 	type: 'project';
 	projectId: string;
-	projectType: 'software' | 'branding';
+	projectType: 'software' | 'design';
 };
 
-type ParserOutputBrandingStructure = ParserOutputBaseProjectStructure & {
-	projectType: 'branding';
+type ParserOutputDesignStructure = ParserOutputBaseProjectStructure & {
+	projectType: 'design';
 	details: DesignPost;
 };
 
@@ -37,7 +37,7 @@ type ParserOutputSoftwareStructure = ParserOutputBaseProjectStructure & {
 };
 
 export type ParserOutputProjectStructure =
-	| ParserOutputBrandingStructure
+	| ParserOutputDesignStructure
 	| ParserOutputSoftwareStructure;
 
 export type ParserOutputStructure =
@@ -98,12 +98,10 @@ export function parseMentions(text: string): ParserOutputStructure[] {
 
 				const projectId = match[1];
 				// Check the project type
-				const projectType = designPosts.find(({ id }) => id === projectId)
-					? 'branding'
-					: 'software';
+				const projectType = designPosts.find(({ id }) => id === projectId) ? 'design' : 'software';
 				// Find the project's data
 				const details =
-					projectType === 'branding'
+					projectType === 'design'
 						? designPosts.find(({ id }) => id === projectId)
 						: softwareData.find(({ id }) => id === projectId);
 

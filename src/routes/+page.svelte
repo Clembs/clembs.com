@@ -33,10 +33,10 @@ and express my love through design, code and video. Welcome to clembs.com!"
 
 <section id="projects">
 	<div id="project-grid">
-		{#each designPosts.slice(0, 2) as branding, i}
+		{#each designPosts.slice(0, 2) as design, i}
 			{#if i % 2 === 0}
 				<div class="grid-item">
-					<DesignPostCard loaded data={branding} index={i} />
+					<DesignPostCard loaded data={design} index={i} />
 				</div>
 				<div class="grid-item columns">
 					{#each softwareData.slice(i * 2, i * 2 + 2) as software, i}
@@ -50,7 +50,7 @@ and express my love through design, code and video. Welcome to clembs.com!"
 					{/each}
 				</div>
 				<div class="grid-item">
-					<DesignPostCard loaded data={branding} index={i} />
+					<DesignPostCard loaded data={design} index={i} />
 				</div>
 			{/if}
 		{/each}
