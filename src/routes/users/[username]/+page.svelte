@@ -55,6 +55,8 @@
 	</header>
 
 	<Comments
+		count={data.user.comments.length}
+		userId={data.user.id}
 		hideCreateForm={true}
 		showContext={true}
 		comments={data.user.comments}
