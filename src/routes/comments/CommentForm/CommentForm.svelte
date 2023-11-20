@@ -9,11 +9,11 @@
 	import IconMoodSmile from '@tabler/icons-svelte/dist/svelte/icons/IconMoodSmile.svelte';
 	import IconHelpCircle from '@tabler/icons-svelte/dist/svelte/icons/IconHelpCircle.svelte';
 	import toast, { LoaderIcon } from 'svelte-french-toast';
-	import InfoBox from '$lib/components/InfoBox.svelte';
 	import Tooltip from '$lib/components/Tooltip.svelte';
-	import { tick } from 'svelte';
+	import { createEventDispatcher, tick } from 'svelte';
 	import type { Comment as CommentType } from '$lib/db/types';
 	import FormattingHelpModal from '$lib/components/FormattingHelpModal.svelte';
+	import GradientAvatar from '$lib/components/GradientAvatar/GradientAvatar.svelte';
 
 	export let content = '';
 	export let showModal: boolean;
@@ -26,6 +26,8 @@
 	let showHelpModal = false;
 	let commentForm: HTMLFormElement;
 	const commentMaxLength = 256;
+
+	const dispatch = createEventDispatcher();
 
 	const surroundingElementKeys: Record<string, string> = {
 		b: '**',
@@ -76,7 +78,7 @@
 		}
 	}}
 	on:keydown={(e) => {
-		if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+		if (e.key === 'Enter' && (e.ctrlKey || e.metaKey) && content) {
 			e.preventDefault();
 			commentForm.requestSubmit();
 		}
@@ -90,7 +92,7 @@
 <form
 	action="/comments?/post"
 	method="POST"
-	class:expanded
+	class:expanded={expanded || content}
 	bind:this={commentForm}
 	use:enhance={async () => {
 		loading = true;
@@ -128,6 +130,18 @@
 		<input type="hidden" name="project-id" value={projectId} />
 	{/if}
 
+	<div class="comment-profile">
+		<GradientAvatar user={$page.data?.userData} size="2rem" />
+		<div class="comment-profile-username">
+			{$page.data?.userData?.username ?? 'Guest'} <span class="subtext">(You)</span>
+		</div>
+		{#if !$page.data?.userData}
+			<button type="button" on:click={() => dispatch('login')} class="subtext">
+				Use an account?
+			</button>
+		{/if}
+	</div>
+
 	<!-- svelte-ignore a11y-autofocus -->
 	<textarea
 		minlength={1}
@@ -143,12 +157,6 @@
 		on:keydown={handleTextboxShortcuts}
 		bind:value={content}
 	/>
-
-	{#if error}
-		<InfoBox type="danger">
-			{error}
-		</InfoBox>
-	{/if}
 
 	<div class="actions">
 		<div class="left">
@@ -167,49 +175,52 @@
 			</Tooltip>
 
 			<!-- <Tooltip>
-        <span slot="tooltip-content">
-          Insert a GIF or .mp4 video URL to have it appear under your comment!
-        </span>
-        <Button
-          disabled
-          on:click={() => {
-            if (mediaUrl) {
-              content = content.replace(mediaUrl, '');
-            }
-          }}
-          style={mediaUrl ? 'filled' : 'outlined'}
-        >
-          {#if mediaUrl}
-            {@const shortenedMediaName = mediaUrl.split('/')?.at(-1)}
-            {#if mediaUrl.endsWith('.mp4')}
-              <IconVideo />
-            {:else}
-              <IconGif />
-            {/if}
-            {(shortenedMediaName?.length || 0) > 15
-              ? `${shortenedMediaName?.substring(0, 15)}...`
-              : shortenedMediaName}
-          {:else}
-            <IconPhoto /> GIF/Video
-          {/if}
-        </Button>
-      </Tooltip> -->
+					<span slot="tooltip-content">
+						Insert a GIF or .mp4 video URL to have it appear under your comment!
+					</span>
+					<Button
+						disabled
+						on:click={() => {
+							if (mediaUrl) {
+								content = content.replace(mediaUrl, '');
+							}
+						}}
+						style={mediaUrl ? 'filled' : 'outlined'}
+					>
+						{#if mediaUrl}
+							{@const shortenedMediaName = mediaUrl.split('/')?.at(-1)}
+							{#if mediaUrl.endsWith('.mp4')}
+								<IconVideo />
+							{:else}
+								<IconGif />
+							{/if}
+							{(shortenedMediaName?.length || 0) > 15
+								? `${shortenedMediaName?.substring(0, 15)}...`
+								: shortenedMediaName}
+						{:else}
+							<IconPhoto /> GIF/Video
+						{/if}
+					</Button>
+				</Tooltip> -->
 		</div>
 
 		<div class="right">
-			<div class="content-info" class:error={content.length > commentMaxLength}>
-				{#if content.length > commentMaxLength}
+			<div class="content-info" class:error>
+				{#if error}
 					<IconAlertCircleFilled />
 				{/if}
 
-				{content.length}/{commentMaxLength}<br />
+				{#if error}
+					{error} •
+				{/if}
+				{content.length}/{commentMaxLength}
 			</div>
 
 			<Button disabled={loading || content.length > commentMaxLength || !content} type="submit">
 				{#if loading}
 					<LoaderIcon />
 				{:else}
-					{$page.data.hasNameChange ? 'Clemb' : parentComment ? 'Reply' : 'Comment'}
+					{parentComment ? 'Reply' : 'Comment'}
 				{/if}
 			</Button>
 		</div>
@@ -221,14 +232,26 @@
 		display: flex;
 		flex-direction: column;
 		transition: height 300ms cubic-bezier(0.1, 0.6, 0.4, 1);
-		height: 3rem;
-		min-height: 3rem;
+		height: 6rem;
+		min-height: 6rem;
 		max-height: unset;
+
+		.comment-profile {
+			display: flex;
+			gap: 0.75rem;
+			align-items: center;
+			margin-bottom: 0.75rem;
+
+			&-username {
+				font-weight: 500;
+				font-size: 1.1rem;
+			}
+		}
 
 		&.expanded,
 		&:focus-within,
 		textarea:not(:placeholder-shown) {
-			height: calc(150px + 3rem);
+			height: calc(150px + 6rem);
 
 			textarea {
 				height: 150px;
@@ -306,10 +329,7 @@
 					border-radius: 99rem;
 
 					&.error {
-						background-color: var(--color-error);
-						color: var(--color-on-error);
-						padding-left: 0.25rem;
-						padding-right: 0.5rem;
+						color: var(--color-error);
 					}
 				}
 			}

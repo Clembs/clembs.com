@@ -52,5 +52,10 @@
 		max-width: 600px;
 		margin: 0 auto;
 		gap: 1rem;
+
+		:global(header svg) {
+			width: 128px;
+			height: 128px;
+		}
 	}
 </style>

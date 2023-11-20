@@ -3,8 +3,6 @@
 	import type { Comment as CommentType } from '$lib/db/types';
 	import Comment from '../Comment/Comment.svelte';
 	import CommentForm from './CommentForm.svelte';
-	import GradientAvatar from '$lib/components/GradientAvatar/GradientAvatar.svelte';
-	import { page } from '$app/stores';
 
 	export let parentComment: CommentType | null = null;
 	export let projectId: string | null = null;
@@ -16,7 +14,7 @@
 
 {#if showModal}
 	<Modal
-		on:close={(e) => {
+		on:close={() => {
 			parentComment = null;
 			content = '';
 		}}
@@ -34,14 +32,8 @@
 			</div>
 		{/if}
 
-		<div class="comment-profile">
-			<GradientAvatar user={$page.data?.userData} size="2.25rem" />
-			<div class="comment-profile-username">
-				{$page.data?.userData?.username ?? 'Guest'} <span class="subtext">(You)</span>
-			</div>
-		</div>
-
 		<CommentForm
+			on:login
 			expanded
 			bind:content
 			bind:showHelpModal
@@ -61,17 +53,5 @@
 		display: flex;
 		gap: 0.25rem;
 		margin-bottom: 1rem;
-	}
-
-	.comment-profile {
-		display: flex;
-		gap: 0.75rem;
-		align-items: center;
-		margin-bottom: 0.5rem;
-
-		&-username {
-			font-weight: 500;
-			font-size: 1.1rem;
-		}
 	}
 </style>

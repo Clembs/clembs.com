@@ -3,6 +3,7 @@
 	import GradientAvatar from '$lib/components/GradientAvatar/GradientAvatar.svelte';
 	import { letterColors } from '$lib/components/GradientAvatar/letterColors';
 	import MetaTags from '$lib/components/MetaTags.svelte';
+	import LoginModal from '$lib/components/Settings/LoginModal.svelte';
 	import { useShare } from '$lib/components/useShare';
 	import type { Comment } from '$lib/db/types';
 	import { dateFormat } from '$lib/helpers/dateFormat';
@@ -13,17 +14,28 @@
 	import VoteButtons from '../Comment/VoteButtons.svelte';
 	import CommentFormModal from '../CommentForm/CommentFormModal.svelte';
 	import Comments from '../Comments.svelte';
+	import RestrictedFunctionalityModal from '../RestrictedFunctionalityModal.svelte';
 	import type { PageServerData } from './$types';
 	import IconLink from '@tabler/icons-svelte/dist/svelte/icons/IconLink.svelte';
 	import IconMessageCircle from '@tabler/icons-svelte/dist/svelte/icons/IconMessageCircle.svelte';
 
 	export let data: PageServerData;
 	let selectedParentComment: Comment | null | undefined = null;
-	let showModal = false;
+	let showReplyModal = false;
+	let showLoginModal = false;
+	let showRestrictedFunctionalityModal = false;
 
-	function handleReplyButton() {
+	function handleShowLoginPage() {
+		showLoginModal = true;
+	}
+
+	function handleRestrictedFunctionality() {
+		showRestrictedFunctionalityModal = true;
+	}
+
+	function handleReply() {
 		selectedParentComment = data.comment;
-		showModal = true;
+		showReplyModal = true;
 	}
 
 	$: username = data.comment.author?.username ?? 'Guest';
@@ -40,15 +52,17 @@
 />
 
 <CommentFormModal
-	bind:showModal
+	on:login={handleShowLoginPage}
+	bind:showModal={showReplyModal}
 	projectId={data.comment.projectId}
-	parentComment={selectedParentComment}
-	on:close={() => {
-		if (!data.comment.parentComment) {
-			selectedParentComment = null;
-		}
-	}}
+	bind:parentComment={selectedParentComment}
 />
+
+{#if !data.userData}
+	<LoginModal bind:showModal={showLoginModal} />
+{/if}
+
+<RestrictedFunctionalityModal bind:showModal={showRestrictedFunctionalityModal} />
 
 <article class="comment" class:pinned={data.comment.isPinned}>
 	<ContextBlurb comment={data.comment}></ContextBlurb>
@@ -75,9 +89,14 @@
 	<CommentContent comment={data.comment} />
 
 	<div class="comment-actions">
-		<VoteButtons big comment={data.comment} />
+		<VoteButtons
+			on:login={handleShowLoginPage}
+			on:blocked={handleRestrictedFunctionality}
+			big
+			comment={data.comment}
+		/>
 
-		<ActionButton big on:click={handleReplyButton}>
+		<ActionButton big on:click={handleReply}>
 			<IconMessageCircle />
 			Reply
 		</ActionButton>
@@ -93,6 +112,7 @@
 	comments={data.comment.childComments}
 	userData={data.userData}
 	parentComment={data.comment}
+	projectId={data.comment.projectId}
 ></Comments>
 
 <style lang="scss">
