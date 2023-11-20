@@ -1,15 +1,21 @@
 <script lang="ts">
-	import InfoBox from '$lib/components/InfoBox.svelte';
 	import type { PageData } from './$types';
 	import Comments from './Comments.svelte';
 
 	export let data: PageData;
 </script>
 
-<InfoBox type="note">
-	<span slot="title">Welcome to the Comments section!</span>
-	I created this so you can leave feedback, report bugs, ask questions and be chill.<br />
-	No spam or harmful content allowed. Use common sense.
-</InfoBox>
+<div class="intro">
+	Welcome to Comments! I added this page so you can comment on my website, projects, and discuss! <br
+	/>
+	Heavily inspired by YouTube and Reddit, you can also create an account or log into it to vote on comments
+	and have a username.
+</div>
 
-<Comments comments={data.comments} userData={data.userData} />
+<Comments count={data.count} comments={data.comments} userData={data.userData} />
+
+<style lang="scss">
+	.intro {
+		margin: 1rem;
+	}
+</style>
