@@ -25,7 +25,7 @@
 				const { startAuthentication } = await import('@simplewebauthn/browser');
 
 				try {
-					const response = await startAuthentication(options);
+					const response = await startAuthentication(options, true);
 					const formData = new FormData();
 
 					formData.append(
@@ -74,7 +74,7 @@
 		{#if loading}
 			<LoaderIcon />
 		{:else}
-			<Passkey /> Sign in with a passkey
+			<Passkey /> Sign in with a previously created passkey
 		{/if}
 	</Button>
 </form>
