@@ -7,18 +7,23 @@
 	import Chip from '$lib/components/Chip.svelte';
 	import RestrictedFunctionalityModal from './RestrictedFunctionalityModal.svelte';
 	import autoAnimate from '@formkit/auto-animate';
-	import UserInfoModal from '$lib/components/UserInfoModal.svelte';
 	import HabileNeutral from '$lib/svg/HabileNeutral.svelte';
 	import HabileScared from '$lib/svg/HabileScared.svelte';
 	import CommentForm from './CommentForm/CommentForm.svelte';
-	import GradientAvatar from '$lib/components/GradientAvatar/GradientAvatar.svelte';
-	import Tooltip from '$lib/components/Tooltip.svelte';
+	import Button from '$lib/components/Button.svelte';
+	import { LoaderIcon } from 'svelte-french-toast';
+	import { onDestroy, onMount } from 'svelte';
+	import HabileHappy from '$lib/svg/HabileHappy.svelte';
+
+	const commentsInPage = 7;
 
 	export let userData: User | null | undefined;
 	export let parentComment: CommentType | null | undefined = null;
 	export let projectId: string | null = null;
+	export let userId = '';
 	export let comments: CommentType[];
-	export let showModal = false;
+	export let showLoginModal = false;
+	export let showReplyModal = false;
 	export let showContext = false;
 	export let hideCreateForm = false;
 
@@ -34,57 +39,89 @@
 	let selectedSortingMode: 'interactions' | 'recent' = 'recent';
 	let selectedParentComment = parentComment;
 	let showRestrictedFunctionalityModal = false;
-	let showUserInfoModal = false;
-	let selectedUser: User;
+
+	let loadCommentsBtn: HTMLButtonElement;
+	let areCommentsLoading = false;
+	let page = 1;
+	let allCommentsLoaded = comments.length < commentsInPage;
 
 	$: sortedAndFiltered = rankComments(comments, userData, selectedSortingMode, filters);
 
-	function handleReplyButton(event: { detail: CommentType | null | undefined } | undefined) {
-		if (event) {
-			selectedParentComment = event.detail;
-		}
-		showModal = true;
+	export let count = comments.length || 0;
+
+	function handleReply(event: { detail: CommentType | null | undefined }) {
+		selectedParentComment = event.detail;
+		showReplyModal = true;
 	}
 
-	function handleLoginRequiredButton() {
-		showModal = true;
+	function handleShowLoginPage() {
+		showLoginModal = true;
 	}
 
 	function handleRestrictedFunctionality() {
 		showRestrictedFunctionalityModal = true;
 	}
 
-	function handleUserInfoButton(event: { detail: User }) {
-		showUserInfoModal = true;
-		selectedUser = event.detail;
+	async function loadMoreComments() {
+		if (areCommentsLoading || allCommentsLoaded) return;
+
+		areCommentsLoading = true;
+		page = Math.ceil(comments.length / commentsInPage) + 1;
+
+		const url = new URLSearchParams();
+		url.set('page', page.toString());
+		if (projectId) url.set('projectId', projectId);
+		if (parentComment) url.set('parentId', parentComment.id);
+		if (userId) url.set('userId', userId);
+
+		const req = await fetch(`/comments/api/load-more?${url.toString()}`);
+		const newComments = (await req.json()) as CommentType[];
+
+		if (!newComments.length) {
+			intersectionObserver.disconnect();
+			allCommentsLoaded = true;
+			return;
+		}
+
+		comments = [...comments, ...newComments.filter((c) => !comments.find((c2) => c2.id === c.id))];
+		areCommentsLoading = false;
 	}
+
+	let intersectionObserver: IntersectionObserver;
+
+	onMount(() => {
+		if (!allCommentsLoaded) {
+			intersectionObserver = new IntersectionObserver(
+				(entries) => {
+					if (entries[0].isIntersecting) {
+						loadMoreComments();
+						console.log(page);
+					}
+				},
+				{
+					rootMargin: '0px 0px 50% 0px',
+				}
+			);
+
+			intersectionObserver.observe(loadCommentsBtn);
+		}
+	});
+
+	onDestroy(() => {
+		intersectionObserver?.disconnect();
+	});
 </script>
 
 <div class="comments-page" id="comments">
-	<UserInfoModal userData={selectedUser} bind:showModal={showUserInfoModal} />
-
 	{#if !userData}
-		<LoginModal
-			bind:showModal
-			parentComment={selectedParentComment}
-			on:close={() => {
-				if (!parentComment) {
-					selectedParentComment = null;
-				}
-			}}
-		/>
-	{:else}
-		<CommentFormModal
-			bind:showModal
-			{projectId}
-			parentComment={selectedParentComment}
-			on:close={() => {
-				if (!parentComment) {
-					selectedParentComment = null;
-				}
-			}}
-		/>
+		<LoginModal bind:showModal={showLoginModal} />
 	{/if}
+	<CommentFormModal
+		on:login={handleShowLoginPage}
+		bind:showModal={showReplyModal}
+		{projectId}
+		bind:parentComment={selectedParentComment}
+	/>
 
 	<RestrictedFunctionalityModal bind:showModal={showRestrictedFunctionalityModal} />
 
@@ -101,22 +138,22 @@
 					{/if}
 				</h3>
 				<span class="subtext">
-					{sortedAndFiltered?.length || 0}
-					{sortedAndFiltered?.length === 1 ? 'comment' : 'comments'}
+					{count}
+					{count === 1 ? 'comment' : 'comments'}
 				</span>
 			</div>
 			<div class="title-account"></div>
 			{#if userData}
-				<Tooltip>
-					<span slot="tooltip-content"> Account settings </span>
-					<a href="/settings">
-						<GradientAvatar user={userData} showBadge={false} size="2.75rem" />
-					</a>
-				</Tooltip>
+				<Button style="outlined" href="/account">Account</Button>
 			{/if}
 		</div>
 		{#if !hideCreateForm}
-			<CommentForm bind:showModal {projectId} parentComment={selectedParentComment} />
+			<CommentForm
+				on:login={handleShowLoginPage}
+				bind:showModal={showReplyModal}
+				{projectId}
+				parentComment={selectedParentComment}
+			/>
 		{/if}
 	</header>
 
@@ -175,12 +212,31 @@
 					<Comment
 						{comment}
 						{showContext}
-						on:reply={handleReplyButton}
-						on:login={handleLoginRequiredButton}
+						on:reply={handleReply}
+						on:login={handleShowLoginPage}
 						on:blocked={handleRestrictedFunctionality}
-						on:userinfo={handleUserInfoButton}
 					/>
 				{/each}
+
+				{#if !allCommentsLoaded}
+					<button
+						id="load-comments-btn"
+						disabled={areCommentsLoading}
+						bind:this={loadCommentsBtn}
+						on:click={loadMoreComments}
+					>
+						{#if areCommentsLoading}
+							<LoaderIcon /> Loading more comments...
+						{:else}
+							Load more comments...
+						{/if}
+					</button>
+				{:else}
+					<div class="no-comments">
+						<HabileHappy />
+						You've reached the end of the comments!
+					</div>
+				{/if}
 			</div>
 		{:else}
 			<div class="no-comments">
@@ -191,17 +247,16 @@
 	{:else}
 		<div class="no-comments">
 			<HabileNeutral />
-			No comments, but you could be the first!
+			{#if hideCreateForm}
+				No comments yet...
+			{:else}
+				No comments, but you could be the first!
+			{/if}
 		</div>
 	{/if}
 </div>
 
 <style lang="scss">
-	.comments-page {
-		// padding: 2rem 0;
-		border-top: 1px solid var(--color-on-surface);
-	}
-
 	.sort-and-filter {
 		margin-bottom: 0.5rem;
 		overflow: auto;
@@ -237,8 +292,9 @@
 	header {
 		display: flex;
 		flex-direction: column;
-		gap: 0.5rem;
+		gap: 1rem;
 		margin: 1rem;
+		margin-top: 2rem;
 
 		.title {
 			display: flex;
@@ -278,5 +334,18 @@
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
+	}
+
+	#load-comments-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+		padding: 0.5rem 1rem;
+		border-radius: 99rem;
+
+		&:hover {
+			background-color: var(--color-surface);
+		}
 	}
 </style>
