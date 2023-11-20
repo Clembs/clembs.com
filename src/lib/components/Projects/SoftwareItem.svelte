@@ -67,6 +67,7 @@
 		.about {
 			.name {
 				font-weight: 500;
+				font-size: 1.1rem;
 			}
 		}
 	}
