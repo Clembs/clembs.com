@@ -184,11 +184,9 @@
 <style lang="scss">
 	header {
 		border-radius: 1rem 1rem 0 0;
-		border-bottom: 1px solid var(--color-on-surface);
 		padding: 2rem 1rem;
 		display: flex;
 		gap: 2rem;
-		justify-content: center;
 
 		.icon img {
 			border: 1px solid var(--color-outline);
@@ -228,11 +226,6 @@
 					font-size: clamp(1.5rem, 5vw, 2rem);
 					margin: 0;
 				}
-
-				.subtext {
-					font-size: 0.9rem;
-					color: var(--color-on-surface);
-				}
 			}
 			.buttons {
 				display: flex;
@@ -244,8 +237,7 @@
 	}
 
 	section {
-		border-top: 1px solid var(--color-outline);
-		padding: 1.5rem;
+		padding: 1rem;
 	}
 
 	#gallery {
