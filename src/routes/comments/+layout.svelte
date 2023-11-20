@@ -1,10 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import Badge from '$lib/components/Badge.svelte';
-	import type { PageData } from './$types';
 	import IconArrowLeft from '@tabler/icons-svelte/dist/svelte/icons/IconArrowLeft.svelte';
-
-	export let data: PageData;
 </script>
 
 <main>
@@ -13,7 +10,7 @@
 			<IconArrowLeft />
 		</a>
 		<h1>
-			{data.hasNameChange ? 'Clember (C)' : 'Comments'}
+			Comments
 			<Badge style="outlined">Preview</Badge>
 		</h1>
 	</header>
@@ -29,7 +26,7 @@
 		align-items: center;
 		gap: 0.5rem;
 		margin: 1rem 0;
-		margin-left: calc(-1 * var(--back-btn-size));
+		margin-left: calc(-1 * var(--back-btn-size) + 0.5rem);
 		transition: margin-left 150ms ease-in-out;
 
 		&.show-back-btn {
