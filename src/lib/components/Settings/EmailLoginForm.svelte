@@ -54,7 +54,8 @@
 		<h1>Sign in to clembs.com</h1>
 
 		<p>
-			Create a clembs.com account or sign into it to post comments, up or downvote them, and more!
+			Create an account or sign in to vote on comments, use a username, and more!<br />
+			The process takes less than 2 minutes, and you can always delete your account.
 		</p>
 	</header>
 
@@ -79,7 +80,7 @@
 </form>
 
 {#if canUsePasskeys}
-	<PasskeyLogin bind:error bind:showModal bind:email />
+	<PasskeyLogin disabled={!EMAIL_REGEX.test(email)} bind:error bind:showModal bind:email />
 {/if}
 
 <style lang="scss">
