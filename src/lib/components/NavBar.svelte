@@ -1,103 +1,108 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import Clembs from '$lib/icons/Clembs.svelte';
+	import { IconArrowLeft, IconUser } from '@tabler/icons-svelte';
+	import { cubicInOut } from 'svelte/easing';
+	import { fly } from 'svelte/transition';
+	import GradientAvatar from './GradientAvatar/GradientAvatar.svelte';
 </script>
 
 <nav>
+	{#if $page.data.navButton || $page.url.pathname !== '/'}
+		<a
+			href={$page.data.navButton?.href || '/'}
+			class="side-button"
+			id="back"
+			in:fly={{
+				duration: 200,
+				easing: cubicInOut,
+				x: 20,
+			}}
+			out:fly={{
+				duration: 150,
+				easing: cubicInOut,
+				x: -20,
+			}}
+		>
+			<div id="arrow">
+				<IconArrowLeft stroke={1.5} />
+			</div>
+			{$page.data.navButton ? $page.data.navButton.label || 'Back' : 'Home'}
+		</a>
+	{/if}
+
 	<a href="/" id="profile">
 		<Clembs />
 	</a>
-	<ul class="links">
-		<a href="/" aria-current={$page.url.pathname === '/'}> Home </a>
-		<a href="/projects" aria-current={$page.url.pathname === '/projects'}> Work </a>
-		<a href="/comments" aria-current={$page.url.pathname.includes('/comments')}> Comments </a>
-	</ul>
+
+	{#if $page.url.href.includes('/comments')}
+		<a href="/account" id="account" class="side-button">
+			{#if $page.data.userData}
+				<GradientAvatar user={$page.data.userData} size="1.5rem" />
+				Settings
+			{:else}
+				<div id="arrow">
+					<IconUser stroke={1.5} />
+				</div>
+				Login
+			{/if}
+		</a>
+	{/if}
 </nav>
 
 <style lang="scss">
 	nav {
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
-
-		width: 100%;
-		gap: 1rem;
-		padding: 0.5rem 1rem;
-		padding-top: 2rem;
+		justify-content: center;
 		max-width: 1000px;
-		margin: 0 auto;
+		position: relative;
 
-		.links {
-			display: flex;
-			gap: 0.25rem;
-			align-items: center;
-			margin: 0;
-			list-style: none;
-			padding: 0;
-			width: 100%;
-			justify-content: end;
-
-			a {
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				gap: 0.5rem;
-				padding: 0.5rem 1rem;
-				border-radius: 99rem;
-				text-decoration: none;
-				border: 1px solid transparent;
-
-				--transition-duration: 200ms;
-				--transition: var(--transition-duration) cubic-bezier(0, 0, 0.125, 1);
-
-				transition-delay: 0ms;
-				transition:
-					border var(--transition),
-					padding var(--transition),
-					transform var(--transition),
-					font-variation-settings var(--transition);
-
-				user-select: none;
-
-				font-variation-settings: 'wght' 500;
-
-				&:hover {
-					border: 1px solid var(--color-outline);
-					// padding: 0.5rem 1.25rem;
-					font-variation-settings: 'wght' 550;
-				}
-
-				&[aria-current='true'] {
-					background-color: var(--color-on-background);
-					color: var(--color-background);
-					// padding: 0.5rem 1.25rem;
-					font-variation-settings: 'wght' 550;
-				}
-			}
-		}
-
-		// background-color: var(--color-background);
-		// border-bottom: 1px solid var(--color-outline);
+		margin: 2rem auto;
 
 		#profile {
+			display: grid;
+			border-radius: 99rem;
+			padding: 0.25rem;
+		}
+
+		.side-button {
 			display: flex;
-			gap: 0.75rem;
 			align-items: center;
 			text-decoration: none;
-			// border-radius: 0.5rem;
-			// padding: 0.25rem 0.5rem;
-		}
-	}
+			gap: 0.5rem;
+			padding: 0.25rem;
+			padding-right: 0.5rem;
+			color: var(--color-on-surface);
+			position: absolute;
+			border-radius: 99rem;
 
-	@media (max-width: 600px) {
-		nav {
-			flex-direction: column;
-
-			ul {
-				a {
-					width: 100%;
-				}
+			&:hover {
+				text-decoration: underline;
 			}
+		}
+
+		#back {
+			left: 1rem;
+			margin-left: -0.25rem;
+
+			#arrow {
+				display: grid;
+				transition: transform 0.1s ease-in-out;
+			}
+
+			&:hover #arrow {
+				transform: translateX(-0.25rem);
+			}
+
+			&:active #arrow {
+				transform: translateX(0.125rem);
+			}
+		}
+
+		#account {
+			right: 1rem;
+			margin-right: -0.25rem;
 		}
 	}
 </style>

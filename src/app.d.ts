@@ -15,6 +15,11 @@ declare global {
 			session: Session | null;
 			userData: User | null | undefined;
 			themeGradient?: DesignPost['themeGradient'];
+			navButton?: {
+				label: string;
+				href: string;
+				icon?: SvelteComponent;
+			};
 		}
 		// interface Platform {}
 	}
