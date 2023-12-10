@@ -22,7 +22,11 @@
 				{data.title}
 			</div>
 			<span class="subtext">
-				{data.brief}
+				{data.createdAt.toLocaleString('en-US', {
+					month: 'long',
+					day: 'numeric',
+					year: 'numeric',
+				})}
 			</span>
 		</div>
 		<!-- <p>{project.brief}</p> -->
