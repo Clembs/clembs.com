@@ -5,30 +5,27 @@ import { getComments } from '$lib/helpers/getComments';
 import { SnowflakeRegex } from '@purplet/utils';
 import { PROJECT_ID_REGEX } from '$lib/helpers/regex';
 
-export const GET: RequestHandler = async ({ url }) => {
+export const GET: RequestHandler = async ({ url, setHeaders }) => {
 	const params = Object.fromEntries(url.searchParams.entries());
 
 	const schema = object({
 		projectId: optional(string([regex(PROJECT_ID_REGEX)])),
 		parentId: optional(string([regex(SnowflakeRegex)])),
-		page: number(),
 		userId: optional(string()),
 	});
 
-	const { projectId, page, parentId, userId } = parse(schema, {
-		...params,
-		page: Number(params.page),
-	});
+	const { projectId, parentId, userId } = parse(schema, params);
 
 	const comments = await getComments({
-		page,
 		projectId,
 		parentId,
 		onlyParentComments: true,
 		userId,
 	});
 
-	console.log(comments);
+	setHeaders({
+		'Cache-Control': 'public, max-age=1200',
+	});
 
 	return json(comments);
 };

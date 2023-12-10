@@ -3,7 +3,7 @@ import type { LayoutServerLoad } from './$types';
 import { softwareData } from '$lib/data/software';
 import { getComments } from '$lib/helpers/getComments';
 
-export const load: LayoutServerLoad = async ({ url, locals: { getUserData } }) => {
+export const load: LayoutServerLoad = async ({ url, locals: { getUserData }, setHeaders }) => {
 	const project = softwareData.find(({ id }) => id === url.pathname.split('/').at(-1));
 	const type = 'software';
 
@@ -18,6 +18,10 @@ export const load: LayoutServerLoad = async ({ url, locals: { getUserData } }) =
 	});
 
 	const userData = await getUserData();
+
+	setHeaders({
+		'Cache-Control': 'public, max-age=1200',
+	});
 
 	return {
 		...project,

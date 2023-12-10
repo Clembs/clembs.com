@@ -3,7 +3,12 @@ import { error } from '@sveltejs/kit';
 import type { LayoutServerLoad } from './$types';
 import { getComments } from '$lib/helpers/getComments';
 
-export const load: LayoutServerLoad = async ({ url, route, locals: { getUserData } }) => {
+export const load: LayoutServerLoad = async ({
+	url,
+	route,
+	locals: { getUserData },
+	setHeaders,
+}) => {
 	const project = designPosts.find(({ id }) => id === url.pathname.split('/').at(-1));
 	const type = 'design';
 
@@ -19,10 +24,18 @@ export const load: LayoutServerLoad = async ({ url, route, locals: { getUserData
 
 	const userData = await getUserData();
 
+	setHeaders({
+		'Cache-Control': 'public, max-age=1200',
+	});
+
 	return {
 		...project,
 		type,
 		comments,
 		userData,
+		navButton: {
+			label: 'Projects',
+			href: '/projects',
+		},
 	};
 };
