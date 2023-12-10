@@ -6,7 +6,6 @@ export const kikuri: DesignPost = {
 	title: 'Kikuri - The fun and casual card collecting Discord bot.',
 	createdAt: new Date('2023-06-23'),
 	links: {
-		projectUrl: 'https://kikuri-bot.com',
 		instagram: 'https://www.instagram.com/p/Ct2cethNRBM/',
 		behance: 'https://www.behance.net/gallery/173728135/Kikuri-web-design-UIUX',
 		dribbble: 'https://dribbble.com/shots/21825728-Kikuri-web-design-UI-UX',

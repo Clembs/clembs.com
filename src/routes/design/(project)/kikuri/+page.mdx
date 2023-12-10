@@ -1,3 +1,9 @@
+<script>
+	import Img from '@zerodevx/svelte-Img'; import banner from './kikuri.webp?as=run'; import branding
+	from './branding.png?as=run'; import responsive from './responsive.png?as=run'; import desktop
+	from './desktop.png?as=run';
+</script>
+
 ## Overview
 
 Kikuri is a Discord bot about an anime-themed card-collecting global economy where users collect,
@@ -5,31 +11,19 @@ trade, and upgrade their cards, to fight against other users. Kikuri’s team ap
 redesign their website for mobile and desktop, to make it more content-rich and responsive while
 using the brand’s core identity.
 
-<img
-	loading="lazy"
-	src="https://c.clembs.com/branding/kikuri/kikuri.webp"
-	alt="Kikuri - The fun and casual card collecting Discord bot."
-/>
+<Img src={banner} alt="Kikuri - The fun and casual card collecting Discord bot." />
 
 ## Branding
 
-For the branding, I'm using the colors and fonts I was provided with: Red accents, a dark theme, and Rubik for the fonts.
+For the branding, I'm using the colors and fonts I was provided with: Red accents, a dark theme, and Rubik for the font.
 
-<img
-	loading="lazy"
-	src="https://c.clembs.com/files/8413dc5fc987a8b92b.png"
-	alt="Colors and fonts used"
-/>
+<Img src={branding} alt="Colors and fonts used" />
 
 ## Responsive
 
 Kikuri's old website was not really optimized for mobile, which was something I ought to solve by revamping their navbar for more clarity, and big making buttons bigger.
 
-<img
-	loading="lazy"
-	src="https://c.clembs.com/files/9f436904cd38f18e19.png"
-	alt="Shot with multiple devices running the Kikuri website"
-/>
+<Img src={responsive} alt="Shot with multiple devices running the Kikuri website" />
 
 ## Resourceful
 
@@ -39,7 +33,4 @@ For the former, I chose a simple list of servers with their member counts, to hi
 
 For the cards section, I chose to make a background full of the card design I was provided, that in practice would infinitely scroll at random speeds to give the website more depth and parallax. Stats are overlaid on top of this, showing how much cards and collections there is.
 
-<img
-	src="https://c.clembs.com/files/63a4418bf76ca73be2.png"
-	alt="A complete view of the website, desktop mode"
-/>
+<Img src={desktop} alt="A complete view of the website, desktop mode" />
