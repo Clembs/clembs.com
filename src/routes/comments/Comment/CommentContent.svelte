@@ -62,7 +62,7 @@
 
 <style lang="scss">
 	.comment-content {
-		font-size: 15px;
+		font-size: 17px;
 
 		.comment-media {
 			margin-top: 0.5rem;
