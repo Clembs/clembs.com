@@ -6,6 +6,7 @@
 	import { LoaderIcon } from 'svelte-french-toast';
 	import { OTP_REGEX } from '$lib/helpers/regex';
 	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 
 	export let email: string;
 	export let isNewUser: boolean;
@@ -46,6 +47,7 @@
 
 			showModal = false;
 			await update();
+			location.reload();
 		};
 	}}
 	action="/account?/verifyOTP"

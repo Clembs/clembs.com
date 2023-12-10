@@ -26,8 +26,6 @@
 		loading = true;
 
 		return async ({ result, update }) => {
-			loading = false;
-
 			if (result.type === 'failure') {
 				error = result.data?.message;
 				return;
@@ -43,6 +41,7 @@
 				});
 			}
 
+			loading = false;
 			await update();
 		};
 	}}
@@ -67,6 +66,7 @@
 		placeholder="example@clembs.com"
 		autofocus
 		required={true}
+		autocomplete="username webauthn"
 	/>
 
 	<Button inline={false} type="submit" disabled={!EMAIL_REGEX.test(email)}>

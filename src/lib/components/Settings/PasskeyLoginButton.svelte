@@ -25,7 +25,8 @@
 				const { startAuthentication } = await import('@simplewebauthn/browser');
 
 				try {
-					const response = await startAuthentication(options, true);
+					const response = await startAuthentication(options);
+
 					const formData = new FormData();
 
 					formData.append(
@@ -45,25 +46,22 @@
 
 					const verificationJson = await req.json();
 
-					loading = false;
-
 					if (verificationJson.type === 'success') {
-						loading = false;
 						toast.success(`Welcome back to clembs.com!`);
 						showModal = false;
 					}
 				} catch (e) {
-					loading = false;
 					error = String(e);
 				}
 			}
 
 			if (result.type === 'failure') {
-				loading = false;
 				error = result.data?.message;
 			}
 
+			loading = false;
 			await update();
+			location.reload();
 		};
 	}}
 	method="post"
