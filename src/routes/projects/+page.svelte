@@ -6,8 +6,10 @@
 </script>
 
 <main>
-	<section>
-		<h1 id="design">Graphic design</h1>
+	<h1>Projects</h1>
+
+	<section id="design">
+		<h2>Graphic design</h2>
 
 		<p>
 			My creative personality made me design as far back as I remember, first drawing logos with
@@ -24,7 +26,7 @@
 	</section>
 
 	<section id="software">
-		<h1>Apps & tools</h1>
+		<h2>Apps & tools</h2>
 
 		<p>
 			Computers have always been a passion of mine, and so became coding after experimenting with
@@ -50,7 +52,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
-		margin-bottom: 1rem;
+		margin: 1rem 0;
 
 		.projects {
 			display: grid;
