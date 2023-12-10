@@ -31,17 +31,25 @@ export function relativeTimeFormat(date: Date | number): string {
 	return rtf.format(Math.floor(deltaSeconds / divisor), units[unitIndex]);
 }
 
+function leadingZero(num: number) {
+	return num > 9 ? num : `0${num}`;
+}
+
 export function dateFormat(date: Date, showTime = true) {
-	return date.toLocaleString('en-US', {
-		month: 'long',
-		day: 'numeric',
-		year: 'numeric',
-		...(showTime
-			? {
-					hour: '2-digit',
-					hour12: false,
-					minute: '2-digit',
-			  }
-			: {}),
-	});
+	return `${date.getFullYear()}-${leadingZero(date.getMonth() + 1)}-${leadingZero(date.getDate())}${
+		showTime ? ` ${leadingZero(date.getHours())}:${leadingZero(date.getMinutes())}` : ''
+	}`;
+
+	// return date.toLocaleString('en-US', {
+	// 	month: 'long',
+	// 	day: 'numeric',
+	// 	year: 'numeric',
+	// 	...(showTime
+	// 		? {
+	// 				hour: '2-digit',
+	// 				hour12: false,
+	// 				minute: '2-digit',
+	// 		  }
+	// 		: {}),
+	// });
 }
