@@ -20,10 +20,10 @@
 	let showLoginModal = false;
 	let showRestrictedFunctionalityModal = false;
 
-	const username = data.comment.author?.username ?? 'Guest';
-	const date = snowflakeToDate(data.comment.id);
+	$: username = data.comment.author?.username ?? 'Guest';
+	$: date = snowflakeToDate(data.comment.id);
 
-	$: console.log(data.comment.id);
+	$: console.log(data.comment.parentId);
 </script>
 
 <MetaTags
@@ -42,7 +42,7 @@
 <RestrictedFunctionalityModal bind:showModal={showRestrictedFunctionalityModal} />
 
 <article class="comment" class:pinned={data.comment.isPinned}>
-	<ContextBlurb comment={data.comment}></ContextBlurb>
+	<ContextBlurb comment={data.comment} />
 	<div class="comment-metadata">
 		<GradientAvatar size="2.5rem" user={data.comment.author} />
 		{username}
