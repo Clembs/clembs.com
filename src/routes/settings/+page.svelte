@@ -20,6 +20,8 @@
 	import { onMount } from 'svelte';
 	import type { PageData } from '../$types';
 
+	import { IconDeviceFloppy, IconEdit, IconX } from '@tabler/icons-svelte';
+
 	export let data: PageData;
 
 	let usernameChangeLoading = false;
@@ -29,6 +31,8 @@
 	let username = data?.userData?.username;
 	let emailAllReplies = data?.userData?.preferences?.email?.allReplies;
 	let showDeleteModal = false;
+
+	let editPasskeyId = '';
 
 	let canUsePasskeys = false;
 	let passkeyUseLoading = true;
@@ -42,9 +46,9 @@
 
 <main>
 	{#if data?.userData}
-		<h1>Account Settings</h1>
-
 		<DeleteAccountModal bind:showDeleteModal />
+
+		<h1>Account Settings</h1>
 
 		<SettingsSection>
 			<h2>Profile</h2>
@@ -191,7 +195,12 @@
 						use:enhance={() => {
 							return async ({ result, update }) => {
 								if (result.type === 'success') {
-									toast.success('Passkey deleted successfully!');
+									if (editPasskeyId === passkey.credentialId) {
+										toast.success('Passkey updated successfully!');
+										editPasskeyId = '';
+									} else {
+										toast.success('Passkey deleted successfully!');
+									}
 								}
 								if (result.type === 'failure') {
 									toast.error(result.data?.message);
@@ -204,27 +213,66 @@
 						}}
 						method="post"
 						class="passkey"
-						action="/account?/deletePasskey"
+						action={editPasskeyId === passkey.credentialId
+							? '/account?/updatePasskey'
+							: '/account?/deletePasskey'}
 					>
 						<div class="passkey-profile">
 							<input type="hidden" name="id" value={passkey.credentialId} />
 							<Passkey />
 							<div class="passkey-profile-info">
-								<span class="passkey-profile-info-name">
-									{passkey.name}
-								</span>
-								<span class="subtext">
-									Registered on {dateFormat(passkey.createdAt)}
-								</span>
+								{#if editPasskeyId === passkey.credentialId}
+									<TextInput
+										value={passkey.name}
+										name="name"
+										placeholder="{data.userData.username}'s device"
+										required={true}
+										autofocus
+										maxlength={32}
+										minlength={2}
+									/>
+								{:else}
+									<span class="passkey-profile-info-name">
+										{passkey.name}
+									</span>
+									<span class="subtext">
+										Created on {dateFormat(passkey.createdAt)}
+									</span>
+								{/if}
 							</div>
 						</div>
 
-						<Tooltip>
-							<span slot="tooltip-content">Delete passkey</span>
-							<Button type="submit" size="sm" style="text">
-								<IconTrash />
-							</Button>
-						</Tooltip>
+						<div class="buttons">
+							{#if editPasskeyId === passkey.credentialId}
+								<Button type="submit" style="text" size="sm">
+									<IconDeviceFloppy /> Save
+								</Button>
+								<Button on:click={() => (editPasskeyId = '')} type="button" style="text" size="sm">
+									<IconX /> Cancel
+								</Button>
+							{:else}
+								<Tooltip>
+									<span slot="tooltip-content">Edit passkey</span>
+									<Button
+										on:click={() => {
+											editPasskeyId = passkey.credentialId;
+										}}
+										type="button"
+										size="sm"
+										style="text"
+									>
+										<IconEdit />
+									</Button>
+								</Tooltip>
+
+								<Tooltip>
+									<span slot="tooltip-content">Delete passkey</span>
+									<Button type="submit" size="sm" style="text">
+										<IconTrash />
+									</Button>
+								</Tooltip>
+							{/if}
+						</div>
 					</form>
 				{/each}
 			{:else}

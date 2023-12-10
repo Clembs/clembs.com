@@ -2,7 +2,7 @@ import type { Actions, PageServerLoad } from './$types';
 import { error, fail, redirect } from '@sveltejs/kit';
 import { db } from '$lib/db';
 import { comments, otps, passkeys, users } from '$lib/db/schema';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { EMAIL_REGEX, OTP_REGEX } from '$lib/helpers/regex';
 import type { Comment } from '$lib/db/types';
 import { checkUsername } from '$lib/helpers/checkUsername';
@@ -277,7 +277,7 @@ export const actions: Actions = {
 
 		const options = await generateAuthenticationOptions({
 			rpID: url.hostname,
-			userVerification: 'required',
+			userVerification: 'preferred',
 			allowCredentials: userData?.passkeys.map((p) => ({
 				id: Buffer.from(p.credentialId, 'base64'),
 				type: 'public-key',
@@ -316,6 +316,10 @@ export const actions: Actions = {
 				type: 'public-key',
 			})),
 			timeout: 60000,
+			authenticatorSelection: {
+				residentKey: 'required',
+				userVerification: 'required',
+			},
 		});
 
 		await db
@@ -381,6 +385,7 @@ export const actions: Actions = {
 					expectedRPID: url.hostname,
 					response: response.response as RegistrationResponseJSON,
 					expectedOrigin: url.origin.replace('http://', 'https://'),
+					requireUserVerification: true,
 				});
 
 				if (verification.verified && verification.registrationInfo) {
@@ -395,9 +400,7 @@ export const actions: Actions = {
 						),
 						counter: verification.registrationInfo.counter,
 						userId: userData.id,
-						name: userAgentInfo
-							? `${userAgentInfo.browser} on ${userAgentInfo.os}`
-							: 'Unknown device',
+						name: userAgentInfo ? `${userAgentInfo.os}` : 'Unknown device',
 					});
 
 					await createSession(event, userData.id);
@@ -429,6 +432,7 @@ export const actions: Actions = {
 				expectedChallenge: userData.challenge,
 				expectedOrigin: url.origin.replace('http://', 'https://'),
 				response: response.response as AuthenticationResponseJSON,
+				requireUserVerification: true,
 				authenticator: {
 					credentialID: Buffer.from(passkey.credentialId, 'base64'),
 					credentialPublicKey: Buffer.from(passkey.publicKey, 'base64'),
@@ -523,6 +527,44 @@ export const actions: Actions = {
 			await signOut(event);
 		}
 	},
+	updatePasskey: async ({ request, locals: { getUserData } }) => {
+		const userData = await getUserData();
+		const formData = await request.formData();
+
+		if (!userData) throw redirect(303, '/settings');
+		if (!formData)
+			return fail(400, {
+				message: 'Invalid data.',
+			});
+
+		const id = formData.get('id')?.toString();
+		const name = formData.get('name')?.toString();
+
+		if (!id)
+			return fail(400, {
+				message: 'Invalid passkey ID.',
+			});
+
+		if (!name || name.length > 32 || name.length < 3)
+			return fail(400, {
+				message: 'Invalid passkey name.',
+			});
+
+		try {
+			await db
+				.update(passkeys)
+				.set({
+					name,
+				})
+				.where(and(eq(passkeys.credentialId, id), eq(passkeys.userId, userData.id)));
+
+			return { success: true };
+		} catch (e) {
+			throw error(500, {
+				message: 'Failed to edit passkey.',
+			});
+		}
+	},
 	deletePasskey: async ({ request, locals: { getUserData } }) => {
 		const userData = await getUserData();
 		const formData = await request.formData();
@@ -541,7 +583,9 @@ export const actions: Actions = {
 			});
 
 		try {
-			await db.delete(passkeys).where(eq(passkeys.credentialId, id));
+			await db
+				.delete(passkeys)
+				.where(and(eq(passkeys.credentialId, id), eq(passkeys.userId, userData.id)));
 
 			return { success: true };
 		} catch (e) {
