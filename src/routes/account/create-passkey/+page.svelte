@@ -121,6 +121,8 @@
 			Create passkey
 		{/if}
 	</Button>
+
+	<Button type="button" href="/settings" style="outlined">Skip</Button>
 </form>
 
 <style lang="scss">
