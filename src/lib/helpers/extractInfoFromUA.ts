@@ -34,9 +34,6 @@ export function extractInfoFromUA(userAgent: string) {
 		case 'mac':
 			osName = 'Mac';
 			break;
-		case 'linux':
-			osName = 'Linux';
-			break;
 		case 'android':
 			osName = 'Android';
 			break;
@@ -45,6 +42,9 @@ export function extractInfoFromUA(userAgent: string) {
 			break;
 		case 'ipad':
 			osName = 'iOS';
+			break;
+		case 'linux':
+			osName = 'Linux';
 			break;
 		default:
 			osName = 'Unknown';
