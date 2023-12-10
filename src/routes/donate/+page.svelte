@@ -69,7 +69,7 @@
 			<li>
 				A fancy
 				<span class="icon"><Supporter /></span>
-				badge on your <a href="/users/{randomDonator?.user?.username}">Comments profile</a>
+				badge next to your username in Comments
 			</li>
 			<li>
 				A sexy <Mention
