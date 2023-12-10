@@ -65,9 +65,14 @@
 				}
 			}
 
-			if (result.type === 'failure') {
+			if (result.type === 'failure' && typeof result.data?.message === 'string') {
 				toast.error(result.data?.message);
 				error = result.data?.message;
+			}
+
+			if (result.type === 'success') {
+				toast.success('Passkey successfully created!');
+				await goto('/settings');
 			}
 
 			loading = false;
