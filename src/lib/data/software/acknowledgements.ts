@@ -3,7 +3,7 @@ import type { Software } from '.';
 export const acknowledgements: Software = {
 	id: 'acknowledgements',
 	name: 'Acknowledgements',
-	category: 'Dependency list generator tool',
+	brief: 'Generating dependency lists made easy',
 	createdAt: new Date('2022-08-08'),
 	description: `Acknowledgments is a CLI tool that generates a JSON file with a list of all the local dependencies from package.json, as well as ones you add yourself, with exports to many file types (CSV, TOML, HTML, YAML and Markdown).`,
 	iconPath: 'https://i.imgur.com/MUEH8Un.png',

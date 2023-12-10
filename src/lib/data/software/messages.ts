@@ -3,8 +3,9 @@ import type { Software } from '.';
 export const messages: Software = {
 	id: 'messages',
 	name: 'Anonymous messages',
-	category: 'Send me messages anonymously',
+	brief: 'A fun idea done in a few hours and no database.',
 	createdAt: new Date('2023-02-22'),
+	finishedAt: new Date('2023-02-23'),
 	description: `I was once bored and looked through Instagram stories, to find that one of my former friends had an app that allowed anyone to ask her questions anonymously, that she would then automatically post to Instagram. The idea had intrigued me, and I wanted to recreate the app for my own account in the minimum amount of time possible and without a database, while giving it my own spin on the UI and features.<br><br>
   Wanting to learn more about HTML forms and webhooks, I immediately started work and 3 hours later, the initial version was published and got really popular among my classmates the day after, receiving about 30 questions a day for the first week!<br><br>
   I later released more UI updates and features, like the ability to change message colors, or to see messages you've previously sent to ask follow-up questions.<br><br>

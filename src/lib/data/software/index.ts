@@ -1,8 +1,10 @@
 import { acknowledgements } from './acknowledgements';
+import { comments } from './comments';
 import { crbt } from './crbt';
 import { habileChat } from './habile-chat';
 import { messages } from './messages';
 import { purplet } from './purplet';
+import { unibros } from './unibros';
 
 export const softwarePlatforms = {
 	windows: 'Windows',
@@ -15,11 +17,10 @@ export const softwarePlatforms = {
 export interface Software {
 	id: string;
 	name: string;
-	category: string;
+	brief: string;
 	iconPath: string;
 	iconThumbnailPath: string;
-	description: string;
-	gallery?: string[];
+	description?: string;
 	links?: {
 		repoUrl?: string;
 		projectUrl?: string;
@@ -40,12 +41,6 @@ export interface Software {
 		from: string;
 		to: string;
 	};
-	credits?: {
-		name: string;
-		url?: string;
-	}[];
-	policy?: string;
-	terms?: string;
 	platforms?: (keyof typeof softwarePlatforms)[];
 }
 
@@ -55,4 +50,6 @@ export const softwareData: Software[] = [
 	acknowledgements,
 	messages,
 	habileChat,
+	comments,
+	unibros,
 ].sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());

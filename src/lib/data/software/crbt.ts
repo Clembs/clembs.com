@@ -3,8 +3,9 @@ import type { Software } from '.';
 export const crbt: Software = {
 	id: 'crbt',
 	name: 'CRBT',
-	category: 'Multipurpose Discord bot',
+	brief: 'Multipurpose Discord bot',
 	createdAt: new Date('2019-07-02'),
+
 	description: `CRBT is a Discord bot that helps you get things done quickly through user-friendly and customizable commands.<br><br>
 It features seemingly everything you'd ask a Discord bot to do, like welcoming new members with custom messages and actions or creating intuitive and modern menus for self-assignable roles.<br><br>
 It also has stuff you wish was built into Discord, like polls, giveaways or reminders! And they work almost like if they were native, you'll love them!<br><br>

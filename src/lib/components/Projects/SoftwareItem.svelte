@@ -35,7 +35,7 @@
 			<div class="name">
 				{data.name}
 			</div>
-			<span class="subtext">{data.category}</span>
+			<span class="subtext">{data.brief}</span>
 		</div>
 	</div>
 </Card>

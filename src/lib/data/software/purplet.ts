@@ -3,7 +3,7 @@ import type { Software } from '.';
 export const purplet: Software = {
 	id: 'purplet',
 	name: 'Purplet',
-	category: 'Discord bot JavaScript library suite',
+	brief: 'Masterfully crafted Discord-development libraries',
 	createdAt: new Date('2021-10-14'),
 	description: `Purplet is a Discord bot framework that splits your features into small, hot-reloadable modules, allowing you to move your focus to quickly building your bot ideas.<br><br>
 	Our suite of packages is built from the ground up on Web Standards like fetch and WebSocket, allowing your code to run locally in Node.js, but with the ability to deploy your interaction handlers to Cloudflare Workers, greatly reducing costs while increasing scalability.<br><br>
