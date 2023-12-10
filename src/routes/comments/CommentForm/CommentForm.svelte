@@ -3,20 +3,18 @@
 	import { page } from '$app/stores';
 	import Button from '$lib/components/Button.svelte';
 	import IconAlertCircleFilled from '@tabler/icons-svelte/dist/svelte/icons/IconAlertCircleFilled.svelte';
-	// import IconPhoto from '@tabler/icons-svelte/dist/svelte/icons/IconPhoto.svelte';
-	// import IconVideo from '@tabler/icons-svelte/dist/svelte/icons/IconVideo.svelte';
-	// import IconGif from '@tabler/icons-svelte/dist/svelte/icons/IconGif.svelte';
-	import IconMoodSmile from '@tabler/icons-svelte/dist/svelte/icons/IconMoodSmile.svelte';
 	import IconHelpCircle from '@tabler/icons-svelte/dist/svelte/icons/IconHelpCircle.svelte';
 	import toast, { LoaderIcon } from 'svelte-french-toast';
 	import Tooltip from '$lib/components/Tooltip.svelte';
-	import { createEventDispatcher, tick } from 'svelte';
+	import { tick } from 'svelte';
 	import type { Comment as CommentType } from '$lib/db/types';
 	import FormattingHelpModal from '$lib/components/FormattingHelpModal.svelte';
 	import GradientAvatar from '$lib/components/GradientAvatar/GradientAvatar.svelte';
 
 	export let content = '';
 	export let showModal: boolean;
+	export let showLoginModal: boolean;
+	export let showRestrictedFunctionalityModal: boolean;
 	export let projectId: string | null = null;
 	export let parentComment: CommentType | null = null;
 	export let expanded = false;
@@ -26,8 +24,6 @@
 	let showHelpModal = false;
 	let commentForm: HTMLFormElement;
 	const commentMaxLength = 256;
-
-	const dispatch = createEventDispatcher();
 
 	const surroundingElementKeys: Record<string, string> = {
 		b: '**',
@@ -99,7 +95,7 @@
 
 		await new Promise((resolve) => setTimeout(resolve, 500));
 
-		return ({ result, update }) => {
+		return async ({ result, update }) => {
 			loading = false;
 			content = '';
 			error = '';
@@ -119,7 +115,9 @@
 				error = String(result.message);
 			}
 
-			update();
+			await update({
+				reset: true,
+			});
 		};
 	}}
 >
@@ -131,98 +129,83 @@
 	{/if}
 
 	<div class="comment-profile">
-		<GradientAvatar user={$page.data?.userData} size="2rem" />
-		<div class="comment-profile-username">
+		<GradientAvatar user={$page.data?.userData} size="2.25rem" />
+		<!-- <div class="comment-profile-username">
 			{$page.data?.userData?.username ?? 'Guest'} <span class="subtext">(You)</span>
 		</div>
 		{#if !$page.data?.userData}
 			<button type="button" on:click={() => dispatch('login')} class="subtext">
 				Use an account?
 			</button>
-		{/if}
+		{/if} -->
 	</div>
 
-	<!-- svelte-ignore a11y-autofocus -->
-	<textarea
-		minlength={1}
-		maxlength={commentMaxLength}
-		name="content"
-		placeholder={parentComment
-			? 'Use constructive feedback and be respectful.'
-			: projectId
-			? 'Give feedback, rate this project...'
-			: 'Rate the website, ask me anything...'}
-		{...expanded ? { autofocus: true } : {}}
-		{...$$restProps}
-		on:keydown={handleTextboxShortcuts}
-		bind:value={content}
-	/>
+	<div class="comment-editor">
+		<!-- svelte-ignore a11y-autofocus -->
+		<textarea
+			minlength={1}
+			maxlength={commentMaxLength}
+			name="content"
+			placeholder={parentComment
+				? 'Reply with constructive feedback and respect.'
+				: projectId
+				? 'Give feedback, rate this project...'
+				: 'Leave suggestions, questions, rate the website...'}
+			{...expanded ? { autofocus: true } : {}}
+			{...$$restProps}
+			on:keydown={handleTextboxShortcuts}
+			bind:value={content}
+			on:focus={() => {
+				if ($page.data.userData?.badges?.includes('BLOCKED')) {
+					showRestrictedFunctionalityModal = true;
+					document.querySelector('textarea')?.blur();
+				}
+			}}
+		/>
 
-	<div class="actions">
-		<div class="left">
-			<Tooltip>
-				<span slot="tooltip-content"> Coming soon 👀 </span>
-				<Button disabled style="outlined">
-					<IconMoodSmile />
-				</Button>
-			</Tooltip>
-
-			<Tooltip>
-				<span slot="tooltip-content"> Formatting help </span>
-				<Button style="outlined" on:click={() => (showHelpModal = true)}>
-					<IconHelpCircle />
-				</Button>
-			</Tooltip>
-
-			<!-- <Tooltip>
-					<span slot="tooltip-content">
-						Insert a GIF or .mp4 video URL to have it appear under your comment!
-					</span>
-					<Button
-						disabled
-						on:click={() => {
-							if (mediaUrl) {
-								content = content.replace(mediaUrl, '');
-							}
-						}}
-						style={mediaUrl ? 'filled' : 'outlined'}
-					>
-						{#if mediaUrl}
-							{@const shortenedMediaName = mediaUrl.split('/')?.at(-1)}
-							{#if mediaUrl.endsWith('.mp4')}
-								<IconVideo />
-							{:else}
-								<IconGif />
-							{/if}
-							{(shortenedMediaName?.length || 0) > 15
-								? `${shortenedMediaName?.substring(0, 15)}...`
-								: shortenedMediaName}
-						{:else}
-							<IconPhoto /> GIF/Video
-						{/if}
+		<div class="actions">
+			<div class="left">
+				<!-- <Tooltip>
+					<span slot="tooltip-content"> Coming soon 👀 </span>
+					<Button disabled style="outlined">
+						<IconMoodSmile />
 					</Button>
 				</Tooltip> -->
-		</div>
 
-		<div class="right">
-			<div class="content-info" class:error>
-				{#if error}
-					<IconAlertCircleFilled />
-				{/if}
-
-				{#if error}
-					{error} •
-				{/if}
-				{content.length}/{commentMaxLength}
+				<Tooltip>
+					<span slot="tooltip-content"> Formatting help </span>
+					<Button style="outlined" on:click={() => (showHelpModal = true)}>
+						<IconHelpCircle />
+					</Button>
+				</Tooltip>
 			</div>
 
-			<Button disabled={loading || content.length > commentMaxLength || !content} type="submit">
-				{#if loading}
-					<LoaderIcon />
-				{:else}
-					{parentComment ? 'Reply' : 'Comment'}
+			<div class="right">
+				<div class="content-info" class:error>
+					{#if error}
+						<IconAlertCircleFilled />
+					{/if}
+
+					{#if error}
+						{error} •
+					{/if}
+					{content.length}/{commentMaxLength}
+				</div>
+
+				{#if !$page.data?.userData}
+					<Button type="button" on:click={() => (showLoginModal = true)} style="outlined">
+						Use an account?
+					</Button>
 				{/if}
-			</Button>
+
+				<Button disabled={loading || content.length > commentMaxLength || !content} type="submit">
+					{#if loading}
+						<LoaderIcon />
+					{:else}
+						{parentComment ? 'Reply' : 'Comment'}
+					{/if}
+				</Button>
+			</div>
 		</div>
 	</div>
 </form>
@@ -230,17 +213,14 @@
 <style lang="scss">
 	form {
 		display: flex;
-		flex-direction: column;
 		transition: height 300ms cubic-bezier(0.1, 0.6, 0.4, 1);
-		height: 6rem;
-		min-height: 6rem;
+		height: 3.5rem;
+		min-height: 3.5rem;
 		max-height: unset;
+		gap: 0.75rem;
 
 		.comment-profile {
 			display: flex;
-			gap: 0.75rem;
-			align-items: center;
-			margin-bottom: 0.75rem;
 
 			&-username {
 				font-weight: 500;
@@ -248,10 +228,14 @@
 			}
 		}
 
+		.comment-editor {
+			width: 100%;
+		}
+
 		&.expanded,
 		&:focus-within,
 		textarea:not(:placeholder-shown) {
-			height: calc(150px + 6rem);
+			height: calc(150px + 3.5rem);
 
 			textarea {
 				height: 150px;
@@ -268,13 +252,14 @@
 			.actions {
 				transform: translateY(0);
 				pointer-events: all;
+				clip-path: inset(0px 0px 0px 0px);
 			}
 		}
 
 		textarea {
 			background-color: var(--color-background);
 			border: 1px solid var(--color-outline);
-			padding: 0.75rem 1rem;
+			padding: 0.5rem 0.75rem;
 			border-radius: 1.5rem;
 			font-family: inherit;
 			font-size: inherit;
@@ -283,8 +268,8 @@
 				height 200ms cubic-bezier(0.1, 0.6, 0.4, 1),
 				border-radius 200ms ease-in-out;
 			resize: none;
-			height: 3rem;
-			min-height: 3rem;
+			height: 2.5rem;
+			min-height: 2.5rem;
 			max-height: unset;
 			position: relative;
 			z-index: 2;
@@ -306,9 +291,12 @@
 		}
 
 		.actions {
+			clip-path: inset(-45px 0px 45px 0px);
 			display: flex;
 			justify-content: space-between;
-			transition: transform 100ms ease-in-out;
+			transition:
+				transform 100ms ease-in-out,
+				clip-path 100ms ease-in-out;
 			transform: translateY(-3.25rem);
 			margin-top: 0.5rem;
 			pointer-events: none;

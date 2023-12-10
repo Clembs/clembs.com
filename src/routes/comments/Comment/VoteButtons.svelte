@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
 	import IconArrowBigUp from '@tabler/icons-svelte/dist/svelte/icons/IconArrowBigUp.svelte';
 	import IconArrowBigDown from '@tabler/icons-svelte/dist/svelte/icons/IconArrowBigDown.svelte';
 	import IconArrowBigUpFilled from '@tabler/icons-svelte/dist/svelte/icons/IconArrowBigUpFilled.svelte';
@@ -11,7 +10,8 @@
 	import { enhance } from '$app/forms';
 	import type { ActionResult } from '@sveltejs/kit';
 
-	const dispatch = createEventDispatcher();
+	export let showLoginModal = false;
+	export let showRestrictedFunctionalityModal = false;
 
 	export let comment: Comment;
 	export let big = false;
@@ -31,12 +31,12 @@
 
 	function castVote(voteType: 'UPVOTE' | 'DOWNVOTE') {
 		if (!data?.userData) {
-			dispatch('login');
+			showLoginModal = true;
 			return;
 		}
 
 		if (data.userData.badges?.includes('BLOCKED')) {
-			dispatch('blocked');
+			showRestrictedFunctionalityModal = true;
 			return;
 		}
 		previousVote = vote;
@@ -59,10 +59,10 @@
 		if (result.type === 'failure') {
 			resetVote();
 			if (result.status === 401) {
-				dispatch('login');
+				showLoginModal = true;
 			}
 			if (result.status === 403) {
-				dispatch('blocked');
+				showRestrictedFunctionalityModal = true;
 			}
 		}
 	}
@@ -144,14 +144,13 @@
 		border-radius: 99rem;
 		background-color: var(--color-background);
 		align-items: center;
-		font-weight: 500;
 		font-size: 0.875rem;
 		border: 1px solid var(--color-outline);
 		user-select: none;
 
 		:global(svg) {
-			height: 20px;
-			width: 20px;
+			height: 16px;
+			width: 16px;
 		}
 
 		&.voted {
@@ -168,12 +167,10 @@
 		button {
 			display: grid;
 			place-items: center;
-			padding: 0.5rem;
+			padding: 0.375rem;
 			border-radius: 99rem;
 
 			:global(svg) {
-				width: 18px;
-				height: 18px;
 				transition: transform 100ms ease-in-out;
 			}
 

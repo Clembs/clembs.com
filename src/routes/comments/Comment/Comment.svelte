@@ -1,225 +1,191 @@
 <script lang="ts">
 	import type { Comment } from '$lib/db/types';
-	import IconMessageCircle from '@tabler/icons-svelte/dist/svelte/icons/IconMessageCircle.svelte';
-	import IconChevronDown from '@tabler/icons-svelte/dist/svelte/icons/IconChevronDown.svelte';
-	import IconTrash from '@tabler/icons-svelte/dist/svelte/icons/IconTrash.svelte';
-	import IconStarFilled from '@tabler/icons-svelte/dist/svelte/icons/IconStarFilled.svelte';
-	import IconStar from '@tabler/icons-svelte/dist/svelte/icons/IconStar.svelte';
-	import IconLink from '@tabler/icons-svelte/dist/svelte/icons/IconLink.svelte';
-	import { createEventDispatcher } from 'svelte';
 	import GradientAvatar from '$lib/components/GradientAvatar/GradientAvatar.svelte';
 	import { page } from '$app/stores';
-	import toast, { LoaderIcon } from 'svelte-french-toast';
+	import { LoaderIcon } from 'svelte-french-toast';
 	import { snowflakeToDate } from '$lib/helpers/snowflake';
-	import { dateFormat, relativeTimeFormat } from '$lib/helpers/dateFormat';
+	import { dateFormat } from '$lib/helpers/dateFormat';
 	import { slide } from 'svelte/transition';
-	import Tooltip from '$lib/components/Tooltip.svelte';
 	import VoteButtons from './VoteButtons.svelte';
 	import { enhance } from '$app/forms';
 	import '../../../styles/comment.scss';
 	import { useShare } from '$lib/components/useShare';
 	import ActionButton from './ActionButton.svelte';
 	import CommentContent from './CommentContent.svelte';
-	import ContextBlurb from './ContextBlurb.svelte';
+	import {
+		IconMessageCircle,
+		IconTrash,
+		IconHeartFilled,
+		IconHeart,
+		IconLink,
+	} from '@tabler/icons-svelte';
+	import { badges } from '$lib/helpers/badges';
+	import { rankBadges } from '$lib/helpers/rankBadges';
 
 	export let comment: Comment;
 	export let showActions = true;
-	export let initialNestingLevel = 0;
-	export let showContext = false;
 	export let parentComment = comment.parentComment;
 
-	let nestingLevel = initialNestingLevel;
-	let childComments = comment.childComments;
+	export let showLoginModal = false;
+	export let showRestrictedFunctionalityModal = false;
+
+	export let showReplyBar =
+		!!comment.childComments?.length ||
+		(comment.parentComment?.childComments && comment.parentComment?.childComments?.length > 1);
+
 	let loadingComments = false;
 	let loadingDelete = false;
 	let loadingPin = false;
 
-	export let childCommentsExpanded = !!comment.content;
+	$: firstChildComment = comment.childComments?.find(
+		(c) => c.author?.badges?.includes('CLEMBS') || c.author?.id === comment.author?.id || c.content
+	);
 
 	let data = $page.data;
 
-	const dispatch = createEventDispatcher();
 	const date = snowflakeToDate(comment.id);
 
 	let username = comment.author?.username ?? 'Guest';
 
-	async function replyComment() {
-		if (data.userData?.badges?.includes('BLOCKED')) {
-			dispatch('blocked');
-			return;
-		}
+	// async function loadChildComments() {
+	// 	loadingComments = true;
 
-		dispatch('reply', comment);
-	}
+	// 	if (
+	// 		!comment.childComments ||
+	// 		comment.childComments.find((c) => !c.content) ||
+	// 		(parentComment && parentComment?.childComments?.length !== comment.childComments?.length)
+	// 	) {
+	// 		try {
+	// 			const req = await fetch(`/comments/api/${comment.id}/comments`);
 
-	async function loadChildComments() {
-		if (childCommentsExpanded) {
-			childCommentsExpanded = false;
-			return;
-		}
+	// 			comment.childComments = await req.json();
+	// 		} catch (e) {
+	// 			toast.error('Failed loading replies.');
+	// 		}
+	// 	}
 
-		loadingComments = true;
-
-		if (
-			!childComments ||
-			childComments.find((c) => !c.content) ||
-			(parentComment && parentComment?.childComments?.length !== childComments?.length)
-		) {
-			try {
-				const req = await fetch(`/comments/api/${comment.id}/comments`);
-
-				childComments = await req.json();
-			} catch (e) {
-				toast.error('Failed loading replies.');
-			}
-		}
-
-		loadingComments = false;
-		childCommentsExpanded = true;
-	}
+	// 	loadingComments = false;
+	// 	childCommentsExpanded = true;
+	// }
 </script>
 
 <article
 	class="comment-wrapper {showActions ? '' : 'no-hover'}"
 	id="comment-{comment.id}"
-	class:reply={nestingLevel}
 	class:no-actions={!showActions}
 >
-	{#if showContext}
-		<ContextBlurb {comment} />
-	{/if}
-	<div class="comment" class:pinned={comment.isPinned}>
-		{#if showActions && comment.author}
-			<a href="/users/{comment.author?.username}" class="comment-avatar">
-				<GradientAvatar user={comment.author} size={!nestingLevel ? '2.5rem' : '1.5rem'} />
-			</a>
-		{:else}
-			<GradientAvatar user={comment.author} size={!nestingLevel ? '2.5rem' : '1.5rem'} />
-		{/if}
+	<div class="comment" class:has-replies={showReplyBar}>
+		<GradientAvatar user={comment.author} size={'1.5rem'} />
 		<div class="comment-main">
 			<header class="comment-main-metadata">
-				{#if showActions && comment.author}
-					<a href="/users/{comment.author?.username}" class="comment-main-metadata-username">
-						{username}
-					</a>
-				{:else}
-					<div class="comment-main-metadata-username">
-						{username}
-					</div>
-				{/if}
+				<div class="comment-main-metadata-username">
+					{username}
+					{#if comment?.author?.badges}
+						{@const badge = badges[rankBadges(comment.author.badges)?.[0]]}
+						{#if badge}
+							<span class="comment-main-metadata-badge" style:--badge-color={badge.color}>
+								{badge.label}
+							</span>
+						{/if}
+					{/if}
+				</div>
 
-				<Tooltip transitionDelay={500}>
-					<time datetime={date.toISOString()} class="subtext">
-						{relativeTimeFormat(date)}
-					</time>
-					<span slot="tooltip-content">
-						{dateFormat(date)}
-					</span>
-				</Tooltip>
+				<time datetime={date.toISOString()} class="subtext">
+					{dateFormat(date)}
+				</time>
 				{#if comment.isPinned}
-					<span class="subtext comment-main-metadata-pinned">Featured</span>
+					<span class="subtext comment-main-metadata-pinned">
+						<IconHeartFilled />
+					</span>
 				{/if}
 			</header>
 			<CommentContent {comment} dynamicContent={!comment.projectId} showMedia={showActions} />
 
 			{#if showActions}
 				<div class="comment-main-actions">
-					<div class="comment-main-actions-row">
-						<VoteButtons {comment} on:login on:blocked />
-						<ActionButton aria-label="Reply to comment" on:click={replyComment}>
-							<IconMessageCircle />
-							Reply
-						</ActionButton>
+					<VoteButtons {comment} bind:showLoginModal bind:showRestrictedFunctionalityModal />
+					<ActionButton href="/comments/{comment.id}#reply" aria-label="Reply to comment">
+						<IconMessageCircle />
+						Reply
+					</ActionButton>
+					{#if !parentComment}
 						<ActionButton
 							aria-label="Share permalink to comment"
 							on:click={() => useShare(`${$page.url.origin}/comments/${comment.id}`)}
 						>
 							<IconLink />
 						</ActionButton>
-						{#if !comment.parentId && data.userData?.badges?.includes('CLEMBS')}
-							<form
-								use:enhance={() => {
-									loadingPin = true;
-									return () => (loadingPin = false);
-								}}
-								action="/comments/{comment.id}?/pin"
-								method="POST"
-							>
-								<ActionButton aria-label="Feature comment">
-									{#if loadingPin}
-										<LoaderIcon />
-									{:else if comment.isPinned}
-										<IconStarFilled />
-									{:else}
-										<IconStar />
-									{/if}
-								</ActionButton>
-							</form>
-						{/if}
-						{#if (data.userData && data.userData?.id === comment.author?.id) || data.userData?.badges?.includes('CLEMBS')}
-							<form
-								use:enhance={() => {
-									loadingDelete = true;
-									return () => (loadingDelete = false);
-								}}
-								method="POST"
-								action="/comments/{comment.id}?/delete"
-							>
-								<ActionButton aria-label="Delete comment">
-									{#if loadingDelete}
-										<LoaderIcon />
-									{:else}
-										<IconTrash />
-									{/if}
-								</ActionButton>
-							</form>
-						{/if}
-					</div>
-
-					{#if comment.childComments?.length}
-						<button class="view-replies-button" on:click|stopPropagation={loadChildComments}>
-							{#if loadingComments}
-								<LoaderIcon />
-							{:else}
-								{#if !childCommentsExpanded}
-									<div class="profiles">
-										{#each comment.childComments.slice(0, 3) as childComment}
-											<GradientAvatar user={childComment.author} size="1rem" showBadge={false} />
-										{/each}
-									</div>
+					{/if}
+					{#if !comment.parentId && data.userData?.badges?.includes('CLEMBS')}
+						<form
+							use:enhance={() => {
+								loadingPin = true;
+								return () => (loadingPin = false);
+							}}
+							action="/comments/{comment.id}?/pin"
+							method="POST"
+						>
+							<ActionButton aria-label="Feature comment">
+								{#if loadingPin}
+									<LoaderIcon />
+								{:else if comment.isPinned}
+									<IconHeartFilled />
 								{:else}
-									<div class="expand-icon" aria-expanded={childCommentsExpanded}>
-										<IconChevronDown />
-									</div>
+									<IconHeart />
 								{/if}
-								{comment.childComments.length}
-								{comment.childComments.length === 1 ? 'reply' : 'replies'}
-								{#if comment.childComments.find(({ author }) => author && author?.badges?.includes('CLEMBS'))}
-									• Clembs replied
+							</ActionButton>
+						</form>
+					{/if}
+					{#if (data.userData && data.userData?.id === comment.author?.id) || data.userData?.badges?.includes('CLEMBS')}
+						<form
+							use:enhance={() => {
+								loadingDelete = true;
+								return () => (loadingDelete = false);
+							}}
+							method="POST"
+							action="/comments/{comment.id}?/delete"
+						>
+							<ActionButton aria-label="Delete comment">
+								{#if loadingDelete}
+									<LoaderIcon />
+								{:else}
+									<IconTrash />
 								{/if}
-							{/if}
-						</button>
+							</ActionButton>
+						</form>
 					{/if}
 				</div>
 			{/if}
 		</div>
 	</div>
 
-	{#if showActions && childComments?.length && childCommentsExpanded}
-		<div class="child-comments" class:margin-left={nestingLevel < 5} transition:slide>
-			{#each childComments as childComment}
-				<svelte:self
-					parentComment={comment}
-					comment={childComment}
-					showContext={false}
-					initialNestingLevel={nestingLevel + 1}
-					childCommentsExpanded={false}
-					on:blocked
-					on:userinfo
-					on:reply
-				/>
-			{/each}
+	{#if showActions && firstChildComment}
+		<div class="child-comments" transition:slide>
+			<svelte:self
+				parentComment={comment}
+				comment={firstChildComment}
+				showContext={false}
+				bind:showLoginModal
+				bind:showRestrictedFunctionalityModal
+			/>
 		</div>
+	{/if}
+
+	{#if comment.childComments?.length && (!comment.parentId ? comment.childComments?.length > 1 : comment.childComments?.length)}
+		<a class="view-replies-button" href="/comments/{comment.id}">
+			{#if loadingComments}
+				<LoaderIcon />
+			{:else}
+				<div class="profiles">
+					{#each comment.childComments
+						.filter((c) => c.id !== firstChildComment?.id)
+						.slice(0, 3) as childComment}
+						<GradientAvatar user={childComment.author} size="1rem" />
+					{/each}
+				</div>
+				View more replies
+			{/if}
+		</a>
 	{/if}
 </article>
 
@@ -237,15 +203,7 @@
 			pointer-events: none;
 		}
 
-		&.reply .child-comments.margin-left {
-			margin-left: 2.5rem;
-		}
-
 		&.no-actions {
-			.comment-avatar {
-				cursor: default;
-			}
-
 			.comment-main-metadata-username {
 				cursor: default;
 
@@ -260,31 +218,36 @@
 		display: flex;
 		flex-direction: column;
 		gap: 0.5rem;
-		margin-top: 0.5rem;
-
-		&.margin-left {
-			margin-left: 3.25rem;
-		}
 	}
 
 	.comment {
 		display: flex;
-		gap: 1rem;
+		gap: 0.75rem;
 		border-radius: 1rem;
+		position: relative;
 
-		&.pinned {
-			background: linear-gradient(10deg, rgb(255 0 0 / 0.01), rgb(255 0 0 / 0.05));
+		// &.pinned {
+		// 	background: linear-gradient(10deg, rgb(255 0 0 / 0.01), rgb(255 0 0 / 0.05));
+		// }
+
+		&.has-replies {
+			padding-bottom: 1rem;
+
+			&::before {
+				content: '';
+				position: absolute;
+				left: 10px;
+				width: 0.125rem;
+				height: 100%;
+				background-color: #00000030;
+			}
 		}
 
-		&-avatar {
-			appearance: none;
-			margin: 0;
-			border: 0;
-			padding: 0;
-			background-color: transparent;
-			border-radius: 99rem;
-			cursor: pointer;
-			height: min-content;
+		&:hover,
+		&:focus-within {
+			.comment-main-actions {
+				opacity: 1;
+			}
 		}
 
 		&-main {
@@ -297,83 +260,72 @@
 			&-metadata {
 				margin-bottom: -0.25rem;
 				display: flex;
-				align-items: baseline;
-				gap: 0.5rem;
+				// align-items: baseline;
+				gap: 0.75rem;
+				align-items: center;
 
 				&-username {
 					border-radius: 0.5rem;
 					font-weight: 500;
-					user-select: text;
-					display: inline-block;
 					color: var(--color-on-background);
+				}
 
-					&:hover {
-						text-decoration: underline;
-					}
+				&-badge {
+					font-size: 0.75rem;
+					padding: 0.125rem 0.25rem;
+					border-radius: 15rem;
+					background-color: var(--color-surface);
+					color: var(--badge-color);
+					font-weight: 500;
 				}
 
 				&-pinned {
 					color: var(--color-error);
 					font-weight: 500;
+					display: grid;
+
+					:global(svg) {
+						width: 1rem;
+						height: 1rem;
+					}
 				}
 			}
 
 			&-actions {
 				display: flex;
-				flex-direction: column;
 				gap: 0.25rem;
+				opacity: 0.25;
+				transition: opacity 150ms ease-in-out;
+			}
+		}
+	}
+
+	.view-replies-button {
+		color: var(--color-on-surface);
+		background-color: var(--color-background);
+		border-radius: 9rem;
+		display: flex;
+		align-items: center;
+		cursor: pointer;
+		gap: 0.5rem;
+		font-size: 0.8rem;
+		max-width: max-content;
+		font-weight: 500;
+		margin-top: -0.25rem;
+		padding: 0.25rem 0.5rem;
+		background-color: transparent;
+		text-decoration: none;
+
+		&:hover {
+			background-color: var(--color-surface);
+			text-decoration: underline;
+		}
+
+		.profiles {
+			display: flex;
+
+			:global(.avatar) {
 				margin-left: -0.25rem;
-				margin-top: 0.25rem;
-
-				&-row {
-					display: flex;
-					gap: 0.25rem;
-				}
-
-				.view-replies-button {
-					border: none;
-					color: var(--color-on-surface);
-					background-color: var(--color-background);
-					border-radius: 9rem;
-					display: flex;
-					align-items: center;
-					cursor: pointer;
-					gap: 0.5rem;
-					font-size: 0.8rem;
-					max-width: max-content;
-					font-weight: 500;
-					margin-top: 0.25rem;
-					padding: 0.25rem 0.5rem;
-					background-color: transparent;
-
-					&:hover {
-						background-color: var(--color-surface);
-						text-decoration: underline;
-					}
-
-					.profiles {
-						display: flex;
-
-						:global(.avatar) {
-							margin-left: -0.25rem;
-						}
-					}
-
-					.expand-icon {
-						display: grid;
-						align-items: center;
-						transition: rotate cubic-bezier(0.64, 0.005, 0.43, 1.01) 150ms;
-
-						:global(svg) {
-							width: 1rem;
-							height: 1rem;
-						}
-
-						&[aria-expanded='true'] {
-							rotate: 180deg;
-						}
-					}
-				}
 			}
 		}
 	}

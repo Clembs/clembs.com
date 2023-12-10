@@ -5,41 +5,25 @@
 	import MetaTags from '$lib/components/MetaTags.svelte';
 	import LoginModal from '$lib/components/Settings/LoginModal.svelte';
 	import { useShare } from '$lib/components/useShare';
-	import type { Comment } from '$lib/db/types';
 	import { dateFormat } from '$lib/helpers/dateFormat';
 	import { snowflakeToDate } from '$lib/helpers/snowflake';
 	import ActionButton from '../Comment/ActionButton.svelte';
 	import CommentContent from '../Comment/CommentContent.svelte';
 	import ContextBlurb from '../Comment/ContextBlurb.svelte';
 	import VoteButtons from '../Comment/VoteButtons.svelte';
-	import CommentFormModal from '../CommentForm/CommentFormModal.svelte';
 	import Comments from '../Comments.svelte';
 	import RestrictedFunctionalityModal from '../RestrictedFunctionalityModal.svelte';
 	import type { PageServerData } from './$types';
 	import IconLink from '@tabler/icons-svelte/dist/svelte/icons/IconLink.svelte';
-	import IconMessageCircle from '@tabler/icons-svelte/dist/svelte/icons/IconMessageCircle.svelte';
 
 	export let data: PageServerData;
-	let selectedParentComment: Comment | null | undefined = null;
-	let showReplyModal = false;
 	let showLoginModal = false;
 	let showRestrictedFunctionalityModal = false;
 
-	function handleShowLoginPage() {
-		showLoginModal = true;
-	}
-
-	function handleRestrictedFunctionality() {
-		showRestrictedFunctionalityModal = true;
-	}
-
-	function handleReply() {
-		selectedParentComment = data.comment;
-		showReplyModal = true;
-	}
-
-	$: username = data.comment.author?.username ?? 'Guest';
+	const username = data.comment.author?.username ?? 'Guest';
 	const date = snowflakeToDate(data.comment.id);
+
+	$: console.log(data.comment.id);
 </script>
 
 <MetaTags
@@ -51,13 +35,6 @@
 		: data.comment.content}
 />
 
-<CommentFormModal
-	on:login={handleShowLoginPage}
-	bind:showModal={showReplyModal}
-	projectId={data.comment.projectId}
-	bind:parentComment={selectedParentComment}
-/>
-
 {#if !data.userData}
 	<LoginModal bind:showModal={showLoginModal} />
 {/if}
@@ -67,15 +44,8 @@
 <article class="comment" class:pinned={data.comment.isPinned}>
 	<ContextBlurb comment={data.comment}></ContextBlurb>
 	<div class="comment-metadata">
-		{#if data.comment.author}
-			<a href="/users/{username}">
-				<GradientAvatar size="2.5rem" user={data.comment.author} />
-				{username}
-			</a>
-		{:else}
-			<GradientAvatar size="2.5rem" user={data.comment.author} />
-			{username}
-		{/if}
+		<GradientAvatar size="2.5rem" user={data.comment.author} />
+		{username}
 
 		<time datetime={date.toISOString()} class="subtext">
 			{dateFormat(date)}
@@ -90,16 +60,11 @@
 
 	<div class="comment-actions">
 		<VoteButtons
-			on:login={handleShowLoginPage}
-			on:blocked={handleRestrictedFunctionality}
+			bind:showLoginModal
+			bind:showRestrictedFunctionalityModal
 			big
 			comment={data.comment}
 		/>
-
-		<ActionButton big on:click={handleReply}>
-			<IconMessageCircle />
-			Reply
-		</ActionButton>
 
 		<ActionButton big on:click={() => useShare($page.url.href)}>
 			<IconLink />
@@ -113,7 +78,9 @@
 	userData={data.userData}
 	parentComment={data.comment}
 	projectId={data.comment.projectId}
-></Comments>
+	bind:showLoginModal
+	bind:showRestrictedFunctionalityModal
+/>
 
 <style lang="scss">
 	.comment {

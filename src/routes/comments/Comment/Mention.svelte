@@ -15,11 +15,7 @@
 </script>
 
 {#if node.type === 'user'}
-	<svelte:element
-		this={clickable ? 'a' : 'div'}
-		href="/users/{node.username}"
-		class="inline-mention {node.type}"
-	>
+	<div class="inline-mention {node.type}">
 		<GradientAvatar
 			showSilhouette={false}
 			user={{ username: node.username }}
@@ -27,7 +23,7 @@
 			showBadge={false}
 		/>
 		{node.username}
-	</svelte:element>
+	</div>
 {:else if node.type === 'project'}
 	<svelte:element
 		this={clickable ? 'a' : 'div'}
