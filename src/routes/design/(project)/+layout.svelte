@@ -1,9 +1,11 @@
 <script lang="ts">
-	import IconPlus from '@tabler/icons-svelte/dist/svelte/icons/IconPlus.svelte';
-	import IconDribbble from '@tabler/icons-svelte/dist/svelte/icons/IconBrandDribbble.svelte';
-	import IconBehance from '@tabler/icons-svelte/dist/svelte/icons/IconBrandBehance.svelte';
-	import IconInstagram from '@tabler/icons-svelte/dist/svelte/icons/IconBrandInstagram.svelte';
-	import IconMessageCircle from '@tabler/icons-svelte/dist/svelte/icons/IconMessageCircle.svelte';
+	import {
+		IconX,
+		IconBrandDribbble,
+		IconBrandBehance,
+		IconBrandInstagram,
+		IconMessageCircle,
+	} from '@tabler/icons-svelte';
 	import Button from '$lib/components/Button.svelte';
 	import { softwareData } from '$lib/data/software';
 	import { page } from '$app/stores';
@@ -11,6 +13,7 @@
 	import MetaTags from '$lib/components/MetaTags.svelte';
 	import type { LayoutServerData } from './$types';
 	import Comments from '../../comments/Comments.svelte';
+	import IconExternalLink from '$lib/icons/IconExternalLink.svelte';
 
 	export let data: LayoutServerData;
 </script>
@@ -32,30 +35,44 @@
 <header>
 	<div class="brands">
 		<div class="me">
-			<img draggable="false" alt="Clembs logo" src="/assets/logo-purplue.webp" title="That's me!" />
+			<img
+				width={32}
+				height={32}
+				draggable="false"
+				alt="Clembs logo"
+				src="/assets/logo-purplue.webp"
+				title="That's me!"
+			/>
 		</div>
-		<IconPlus size={24} />
+		<IconX size={16} />
 		<div class="the-guys-im-working-for">
-			<img draggable="false" alt={data.brand} src={data.iconPath} title={data.brand} />
+			<img
+				width={32}
+				height={32}
+				draggable="false"
+				alt={data.brand}
+				src={data.iconPath}
+				title={data.brand}
+			/>
 		</div>
 	</div>
 
 	<h1 class="post-title">{data.title}</h1>
 
-	<span class="subtext">
-		{data.category} •
-		<time datetime={data.createdAt.toDateString()}>
-			{data.createdAt.toLocaleString('en-US', {
-				month: 'long',
-				day: 'numeric',
-				year: 'numeric',
-			})}
-		</time>
-	</span>
+	<time class="subtext" datetime={data.createdAt.toDateString()}>
+		{data.createdAt.toLocaleString('en-US', {
+			month: 'long',
+			day: 'numeric',
+			year: 'numeric',
+		})}
+	</time>
 
 	<div class="buttons">
 		{#if data.links?.projectUrl}
-			<Button href={data.links?.projectUrl}>Check it out</Button>
+			<Button href={data.links?.projectUrl}>
+				Check it out
+				<IconExternalLink />
+			</Button>
 		{/if}
 		{#if data.links?.assetsUrl}
 			<Button style="outlined" href={data.links?.assetsUrl}>View assets</Button>
@@ -74,22 +91,21 @@
 		{/if}
 		{#if data.links?.behance}
 			<Button style="outlined" href={data.links?.behance}>
-				<IconBehance />
+				<IconBrandBehance />
 			</Button>
 		{/if}
 		{#if data.links?.dribbble}
 			<Button style="outlined" href={data.links?.dribbble}>
-				<IconDribbble />
+				<IconBrandDribbble />
 			</Button>
 		{/if}
 		{#if data.links?.instagram}
 			<Button style="outlined" href={data.links?.instagram}>
-				<IconInstagram />
+				<IconBrandInstagram />
 			</Button>
 		{/if}
-		<Button style="outlined" href="#comments">
+		<Button style="outlined" href="#comments" aria-label="Comments">
 			<IconMessageCircle />
-			Comments ({data.comments.length})
 		</Button>
 		<ShareButton url={$page.url.href} />
 	</div>
@@ -104,23 +120,20 @@
 <style lang="scss">
 	header {
 		border-radius: 1rem 1rem 0 0;
-		border-bottom: 1px solid var(--color-on-background);
-		padding: 1.5rem;
+		margin: 1rem;
+		margin-bottom: 2rem;
 
 		.brands {
 			display: flex;
-			gap: 0.5rem;
+			gap: 0.25rem;
 			align-items: center;
 			margin-bottom: 0.5rem;
 
 			.me,
 			.the-guys-im-working-for {
-				height: 3rem;
 				:global(svg),
 				img {
 					border-radius: 999rem;
-					width: auto;
-					height: 3rem;
 					border: 1px solid var(--color-on-background);
 				}
 			}
