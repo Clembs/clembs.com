@@ -6,10 +6,10 @@
 </script>
 
 <div class="intro">
-	Welcome to Comments! I added this page so you can comment on my website, projects, and discuss! <br
+	Leave a question, a suggestion or just wave hi! <br />
+	Inspired by sites like YouTube and Reddit, one may say this page is a mix of a guestbook and a microblog.<br
 	/>
-	Heavily inspired by YouTube and Reddit, you can also create an account or log into it to vote on comments
-	and have a username.
+	Logging in is optional, but it will allow you to choose a username and to vote on other comments.
 </div>
 
 <Comments count={data.count} comments={data.comments} userData={data.userData} />
