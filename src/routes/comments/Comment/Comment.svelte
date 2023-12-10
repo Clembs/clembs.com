@@ -76,7 +76,7 @@
 >
 	<div class="comment" class:has-replies={showReplyBar}>
 		<GradientAvatar user={comment.author} size={'1.5rem'} />
-		<div class="comment-main">
+		<a href="/comments/{comment.id}" class="comment-main">
 			<header class="comment-main-metadata">
 				<div class="comment-main-metadata-username">
 					{username}
@@ -156,7 +156,7 @@
 					{/if}
 				</div>
 			{/if}
-		</div>
+		</a>
 	</div>
 
 	{#if showActions && firstChildComment}
@@ -226,10 +226,6 @@
 		border-radius: 1rem;
 		position: relative;
 
-		// &.pinned {
-		// 	background: linear-gradient(10deg, rgb(255 0 0 / 0.01), rgb(255 0 0 / 0.05));
-		// }
-
 		&.has-replies {
 			padding-bottom: 1rem;
 
@@ -243,19 +239,27 @@
 			}
 		}
 
-		&:hover,
-		&:focus-within {
-			.comment-main-actions {
-				opacity: 1;
-			}
-		}
-
 		&-main {
 			display: flex;
 			flex-direction: column;
 			gap: 0.5rem;
 			flex: 1;
 			word-break: break-word;
+			font-weight: inherit;
+			text-decoration: none;
+			padding: 0.5rem;
+			border-radius: 1rem;
+			margin: -0.5rem;
+
+			&:hover {
+				background-color: var(--color-surface);
+			}
+			&:hover,
+			&:focus-within {
+				.comment-main-actions {
+					opacity: 1;
+				}
+			}
 
 			&-metadata {
 				margin-bottom: -0.25rem;
