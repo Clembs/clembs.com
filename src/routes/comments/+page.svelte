@@ -12,7 +12,7 @@
 	Logging in is optional, but it will allow you to choose a username and to vote on other comments.
 </div>
 
-<Comments count={data.count} comments={data.comments} userData={data.userData} />
+<Comments comments={data.comments} userData={data.userData} />
 
 <style lang="scss">
 	.intro {

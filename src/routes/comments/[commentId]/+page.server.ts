@@ -3,8 +3,7 @@ import { userCommentVote, mentions, comments } from '$lib/db/schema';
 import { error, fail } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
 import type { PageServerLoad, RequestEvent } from './$types';
-import { getComments } from '$lib/helpers/getComments';
-import type { Comment } from '$lib/db/types';
+import { getComment } from '$lib/helpers/getComments';
 
 export const load: PageServerLoad = async ({
 	params,
@@ -14,28 +13,26 @@ export const load: PageServerLoad = async ({
 }) => {
 	const userData = await getUserData();
 
-	const commentsData = await getComments({
-		parentId: params.commentId,
+	const comment = await getComment(params.commentId, {
 		includeParentComment: true,
 	});
 
-	setHeaders({
-		'Cache-Control': 'public, max-age=60',
-	});
-
-	if (!commentsData.length) {
+	if (!comment) {
 		throw error(404);
 	}
 
-	const comment = {
-		...commentsData[0].parentComment,
-		childComments: commentsData,
-	} as Comment;
+	setHeaders({
+		'Cache-Control': 'public, max-age=1200',
+	});
 
 	return {
 		comment,
 		user: userData,
 		...(await parent()),
+		navButton: {
+			href: comment.projectId ? `/${comment.projectId}` : '/comments',
+			label: comment.projectId ? 'Project' : 'Main feed',
+		},
 	};
 };
 

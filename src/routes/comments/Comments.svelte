@@ -14,7 +14,6 @@
 	export let parentComment: CommentType | null | undefined = null;
 	export let projectId: string | null = null;
 	export let comments: CommentType[];
-	export let showContext = false;
 	export let hideCreateForm = false;
 
 	export let showLoginModal = false;
@@ -24,9 +23,7 @@
 	let selectedSortingMode: 'interactions' | 'recent' = 'recent';
 	let selectedParentComment = parentComment;
 
-	const sortedAndFiltered = rankComments(comments, userData, selectedSortingMode);
-
-	export let count = comments.length || 0;
+	$: sortedAndFiltered = rankComments(comments, userData, selectedSortingMode);
 </script>
 
 <div class="comments-page" id="comments">
@@ -45,8 +42,8 @@
 					{/if}
 				</h3>
 				<span class="subtext">
-					{count}
-					{count === 1 ? 'comment' : 'comments'}
+					{sortedAndFiltered.length}
+					{sortedAndFiltered.length === 1 ? 'comment' : 'comments'}
 				</span>
 			</div>
 			<div class="title-account"></div>

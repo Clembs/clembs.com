@@ -14,7 +14,7 @@ import { defaultUserPreferences } from '$lib/db/UserPreferences';
 import { marked } from 'marked';
 import insane from 'insane';
 import { dateFormat } from '$lib/helpers/dateFormat';
-import { getComments, getCommentsCount } from '$lib/helpers/getComments';
+import { getComments } from '$lib/helpers/getComments';
 
 export const load: PageServerLoad = async ({ locals, setHeaders }) => {
 	const session = await locals.getSession();
@@ -22,17 +22,14 @@ export const load: PageServerLoad = async ({ locals, setHeaders }) => {
 
 	const comments = await getComments({
 		onlyParentComments: true,
-	});
-
-	const count = await getCommentsCount({
-		onlyParentComments: true,
+		includeParentComment: true,
 	});
 
 	setHeaders({
-		'Cache-Control': 'public, max-age=60',
+		'Cache-Control': 'public, max-age=1200',
 	});
 
-	return { comments, user, count };
+	return { comments, user };
 };
 
 export const actions: Actions = {

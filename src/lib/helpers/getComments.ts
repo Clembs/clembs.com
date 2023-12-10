@@ -1,6 +1,6 @@
 import { db } from '$lib/db';
-import { comments } from '$lib/db/schema';
-import { and, eq, isNull, sql } from 'drizzle-orm';
+import type { Comment } from '$lib/db/types';
+import { isNull } from 'drizzle-orm';
 
 export async function getComment(
 	commentId: string,
@@ -118,7 +118,7 @@ export async function getComments(options?: {
 	onlyParentComments?: boolean;
 	includeParentComment?: boolean;
 	skipMentions?: boolean;
-}) {
+}): Promise<Comment[]> {
 	const results = await db.query.comments.findMany({
 		with: {
 			author: {
@@ -262,32 +262,4 @@ export async function getComments(options?: {
 	});
 
 	return results;
-}
-
-export async function getCommentsCount(options?: {
-	parentId?: string;
-	projectId?: string;
-	userId?: string;
-	onlyParentComments?: boolean;
-}) {
-	const count = await db
-		.select({
-			count: sql<number>`cast(count(${comments.id}) as int)`,
-		})
-		.from(comments)
-		.where(
-			and(
-				//@ts-ignore
-				...[
-					options?.onlyParentComments ? isNull(comments.parentId) : null,
-					options?.parentId ? eq(comments.parentId, options.parentId) : isNull(comments.parentId),
-					options?.projectId
-						? eq(comments.projectId, options.projectId)
-						: isNull(comments.projectId),
-					options?.userId ? eq(comments.userId, options.userId) : null,
-				].filter(Boolean)
-			)
-		);
-
-	return count[0].count;
 }
