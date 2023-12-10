@@ -98,3 +98,9 @@
 		</div>
 	{/if}
 </Modal>
+
+<style lang="scss">
+	.keyboard-shortcuts {
+		margin-top: 1rem;
+	}
+</style>
