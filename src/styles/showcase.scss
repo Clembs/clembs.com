@@ -37,7 +37,7 @@ article:not(.comment-wrapper) {
 }
 
 @media (max-width: 850px) {
-	article {
+	article:not(.comment-wrapper) {
 		margin: 1rem;
 		margin-top: 1.5rem;
 	}
