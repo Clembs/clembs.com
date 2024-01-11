@@ -94,6 +94,7 @@
 					...social,
 					name: `Watch on ${social?.name}`,
 					activity: undefined,
+					url: p.url,
 				};
 			})}
 		/>
