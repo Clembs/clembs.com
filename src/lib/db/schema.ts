@@ -8,11 +8,9 @@ import {
 	text,
 	primaryKey,
 	integer,
-	real,
 	date,
 	varchar,
 } from 'drizzle-orm/pg-core';
-import type { HabileChatData } from './HabileChatData';
 
 export const users = pgTable('users', {
 	id: text('id').primaryKey(),
@@ -23,8 +21,6 @@ export const users = pgTable('users', {
 	badges: text('badges', { enum: ['VERIFIED', 'BLOCKED', 'SUPPORTER', 'CLEMBS'] }).array(),
 	createdAt: timestamp('created_at').notNull().defaultNow(),
 	preferences: jsonb('preferences').$type<UserPreferences>(),
-	habileChatData: jsonb('habile_chat_data').$type<HabileChatData>(),
-	discordUserId: text('discord_user_id'),
 });
 
 export const comments = pgTable('comments', {
@@ -69,25 +65,6 @@ export const otps = pgTable('otps', {
 	expiresAt: timestamp('expires_at').notNull(),
 });
 
-export const habileChatData = pgTable('habile_chat_data', {
-	tokens: real('tokens').notNull(),
-	used: real('used').notNull(),
-	messages: integer('messages').notNull(),
-});
-
-export const purchases = pgTable('purchases', {
-	checkoutSessionId: text('checkout_session_id').primaryKey(),
-	userId: text('user_id').notNull(),
-	createdAt: timestamp('created_at').notNull().defaultNow(),
-	amount: integer('amount'),
-	currency: text('currency'),
-	productId: text('product_id'),
-	quantity: integer('quantity'),
-	platform: text('platform', {
-		enum: ['STRIPE', 'BOOSTY'],
-	}).default('STRIPE'),
-});
-
 export const donations = pgTable('donations', {
 	id: text('id')
 		.default(sql`gen_random_uuid()`)
@@ -110,7 +87,6 @@ export const usersRelations = relations(users, ({ many, one }) => ({
 	mentionedInComments: many(mentions),
 	sessions: many(sessions),
 	passkeys: many(passkeys),
-	purchases: many(purchases),
 	donations: many(donations),
 }));
 
@@ -141,13 +117,6 @@ export const sessionsRelations = relations(sessions, ({ one }) => ({
 export const passkeysRelations = relations(passkeys, ({ one }) => ({
 	user: one(users, {
 		fields: [passkeys.userId],
-		references: [users.id],
-	}),
-}));
-
-export const purchasesRelations = relations(purchases, ({ one }) => ({
-	user: one(users, {
-		fields: [purchases.userId],
 		references: [users.id],
 	}),
 }));
