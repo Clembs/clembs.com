@@ -82,6 +82,25 @@ export const donations = pgTable('donations', {
 	userId: text('user_id').references(() => users.id),
 });
 
+export const streams = pgTable('streams', {
+	id: text('id')
+		.default(sql`gen_random_uuid()`)
+		.primaryKey(),
+	title: text('label').notNull(),
+	startedAt: timestamp('started_at').notNull(),
+	state: text('state', {
+		enum: ['DEFAULT', 'ENDED', 'CANCELLED'],
+	})
+		.notNull()
+		.default('DEFAULT'),
+	platforms: jsonb('platforms').notNull().$type<
+		{
+			id: string;
+			url: string;
+		}[]
+	>(),
+});
+
 export const usersRelations = relations(users, ({ many, one }) => ({
 	comments: many(comments),
 	mentionedInComments: many(mentions),

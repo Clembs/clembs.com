@@ -43,96 +43,108 @@ export const email: Social = {
 	username: 'clembs@clembs.com',
 };
 
-export const donationLinks = [
-	{
-		id: SocialName.Kofi,
-		name: 'Ko-fi',
-		url: 'https://ko-fi.com/clembs',
-		icon: KoFi,
-		description: 'Recommended. Supports one-time and monthly donations',
-	},
-	{
-		id: SocialName.Boosty,
-		name: 'Boosty',
-		url: 'https://boosty.to/clembs',
-		icon: Boosty,
-		description: 'If Ko-fi is not available in your country',
-	},
-	{
-		name: 'Water Aid',
-		url: 'https://wateraid.org/donate',
-		icon: IconDroplet,
-		description: 'Donate to those who are in real need of water',
-	},
-] satisfies Social[];
+export const kofi: Social = {
+	id: SocialName.Kofi,
+	name: 'Ko-fi',
+	url: 'https://ko-fi.com/clembs',
+	icon: KoFi,
+	description: 'Recommended. Supports one-time and monthly donations',
+};
+
+export const boosty: Social = {
+	id: SocialName.Boosty,
+	name: 'Boosty',
+	url: 'https://boosty.to/clembs',
+	icon: Boosty,
+	description: 'If Ko-fi is not available in your country',
+};
+
+export const waterAid: Social = {
+	name: 'Water Aid',
+	url: 'https://wateraid.org/donate',
+	icon: IconDroplet,
+	description: 'Donate to those who are in real need of water',
+};
+
+export const comments: Social = {
+	id: SocialName.Clembs,
+	name: 'My comments section <3',
+	url: '/comments',
+	icon: IconMessageCircle,
+	activity: 'high',
+	username: 'Clembs',
+};
+
+export const github: Social = {
+	id: SocialName.GitHub,
+	name: 'GitHub',
+	url: 'https://github.com/Clembs',
+	icon: Github,
+	activity: 'high',
+	username: 'Clembs',
+};
+
+export const discord: Social = {
+	id: SocialName.Discord,
+	name: 'Discord',
+	url: 'https://discord.gg/6uNwP46',
+	icon: Discord,
+	activity: 'medium',
+	username: "Habile's Lounge",
+};
+
+export const youtube: Social = {
+	id: SocialName.YouTube,
+	name: 'YouTube',
+	url: 'https://youtube.com/@ClembsV',
+	icon: Youtube,
+	activity: 'low',
+	username: '@ClembsV',
+};
+
+export const twitch: Social = {
+	id: SocialName.Twitch,
+	name: 'Twitch',
+	url: 'https://twitch.tv/clembs',
+	icon: Twitch,
+	activity: 'low',
+	username: 'Clembs',
+};
+
+export const instagram: Social = {
+	id: SocialName.Instagram,
+	name: 'Instagram',
+	url: 'https://instagram.com/clembs.v',
+	icon: Instagram,
+	activity: 'low',
+	username: '@clembs.v',
+};
+
+export const mastodon: Social = {
+	id: SocialName.Mastodon,
+	name: 'Mastodon',
+	url: 'https://mastodon.social/@clembs',
+	icon: Mastodon,
+	activity: 'low',
+	username: '@clembs@mastodon.social',
+};
+
+export const donationLinks = [kofi, boosty, waterAid] satisfies Social[];
 
 export const socials = [
-	// {
-	// 	id: SocialName.Kofi,
-	// 	name: 'Ko-fi',
-	// 	url: 'https://ko-fi.com/clembs',
-	// 	icon: KoFi,
-	// },
 	// {
 	// 	id: SocialName.Fiverr,
 	// 	name: 'Fiverr',
 	// 	url: 'https://www.fiverr.com/clembs',
 	// 	background: '#1DBF73',
 	// },
-	{
-		id: SocialName.Clembs,
-		name: 'My comments section <3',
-		url: '/comments',
-		icon: IconMessageCircle,
-		activity: 'high',
-		username: 'Clembs',
-	},
-	{
-		id: SocialName.GitHub,
-		name: 'GitHub',
-		url: 'https://github.com/Clembs',
-		icon: Github,
-		activity: 'high',
-		username: 'Clembs',
-	},
-	{
-		id: SocialName.Discord,
-		name: 'Discord',
-		url: 'https://discord.gg/6uNwP46',
-		icon: Discord,
-		activity: 'medium',
-		username: "Habile's Lounge",
-	},
-	{
-		id: SocialName.YouTube,
-		name: 'YouTube',
-		url: 'https://youtube.com/@ClembsV',
-		icon: Youtube,
-		activity: 'low',
-		username: '@ClembsV',
-	},
-	{
-		id: SocialName.Twitch,
-		name: 'Twitch',
-		url: 'https://twitch.tv/clembs',
-		icon: Twitch,
-		activity: 'low',
-		username: 'Clembs',
-	},
-	{
-		id: SocialName.Instagram,
-		name: 'Instagram',
-		url: 'https://instagram.com/clembs.v',
-		icon: Instagram,
-		activity: 'low',
-		username: '@clembs.v',
-	},
-	{
-		id: SocialName.Mastodon,
-		name: 'Mastodon',
-		url: 'https://mastodon.social/@clembs',
-		icon: Mastodon,
-		activity: 'low',
-		username: '@clembs@mastodon.social',
-	},
+	comments,
+	github,
+	discord,
+	youtube,
+	twitch,
+	instagram,
+	mastodon,
 ] satisfies Social[];
+
+export const streamSocials = [youtube, twitch] satisfies Social[];
