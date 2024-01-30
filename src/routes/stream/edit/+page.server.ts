@@ -2,7 +2,7 @@ import { error } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { db } from '$lib/db';
 import { streams } from '$lib/db/schema';
-import { socials, type SocialName } from '$lib/data/socials';
+import { socials } from '$lib/data/socials';
 import { DISCORD_STREAM_WEBHOOK_URL, DISCORD_TOKEN } from '$env/static/private';
 import { eq } from 'drizzle-orm';
 
@@ -41,6 +41,8 @@ export const actions: Actions = {
 		const platforms = formData.getAll('platforms');
 		const startTime = formData.get('startTime')?.toString();
 		const discordEvent = formData.get('discordEvent')?.toString();
+		const collaboratorNames = formData.getAll('collaborator:name');
+		const collaboratorUrls = formData.getAll('collaborator:url');
 
 		if (!title || !platforms || !startTime) {
 			throw error(400, 'Missing required fields');
@@ -55,6 +57,12 @@ export const actions: Actions = {
 				id: platform.toString(),
 				url: formData.get(`${platform}:url`)?.toString()!,
 			})),
+			collaborators: collaboratorNames
+				.filter((name) => !!name?.toString())
+				.map((name, i) => ({
+					url: collaboratorUrls[i]?.toString() ?? '',
+					username: name?.toString() ?? '',
+				})),
 		});
 
 		if (discordEvent === 'on') {

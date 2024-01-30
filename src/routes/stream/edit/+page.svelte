@@ -21,6 +21,16 @@
 	};
 	let discordEvent = true;
 	let createStream = false;
+
+	let collaborators: {
+		name: string;
+		url: string;
+	}[] = [
+		{
+			name: '',
+			url: '',
+		},
+	];
 </script>
 
 <div class="manager">
@@ -82,6 +92,38 @@
 								value={socials.find((s) => s.id === social.id)?.url}
 							/>
 						{/if}
+					</div>
+				{/each}
+			</section>
+
+			<section id="collabs">
+				<h3>Collaborators</h3>
+
+				{#each collaborators as collaborator}
+					<div class="collaborator">
+						<TextInput
+							on:input={(e) => {
+								// if the last collaborator has a name, add a new one
+								if (collaborators[collaborators.length - 1].name) {
+									collaborators.push({ name: '', url: '' });
+								}
+								// if the current collaborator has no name, remove it
+								if (collaborator.name === '') {
+									collaborators.pop();
+									e.target?.focus();
+								}
+							}}
+							required={false}
+							label="Name"
+							name="collaborator:name"
+							bind:value={collaborator.name}
+						/>
+						<TextInput
+							label="URL"
+							name="collaborator:url"
+							bind:value={collaborator.url}
+							required={!!collaborator.name}
+						/>
 					</div>
 				{/each}
 			</section>
@@ -228,6 +270,11 @@
 			flex-direction: column;
 			gap: 0.25rem;
 			font-size: 1rem;
+		}
+
+		.collaborator {
+			display: flex;
+			gap: 0.25rem;
 		}
 	}
 

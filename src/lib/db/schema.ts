@@ -99,6 +99,12 @@ export const streams = pgTable('streams', {
 			url: string;
 		}[]
 	>(),
+	collaborators: jsonb('collaborators').$type<
+		{
+			url: string;
+			username: string;
+		}[]
+	>(),
 });
 
 export const usersRelations = relations(users, ({ many, one }) => ({

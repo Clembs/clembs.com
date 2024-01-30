@@ -9,6 +9,7 @@
 	import type { PageServerData } from './$types';
 	import Stream from './Stream.svelte';
 	import MetaTags from '$lib/components/MetaTags.svelte';
+	import Mention from '../comments/Comment/Mention.svelte';
 
 	export let data: PageServerData;
 
@@ -61,42 +62,74 @@
 			<HabileHappy />
 		</span>
 
-		<span class="label" class:live={currentStream}>
-			{#if currentStream}
-				I'm live!
-			{:else}
-				I'm streaming soon!
-			{/if}
-		</span>
+		<header>
+			<span class="label" class:live={currentStream}>
+				{#if currentStream}
+					I'm live!
+				{:else}
+					I'm streaming soon!
+				{/if}
+			</span>
+			<h1>{stream.title}</h1>
 
-		<h1>{stream.title}</h1>
-
-		<p>
-			{stream.startedAt.toLocaleString(undefined, {
-				month: 'long',
-				day: 'numeric',
-				year: 'numeric',
-				hour: 'numeric',
-				minute: 'numeric',
-			})} -
-			{#if currentStream}
-				Started
-			{:else}
-				Starting
+			{#if stream.collaborators?.length}
+				<span id="collaborators">
+					with
+					{#each stream.collaborators as collaborator}
+						<Mention
+							node={{
+								type: 'user',
+								username: collaborator.username,
+							}}
+							clickable={false}
+						/>
+						<!-- {new Intl.ListFormat('en-GB', { style: 'long', type: 'conjunction' }).format(
+						stream.collaborators.map((c) => c.username)
+					)} -->
+					{/each}
+				</span>
 			{/if}
-			{relativeTimeFormat(stream.startedAt)}
-		</p>
+
+			<p>
+				{stream.startedAt.toLocaleString(undefined, {
+					month: 'long',
+					day: 'numeric',
+					year: 'numeric',
+					hour: 'numeric',
+					minute: 'numeric',
+				})} -
+				{#if currentStream}
+					Started
+				{:else}
+					Starting
+				{/if}
+				{relativeTimeFormat(stream.startedAt)}
+			</p>
+		</header>
 
 		<LinksList
-			socials={stream.platforms.map((p) => {
-				const social = streamSocials.find((s) => s.id === p.id);
-				return {
-					...social,
-					name: `Watch on ${social?.name}`,
-					activity: undefined,
-					url: p.url,
-				};
-			})}
+			socials={[
+				...stream.platforms.map((p) => {
+					const social = streamSocials.find((s) => s.id === p.id);
+					return {
+						...social,
+						name: `Watch on ${social?.name}`,
+						activity: undefined,
+						url: p.url,
+					};
+				}),
+				...(stream.collaborators || []).map((c) => {
+					const social = socials.find((s) => c.url.includes(s.id?.toString() ?? ''));
+
+					return {
+						...social,
+						name: `Watch ${c.username}`,
+						username: c.username,
+						url: c.url,
+						activity: undefined,
+					};
+				}),
+			]}
 		/>
 	{:else}
 		<span class="icon">
@@ -151,12 +184,26 @@
 		max-width: 600px;
 		margin: 0 auto;
 
+		header {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 0.5rem;
+			margin-bottom: 1rem;
+
+			#collaborators {
+				font-size: 1.5rem;
+				font-weight: 500;
+				margin-top: -0.5rem;
+				margin-bottom: 0.5rem;
+			}
+		}
+
 		.label {
 			font-size: 0.9rem;
 			border: 1px solid var(--color-outline);
 			border-radius: 9rem;
 			padding: 0.25rem 0.5rem;
-			margin-bottom: -0.5rem;
 			background-color: var(--color-surface);
 
 			&.live {
