@@ -55,7 +55,7 @@
 				}
 			}
 
-			if (result.type === 'failure') {
+			if (result.type === 'failure' && typeof result.data?.message === 'string') {
 				error = result.data?.message;
 			}
 

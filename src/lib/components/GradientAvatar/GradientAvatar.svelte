@@ -13,7 +13,10 @@
 	$: firstCharUsername = username[0].trim();
 	$: lastCharUsername = username.at(-1)?.trim()!;
 
-	const avatarGradient = tweened(
+	const avatarGradient = tweened<{
+		a: string;
+		b: string;
+	}>(
 		{
 			a: firstCharUsername,
 			b: lastCharUsername,

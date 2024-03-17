@@ -5,15 +5,12 @@
 	import { donationLinks } from '$lib/data/socials';
 	import Supporter from '$lib/icons/badges/supporter.svelte';
 	import Mention from '../comments/Comment/Mention.svelte';
-	import IconAt from '@tabler/icons-svelte/dist/svelte/icons/IconAt.svelte';
 	import type { PageServerData } from './$types';
 	import { dateFormat } from '$lib/helpers/dateFormat';
 	import type { donations } from '$lib/db/schema';
+	import { IconAt } from '@tabler/icons-svelte';
 
 	export let data: PageServerData;
-
-	const loggedInDonators = data.donations.filter((d) => d.user?.username);
-	const randomDonator = loggedInDonators[Math.floor(Math.random() * loggedInDonators.length)];
 
 	const platformNames: Record<typeof donations.$inferSelect.platform, string> = {
 		KOFI: 'Ko-fi',
@@ -24,7 +21,7 @@
 		OTHER: 'Other',
 	};
 
-	const currencyNames = {
+	const currencyNames: Record<string, string> = {
 		RUB: '₽',
 		USD: 'US$',
 		EUR: '€',

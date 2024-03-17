@@ -1,12 +1,11 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import IconMail from '@tabler/icons-svelte/dist/svelte/icons/IconMail.svelte';
 	import TextInput from '$lib/components/TextInput.svelte';
 	import Button from '$lib/components/Button.svelte';
 	import { LoaderIcon } from 'svelte-french-toast';
 	import { OTP_REGEX } from '$lib/helpers/regex';
 	import { goto } from '$app/navigation';
-	import { page } from '$app/stores';
+	import { IconMail } from '@tabler/icons-svelte';
 
 	export let email: string;
 	export let isNewUser: boolean;
@@ -29,7 +28,7 @@
 				showModal = false;
 				return;
 			}
-			if (result.type === 'failure') {
+			if (result.type === 'failure' && typeof result.data?.message === 'string') {
 				error = result.data?.message;
 				return;
 			}

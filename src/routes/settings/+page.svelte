@@ -8,9 +8,6 @@
 	import toast, { LoaderIcon } from 'svelte-french-toast';
 	import Button from '$lib/components/Button.svelte';
 	import SettingsSection from './SettingsSection.svelte';
-	import IconAlertTriangleFilled from '@tabler/icons-svelte/dist/svelte/icons/IconAlertTriangleFilled.svelte';
-	import IconLogout from '@tabler/icons-svelte/dist/svelte/icons/IconLogout.svelte';
-	import IconTrash from '@tabler/icons-svelte/dist/svelte/icons/IconTrash.svelte';
 	import Switch from '$lib/components/Switch.svelte';
 	import DeleteAccountModal from './DeleteAccountModal.svelte';
 	import Passkey from '$lib/svg/Passkey.svelte';
@@ -20,7 +17,14 @@
 	import { onMount } from 'svelte';
 	import type { PageData } from '../$types';
 
-	import { IconDeviceFloppy, IconEdit, IconX } from '@tabler/icons-svelte';
+	import {
+		IconDeviceFloppy,
+		IconEdit,
+		IconX,
+		IconTrash,
+		IconLogout,
+		IconAlertTriangleFilled,
+	} from '@tabler/icons-svelte';
 
 	export let data: PageData;
 
@@ -121,7 +125,6 @@
 							...$page.data?.userData,
 							username: username || 'Guest',
 						}}
-						showBadge={false}
 					/>
 				</div>
 			</form>
@@ -138,7 +141,7 @@
 						if (result.type === 'success') {
 							toast.success('Settings updated successfully!');
 						}
-						if (result.type === 'failure') {
+						if (result.type === 'failure' && typeof result.data?.message === 'string') {
 							toast.error(result.data?.message);
 						}
 						if (result.type === 'error') {

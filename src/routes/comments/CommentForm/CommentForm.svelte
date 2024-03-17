@@ -2,8 +2,7 @@
 	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
 	import Button from '$lib/components/Button.svelte';
-	import IconAlertCircleFilled from '@tabler/icons-svelte/dist/svelte/icons/IconAlertCircleFilled.svelte';
-	import IconHelpCircle from '@tabler/icons-svelte/dist/svelte/icons/IconHelpCircle.svelte';
+	import { IconAlertCircleFilled, IconHelpCircle } from '@tabler/icons-svelte';
 	import toast, { LoaderIcon } from 'svelte-french-toast';
 	import Tooltip from '$lib/components/Tooltip.svelte';
 	import { tick } from 'svelte';
@@ -12,7 +11,6 @@
 	import GradientAvatar from '$lib/components/GradientAvatar/GradientAvatar.svelte';
 
 	export let content = '';
-	export let showModal: boolean;
 	export let showLoginModal: boolean;
 	export let showRestrictedFunctionalityModal: boolean;
 	export let projectId: string | null = null;
@@ -101,10 +99,9 @@
 			error = '';
 
 			if (result.type === 'success') {
-				showModal = false;
 				toast.success('Comment sent!');
 			}
-			if (result.type === 'failure') {
+			if (result.type === 'failure' && typeof result.data.message === 'string') {
 				error = result.data?.message;
 			}
 			if (result.type === 'error') {
@@ -129,7 +126,7 @@
 	{/if}
 
 	<div class="comment-profile">
-		<GradientAvatar user={$page.data?.userData} size="2.25rem" />
+		<GradientAvatar user={$page.data?.userData} size="2.5rem" />
 		<!-- <div class="comment-profile-username">
 			{$page.data?.userData?.username ?? 'Guest'} <span class="subtext">(You)</span>
 		</div>
@@ -214,8 +211,8 @@
 	form {
 		display: flex;
 		transition: height 300ms cubic-bezier(0.1, 0.6, 0.4, 1);
-		height: 3.5rem;
-		min-height: 3.5rem;
+		height: 2.5rem;
+		min-height: 2.5rem;
 		max-height: unset;
 		gap: 0.75rem;
 

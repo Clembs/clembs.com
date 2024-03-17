@@ -6,8 +6,8 @@
 	import TextInput from '$lib/components/TextInput.svelte';
 	import HabileHappy from '$lib/svg/HabileHappy.svelte';
 	import PasskeyLogin from './PasskeyLoginButton.svelte';
-	import IconMail from '@tabler/icons-svelte/dist/svelte/icons/IconMail.svelte';
 	import { createEventDispatcher } from 'svelte';
+	import { IconMail } from '@tabler/icons-svelte';
 
 	export let showModal = false;
 	export let canUsePasskeys = false;
@@ -26,7 +26,7 @@
 		loading = true;
 
 		return async ({ result, update }) => {
-			if (result.type === 'failure') {
+			if (result.type === 'failure' && typeof result.data?.message === 'string') {
 				error = result.data?.message;
 				return;
 			}
