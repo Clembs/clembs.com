@@ -1,6 +1,6 @@
-import type { DesignPost } from '$lib/data/design';
+import type { BlogPost } from '$lib/data/blog';
 
-export function updateThemeGradient(themeGradient: DesignPost['themeGradient']) {
+export function updateThemeGradient(themeGradient: BlogPost['themeGradient']) {
 	const background: HTMLDivElement | null = document.querySelector('.background-piece');
 	if (!background) return;
 

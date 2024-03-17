@@ -5,7 +5,7 @@ import { fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { rateLimit } from '$lib/helpers/handleRateLimit';
 import { PROJECT_ID_REGEX } from '$lib/helpers/regex';
-import { designPosts } from '$lib/data/design';
+import { blogPosts } from '$lib/data/blog';
 import { softwareData } from '$lib/data/software';
 import { bannedWords } from '$lib/helpers/bannedWords';
 import { parseMentions, type ParserOutputUserStructure } from '$lib/helpers/parseMentions';
@@ -100,7 +100,7 @@ export const actions: Actions = {
 				});
 			}
 
-			const project = [...(regex[1] === 'design' ? designPosts : softwareData)].find(
+			const project = [...(regex[1] === 'design' ? blogPosts : softwareData)].find(
 				({ id }) => id === regex[2]
 			);
 

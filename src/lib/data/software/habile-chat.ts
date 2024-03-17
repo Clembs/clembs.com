@@ -9,7 +9,7 @@ export const habileChat: Software = {
 Habile was created 2 years ago as a mascot for my livestreaming career and as a Twitch bot to entertain viewers and assist me with my livestreams.
 
 
-Fast forward to today, she represents the [Clembs brand](/design/clembs) proudly and is the centerpiece of my [Discord server](/discord).
+Fast forward to today, she represents the [Clembs brand](/blog/clembs) proudly and is the centerpiece of my [Discord server](/discord).
 
 
 As I wanted to use OpenAI's GPT-4 model for a big project coming somewhere in the future, I needed a less ambitious project to test the waters and see how I could come up with a way to charge users for the usage of the model.

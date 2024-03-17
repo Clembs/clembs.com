@@ -1,6 +1,6 @@
-import type { DesignPost } from '.';
+import type { BlogPost } from '.';
 
-export const vbot: DesignPost = {
+export const vbot: BlogPost = {
 	id: 'vbot',
 	brand: 'Vbot',
 	title: 'Vbot',

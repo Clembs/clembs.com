@@ -1,7 +1,7 @@
 <script lang="ts">
-	import DesignPostCard from '$lib/components/Projects/DesignPostCard.svelte';
+	import BlogPostCard from '$lib/components/Projects/BlogPost.svelte';
 	import SoftwareItem from '$lib/components/Projects/SoftwareItem.svelte';
-	import { designPosts } from '$lib/data/design';
+	import { blogPosts } from '$lib/data/blog';
 	import { softwareData } from '$lib/data/software';
 </script>
 
@@ -19,8 +19,8 @@
 		</p>
 
 		<div class="design projects">
-			{#each designPosts as project, index}
-				<DesignPostCard loaded data={project} {index} />
+			{#each blogPosts as project, index}
+				<BlogPostCard loaded data={project} {index} />
 			{/each}
 		</div>
 	</section>

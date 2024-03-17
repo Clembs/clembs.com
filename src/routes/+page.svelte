@@ -1,14 +1,12 @@
 <script lang="ts">
 	import Button from '$lib/components/Button.svelte';
-	import { designPosts } from '$lib/data/design';
+	import { blogPosts } from '$lib/data/blog';
 	import { softwareData } from '$lib/data/software';
-	import IconMessageCircle from '@tabler/icons-svelte/dist/svelte/icons/IconMessageCircle.svelte';
-	import IconBrush from '@tabler/icons-svelte/dist/svelte/icons/IconBrush.svelte';
-	import IconCode from '@tabler/icons-svelte/dist/svelte/icons/IconCode.svelte';
+	import { IconMessageCircle, IconBrush, IconCode } from '@tabler/icons-svelte';
 	import MetaTags from '$lib/components/MetaTags.svelte';
 	import ToggleAvatar from '$lib/components/ToggleAvatar.svelte';
 	import SoftwareItem from '$lib/components/Projects/SoftwareItem.svelte';
-	import DesignPostCard from '$lib/components/Projects/DesignPostCard.svelte';
+	import BlogPostCard from '$lib/components/Projects/BlogPost.svelte';
 	import Card from '$lib/components/Card.svelte';
 </script>
 
@@ -33,10 +31,10 @@ and express my love through design, code and video. Welcome to clembs.com!"
 
 <section id="projects">
 	<div id="project-grid">
-		{#each designPosts.slice(0, 2) as design, i}
+		{#each blogPosts.slice(0, 3) as design, i}
 			{#if i % 2 === 0}
 				<div class="grid-item">
-					<DesignPostCard loaded data={design} index={i} />
+					<BlogPostCard loaded data={design} index={i} />
 				</div>
 				<div class="grid-item columns">
 					{#each softwareData.slice(i * 2, i * 2 + 2) as software, i}
@@ -50,7 +48,7 @@ and express my love through design, code and video. Welcome to clembs.com!"
 					{/each}
 				</div>
 				<div class="grid-item">
-					<DesignPostCard loaded data={design} index={i} />
+					<BlogPostCard loaded data={design} index={i} />
 				</div>
 			{/if}
 		{/each}
@@ -115,17 +113,15 @@ and express my love through design, code and video. Welcome to clembs.com!"
 	#intro {
 		display: flex;
 		flex-direction: column;
-		font-size: clamp(1rem, 2vw, 1.15rem);
 		align-items: center;
 		text-align: center;
-		width: 100%;
 
 		.intro-text {
 			padding: 3rem 0;
-			width: 100%;
+			position: relative;
 
 			h1 {
-				font-size: clamp(2rem, 5vw, 3rem);
+				font-size: clamp(1.75rem, 7vw, 3rem);
 				line-height: 1.25;
 			}
 

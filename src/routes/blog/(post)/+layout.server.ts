@@ -1,4 +1,4 @@
-import { designPosts } from '$lib/data/design';
+import { blogPosts } from '$lib/data/blog';
 import { error } from '@sveltejs/kit';
 import type { LayoutServerLoad } from './$types';
 import { getComments } from '$lib/helpers/getComments';
@@ -9,7 +9,7 @@ export const load: LayoutServerLoad = async ({
 	locals: { getUserData },
 	setHeaders,
 }) => {
-	const project = designPosts.find(({ id }) => id === url.pathname.split('/').at(-1));
+	const project = blogPosts.find(({ id }) => id === url.pathname.split('/').at(-1));
 	const type = 'design';
 
 	if (!route.id || !project) {

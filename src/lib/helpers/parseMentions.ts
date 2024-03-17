@@ -1,4 +1,4 @@
-import { designPosts, type DesignPost } from '$lib/data/design';
+import { blogPosts, type BlogPost } from '$lib/data/blog';
 import { softwareData, type Software } from '$lib/data/software';
 import { EMOJI_MENTION_REGEX, PROJECT_MENTION_REGEX, USERNAME_MENTION_REGEX } from './regex';
 
@@ -23,12 +23,12 @@ export type ParserOutputEmojiStructure = ParserOutputBaseStructure & {
 type ParserOutputBaseProjectStructure = ParserOutputBaseStructure & {
 	type: 'project';
 	projectId: string;
-	projectType: 'software' | 'design';
+	projectType: 'software' | 'blog';
 };
 
-type ParserOutputDesignStructure = ParserOutputBaseProjectStructure & {
-	projectType: 'design';
-	details: DesignPost;
+type ParserOutputBlogStructure = ParserOutputBaseProjectStructure & {
+	projectType: 'blog';
+	details: BlogPost;
 };
 
 type ParserOutputSoftwareStructure = ParserOutputBaseProjectStructure & {
@@ -37,7 +37,7 @@ type ParserOutputSoftwareStructure = ParserOutputBaseProjectStructure & {
 };
 
 export type ParserOutputProjectStructure =
-	| ParserOutputDesignStructure
+	| ParserOutputBlogStructure
 	| ParserOutputSoftwareStructure;
 
 export type ParserOutputStructure =
@@ -98,11 +98,11 @@ export function parseMentions(text: string): ParserOutputStructure[] {
 
 				const projectId = match[1];
 				// Check the project type
-				const projectType = designPosts.find(({ id }) => id === projectId) ? 'design' : 'software';
+				const projectType = blogPosts.find(({ id }) => id === projectId) ? 'blog' : 'software';
 				// Find the project's data
 				const details =
-					projectType === 'design'
-						? designPosts.find(({ id }) => id === projectId)
+					projectType === 'blog'
+						? blogPosts.find(({ id }) => id === projectId)
 						: softwareData.find(({ id }) => id === projectId);
 
 				if (details) {

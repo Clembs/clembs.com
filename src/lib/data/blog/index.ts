@@ -2,7 +2,7 @@ import { crbt2023 } from './crbt-2023';
 import { kikuri } from './kikuri';
 import { clembs } from './clembs';
 
-export interface DesignPost {
+export interface BlogPost {
 	id: string;
 	brand: string;
 	title: string;
@@ -27,6 +27,6 @@ export interface DesignPost {
 	};
 }
 
-export const designPosts: DesignPost[] = [kikuri, crbt2023, clembs].sort(
+export const blogPosts: BlogPost[] = [kikuri, crbt2023, clembs].sort(
 	(a, b) => b.createdAt.getTime() - a.createdAt.getTime()
 );

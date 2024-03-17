@@ -1,6 +1,6 @@
-import type { DesignPost } from '.';
+import type { BlogPost } from '.';
 
-export const verticalVision: DesignPost = {
+export const verticalVision: BlogPost = {
 	id: 'vertical-vision',
 	brand: 'Vertical Vision',
 	title: 'Vertical Vision - Watch your safety',

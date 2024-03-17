@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type { DesignPost } from '$lib/data/design';
+	import type { BlogPost } from '$lib/data/blog';
 	import Card from '../Card.svelte';
 
-	export let data: DesignPost;
+	export let data: BlogPost;
 	export let index: number;
 	export let loaded = false;
 </script>
@@ -10,7 +10,7 @@
 <Card
 	class="card project"
 	aria-label="View design project: {data.title}"
-	href="/design/{data.id}"
+	href="/blog/{data.id}"
 	style="--delay: {index}"
 >
 	<div class="card-image" style="background-image: url({data.bannerThumbnailPath})">
