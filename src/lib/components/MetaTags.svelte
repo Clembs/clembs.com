@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 
-	export let pageName: string = 'Clembs | Portfolio Website';
+	export let pageName: string = 'Clembs';
 	export let description: string;
 	export let image = '/banner.png';
 	export let siteName = 'Clembs';
