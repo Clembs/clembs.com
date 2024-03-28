@@ -1,12 +1,9 @@
 <script lang="ts">
+	import { showLoginDialog } from '$lib/stores/modals';
 	import Modal from '../Modal.svelte';
 	import LoginForm from './LoginForm.svelte';
-
-	export let showModal = false;
 </script>
 
-{#if showModal}
-	<Modal bind:showModal>
-		<LoginForm bind:showModal />
-	</Modal>
-{/if}
+<Modal showModal on:close={() => showLoginDialog.set(false)}>
+	<LoginForm />
+</Modal>
