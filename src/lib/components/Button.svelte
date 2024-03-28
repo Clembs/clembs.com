@@ -3,6 +3,7 @@
 	export let style: 'filled' | 'outlined' | 'text' | 'danger' = 'filled';
 	export let disabled = false;
 	export let type: 'submit' | 'button' = 'button';
+	export let icon = false;
 	export let inline = true;
 	export let size: 'sm' | 'm' | 'xl' = 'm';
 	let className = '';
@@ -16,6 +17,7 @@
 		role="button"
 		{...$$restProps}
 		class:inline
+		class:icon
 	>
 		<slot />
 	</a>
@@ -28,6 +30,7 @@
 		{disabled}
 		{...$$restProps}
 		class:inline
+		class:icon
 	>
 		<slot />
 	</button>
@@ -60,12 +63,22 @@
 		border: var(--_border);
 		border-radius: 99rem;
 
-		transition: background-color 150ms ease-in, max-width 150ms ease-in-out;
+		transition:
+			background-color 150ms ease-in,
+			max-width 150ms ease-in-out;
 
 		&.inline {
 			display: inline-flex;
 			width: max-content;
 		}
+
+		&.icon {
+			padding: 0.5rem;
+		}
+
+		// &:has(svg) {
+		// 	padding-left: 0.5rem;
+		// }
 
 		&.filled {
 			--_bg: var(--color-on-background);
