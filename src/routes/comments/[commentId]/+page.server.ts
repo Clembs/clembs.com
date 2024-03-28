@@ -31,7 +31,7 @@ export const load: PageServerLoad = async ({
 		...(await parent()),
 		navButton: {
 			href: comment.projectId ? `/${comment.projectId}` : '/comments',
-			label: comment.projectId ? 'Project' : 'Main feed',
+			label: comment.projectId ? 'Project' : 'Comments',
 		},
 	};
 };

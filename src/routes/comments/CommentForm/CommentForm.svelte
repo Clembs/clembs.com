@@ -2,17 +2,14 @@
 	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
 	import Button from '$lib/components/Button.svelte';
-	import { IconAlertCircleFilled, IconHelpCircle } from '@tabler/icons-svelte';
+	import { IconAlertCircleFilled } from '@tabler/icons-svelte';
 	import toast, { LoaderIcon } from 'svelte-french-toast';
-	import Tooltip from '$lib/components/Tooltip.svelte';
-	import { tick } from 'svelte';
 	import type { Comment as CommentType } from '$lib/db/types';
 	import FormattingHelpModal from '$lib/components/FormattingHelpModal.svelte';
 	import GradientAvatar from '$lib/components/GradientAvatar/GradientAvatar.svelte';
+	import { showLoginDialog, showRestrictedAccountDialog } from '$lib/stores/modals';
 
 	export let content = '';
-	export let showLoginModal: boolean;
-	export let showRestrictedFunctionalityModal: boolean;
 	export let projectId: string | null = null;
 	export let parentComment: CommentType | null = null;
 	export let expanded = false;
@@ -22,46 +19,6 @@
 	let showHelpModal = false;
 	let commentForm: HTMLFormElement;
 	const commentMaxLength = 256;
-
-	const surroundingElementKeys: Record<string, string> = {
-		b: '**',
-		i: '_',
-		s: '~~',
-		u: '__',
-	};
-
-	async function handleTextboxShortcuts(this: HTMLTextAreaElement, ev: KeyboardEvent) {
-		if (!(ev.ctrlKey && ev.key && Object.keys(surroundingElementKeys).includes(ev.key))) return;
-
-		ev.preventDefault();
-		const { selectionStart, selectionEnd, value } = this as HTMLTextAreaElement;
-		const selection = value.slice(selectionStart, selectionEnd);
-
-		const surroundingElement = surroundingElementKeys[ev.key];
-		const surroundedSelection = `${surroundingElement}${selection}${surroundingElement}`;
-
-		if (
-			value.slice(
-				selectionStart - surroundingElement.length,
-				selectionEnd + surroundingElement.length
-			) === surroundedSelection
-		) {
-			content =
-				value.slice(0, selectionStart - surroundingElement.length) +
-				selection +
-				value.slice(selectionEnd + surroundingElement.length);
-
-			await tick();
-			this.selectionStart = selectionStart - surroundingElement.length;
-			this.selectionEnd = selectionEnd - surroundingElement.length;
-		} else {
-			content = value.slice(0, selectionStart) + surroundedSelection + value.slice(selectionEnd);
-
-			await tick();
-			this.selectionStart = selectionStart + surroundingElement.length;
-			this.selectionEnd = selectionEnd + surroundingElement.length;
-		}
-	}
 </script>
 
 <svelte:window
@@ -76,11 +33,15 @@
 			e.preventDefault();
 			commentForm.requestSubmit();
 		}
+		if (e.key === 'Escape') {
+			expanded = false;
+			commentForm.querySelector('textarea')?.blur();
+		}
 	}}
 />
 
 {#if showHelpModal}
-	<FormattingHelpModal showMarkdown={!projectId} bind:showModal={showHelpModal} />
+	<FormattingHelpModal bind:showModal={showHelpModal} />
 {/if}
 
 <form
@@ -101,7 +62,7 @@
 			if (result.type === 'success') {
 				toast.success('Comment sent!');
 			}
-			if (result.type === 'failure' && typeof result.data.message === 'string') {
+			if (result.type === 'failure' && typeof result.data?.message === 'string') {
 				error = result.data?.message;
 			}
 			if (result.type === 'error') {
@@ -127,14 +88,6 @@
 
 	<div class="comment-profile">
 		<GradientAvatar user={$page.data?.userData} size="2.5rem" />
-		<!-- <div class="comment-profile-username">
-			{$page.data?.userData?.username ?? 'Guest'} <span class="subtext">(You)</span>
-		</div>
-		{#if !$page.data?.userData}
-			<button type="button" on:click={() => dispatch('login')} class="subtext">
-				Use an account?
-			</button>
-		{/if} -->
 	</div>
 
 	<div class="comment-editor">
@@ -150,11 +103,11 @@
 				: 'Leave suggestions, questions, rate the website...'}
 			{...expanded ? { autofocus: true } : {}}
 			{...$$restProps}
-			on:keydown={handleTextboxShortcuts}
 			bind:value={content}
 			on:focus={() => {
+				expanded = true;
 				if ($page.data.userData?.badges?.includes('BLOCKED')) {
-					showRestrictedFunctionalityModal = true;
+					showRestrictedAccountDialog.set(true);
 					document.querySelector('textarea')?.blur();
 				}
 			}}
@@ -162,19 +115,9 @@
 
 		<div class="actions">
 			<div class="left">
-				<!-- <Tooltip>
-					<span slot="tooltip-content"> Coming soon 👀 </span>
-					<Button disabled style="outlined">
-						<IconMoodSmile />
-					</Button>
-				</Tooltip> -->
-
-				<Tooltip>
-					<span slot="tooltip-content"> Formatting help </span>
-					<Button style="outlined" on:click={() => (showHelpModal = true)}>
-						<IconHelpCircle />
-					</Button>
-				</Tooltip>
+				<button type="button" on:click={() => (showHelpModal = true)}>
+					Comment formatting help
+				</button>
 			</div>
 
 			<div class="right">
@@ -190,7 +133,7 @@
 				</div>
 
 				{#if !$page.data?.userData}
-					<Button type="button" on:click={() => (showLoginModal = true)} style="outlined">
+					<Button type="button" on:click={() => showLoginDialog.set(true)} style="outlined">
 						Use an account?
 					</Button>
 				{/if}

@@ -1,17 +1,17 @@
 <script lang="ts">
-	import IconArrowBigUp from '@tabler/icons-svelte/dist/svelte/icons/IconArrowBigUp.svelte';
-	import IconArrowBigDown from '@tabler/icons-svelte/dist/svelte/icons/IconArrowBigDown.svelte';
-	import IconArrowBigUpFilled from '@tabler/icons-svelte/dist/svelte/icons/IconArrowBigUpFilled.svelte';
-	import IconArrowBigDownFilled from '@tabler/icons-svelte/dist/svelte/icons/IconArrowBigDownFilled.svelte';
+	import {
+		IconArrowBigUp,
+		IconArrowBigDown,
+		IconArrowBigUpFilled,
+		IconArrowBigDownFilled,
+	} from '@tabler/icons-svelte';
 	import { page } from '$app/stores';
 	import toast from 'svelte-french-toast';
 	import type { Comment } from '$lib/db/types';
 	import { calculateScore } from '$lib/helpers/calculateScore';
 	import { enhance } from '$app/forms';
 	import type { ActionResult } from '@sveltejs/kit';
-
-	export let showLoginModal = false;
-	export let showRestrictedFunctionalityModal = false;
+	import { showLoginDialog, showRestrictedAccountDialog } from '$lib/stores/modals';
 
 	export let comment: Comment;
 	export let big = false;
@@ -31,12 +31,12 @@
 
 	function castVote(voteType: 'UPVOTE' | 'DOWNVOTE') {
 		if (!data?.userData) {
-			showLoginModal = true;
+			showLoginDialog.set(true);
 			return;
 		}
 
 		if (data.userData.badges?.includes('BLOCKED')) {
-			showRestrictedFunctionalityModal = true;
+			showRestrictedAccountDialog.set(true);
 			return;
 		}
 		previousVote = vote;
@@ -59,10 +59,10 @@
 		if (result.type === 'failure') {
 			resetVote();
 			if (result.status === 401) {
-				showLoginModal = true;
+				showLoginDialog.set(true);
 			}
 			if (result.status === 403) {
-				showRestrictedFunctionalityModal = true;
+				showRestrictedAccountDialog.set(true);
 			}
 		}
 	}
@@ -144,13 +144,14 @@
 		border-radius: 99rem;
 		background-color: var(--color-background);
 		align-items: center;
-		font-size: 0.875rem;
+		font-size: 1rem;
 		border: 1px solid var(--color-outline);
 		user-select: none;
+		font-weight: 500;
 
 		:global(svg) {
-			height: 16px;
-			width: 16px;
+			height: 18px;
+			width: 18px;
 		}
 
 		&.voted {
@@ -160,14 +161,14 @@
 
 		.score {
 			text-align: center;
-			min-width: 0.615rem;
+			min-width: 0.75rem;
 			color: var(--main-color, var(--color-on-background));
 		}
 
 		button {
 			display: grid;
 			place-items: center;
-			padding: 0.375rem;
+			padding: 0.45rem;
 			border-radius: 99rem;
 
 			:global(svg) {
@@ -196,11 +197,11 @@
 				color: var(--main-color);
 
 				&[data-action='upvote'] :global(svg) {
-					animation: upvote 300ms ease-in-out;
+					animation: upvote 300ms cubic-bezier(1, 0, 0, 1);
 				}
 
 				&[data-action='downvote'] :global(svg) {
-					animation: downvote 300ms ease-in-out;
+					animation: downvote 300ms cubic-bezier(1, 0, 0, 1);
 				}
 			}
 		}

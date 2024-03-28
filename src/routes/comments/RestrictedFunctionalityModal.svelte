@@ -1,11 +1,10 @@
 <script>
 	import Modal from '$lib/components/Modal.svelte';
+	import { showRestrictedAccountDialog } from '$lib/stores/modals';
 	import HabileNeutral from '$lib/svg/HabileNeutral.svelte';
-
-	export let showModal = false;
 </script>
 
-<Modal bind:showModal>
+<Modal showModal on:close={() => showRestrictedAccountDialog.set(false)}>
 	<header slot="title">
 		<HabileNeutral />
 

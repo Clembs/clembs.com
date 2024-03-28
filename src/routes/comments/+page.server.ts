@@ -11,25 +11,35 @@ import { bannedWords } from '$lib/helpers/bannedWords';
 import { parseMentions, type ParserOutputUserStructure } from '$lib/helpers/parseMentions';
 import { sendEmail } from '$lib/helpers/sendEmail';
 import { defaultUserPreferences } from '$lib/db/UserPreferences';
-import { marked } from 'marked';
-import insane from 'insane';
 import { dateFormat } from '$lib/helpers/dateFormat';
-import { getComments } from '$lib/helpers/getComments';
+import type { Comment } from '$lib/db/types';
+import { nestComments } from '$lib/helpers/groupComments';
 
 export const load: PageServerLoad = async ({ locals, setHeaders }) => {
 	const session = await locals.getSession();
 	const user = session?.user ?? null;
 
-	const comments = await getComments({
-		onlyParentComments: true,
-		includeParentComment: true,
-	});
+	const comments = (await db.query.comments.findMany({
+		where: ({ projectId }, { isNull }) => isNull(projectId),
+		orderBy: ({ createdAt }, { desc }) => desc(createdAt),
+		with: {
+			author: {
+				columns: {
+					id: true,
+					username: true,
+					badges: true,
+				},
+			},
+		},
+	})) as Comment[];
+
+	const commentsWithChildren = nestComments(comments);
 
 	setHeaders({
 		'Cache-Control': 'public, max-age=1200',
 	});
 
-	return { comments, user };
+	return { comments: commentsWithChildren, user };
 };
 
 export const actions: Actions = {
@@ -188,12 +198,7 @@ export const actions: Actions = {
 				</span>
 			</h3>
 			<p style="margin: 0; margin-top: 6px">
-				${insane(
-					marked.parseInline(input.content, {
-						gfm: true,
-						breaks: true,
-					})
-				)}
+				${input.content}
 			</p>
 		</div>
 

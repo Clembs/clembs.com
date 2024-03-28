@@ -1,14 +1,14 @@
 <script lang="ts">
-	import Comment from './Comment/Comment.svelte';
 	import type { Comment as CommentType, User } from '$lib/db/types';
 	import { rankComments } from '$lib/helpers/rankComments';
 	import RestrictedFunctionalityModal from './RestrictedFunctionalityModal.svelte';
-	import autoAnimate from '@formkit/auto-animate';
 	import HabileNeutral from '$lib/svg/HabileNeutral.svelte';
 	import HabileScared from '$lib/svg/HabileScared.svelte';
 	import CommentForm from './CommentForm/CommentForm.svelte';
-	import Button from '$lib/components/Button.svelte';
 	import HabileHappy from '$lib/svg/HabileHappy.svelte';
+	import LoginModal from '$lib/components/Settings/LoginModal.svelte';
+	import CommentList from './Comment/CommentList.svelte';
+	import { showLoginDialog, showRestrictedAccountDialog } from '$lib/stores/modals';
 
 	export let userData: User | null | undefined;
 	export let parentComment: CommentType | null | undefined = null;
@@ -16,9 +16,7 @@
 	export let comments: CommentType[];
 	export let hideCreateForm = false;
 
-	export let showLoginModal = false;
 	export let showReplyModal = false;
-	export let showRestrictedFunctionalityModal = false;
 
 	let selectedSortingMode: 'interactions' | 'recent' = 'recent';
 	let selectedParentComment = parentComment;
@@ -27,53 +25,46 @@
 </script>
 
 <div class="comments-page" id="comments">
-	<RestrictedFunctionalityModal bind:showModal={showRestrictedFunctionalityModal} />
+	{#if $showRestrictedAccountDialog}
+		<RestrictedFunctionalityModal />
+	{/if}
+
+	{#if $showLoginDialog}
+		<LoginModal />
+	{/if}
 
 	<header>
 		<div class="title">
+			{#if projectId}
+				<h3>Comments</h3>
+			{:else if parentComment}
+				<h3>Replies</h3>
+			{:else}
+				<h1>Comments</h1>
+			{/if}
 			<div class="title-text">
-				<h3>
-					{#if projectId}
-						Comments
-					{:else if parentComment}
-						Replies
-					{:else}
-						Main feed
-					{/if}
-				</h3>
 				<span class="subtext">
 					{sortedAndFiltered.length}
 					{sortedAndFiltered.length === 1 ? 'comment' : 'comments'}
 				</span>
 			</div>
-			<div class="title-account"></div>
-			{#if userData}
-				<Button style="outlined" href="/account">Settings</Button>
-			{/if}
 		</div>
 		{#if !hideCreateForm}
 			<CommentForm
 				{projectId}
 				parentComment={selectedParentComment}
 				bind:showModal={showReplyModal}
-				bind:showLoginModal
-				bind:showRestrictedFunctionalityModal
 			/>
 		{/if}
 	</header>
 
 	{#if comments.length}
 		{#if sortedAndFiltered.length}
-			<div class="comments" use:autoAnimate>
-				{#each sortedAndFiltered as comment (comment.id)}
-					<Comment {comment} bind:showLoginModal bind:showRestrictedFunctionalityModal />
-				{/each}
-
-				<div class="no-comments">
-					<HabileHappy />
-					You've reached the end of the comments!
-				</div>
-			</div>
+			<CommentList comments={sortedAndFiltered} />
+			<li class="no-comments">
+				<HabileHappy />
+				You've reached the end of the comments!
+			</li>
 		{:else}
 			<div class="no-comments">
 				<HabileScared />
@@ -93,12 +84,14 @@
 </div>
 
 <style lang="scss">
+	.comments-page {
+		margin: 1rem;
+	}
+
 	header {
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
-		margin: 1rem;
-		margin-top: 2rem;
 
 		.title {
 			display: flex;
@@ -129,14 +122,5 @@
 			width: 64px;
 			height: 64px;
 		}
-	}
-
-	.comments {
-		list-style: none;
-		padding: 0;
-		margin: 1rem;
-		display: flex;
-		flex-direction: column;
-		gap: 2rem;
 	}
 </style>
