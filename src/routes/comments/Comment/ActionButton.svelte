@@ -3,15 +3,14 @@
 
 	export let href = '';
 	export let loading = false;
-	export let big = false;
 </script>
 
 {#if href}
-	<a {href} class:big {...$$restProps}>
+	<a {href} {...$$restProps}>
 		<slot />
 	</a>
 {:else}
-	<button class:big on:click|stopPropagation {...$$restProps}>
+	<button on:click|stopPropagation {...$$restProps}>
 		{#if loading}
 			<LoaderIcon />
 		{:else}
@@ -30,15 +29,13 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		padding: 0.375rem;
+		padding: 0.5rem;
 		cursor: pointer;
 		gap: 0.5rem;
 		font-size: 0.8rem;
 		max-width: max-content;
 		font-weight: 500;
 		border: 1px solid var(--color-outline);
-		min-width: 30px;
-		height: 30px;
 		text-decoration: none;
 
 		&:hover {
@@ -46,19 +43,8 @@
 		}
 
 		:global(svg) {
-			width: 16px;
-			height: 16px;
-		}
-
-		&.big {
-			font-size: 0.9rem;
-			padding: 0.5rem 0.75rem;
-			height: auto;
-
-			:global(svg) {
-				width: 24px;
-				height: 24px;
-			}
+			width: 18px;
+			height: 18px;
 		}
 	}
 </style>
