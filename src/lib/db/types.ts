@@ -20,8 +20,8 @@ export type UserBadge = Exclude<User['badges'], null>[number];
 
 export type Comment = typeof comments.$inferSelect & {
 	author?: Partial<User> | null | undefined;
-	childComments?: Partial<Comment>[] | null | undefined;
-	parentComment?: Partial<Comment> | null | undefined;
+	childComments?: Comment[] | null | undefined;
+	parentComment?: Comment | null | undefined;
 	score?: Partial<UserCommentVote>[] | null | undefined;
 	mentionedUsers?:
 		| {

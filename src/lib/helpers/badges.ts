@@ -20,7 +20,7 @@ export const badges: Record<
 		description: 'This user was blocked for breaking the Comments rules.',
 	},
 	CLEMBS: {
-		color: 'var(--color-primary)',
+		color: '#654FFF',
 		label: 'Admin',
 		icon: Clembs,
 		description: 'This is Clembs, the one and only.',

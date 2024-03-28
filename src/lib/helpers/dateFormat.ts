@@ -36,20 +36,21 @@ function leadingZero(num: number) {
 }
 
 export function dateFormat(date: Date, showTime = true) {
-	return `${date.getFullYear()}-${leadingZero(date.getMonth() + 1)}-${leadingZero(date.getDate())}${
-		showTime ? ` ${leadingZero(date.getHours())}:${leadingZero(date.getMinutes())}` : ''
-	}`;
+	// return `${date.getFullYear()}-${leadingZero(date.getMonth() + 1)}-${leadingZero(date.getDate())}${
+	// 	showTime ? ` ${leadingZero(date.getHours())}:${leadingZero(date.getMinutes())}` : ''
+	// }`;
 
-	// return date.toLocaleString('en-US', {
-	// 	month: 'long',
-	// 	day: 'numeric',
-	// 	year: 'numeric',
-	// 	...(showTime
-	// 		? {
-	// 				hour: '2-digit',
-	// 				hour12: false,
-	// 				minute: '2-digit',
-	// 		  }
-	// 		: {}),
-	// });
+	return date.toLocaleString('en-US', {
+		month: 'short',
+		day: 'numeric',
+		...(date.getFullYear() !== new Date().getFullYear() ? { year: 'numeric' } : {}),
+		// year: 'numeric',
+		...(showTime
+			? {
+					hour: '2-digit',
+					hour12: false,
+					minute: '2-digit',
+			  }
+			: {}),
+	});
 }
