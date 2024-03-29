@@ -1,6 +1,6 @@
 import type { BlogPost } from '..';
 
-export default {
+export const hidden = {
 	id: 'delegue',
 	categoryId: 'design',
 	title: 'Ensemble vers la réussite - Class rep campaign',

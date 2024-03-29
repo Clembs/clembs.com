@@ -1,6 +1,6 @@
 import type { BlogPost } from '..';
 
-export default {
+export const hidden = {
 	id: 'vertical-vision',
 	categoryId: 'design',
 	brand: { name: 'Vertical Vision' },
