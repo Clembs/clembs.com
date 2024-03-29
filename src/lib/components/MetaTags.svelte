@@ -60,7 +60,7 @@
 		<link
 			rel="alternate"
 			type="application/json+oembed"
-			href="{$page.url.origin}/oembed/blog/${blogPost.categoryId}/${blogPost.id}"
+			href="{$page.url.origin}/oembed/blog/{blogPost.categoryId}/{blogPost.id}"
 			title={blogPost.title}
 		/>
 	{/if}
