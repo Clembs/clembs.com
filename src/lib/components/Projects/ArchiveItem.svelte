@@ -6,63 +6,64 @@
 	export let loaded = false;
 </script>
 
-<Card aria-label="View software details: {data.name}" href="/archive/{data.id}">
-	<div class="archive" slot="card-content">
-		<div
-			class="archive-icon-wrapper"
-			style="--project-from: {data.themeGradient.from}; --project-to: {data.themeGradient.to}; "
-		>
-			<div class="archive-icon" style="background-image: url({data.iconThumbnailPath})">
-				<img
-					loading="lazy"
-					src={data.iconPath}
-					class:loaded
-					alt="{data.name} icon"
-					height={48}
-					width={48}
-				/>
+<Card aria-label="View software details: {data.name}" href={data.links.projectUrl}>
+	<div class="archive-wrapper" slot="card-content">
+		<div class="archive">
+			<img
+				loading="lazy"
+				src={data.iconPath}
+				class:loaded
+				alt="{data.name} icon"
+				height={48}
+				width={48}
+				style="background-image: url({data.iconThumbnailPath})"
+				class="archive-icon"
+			/>
+			<div class="about">
+				<div class="name-and-summary">
+					<div class="name">
+						{data.name}
+					</div>
+					<div class="subtext">{data.brief}</div>
+				</div>
+
+				<!-- <time class="subtext" datetime={data.createdAt.toISOString()}>
+					{data.createdAt.toLocaleDateString('en-US', {
+						year: 'numeric',
+						month: 'long',
+					})}
+				</time> -->
 			</div>
-			<div class="subtext">
-				{data.createdAt.getFullYear()}
-			</div>
-		</div>
-		<div class="about">
-			<div class="name">
-				{data.name}
-			</div>
-			<span class="subtext">{data.brief}</span>
 		</div>
 	</div>
 </Card>
 
 <style lang="scss">
-	.archive {
+	.archive-wrapper {
 		display: flex;
-		flex-direction: column;
-		gap: 0.75rem;
 		justify-content: center;
+		align-items: center;
 		height: 100%;
-		min-width: min-content;
-		min-height: min-content;
 
-		.archive-icon-wrapper {
+		.archive {
 			display: flex;
-			justify-content: space-between;
+			gap: 1rem;
 			width: 100%;
 
 			.archive-icon {
-				width: 3rem;
-				height: auto;
 				border: 1px solid var(--color-on-background);
-				border-radius: 1rem;
-				overflow: hidden;
+				border-radius: 0.75rem;
 			}
-		}
 
-		.about {
-			.name {
-				font-weight: 500;
-				font-size: 1.1rem;
+			.about {
+				flex: 1;
+				display: flex;
+				flex-direction: column;
+				gap: 0.75rem;
+				.name {
+					font-weight: 500;
+					font-size: 1.1rem;
+				}
 			}
 		}
 	}
