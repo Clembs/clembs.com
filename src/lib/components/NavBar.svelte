@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import Clembs from '$lib/icons/Clembs.svelte';
-	import { IconArrowLeft, IconUser } from '@tabler/icons-svelte';
+	import { IconArrowLeft, IconLogin, IconUser } from '@tabler/icons-svelte';
 	import { cubicInOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
 	import GradientAvatar from './GradientAvatar/GradientAvatar.svelte';
@@ -24,7 +24,7 @@
 				x: -20,
 			}}
 		>
-			<div id="arrow">
+			<div class="arrow">
 				<IconArrowLeft stroke={1.5} />
 			</div>
 			{$page.data.navButton ? $page.data.navButton.label || 'Back' : 'Home'}
@@ -35,16 +35,16 @@
 		<Clembs />
 	</a>
 
-	{#if $page.url.href.includes('/comments')}
+	{#if ['/comments', '/blog', '/settings'].some((path) => $page.url.href.includes(path))}
 		<a href="/account" id="account" class="side-button">
 			{#if $page.data.userData}
 				<GradientAvatar user={$page.data.userData} size="1.5rem" />
 				Settings
 			{:else}
-				<div id="arrow">
-					<IconUser stroke={1.5} />
+				<div class="arrow">
+					<IconLogin stroke={1.5} />
 				</div>
-				Login
+				Sign in
 			{/if}
 		</a>
 	{/if}
@@ -86,16 +86,11 @@
 			left: 1rem;
 			margin-left: -0.25rem;
 
-			#arrow {
-				display: grid;
-				transition: transform 0.1s ease-in-out;
-			}
-
-			&:hover #arrow {
+			&:hover .arrow {
 				transform: translateX(-0.25rem);
 			}
 
-			&:active #arrow {
+			&:active .arrow {
 				transform: translateX(0.125rem);
 			}
 		}
@@ -103,6 +98,11 @@
 		#account {
 			right: 1rem;
 			margin-right: -0.25rem;
+		}
+
+		.arrow {
+			display: grid;
+			transition: transform 0.1s ease-in-out;
 		}
 	}
 </style>
