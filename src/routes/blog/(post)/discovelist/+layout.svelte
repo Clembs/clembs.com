@@ -97,6 +97,26 @@
 	{/if}
 </section>
 
+{#if data.userData?.badges?.includes('CLEMBS')}
+	<form
+		id="dev-actions"
+		action="/blog/newsletter/actions?/send&category={data.categoryId}&post={data.id}"
+		method="post"
+		use:enhance={() =>
+			async ({ result }) => {
+				if (result.type === 'success') {
+					toast.success('Newsletter sent successfully!');
+				} else {
+					toast.error('An error occurred. Please try again later.');
+				}
+			}}
+	>
+		<Button type="submit">
+			Send newsletter to {data.subscribers} subscribers
+		</Button>
+	</form>
+{/if}
+
 <style lang="scss">
 	#newsletter {
 		margin-top: 2rem;
@@ -119,5 +139,11 @@
 			align-items: center;
 			// flex-wrap: wrap;
 		}
+	}
+
+	#dev-actions {
+		margin-top: 2rem;
+		display: flex;
+		justify-content: center;
 	}
 </style>
