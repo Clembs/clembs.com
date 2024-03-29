@@ -1,5 +1,5 @@
 <script lang="ts">
-	import IconX from '@tabler/icons-svelte/dist/svelte/icons/IconX.svelte';
+	import { IconX } from '@tabler/icons-svelte';
 	import { createEventDispatcher } from 'svelte';
 
 	export let showModal: boolean;
@@ -45,7 +45,7 @@
 		background-color: var(--color-background);
 		box-shadow: 0 2px 0 0 var(--color-outline);
 		border-radius: 1.5rem;
-		width: clamp(500px, 50vw, 100%);
+		max-width: 600px;
 		transition:
 			scale 200ms ease-out,
 			opacity 200ms ease-out;
