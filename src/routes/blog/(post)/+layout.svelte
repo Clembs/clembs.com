@@ -1,19 +1,13 @@
 <script lang="ts">
-	import {
-		IconX,
-		IconBrandDribbble,
-		IconBrandBehance,
-		IconBrandInstagram,
-		IconMessageCircle,
-	} from '@tabler/icons-svelte';
+	import { IconMessageCircle } from '@tabler/icons-svelte';
 	import Button from '$lib/components/Button.svelte';
-	import { softwareData } from '$lib/data/software';
 	import { page } from '$app/stores';
 	import ShareButton from '$lib/components/ShareButton.svelte';
 	import MetaTags from '$lib/components/MetaTags.svelte';
 	import type { LayoutServerData } from './$types';
 	import Comments from '../../comments/Comments.svelte';
 	import IconExternalLink from '$lib/icons/IconExternalLink.svelte';
+	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 
 	export let data: LayoutServerData;
 </script>
@@ -33,7 +27,23 @@
 />
 
 <header>
-	<div class="brands">
+	<Breadcrumbs
+		data={[
+			{
+				href: '/blog',
+				name: 'Blog',
+			},
+			{
+				href: `/blog/${data.categoryId}`,
+				name: data.category.name,
+			},
+			{
+				href: `/blog/${data.categoryId}/${data.id}`,
+				name: data.title,
+			},
+		]}
+	/>
+	<!-- <div class="brands">
 		<div class="me">
 			<img
 				width={32}
@@ -55,59 +65,63 @@
 				title={data.brand}
 			/>
 		</div>
-	</div>
+	</div> -->
+	<img class="post-banner" src={data.bannerPath} alt="{data.title} banner" />
 
 	<h1 class="post-title">{data.title}</h1>
 
-	<time class="subtext" datetime={data.createdAt.toDateString()}>
-		{data.createdAt.toLocaleString('en-US', {
-			month: 'long',
-			day: 'numeric',
-			year: 'numeric',
-		})}
-	</time>
+	<div class="post-info">
+		<div class="post-author">
+			<img
+				width={32}
+				height={32}
+				draggable="false"
+				alt="Clembs logo"
+				src="/assets/logo-purplue.webp"
+			/>
+			<div class="author-text">
+				<div class="author-name">Clembs</div>
+				<time class="subtext" datetime={data.createdAt.toDateString()}>
+					{data.createdAt.toLocaleString('en-US', {
+						month: 'long',
+						day: 'numeric',
+						year: 'numeric',
+					})}
+				</time>
+			</div>
+		</div>
 
-	<div class="buttons">
-		{#if data.links?.projectUrl}
-			<Button href={data.links?.projectUrl}>
-				Check it out
-				<IconExternalLink />
+		<div class="post-buttons">
+			{#if data.links?.projectUrl}
+				<Button href={data.links?.projectUrl}>
+					Check it out
+					<IconExternalLink />
+				</Button>
+			{/if}
+			{#if data.links?.assetsUrl}
+				<Button style="outlined" href={data.links?.assetsUrl}>View assets</Button>
+			{/if}
+			<!-- {#if data.links?.behance}
+				<Button icon style="outlined" href={data.links?.behance}>
+					<IconBrandBehance />
+				</Button>
+			{/if}
+			{#if data.links?.dribbble}
+				<Button icon style="outlined" href={data.links?.dribbble}>
+					<IconBrandDribbble />
+				</Button>
+			{/if}
+			{#if data.links?.instagram}
+				<Button icon style="outlined" href={data.links?.instagram}>
+					<IconBrandInstagram />
+				</Button>
+			{/if} -->
+			<Button style="outlined" href="#comments" aria-label="Comments">
+				<IconMessageCircle />
+				{data.comments.length}
 			</Button>
-		{/if}
-		{#if data.links?.assetsUrl}
-			<Button style="outlined" href={data.links?.assetsUrl}>View assets</Button>
-		{/if}
-		{#if data.relatedSoftwareId}
-			{@const relatedSoftware = softwareData.find(({ id }) => data.relatedSoftwareId === id)}
-			<Button style="outlined" href="/software/{relatedSoftware?.id}">
-				<img
-					class="related-software-icon"
-					draggable="false"
-					src={relatedSoftware?.iconThumbnailPath}
-					alt="{relatedSoftware?.name} icon"
-				/>
-				Related software: {relatedSoftware?.name}
-			</Button>
-		{/if}
-		{#if data.links?.behance}
-			<Button style="outlined" href={data.links?.behance}>
-				<IconBrandBehance />
-			</Button>
-		{/if}
-		{#if data.links?.dribbble}
-			<Button style="outlined" href={data.links?.dribbble}>
-				<IconBrandDribbble />
-			</Button>
-		{/if}
-		{#if data.links?.instagram}
-			<Button style="outlined" href={data.links?.instagram}>
-				<IconBrandInstagram />
-			</Button>
-		{/if}
-		<Button style="outlined" href="#comments" aria-label="Comments">
-			<IconMessageCircle />
-		</Button>
-		<ShareButton url={$page.url.href} />
+			<ShareButton url={$page.url.href} />
+		</div>
 	</div>
 </header>
 
@@ -115,13 +129,57 @@
 	<slot />
 </article>
 
-<Comments projectId="{data.type}/{data.id}" comments={data.comments} userData={data.userData} />
+<Comments
+	projectId="blog/{data.categoryId}/{data.id}"
+	comments={data.comments}
+	userData={data.userData}
+/>
 
 <style lang="scss">
 	header {
 		border-radius: 1rem 1rem 0 0;
 		margin: 1rem;
 		margin-bottom: 2rem;
+
+		.post-banner {
+			width: 100%;
+			border-radius: 1rem;
+			margin-bottom: 1rem;
+			border: 1px solid var(--color-outline);
+			box-shadow: 0px 2px 0 0 var(--color-outline);
+		}
+
+		.post-info {
+			display: flex;
+			justify-content: space-between;
+			margin: 0.5rem 0;
+
+			.post-author {
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+
+				img {
+					border-radius: 999rem;
+					border: 1px solid var(--color-on-background);
+				}
+
+				.author-text {
+					display: flex;
+					flex-direction: column;
+
+					.author-name {
+						font-weight: 500;
+					}
+				}
+			}
+
+			.post-buttons {
+				display: flex;
+				align-items: center;
+				gap: 0.25rem;
+			}
+		}
 
 		.brands {
 			display: flex;
@@ -143,19 +201,6 @@
 			font-size: clamp(1.5rem, 5vw, 2rem);
 			margin: 0;
 			text-wrap: balance;
-		}
-
-		.buttons {
-			margin-top: 0.75rem;
-			display: flex;
-			flex-wrap: wrap;
-			gap: 0.5rem;
-
-			.related-software-icon {
-				width: 24px;
-				height: 24px;
-				border-radius: 999rem;
-			}
 		}
 	}
 </style>

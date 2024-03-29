@@ -1,16 +1,16 @@
-import { crbt2023 } from './crbt-2023';
-import { kikuri } from './kikuri';
-import { clembs } from './clembs';
+import type { categories } from './_categories';
+import type { ThemeGradient } from '../types';
 
 export interface BlogPost {
 	id: string;
-	brand: string;
+	categoryId: (typeof categories)[number]['slug'];
 	title: string;
+	brief: string;
+	subtitle?: string;
+	createdAt: Date;
 	bannerPath: string;
 	bannerThumbnailPath: string;
-	iconPath: string;
-	brief: string;
-	category: string;
+	themeGradient: ThemeGradient;
 	tags?: string[];
 	links?: {
 		projectUrl?: string;
@@ -19,14 +19,18 @@ export interface BlogPost {
 		behance?: string;
 		instagram?: string;
 	};
-	relatedSoftwareId?: string;
-	createdAt: Date;
-	themeGradient: {
-		from: string;
-		to: string;
+	brand?: {
+		name: string;
+		iconPath?: string;
 	};
 }
 
-export const blogPosts: BlogPost[] = [kikuri, crbt2023, clembs].sort(
-	(a, b) => b.createdAt.getTime() - a.createdAt.getTime()
-);
+export const allPosts = Object.values(
+	import.meta.glob<true, string, { default: BlogPost }>('./**/*.ts', {
+		eager: true,
+	})
+)
+	.map((post) => post.default)
+	.filter(Boolean) as BlogPost[];
+
+console.log(allPosts);

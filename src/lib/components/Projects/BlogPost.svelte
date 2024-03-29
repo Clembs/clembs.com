@@ -3,18 +3,16 @@
 	import Card from '../Card.svelte';
 
 	export let data: BlogPost;
-	export let index: number;
 	export let loaded = false;
 </script>
 
 <Card
 	class="card project"
 	aria-label="View design project: {data.title}"
-	href="/blog/{data.id}"
-	style="--delay: {index}"
+	href="/blog/{data.categoryId}/{data.id}"
 >
 	<div class="card-image" style="background-image: url({data.bannerThumbnailPath})">
-		<img loading="lazy" src={data.bannerPath} class:loaded alt={data.brand} />
+		<img loading="lazy" src={data.bannerPath} class:loaded alt={data.subtitle} />
 	</div>
 	<div slot="card-content" class="card-content">
 		<div class="text">

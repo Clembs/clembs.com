@@ -4,8 +4,6 @@
 		ParserOutputProjectStructure,
 		ParserOutputUserStructure,
 	} from '$lib/helpers/parseMentions';
-	import IconBrush from '@tabler/icons-svelte/dist/svelte/icons/IconBrush.svelte';
-	import IconCode from '@tabler/icons-svelte/dist/svelte/icons/IconCode.svelte';
 
 	export let node:
 		| Partial<ParserOutputProjectStructure>
@@ -16,15 +14,10 @@
 
 {#if node.type === 'user'}
 	<div class="inline-mention {node.type}">
-		<GradientAvatar
-			showSilhouette={false}
-			user={{ username: node.username }}
-			size="16px"
-			showBadge={false}
-		/>
+		<GradientAvatar showSilhouette={false} user={{ username: node.username }} size="16px" />
 		{node.username}
 	</div>
-{:else if node.type === 'project'}
+	<!-- {:else if node.type === 'project'}
 	<svelte:element
 		this={clickable ? 'a' : 'div'}
 		target="_blank"
@@ -37,7 +30,7 @@
 			<IconCode size={16} />
 		{/if}
 		{node.projectId}
-	</svelte:element>
+	</svelte:element> -->
 {:else if node.type === 'other'}
 	<svelte:element
 		this={clickable ? 'a' : 'div'}

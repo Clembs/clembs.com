@@ -1,12 +1,13 @@
-import type { BlogPost } from '.';
+import type { BlogPost } from '..';
 
-export const verticalVision: BlogPost = {
+export default {
 	id: 'vertical-vision',
-	brand: 'Vertical Vision',
+	categoryId: 'design',
+	brand: { name: 'Vertical Vision' },
 	title: 'Vertical Vision - Watch your safety',
 	createdAt: new Date('2023-12-01'),
 	links: { projectUrl: 'https://verticalvision.fr' },
-	category: 'Brand identity & UI/UX design',
+	subtitle: 'Brand identity & UI/UX design',
 	themeGradient: {
 		from: '#18C6F2',
 		to: '#1877F2',
@@ -14,4 +15,4 @@ export const verticalVision: BlogPost = {
 	brief: 'Watch your safety',
 	bannerPath: 'https://c.clembs.com/branding/vertical-vision/banner.png',
 	bannerThumbnailPath: '/assets/small-banners/vertical-vision.png',
-};
+} satisfies BlogPost;

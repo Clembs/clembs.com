@@ -1,6 +1,6 @@
-import { blogPosts, type BlogPost } from '$lib/data/blog';
-import { softwareData, type Software } from '$lib/data/software';
-import { EMOJI_MENTION_REGEX, PROJECT_MENTION_REGEX, USERNAME_MENTION_REGEX } from './regex';
+import type { BlogPost } from '$lib/data/blog';
+import type { Archive } from '$lib/data/archive';
+import { EMOJI_MENTION_REGEX, USERNAME_MENTION_REGEX } from './regex';
 
 export const emojiList = ['flushed', 'happy', 'laugh', 'neutral', 'scared', 'encarada'];
 
@@ -33,7 +33,7 @@ type ParserOutputBlogStructure = ParserOutputBaseProjectStructure & {
 
 type ParserOutputSoftwareStructure = ParserOutputBaseProjectStructure & {
 	projectType: 'software';
-	details: Software;
+	details: Archive;
 };
 
 export type ParserOutputProjectStructure =
@@ -85,39 +85,40 @@ export function parseMentions(text: string): ParserOutputStructure[] {
 					continue;
 				}
 			}
-		} else if (text[i] === '#') {
-			// Check for project mentions
-			const match = text.slice(i).match(PROJECT_MENTION_REGEX);
-
-			if (match) {
-				// Add the buffer content as plain text
-				if (buffer) {
-					parts.push(buffer);
-					buffer = '';
-				}
-
-				const projectId = match[1];
-				// Check the project type
-				const projectType = blogPosts.find(({ id }) => id === projectId) ? 'blog' : 'software';
-				// Find the project's data
-				const details =
-					projectType === 'blog'
-						? blogPosts.find(({ id }) => id === projectId)
-						: softwareData.find(({ id }) => id === projectId);
-
-				if (details) {
-					parts.push({
-						type: 'project',
-						projectId,
-						projectType,
-						details,
-					} as ParserOutputProjectStructure);
-					// Skip the processed part
-					i += match[0].length - 1;
-					continue;
-				}
-			}
 		}
+		// else if (text[i] === '#') {
+		// 	// Check for project mentions
+		// 	const match = text.slice(i).match(PROJECT_MENTION_REGEX);
+
+		// 	if (match) {
+		// 		// Add the buffer content as plain text
+		// 		if (buffer) {
+		// 			parts.push(buffer);
+		// 			buffer = '';
+		// 		}
+
+		// 		const projectId = match[1];
+		// 		// Check the project type
+		// 		const projectType = allPosts.find(({ id }) => id === projectId) ? 'blog' : 'software';
+		// 		// Find the project's data
+		// 		const details =
+		// 			projectType === 'blog'
+		// 				? allPosts.find(({ id }) => id === projectId)
+		// 				: archives.find(({ id }) => id === projectId);
+
+		// 		if (details) {
+		// 			parts.push({
+		// 				type: 'project',
+		// 				projectId,
+		// 				projectType,
+		// 				details,
+		// 			} as ParserOutputProjectStructure);
+		// 			// Skip the processed part
+		// 			i += match[0].length - 1;
+		// 			continue;
+		// 		}
+		// 	}
+		// }
 
 		// Add characters to the buffer
 		buffer += text[i];
