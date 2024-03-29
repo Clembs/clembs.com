@@ -31,6 +31,5 @@ export const allPosts = Object.values(
 	})
 )
 	.map((post) => post.default)
-	.filter(Boolean) as BlogPost[];
-
-console.log(allPosts);
+	.filter(Boolean)
+	.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime()) as BlogPost[];
