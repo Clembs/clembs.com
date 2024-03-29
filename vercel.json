@@ -5,9 +5,9 @@
 		{ "source": "/boosty", "destination": "https://boosty.to/clembs" },
 
 		{ "source": "/questions", "destination": "/messages" },
-		{ "source": "/branding/:path*", "destination": "/blog/:path*" },
-		{ "source": "/branding", "destination": "/projects#design" },
-		{ "source": "/software", "destination": "/projects#software" },
+		{ "source": "/branding/:path*", "destination": "/blog/design/:path*" },
+		{ "source": "/branding", "destination": "/blog/design" },
+		{ "source": "/software", "destination": "/archive" },
 
 		{ "source": "/discord", "destination": "https://discord.gg/6uNwP46" },
 		{ "source": "/gh/:path*", "destination": "https://github.com/Clembs/:path*" },
