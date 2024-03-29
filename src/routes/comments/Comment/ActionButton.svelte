@@ -10,7 +10,7 @@
 		<slot />
 	</a>
 {:else}
-	<button on:click|stopPropagation {...$$restProps}>
+	<button on:click {...$$restProps}>
 		{#if loading}
 			<LoaderIcon />
 		{:else}

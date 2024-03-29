@@ -8,9 +8,17 @@
 	import '../../../styles/comment.scss';
 	import ActionButton from './ActionButton.svelte';
 	import CommentContent from './CommentContent.svelte';
-	import { IconTrash, IconHeartFilled, IconHeart } from '@tabler/icons-svelte';
+	import {
+		IconTrash,
+		IconHeartFilled,
+		IconHeart,
+		IconMessageCircle,
+		IconX,
+	} from '@tabler/icons-svelte';
 	import CommentHeader from './CommentHeader.svelte';
 	import CommentList from './CommentList.svelte';
+	import CommentForm from '../CommentForm/CommentForm.svelte';
+	import { slide } from 'svelte/transition';
 
 	export let comment: Comment;
 
@@ -20,6 +28,8 @@
 	let areRepliesLoading = false;
 	export let areRepliesLoaded = true;
 	export let areRepliesShown = true;
+
+	let showReplyForm = false;
 
 	async function loadChildComments() {
 		if (!comment.childComments?.length) {
@@ -45,15 +55,23 @@
 
 		<div class="comment-actions">
 			<VoteButtons {comment} />
-			<!-- <ActionButton href="/comments/{comment.id}#reply" aria-label="Reply to comment">
-				<IconMessageCircle />
-				Reply
-			</ActionButton> -->
+			<ActionButton on:click={() => (showReplyForm = !showReplyForm)} aria-label="Reply to comment">
+				{#if showReplyForm}
+					<IconX />
+					Cancel
+				{:else}
+					<IconMessageCircle />
+					Reply
+				{/if}
+			</ActionButton>
 			{#if !comment.parentId && $page.data.userData?.badges?.includes('CLEMBS')}
 				<form
 					use:enhance={() => {
 						isPinningLoading = true;
-						return () => (isPinningLoading = false);
+						return ({ update }) => {
+							isPinningLoading = false;
+							update();
+						};
 					}}
 					action="/comments/{comment.id}?/pin"
 					method="POST"
@@ -73,7 +91,10 @@
 				<form
 					use:enhance={() => {
 						isDeletionLoading = true;
-						return () => (isDeletionLoading = false);
+						return ({ update }) => {
+							isDeletionLoading = false;
+							update();
+						};
 					}}
 					method="POST"
 					action="/comments/{comment.id}?/delete"
@@ -90,33 +111,40 @@
 		</div>
 	</div>
 
-	{#if comment.childComments?.length}
-		{#if areRepliesShown}
-			<CommentList comments={comment.childComments} />
-		{:else}
-			<button
-				class="view-replies-button"
-				on:mouseover={loadChildComments}
-				on:focus={loadChildComments}
-				on:click|preventDefault={() => {
-					if (!areRepliesLoading) {
-						areRepliesShown = true;
-					}
-				}}
-			>
-				{#if areRepliesLoading}
-					<LoaderIcon />
-				{:else}
-					<div class="profiles">
-						{#each comment.childComments.slice(0, 3) as childComment}
-							<GradientAvatar user={childComment.author} size="1rem" />
-						{/each}
-					</div>
-					View {comment.childComments.length} replies
-				{/if}
-			</button>
+	<div class="child-comments">
+		{#if showReplyForm}
+			<div class="reply-form" transition:slide>
+				<CommentForm expanded projectId={comment.projectId} parentComment={comment} />
+			</div>
 		{/if}
-	{/if}
+		{#if comment.childComments?.length}
+			{#if areRepliesShown}
+				<CommentList comments={comment.childComments} />
+			{:else}
+				<button
+					class="view-replies-button"
+					on:mouseover={loadChildComments}
+					on:focus={loadChildComments}
+					on:click|preventDefault={() => {
+						if (!areRepliesLoading) {
+							areRepliesShown = true;
+						}
+					}}
+				>
+					{#if areRepliesLoading}
+						<LoaderIcon />
+					{:else}
+						<div class="profiles">
+							{#each comment.childComments.slice(0, 3) as childComment}
+								<GradientAvatar user={childComment.author} size="1rem" />
+							{/each}
+						</div>
+						View {comment.childComments.length} replies
+					{/if}
+				</button>
+			{/if}
+		{/if}
+	</div>
 </article>
 
 <style lang="scss">
@@ -127,7 +155,6 @@
 		position: relative;
 
 		&.reply {
-			margin-left: 2.25rem;
 			padding-left: 1rem;
 			border-left: 1px solid var(--color-outline);
 		}
@@ -138,7 +165,7 @@
 		flex-direction: column;
 		gap: 0.75rem;
 		position: relative;
-		padding: 0.75rem 0;
+		padding: 0.5rem;
 		z-index: 2;
 
 		word-break: break-word;
@@ -150,6 +177,14 @@
 			gap: 0.25rem;
 			margin-left: 2.25rem;
 		}
+	}
+
+	.child-comments {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		padding-left: 2.75rem;
+		padding-top: 0.5rem;
 	}
 
 	.view-replies-button {

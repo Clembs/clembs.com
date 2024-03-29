@@ -40,9 +40,7 @@
 	}}
 />
 
-{#if showHelpModal}
-	<FormattingHelpModal bind:showModal={showHelpModal} />
-{/if}
+<FormattingHelpModal bind:showModal={showHelpModal} />
 
 <form
 	action="/comments?/post"

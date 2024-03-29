@@ -16,8 +16,6 @@
 	export let comments: CommentType[];
 	export let hideCreateForm = false;
 
-	export let showReplyModal = false;
-
 	let selectedSortingMode: 'interactions' | 'recent' = 'recent';
 	let selectedParentComment = parentComment;
 
@@ -50,11 +48,7 @@
 			</div>
 		</div>
 		{#if !hideCreateForm}
-			<CommentForm
-				{projectId}
-				parentComment={selectedParentComment}
-				bind:showModal={showReplyModal}
-			/>
+			<CommentForm {projectId} parentComment={selectedParentComment} />
 		{/if}
 	</header>
 
@@ -86,6 +80,9 @@
 <style lang="scss">
 	.comments-page {
 		margin: 1rem;
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
 	}
 
 	header {

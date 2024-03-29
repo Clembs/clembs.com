@@ -37,7 +37,7 @@
 					node={{
 						type: 'project',
 						projectId: 'crbt',
-						projectType: 'software',
+						projectType: 'archive',
 					}}
 				/>
 			</td>

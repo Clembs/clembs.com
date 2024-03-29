@@ -4,9 +4,10 @@ import Supporter from '$lib/icons/badges/supporter.svelte';
 // import Verified from '$lib/icons/badges/verified.svelte';
 import Blocked from '$lib/icons/badges/blocked.svelte';
 import type { ComponentType } from 'svelte';
+import Verified from '$lib/icons/badges/verified.svelte';
 
 export const badges: Record<
-	Exclude<UserBadge, 'VERIFIED'>,
+	UserBadge,
 	{
 		color: string;
 		icon: ComponentType;
@@ -38,9 +39,10 @@ export const badges: Record<
 		icon: Supporter,
 		description: 'This user supported me through Ko-fi or Boosty. Thanks!',
 	},
-	// VERIFIED: {
-	// 	label: 'Email verified',
-	// 	icon: Verified,
-	// 	description: 'This user has signed in and verified their email.',
-	// },
+	VERIFIED: {
+		color: 'var(--color-on-surface)',
+		label: 'Member',
+		icon: Verified,
+		description: 'This user has signed in and verified their email.',
+	},
 };
