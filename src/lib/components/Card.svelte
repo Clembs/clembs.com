@@ -1,5 +1,6 @@
 <script lang="ts">
 	export let href = '';
+	export let orientation: 'column' | 'row' = 'column';
 
 	let className = '';
 
@@ -10,10 +11,13 @@
 	this={href ? 'a' : 'div'}
 	{href}
 	class="card {className}"
+	style:--orientation={orientation}
 	on:click
 	on:mouseover
 	on:focus
 	{...$$restProps}
+	role="button"
+	tabindex="0"
 >
 	<slot />
 	<div class="card-content">
@@ -24,7 +28,7 @@
 <style lang="scss">
 	.card {
 		display: flex;
-		flex-direction: column;
+		flex-direction: var(--orientation, column);
 
 		appearance: none;
 		overflow: hidden;
