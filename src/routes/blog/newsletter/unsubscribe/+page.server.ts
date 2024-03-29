@@ -23,8 +23,8 @@ export async function load({ url }) {
 	}
 
 	const newsletter = await db.query.newsletterSubscribers.findFirst({
-		where: ({ email, subscribeToken }, { eq, and }) =>
-			and(eq(email, queryEmail), eq(subscribeToken, token)),
+		where: ({ email, unsubscribeToken }, { eq, and }) =>
+			and(eq(email, queryEmail), eq(unsubscribeToken, token)),
 	});
 
 	if (!newsletter) {
@@ -37,9 +37,8 @@ export async function load({ url }) {
 		.update(newsletterSubscribers)
 		.set({
 			lists: {
-				[list]: 'subscribed',
+				[list]: null,
 			},
-			subscribeToken: null,
 			unsubscribeToken,
 		})
 		.where(eq(newsletterSubscribers.email, emailRaw));
