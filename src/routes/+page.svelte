@@ -2,9 +2,15 @@
 	import Button from '$lib/components/Button.svelte';
 	import { allPosts } from '$lib/data/blog';
 	import { archives } from '$lib/data/archive';
-	import { IconMessageCircle } from '@tabler/icons-svelte';
+	import {
+		IconBrush,
+		IconCode,
+		IconHeart,
+		IconMessageCircle,
+		IconBallpen,
+		IconAt,
+	} from '@tabler/icons-svelte';
 	import MetaTags from '$lib/components/MetaTags.svelte';
-	import ToggleAvatar from '$lib/components/ToggleAvatar.svelte';
 	import ArchiveItem from '$lib/components/Projects/ArchiveItem.svelte';
 	import BlogCard from '$lib/components/Projects/BlogArticleImage.svelte';
 	import Card from '$lib/components/Card.svelte';
@@ -21,8 +27,26 @@ and express my love through design, code and video. Welcome to clembs.com!"
 <header id="intro">
 	<div class="intro-text">
 		<h1>
-			Worlds made from<br />
-			design, code and heart.
+			<span>
+				Worlds made from<br />
+			</span>
+			<span>
+				<mark style="--color: 255, 100%, 73%">
+					<IconBrush />
+					design
+				</mark>,
+				<mark style="--color: 0, 0%, 43%">
+					<IconCode />
+					code
+				</mark>
+			</span>
+			<span>
+				and
+				<mark style="--color: 0, 100%, 73%">
+					<IconHeart />
+					heart
+				</mark>.
+			</span>
 		</h1>
 
 		<div class="buttons">
@@ -33,8 +57,8 @@ and express my love through design, code and video. Welcome to clembs.com!"
 </header>
 
 <section id="projects">
+	<FeaturedBlogPost data={designPosts[0]} />
 	<div id="project-grid">
-		<FeaturedBlogPost data={designPosts[0]} />
 		{#each designPosts.slice(1, 3) as post, i}
 			{#if i % 2 === 0}
 				<div class="grid-item">
@@ -58,18 +82,24 @@ and express my love through design, code and video. Welcome to clembs.com!"
 		{/each}
 	</div>
 	<div id="quick-links">
-		<!-- <Card href="/projects#software">
+		<Card href="/blog">
 			<div class="link" slot="card-content">
-				<IconCode />
-				All projects
+				<IconBallpen />
+				Blog
 			</div>
 		</Card>
-		<Card href="/projects#design">
+		<!-- <Card href="/projects#design">
 			<div class="link" slot="card-content">
 				<IconBrush />
 				All design
 			</div>
 		</Card> -->
+		<Card href="/contact">
+			<div class="link" slot="card-content">
+				<IconAt />
+				Contact
+			</div>
+		</Card>
 		<Card href="/comments">
 			<div class="link" slot="card-content">
 				<IconMessageCircle />
@@ -79,7 +109,7 @@ and express my love through design, code and video. Welcome to clembs.com!"
 	</div>
 </section>
 
-<section id="about-me">
+<!-- <section id="about-me">
 	<header>
 		<h2>A little about me</h2>
 
@@ -99,7 +129,7 @@ and express my love through design, code and video. Welcome to clembs.com!"
 	</header>
 
 	<ToggleAvatar />
-</section>
+</section> -->
 
 <span
 	aria-hidden="true"
@@ -126,15 +156,46 @@ and express my love through design, code and video. Welcome to clembs.com!"
 			position: relative;
 
 			h1 {
-				font-size: clamp(1.75rem, 7vw, 3rem);
-				line-height: 1.25;
+				font-size: clamp(2.5rem, 5vw, 2.9rem);
+				line-height: 1.315;
+
+				mark {
+					display: inline-flex;
+					align-items: center;
+					gap: 0.5rem;
+					background: hsla(var(--color), 0.1);
+					border: 2px solid hsl(var(--color));
+					padding: 0.125rem 0.75rem;
+					border-radius: 99rem;
+
+					:global(svg) {
+						width: 0.9em;
+						height: 0.9em;
+					}
+				}
+
+				@media (max-width: 645px) {
+					display: flex;
+					flex-direction: column;
+					align-items: flex-start;
+					text-align: left;
+				}
+			}
+
+			@media (max-width: 645px) {
+				padding: 1rem;
+				align-self: flex-start;
 			}
 
 			.buttons {
 				display: flex;
-				gap: 1rem;
-				margin-top: 1rem;
+				gap: 0.5rem;
+				margin-top: 2rem;
 				justify-content: center;
+
+				@media (max-width: 645px) {
+					justify-content: flex-start;
+				}
 			}
 		}
 	}
@@ -151,7 +212,7 @@ and express my love through design, code and video. Welcome to clembs.com!"
 			.grid-item {
 				&.columns {
 					display: grid;
-					grid-template-columns: repeat(auto-fit, minmax(min(450px, 100%), 1fr));
+					grid-template-columns: repeat(auto-fit, minmax(min(290px, 100%), 1fr));
 					gap: 1rem;
 				}
 			}
@@ -165,67 +226,56 @@ and express my love through design, code and video. Welcome to clembs.com!"
 
 			.link {
 				display: flex;
-				gap: 0.25rem;
+				gap: 0.75rem;
 				font-size: clamp(1rem, 3vw, 1.25rem);
 				font-weight: 500;
 				align-items: center;
 				justify-content: center;
-				flex-wrap: wrap;
 				text-align: center;
-			}
-		}
-	}
 
-	#about-me {
-		display: flex;
-		gap: 2rem;
-		justify-content: space-between;
-		width: 100%;
-		align-items: center;
-		flex-wrap: wrap;
-
-		header {
-			max-width: 70ch;
-
-			h2 {
-				margin-bottom: 1rem;
-			}
-
-			ul {
-				margin: 0;
-
-				li {
-					margin-bottom: 0;
+				@media (max-width: 645px) {
+					flex-direction: column;
 				}
 			}
 		}
 	}
 
+	// #about-me {
+	// 	display: flex;
+	// 	gap: 2rem;
+	// 	justify-content: space-between;
+	// 	width: 100%;
+	// 	align-items: center;
+	// 	flex-wrap: wrap;
+
+	// 	header {
+	// 		max-width: 70ch;
+
+	// 		h2 {
+	// 			margin-bottom: 1rem;
+	// 		}
+
+	// 		ul {
+	// 			margin: 0;
+
+	// 			li {
+	// 				margin-bottom: 0;
+	// 			}
+	// 		}
+	// 	}
+	// }
+
 	section {
 		padding: 1.5rem 1rem;
-		max-width: 890px;
 		margin: 0 auto;
 		// border-top: 1px solid var(--color-outline);
 
-		header {
-			.top {
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
-			}
-
-			h2 {
-				font-size: clamp(1.25rem, 5vw, 2rem);
-				margin: 0;
-				flex: 1;
-			}
-		}
+		// header {
+		// h2 {
+		// 	font-size: clamp(1.25rem, 5vw, 2rem);
+		// 	margin: 0;
+		// 	flex: 1;
+		// }
+		// }
 	}
-
-	// @media (max-width: 939px) {
-	// 	.intro {
-	// 		align-items: center;
-	// 		text-align: center;
-	// 	}
-	// }
 </style>

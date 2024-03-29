@@ -49,7 +49,7 @@
 		transition:
 			transform ease-out 0.1s,
 			box-shadow ease-out 0.1s;
-		border-right: 1px solid var(--color-on-background);
+		border-right: 1px solid var(--color-outline);
 		color: var(--color-background);
 		display: grid;
 		place-items: center;
@@ -63,6 +63,12 @@
 			object-fit: cover;
 			width: 100%;
 			height: 100%;
+		}
+
+		@media (max-width: 645px) {
+			width: 100%;
+			border-right: none;
+			border-bottom: 1px solid var(--color-outline);
 		}
 	}
 
@@ -82,11 +88,6 @@
 		.title {
 			font-size: 1.1rem;
 			font-weight: 500;
-		}
-
-		.subtext {
-			font-size: 0.9rem;
-			color: var(--color-text-secondary);
 		}
 	}
 </style>

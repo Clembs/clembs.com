@@ -59,5 +59,9 @@
 			box-shadow: 0 0px 0 0 var(--color-outline);
 			background-color: var(--color-surface);
 		}
+
+		@media (max-width: 645px) {
+			flex-direction: column;
+		}
 	}
 </style>
