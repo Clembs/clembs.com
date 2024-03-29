@@ -9,17 +9,17 @@
 	import IconExternalLink from '$lib/icons/IconExternalLink.svelte';
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 	import '/src/styles/blog.scss';
+	import { dateFormat } from '$lib/helpers/dateFormat';
 
 	export let data: LayoutServerData;
 </script>
 
 <MetaTags
 	pageName={data.title}
-	description="{data.category} • {data.createdAt.toLocaleString('en-US', {
-		month: 'long',
-		day: 'numeric',
-		year: 'numeric',
-	})}"
+	description={`${data.summary}\n\nPosted on ${dateFormat(data.createdAt, false)} on Blog/${
+		data.category.name
+	}`}
+	blogPost={data}
 	image={data.bannerPath}
 />
 
@@ -84,7 +84,7 @@
 				src="/assets/logo-purplue.webp"
 			/>
 			<div class="author-text">
-				<div class="author-name">Clembs</div>
+				<div class="author-name">Clément "Clembs" Voisin</div>
 				<time class="subtext" datetime={data.createdAt.toDateString()}>
 					{data.createdAt.toLocaleString('en-US', {
 						month: 'long',
