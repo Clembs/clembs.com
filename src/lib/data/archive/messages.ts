@@ -1,6 +1,6 @@
-import type { Software } from '.';
+import type { Archive } from '.';
 
-export const messages: Software = {
+export const messages: Archive = {
 	id: 'messages',
 	name: 'Anonymous messages',
 	brief: 'A fun idea done in a few hours and no database.',

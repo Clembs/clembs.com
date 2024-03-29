@@ -1,20 +1,20 @@
 <script lang="ts">
 	import type { BlogPost } from '$lib/data/blog';
-	import type { Software } from '$lib/data/software';
+	import type { Archive } from '$lib/data/archive';
 	import BlogPostCard from './BlogPost.svelte';
-	import SoftwareItem from './SoftwareItem.svelte';
+	import ArchiveItem from './ArchiveItem.svelte';
 
-	export let projects: BlogPost[] | Software[];
+	export let projects: BlogPost[] | Archive[];
 	export let compact = false;
 	export let loaded = true;
 </script>
 
 <div class="projects" class:compact class:loaded>
-	{#each projects as project, index}
+	{#each projects as project}
 		{#if 'title' in project}
-			<BlogPostCard {loaded} data={project} {index} />
+			<BlogPostCard {loaded} data={project} />
 		{:else}
-			<SoftwareItem {loaded} data={project} {index} />
+			<ArchiveItem {loaded} data={project} />
 		{/if}
 	{/each}
 </div>

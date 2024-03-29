@@ -1,20 +1,17 @@
 import { error } from '@sveltejs/kit';
 import type { LayoutServerLoad } from './$types';
-import { softwareData } from '$lib/data/software';
+import { archives } from '$lib/data/archive';
 import { getComments } from '$lib/helpers/getComments';
 
 export const load: LayoutServerLoad = async ({ url, locals: { getUserData }, setHeaders }) => {
-	const project = softwareData.find(({ id }) => id === url.pathname.split('/').at(-1));
-	const type = 'software';
+	const project = archives.find(({ id }) => id === url.pathname.split('/').at(-1));
 
 	if (!project) {
 		throw error(404);
 	}
 
 	const comments = await getComments({
-		onlyParentComments: true,
-		skipMentions: true,
-		projectId: `${type}/${project.id}`,
+		projectId: `archive/${project.id}`,
 	});
 
 	const userData = await getUserData();
@@ -25,7 +22,6 @@ export const load: LayoutServerLoad = async ({ url, locals: { getUserData }, set
 
 	return {
 		...project,
-		type,
 		comments,
 		userData,
 		navButton: {

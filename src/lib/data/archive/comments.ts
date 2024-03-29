@@ -1,6 +1,6 @@
-import type { Software } from '.';
+import type { Archive } from '.';
 
-export const comments: Software = {
+export const comments: Archive = {
 	id: 'comments',
 	name: 'Clembs Comments',
 	brief: 'How I built a comment system for clembs.com',

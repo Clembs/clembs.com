@@ -1,6 +1,6 @@
-import type { Software } from '.';
+import type { Archive } from '.';
 
-export const acknowledgements: Software = {
+export const acknowledgements: Archive = {
 	id: 'acknowledgements',
 	name: 'Acknowledgements',
 	brief: 'Generating dependency lists made easy',

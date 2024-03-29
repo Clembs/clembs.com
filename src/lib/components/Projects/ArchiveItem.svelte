@@ -1,23 +1,18 @@
 <script lang="ts">
-	import type { Software } from '$lib/data/software';
+	import type { Archive } from '$lib/data/archive';
 	import Card from '../Card.svelte';
 
-	export let data: Software;
-	export let index: number;
+	export let data: Archive;
 	export let loaded = false;
 </script>
 
-<Card
-	aria-label="View software details: {data.name}"
-	href="/software/{data.id}"
-	style="--delay: {index}"
->
-	<div class="software" slot="card-content">
+<Card aria-label="View software details: {data.name}" href="/archive/{data.id}">
+	<div class="archive" slot="card-content">
 		<div
-			class="software-icon-wrapper"
+			class="archive-icon-wrapper"
 			style="--project-from: {data.themeGradient.from}; --project-to: {data.themeGradient.to}; "
 		>
-			<div class="software-icon" style="background-image: url({data.iconThumbnailPath})">
+			<div class="archive-icon" style="background-image: url({data.iconThumbnailPath})">
 				<img
 					loading="lazy"
 					src={data.iconPath}
@@ -41,7 +36,7 @@
 </Card>
 
 <style lang="scss">
-	.software {
+	.archive {
 		display: flex;
 		flex-direction: column;
 		gap: 0.75rem;
@@ -50,12 +45,12 @@
 		min-width: min-content;
 		min-height: min-content;
 
-		.software-icon-wrapper {
+		.archive-icon-wrapper {
 			display: flex;
 			justify-content: space-between;
 			width: 100%;
 
-			.software-icon {
+			.archive-icon {
 				width: 3rem;
 				height: auto;
 				border: 1px solid var(--color-on-background);

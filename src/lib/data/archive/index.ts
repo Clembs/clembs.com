@@ -1,10 +1,7 @@
 import { acknowledgements } from './acknowledgements';
-import { comments } from './comments';
-import { crbt } from './crbt';
-import { habileChat } from './habile-chat';
 import { messages } from './messages';
-import { purplet } from './purplet';
 import { unibros } from './unibros';
+import type { ThemeGradient } from '../types';
 
 export const softwarePlatforms = {
 	windows: 'Windows',
@@ -14,14 +11,14 @@ export const softwarePlatforms = {
 	Web: 'Browser',
 } as const;
 
-export interface Software {
+export interface Archive {
 	id: string;
 	name: string;
 	brief: string;
 	iconPath: string;
 	iconThumbnailPath: string;
 	description?: string;
-	links?: {
+	links: {
 		repoUrl?: string;
 		projectUrl?: string;
 		downloadUrl?: string;
@@ -37,19 +34,10 @@ export interface Software {
 	};
 	createdAt: Date;
 	finishedAt?: Date;
-	themeGradient: {
-		from: string;
-		to: string;
-	};
+	themeGradient: ThemeGradient;
 	platforms?: (keyof typeof softwarePlatforms)[];
 }
 
-export const softwareData: Software[] = [
-	crbt,
-	purplet,
-	acknowledgements,
-	messages,
-	habileChat,
-	comments,
-	unibros,
-].sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+export const archives: Archive[] = [acknowledgements, messages, unibros].sort(
+	(a, b) => b.createdAt.getTime() - a.createdAt.getTime()
+);

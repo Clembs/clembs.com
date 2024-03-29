@@ -6,7 +6,7 @@
 </script>
 
 <ul>
-	{#each comments as comment, i (comment.id)}
+	{#each comments as comment (comment.id)}
 		<CommentComponent {comment} />
 	{/each}
 </ul>

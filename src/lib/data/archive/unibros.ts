@@ -1,6 +1,6 @@
-import type { Software } from '.';
+import type { Archive } from '.';
 
-export const unibros: Software = {
+export const unibros: Archive = {
 	id: 'unibros',
 	name: 'New Super Mario UniBros.',
 	brief: 'Level pack for a Mario Maker fan game',

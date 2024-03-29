@@ -1,6 +1,6 @@
-import type { Software } from '.';
+import type { Archive } from '.';
 
-export const habileChat: Software = {
+export const habileChat: Archive = {
 	id: 'habile-chat',
 	name: 'Habile Chat',
 	brief: 'Giving life to my Discord server chatbot',

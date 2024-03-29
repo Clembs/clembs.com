@@ -1,12 +1,12 @@
 <script lang="ts">
 	import Button from '$lib/components/Button.svelte';
 	import { allPosts } from '$lib/data/blog';
-	import { softwareData } from '$lib/data/software';
+	import { archives } from '$lib/data/archive';
 	import { IconMessageCircle, IconBrush, IconCode } from '@tabler/icons-svelte';
 	import MetaTags from '$lib/components/MetaTags.svelte';
 	import ToggleAvatar from '$lib/components/ToggleAvatar.svelte';
-	import SoftwareItem from '$lib/components/Projects/SoftwareItem.svelte';
-	import BlogPostCard from '$lib/components/Projects/BlogPost.svelte';
+	import ArchiveItem from '$lib/components/Projects/ArchiveItem.svelte';
+	import BlogCard from '$lib/components/Projects/BlogPost.svelte';
 	import Card from '$lib/components/Card.svelte';
 </script>
 
@@ -34,27 +34,27 @@ and express my love through design, code and video. Welcome to clembs.com!"
 		{#each allPosts.slice(0, 3) as design, i}
 			{#if i % 2 === 0}
 				<div class="grid-item">
-					<BlogPostCard loaded data={design} />
+					<BlogCard loaded data={design} />
 				</div>
 				<div class="grid-item columns">
-					{#each softwareData.slice(i * 2, i * 2 + 2) as software, i}
-						<SoftwareItem loaded data={software} index={i} />
+					{#each archives.slice(i * 2, i * 2 + 2) as archive, i}
+						<ArchiveItem loaded data={archive} />
 					{/each}
 				</div>
 			{:else}
 				<div class="grid-item columns">
-					{#each softwareData.slice(i * 2, i * 2 + 2) as software, i}
-						<SoftwareItem loaded data={software} index={i} />
+					{#each archives.slice(i * 2, i * 2 + 2) as archive, i}
+						<ArchiveItem loaded data={archive} />
 					{/each}
 				</div>
 				<div class="grid-item">
-					<BlogPostCard loaded data={design} />
+					<BlogCard loaded data={design} />
 				</div>
 			{/if}
 		{/each}
 	</div>
 	<div id="quick-links">
-		<Card href="/projects#software">
+		<!-- <Card href="/projects#software">
 			<div class="link" slot="card-content">
 				<IconCode />
 				All projects
@@ -65,7 +65,7 @@ and express my love through design, code and video. Welcome to clembs.com!"
 				<IconBrush />
 				All design
 			</div>
-		</Card>
+		</Card> -->
 		<Card href="/comments">
 			<div class="link" slot="card-content">
 				<IconMessageCircle />

@@ -1,6 +1,6 @@
-import { softwareData } from '$lib/data/software';
+import { archives } from '$lib/data/archive';
 import type { ParamMatcher } from '@sveltejs/kit';
 
 export const match: ParamMatcher = (param: string) => {
-	return !!softwareData.find(({ id }) => id === param);
+	return !!archives.find(({ id }) => id === param);
 };

@@ -23,7 +23,7 @@ export type ParserOutputEmojiStructure = ParserOutputBaseStructure & {
 type ParserOutputBaseProjectStructure = ParserOutputBaseStructure & {
 	type: 'project';
 	projectId: string;
-	projectType: 'software' | 'blog';
+	projectType: 'archive' | 'blog';
 };
 
 type ParserOutputBlogStructure = ParserOutputBaseProjectStructure & {
@@ -32,7 +32,7 @@ type ParserOutputBlogStructure = ParserOutputBaseProjectStructure & {
 };
 
 type ParserOutputSoftwareStructure = ParserOutputBaseProjectStructure & {
-	projectType: 'software';
+	projectType: 'archive';
 	details: Archive;
 };
 

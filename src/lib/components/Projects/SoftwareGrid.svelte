@@ -1,14 +1,14 @@
 <script lang="ts">
-	import type { Software } from '$lib/data/software';
-	import SoftwareItem from './SoftwareItem.svelte';
+	import type { Archive } from '$lib/data/archive';
+	import ArchiveItem from './ArchiveItem.svelte';
 
-	export let projects: Software[];
+	export let projects: Archive[];
 	export let loaded = true;
 </script>
 
 <div class="projects" class:loaded>
-	{#each projects as project, index}
-		<SoftwareItem {loaded} data={project} {index} />
+	{#each projects as project}
+		<ArchiveItem {loaded} data={project} />
 	{/each}
 </div>
 
