@@ -61,23 +61,22 @@ and express my love through design, code and video. Welcome to clembs.com!"
 	<div id="project-grid">
 		{#each designPosts.slice(1, 3) as post, i}
 			{#if i % 2 === 0}
-				<div class="grid-item">
+				<div class="blog">
 					<BlogCard data={post} />
 				</div>
-				<div class="grid-item columns">
-					{#each archives.slice(i * 2, i * 2 + 2) as archive, i}
-						<ArchiveItem loaded data={archive} />
-					{/each}
-				</div>
+				{#each archives.slice(i * 2, i * 2 + 2) as archive, i}
+					<ArchiveItem loaded data={archive} />
+				{/each}
 			{:else}
-				<div class="grid-item columns">
-					{#each archives.slice(i * 2, i * 2 + 2) as archive, i}
-						<ArchiveItem loaded data={archive} />
-					{/each}
-				</div>
-				<div class="grid-item">
+				{#each archives.slice(i * 2, i * 2 + 1) as archive, i}
+					<ArchiveItem loaded data={archive} />
+				{/each}
+				<div class="blog">
 					<BlogCard data={post} />
 				</div>
+				{#each archives.slice(i * 2 + 1, i * 2 + 2) as archive, i}
+					<ArchiveItem loaded data={archive} />
+				{/each}
 			{/if}
 		{/each}
 	</div>
@@ -204,17 +203,15 @@ and express my love through design, code and video. Welcome to clembs.com!"
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
+
 		#project-grid {
 			display: grid;
 			grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+			grid-template-rows: 1fr;
 			gap: 1rem;
 
-			.grid-item {
-				&.columns {
-					display: grid;
-					grid-template-columns: repeat(auto-fit, minmax(min(290px, 100%), 1fr));
-					gap: 1rem;
-				}
+			.blog {
+				grid-row: span 2;
 			}
 		}
 

@@ -183,6 +183,11 @@
 				align-items: center;
 				gap: 0.25rem;
 			}
+
+			@media (max-width: 650px) {
+				flex-direction: column;
+				gap: 1rem;
+			}
 		}
 
 		// .brands {

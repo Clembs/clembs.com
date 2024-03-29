@@ -42,13 +42,14 @@
 		color: var(--color-background);
 		display: grid;
 		place-items: center;
-		background-size: cover;
-		background-position: center;
 		overflow: hidden;
 
 		img {
 			object-position: center;
 			object-fit: cover;
+			background-size: cover;
+			background-position: center;
+
 			width: 100%;
 			height: 100%;
 		}

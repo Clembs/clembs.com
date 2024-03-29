@@ -43,10 +43,6 @@ body {
 		25px 25px;
 	background-repeat: repeat;
 	background-attachment: fixed;
-
-	&:has(dialog[open]) {
-		overflow: hidden;
-	}
 }
 
 h1,
