@@ -34,6 +34,15 @@ article:not(.comment-wrapper) {
 		gap: 0.5rem;
 		grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
 	}
+
+	blockquote {
+		margin: 0;
+		margin-left: 0.5rem;
+		padding-left: 0.75rem;
+		border-left: 2px solid var(--color-on-surface);
+		background-color: var(--color-surface);
+		border-radius: 0.25rem;
+	}
 }
 
 @media (max-width: 850px) {

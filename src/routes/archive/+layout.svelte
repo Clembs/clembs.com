@@ -7,7 +7,7 @@
 	import type { LayoutServerData } from './$types';
 	import Comments from '../comments/Comments.svelte';
 	import IconExternalLink from '$lib/icons/IconExternalLink.svelte';
-	import '../../styles/showcase.scss';
+	import '../../styles/blog.scss';
 	import { IconMessageCircle } from '@tabler/icons-svelte';
 
 	let expandOtherDownloads = false;

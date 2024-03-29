@@ -8,13 +8,10 @@
 	import Comments from '../../comments/Comments.svelte';
 	import IconExternalLink from '$lib/icons/IconExternalLink.svelte';
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
+	import '/src/styles/blog.scss';
 
 	export let data: LayoutServerData;
 </script>
-
-<svelte:head>
-	<style src="../../../styles/showcase.scss"></style>
-</svelte:head>
 
 <MetaTags
 	pageName={data.title}
@@ -66,7 +63,14 @@
 			/>
 		</div>
 	</div> -->
-	<img class="post-banner" src={data.bannerPath} alt="{data.title} banner" />
+	{#if data.bannerPath}
+		<img
+			class="post-banner"
+			src={data.bannerPath}
+			alt="{data.title} banner"
+			style="background-image: url({data.bannerThumbnailPath});"
+		/>
+	{/if}
 
 	<h1 class="post-title">{data.title}</h1>
 
