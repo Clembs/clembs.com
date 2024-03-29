@@ -4,15 +4,13 @@ import { generateSnowflake } from '$lib/helpers/snowflake';
 import { fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { rateLimit } from '$lib/helpers/handleRateLimit';
-import { PROJECT_ID_REGEX } from '$lib/helpers/regex';
-import { allPosts } from '$lib/data/blog';
-import { archives } from '$lib/data/archive';
 import { bannedWords } from '$lib/helpers/bannedWords';
 import { parseMentions, type ParserOutputUserStructure } from '$lib/helpers/parseMentions';
 import { sendEmail } from '$lib/helpers/sendEmail';
 import { defaultUserPreferences } from '$lib/db/UserPreferences';
 import { dateFormat } from '$lib/helpers/dateFormat';
 import { getComments } from '$lib/helpers/getComments';
+import { allObjectIds } from '$lib/data';
 
 export const load: PageServerLoad = async ({ locals, setHeaders }) => {
 	const session = await locals.getSession();
@@ -85,24 +83,14 @@ export const actions: Actions = {
 			}
 		}
 
-		const projectId = formData.get('project-id')?.toString();
+		const objectId = formData.get('project-id')?.toString();
 
-		if (projectId) {
-			const regex = projectId.match(PROJECT_ID_REGEX);
+		if (objectId) {
+			const objectExists = allObjectIds.includes(objectId);
 
-			if (!regex) {
+			if (!objectExists) {
 				return fail(404, {
-					message: 'Cannot find project.',
-				});
-			}
-
-			const project = [...(regex[1] === 'design' ? allPosts : archives)].find(
-				({ id }) => id === regex[2]
-			);
-
-			if (!project) {
-				return fail(404, {
-					message: 'Cannot find project.',
+					message: 'Cannot find project or blog post.',
 				});
 			}
 		}
@@ -112,7 +100,7 @@ export const actions: Actions = {
 			content: content,
 			userId: currentUser?.id,
 			parentId: parentCommentId,
-			projectId: projectId,
+			projectId: objectId,
 		};
 
 		await db.insert(comments).values(input);
