@@ -2,12 +2,15 @@
 	import Button from '$lib/components/Button.svelte';
 	import { allPosts } from '$lib/data/blog';
 	import { archives } from '$lib/data/archive';
-	import { IconMessageCircle, IconBrush, IconCode } from '@tabler/icons-svelte';
+	import { IconMessageCircle } from '@tabler/icons-svelte';
 	import MetaTags from '$lib/components/MetaTags.svelte';
 	import ToggleAvatar from '$lib/components/ToggleAvatar.svelte';
 	import ArchiveItem from '$lib/components/Projects/ArchiveItem.svelte';
-	import BlogCard from '$lib/components/Projects/BlogPost.svelte';
+	import BlogCard from '$lib/components/Projects/BlogArticleImage.svelte';
 	import Card from '$lib/components/Card.svelte';
+	import FeaturedBlogPost from '$lib/components/Projects/FeaturedBlogPost.svelte';
+
+	const designPosts = allPosts.filter(({ categoryId }) => categoryId === 'design');
 </script>
 
 <MetaTags
@@ -31,10 +34,11 @@ and express my love through design, code and video. Welcome to clembs.com!"
 
 <section id="projects">
 	<div id="project-grid">
-		{#each allPosts.slice(0, 3) as design, i}
+		<FeaturedBlogPost data={designPosts[0]} />
+		{#each designPosts.slice(1, 3) as post, i}
 			{#if i % 2 === 0}
 				<div class="grid-item">
-					<BlogCard loaded data={design} />
+					<BlogCard data={post} />
 				</div>
 				<div class="grid-item columns">
 					{#each archives.slice(i * 2, i * 2 + 2) as archive, i}
@@ -48,7 +52,7 @@ and express my love through design, code and video. Welcome to clembs.com!"
 					{/each}
 				</div>
 				<div class="grid-item">
-					<BlogCard loaded data={design} />
+					<BlogCard data={post} />
 				</div>
 			{/if}
 		{/each}
@@ -117,7 +121,8 @@ and express my love through design, code and video. Welcome to clembs.com!"
 		text-align: center;
 
 		.intro-text {
-			padding: 3rem 0;
+			padding-top: 2rem;
+			padding-bottom: 3rem;
 			position: relative;
 
 			h1 {
@@ -140,7 +145,7 @@ and express my love through design, code and video. Welcome to clembs.com!"
 		gap: 1rem;
 		#project-grid {
 			display: grid;
-			grid-template-columns: repeat(auto-fit, minmax(min(400px, 100%), 1fr));
+			grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
 			gap: 1rem;
 
 			.grid-item {
