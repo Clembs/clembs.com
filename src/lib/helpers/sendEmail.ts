@@ -12,7 +12,7 @@ export function emailHtmlTemplate(slot?: string) {
 			border: 1px solid black;
 			background-color: white;
 			box-shadow: 0 2px 0 0 black;
-			max-width: max-content;
+			max-width: 750px;
 			margin: 32px auto;
 		"
 	>
