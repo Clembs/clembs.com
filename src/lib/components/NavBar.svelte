@@ -55,7 +55,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		max-width: 1000px;
+		max-width: 750px;
 		position: relative;
 
 		margin: 2rem auto;

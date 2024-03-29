@@ -82,7 +82,7 @@
 
 	.content {
 		margin: 0 auto;
-		max-width: 1000px;
+		max-width: 750px;
 		width: 100%;
 		z-index: 2;
 		position: relative;
