@@ -156,7 +156,7 @@
 		.post-info {
 			display: flex;
 			justify-content: space-between;
-			margin: 0.5rem 0;
+			margin: 1rem 0;
 
 			.post-author {
 				display: flex;
@@ -185,21 +185,21 @@
 			}
 		}
 
-		.brands {
-			display: flex;
-			gap: 0.25rem;
-			align-items: center;
-			margin-bottom: 0.5rem;
+		// .brands {
+		// 	display: flex;
+		// 	gap: 0.25rem;
+		// 	align-items: center;
+		// 	margin-bottom: 0.5rem;
 
-			.me,
-			.the-guys-im-working-for {
-				:global(svg),
-				img {
-					border-radius: 999rem;
-					border: 1px solid var(--color-on-background);
-				}
-			}
-		}
+		// 	.me,
+		// 	.the-guys-im-working-for {
+		// 		:global(svg),
+		// 		img {
+		// 			border-radius: 999rem;
+		// 			border: 1px solid var(--color-on-background);
+		// 		}
+		// 	}
+		// }
 
 		.post-title {
 			font-size: clamp(1.5rem, 5vw, 2rem);

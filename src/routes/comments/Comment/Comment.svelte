@@ -165,7 +165,7 @@
 		flex-direction: column;
 		gap: 0.75rem;
 		position: relative;
-		padding: 0.5rem;
+		padding: 0.5rem 0;
 		z-index: 2;
 
 		word-break: break-word;
