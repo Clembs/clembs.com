@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Button from '$lib/components/Button.svelte';
-	import { blogPosts } from '$lib/data/blog';
+	import { allPosts } from '$lib/data/blog';
 	import { softwareData } from '$lib/data/software';
 	import { IconMessageCircle, IconBrush, IconCode } from '@tabler/icons-svelte';
 	import MetaTags from '$lib/components/MetaTags.svelte';
@@ -31,10 +31,10 @@ and express my love through design, code and video. Welcome to clembs.com!"
 
 <section id="projects">
 	<div id="project-grid">
-		{#each blogPosts.slice(0, 3) as design, i}
+		{#each allPosts.slice(0, 3) as design, i}
 			{#if i % 2 === 0}
 				<div class="grid-item">
-					<BlogPostCard loaded data={design} index={i} />
+					<BlogPostCard loaded data={design} />
 				</div>
 				<div class="grid-item columns">
 					{#each softwareData.slice(i * 2, i * 2 + 2) as software, i}
@@ -48,7 +48,7 @@ and express my love through design, code and video. Welcome to clembs.com!"
 					{/each}
 				</div>
 				<div class="grid-item">
-					<BlogPostCard loaded data={design} index={i} />
+					<BlogPostCard loaded data={design} />
 				</div>
 			{/if}
 		{/each}

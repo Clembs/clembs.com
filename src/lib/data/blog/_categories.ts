@@ -1,15 +1,15 @@
 export type Category = {
-	slug: string;
+	id: string;
 	name: string;
 };
 
 export const categories = [
 	{
-		slug: 'discovelist',
+		id: 'discovelist',
 		name: 'Discovelist',
 	},
 	{
-		slug: 'design',
+		id: 'design',
 		name: 'Design',
 	},
 ] as const satisfies Category[];

@@ -3,12 +3,13 @@ import Clembs from '$lib/icons/badges/clembs.svelte';
 import Supporter from '$lib/icons/badges/supporter.svelte';
 // import Verified from '$lib/icons/badges/verified.svelte';
 import Blocked from '$lib/icons/badges/blocked.svelte';
+import type { ComponentType } from 'svelte';
 
 export const badges: Record<
-	UserBadge,
+	Exclude<UserBadge, 'VERIFIED'>,
 	{
 		color: string;
-		icon: any;
+		icon: ComponentType;
 		label: string;
 		description: string;
 	}

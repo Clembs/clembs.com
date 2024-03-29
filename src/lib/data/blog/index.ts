@@ -3,7 +3,7 @@ import type { ThemeGradient } from '../types';
 
 export interface BlogPost {
 	id: string;
-	categoryId: (typeof categories)[number]['slug'];
+	categoryId: (typeof categories)[number]['id'];
 	title: string;
 	brief: string;
 	subtitle?: string;
