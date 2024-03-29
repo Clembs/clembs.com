@@ -11,7 +11,7 @@ import {
 	date,
 	varchar,
 } from 'drizzle-orm/pg-core';
-import type { Newsletter, SubscriptionStatus } from './Newsletters';
+import type { SubscriptionStatus } from './Newsletters';
 
 export const users = pgTable('users', {
 	id: text('id').primaryKey(),
@@ -110,7 +110,7 @@ export const streams = pgTable('streams', {
 
 export const newsletterSubscribers = pgTable('newsletter_subscribers', {
 	email: text('email').primaryKey(),
-	lists: jsonb('lists').$type<Record<Newsletter, SubscriptionStatus>>().notNull(),
+	lists: jsonb('lists').$type<Record<string, SubscriptionStatus>>().notNull(),
 	subscribeToken: text('subscribe_token'),
 	unsubscribeToken: text('unsubscribe_token'),
 });
