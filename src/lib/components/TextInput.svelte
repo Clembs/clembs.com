@@ -64,7 +64,7 @@
 		flex-direction: column;
 		text-align: left;
 		gap: 0.5rem;
-		margin-bottom: 0.5rem;
+		// margin-bottom: 0.5rem;
 		width: 100%;
 
 		label {

@@ -11,6 +11,7 @@ import {
 	date,
 	varchar,
 } from 'drizzle-orm/pg-core';
+import type { Newsletter, SubscriptionStatus } from './Newsletters';
 
 export const users = pgTable('users', {
 	id: text('id').primaryKey(),
@@ -107,7 +108,14 @@ export const streams = pgTable('streams', {
 	>(),
 });
 
-export const usersRelations = relations(users, ({ many, one }) => ({
+export const newsletterSubscribers = pgTable('newsletter_subscribers', {
+	email: text('email').primaryKey(),
+	lists: jsonb('lists').$type<Record<Newsletter, SubscriptionStatus>>().notNull(),
+	subscribeToken: text('subscribe_token'),
+	unsubscribeToken: text('unsubscribe_token'),
+});
+
+export const usersRelations = relations(users, ({ many }) => ({
 	comments: many(comments),
 	mentionedInComments: many(mentions),
 	sessions: many(sessions),

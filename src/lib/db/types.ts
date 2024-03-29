@@ -9,6 +9,7 @@ export type Session = typeof sessions.$inferSelect & {
 };
 
 export type User = typeof users.$inferSelect & {
+	email: string;
 	comments?: Comment[];
 	passkeys?: Passkey[];
 	sessions?: Session[];
