@@ -19,7 +19,7 @@ export default {
 		from: '#FECEDE',
 		to: '#FFF9FB',
 	},
-	brief:
+	summary:
 		'Multipurpose Discord bot that helps you get things done quickly through user-friendly and customizable commands.',
 	bannerPath: 'https://c.clembs.com/branding/crbt-2023/crbt-2023.webp',
 	bannerThumbnailPath: '/assets/small-banners/crbt-2023.png',

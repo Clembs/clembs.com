@@ -12,7 +12,7 @@ export const hidden = {
 		from: '#18C6F2',
 		to: '#1877F2',
 	},
-	brief: 'Watch your safety',
+	summary: 'Watch your safety',
 	bannerPath: 'https://c.clembs.com/branding/vertical-vision/banner.png',
 	bannerThumbnailPath: '/assets/small-banners/vertical-vision.png',
 } satisfies BlogPost;

@@ -11,7 +11,7 @@ export const hidden = {
 		from: '#18C6F2',
 		to: '#1877F2',
 	},
-	brief: '',
+	summary: '',
 	bannerPath: 'https://c.clembs.com/branding/delegue/delegue.webp',
 	bannerThumbnailPath: '/assets/small-banners/delegue.png',
 } satisfies BlogPost;

@@ -19,7 +19,7 @@ export default {
 		from: '#BA3F3D',
 		to: '#5D1C3C',
 	},
-	brief:
+	summary:
 		'Anime-themed card-collecting Discord bot where users collect cards to use them for combat against other users.',
 	bannerPath: 'https://c.clembs.com/branding/kikuri/kikuri.webp',
 	bannerThumbnailPath: '/assets/small-banners/kikuri.png',

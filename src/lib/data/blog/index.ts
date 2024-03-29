@@ -5,7 +5,7 @@ export interface BlogPost {
 	id: string;
 	categoryId: (typeof categories)[number]['id'];
 	title: string;
-	brief: string;
+	summary: string;
 	subtitle?: string;
 	createdAt: Date;
 	bannerPath?: string;
