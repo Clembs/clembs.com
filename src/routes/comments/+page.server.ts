@@ -5,41 +5,26 @@ import { fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { rateLimit } from '$lib/helpers/handleRateLimit';
 import { PROJECT_ID_REGEX } from '$lib/helpers/regex';
-import { blogPosts } from '$lib/data/blog';
-import { softwareData } from '$lib/data/software';
+import { allPosts } from '$lib/data/blog';
+import { archives } from '$lib/data/archive';
 import { bannedWords } from '$lib/helpers/bannedWords';
 import { parseMentions, type ParserOutputUserStructure } from '$lib/helpers/parseMentions';
 import { sendEmail } from '$lib/helpers/sendEmail';
 import { defaultUserPreferences } from '$lib/db/UserPreferences';
 import { dateFormat } from '$lib/helpers/dateFormat';
-import type { Comment } from '$lib/db/types';
-import { nestComments } from '$lib/helpers/groupComments';
+import { getComments } from '$lib/helpers/getComments';
 
 export const load: PageServerLoad = async ({ locals, setHeaders }) => {
 	const session = await locals.getSession();
 	const user = session?.user ?? null;
 
-	const comments = (await db.query.comments.findMany({
-		where: ({ projectId }, { isNull }) => isNull(projectId),
-		orderBy: ({ createdAt }, { desc }) => desc(createdAt),
-		with: {
-			author: {
-				columns: {
-					id: true,
-					username: true,
-					badges: true,
-				},
-			},
-		},
-	})) as Comment[];
-
-	const commentsWithChildren = nestComments(comments);
+	const comments = await getComments();
 
 	setHeaders({
 		'Cache-Control': 'public, max-age=1200',
 	});
 
-	return { comments: commentsWithChildren, user };
+	return { comments, user };
 };
 
 export const actions: Actions = {
@@ -63,6 +48,7 @@ export const actions: Actions = {
 			.get('content')
 			?.toString()
 			?.trim()
+			// eslint-disable-next-line no-misleading-character-class
 			?.replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/, '');
 
 		if (!content) {
@@ -110,7 +96,7 @@ export const actions: Actions = {
 				});
 			}
 
-			const project = [...(regex[1] === 'design' ? blogPosts : softwareData)].find(
+			const project = [...(regex[1] === 'design' ? allPosts : archives)].find(
 				({ id }) => id === regex[2]
 			);
 
