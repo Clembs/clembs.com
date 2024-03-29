@@ -8,9 +8,9 @@ export interface BlogPost {
 	brief: string;
 	subtitle?: string;
 	createdAt: Date;
-	bannerPath: string;
-	bannerThumbnailPath: string;
-	themeGradient: ThemeGradient;
+	bannerPath?: string;
+	bannerThumbnailPath?: string;
+	themeGradient?: ThemeGradient;
 	tags?: string[];
 	links?: {
 		projectUrl?: string;

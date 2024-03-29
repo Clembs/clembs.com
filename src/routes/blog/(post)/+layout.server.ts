@@ -5,8 +5,8 @@ import { categories } from '$lib/data/blog/_categories';
 import { getComments } from '$lib/helpers/getComments';
 
 export const load: LayoutServerLoad = async ({ url, locals: { getUserData }, setHeaders }) => {
-	const categoryId = url.pathname.split('/').at(-2);
-	const postId = url.pathname.split('/').at(-1);
+	const categoryId = url.pathname.split('/').at(2);
+	const postId = url.pathname.split('/').slice(3).join('/');
 
 	if (!categoryId || !postId) throw error(404);
 
@@ -30,8 +30,8 @@ export const load: LayoutServerLoad = async ({ url, locals: { getUserData }, set
 		comments,
 		userData,
 		navButton: {
-			label: 'Projects',
-			href: '/projects',
+			label: 'Blog',
+			href: '/blog',
 		},
 	};
 };
