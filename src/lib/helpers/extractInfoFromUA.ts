@@ -52,8 +52,8 @@ export function extractInfoFromUA(userAgent: string) {
 
 	if (browser && os) {
 		return {
-			browser: browser[0],
-			os: os[0],
+			browser: browserName,
+			os: osName,
 		};
 	}
 }
