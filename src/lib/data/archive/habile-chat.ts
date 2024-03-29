@@ -3,8 +3,8 @@ import type { Archive } from '.';
 export const habileChat: Archive = {
 	id: 'habile-chat',
 	name: 'Habile Chat',
-	brief: 'Giving life to my Discord server chatbot',
-	createdAt: new Date('2023-11-01'),
+	brief: 'Giving life to my mascot using AI',
+	createdAt: new Date('2024-02-07'),
 	description: `
 Habile was created 2 years ago as a mascot for my livestreaming career and as a Twitch bot to entertain viewers and assist me with my livestreams.
 
@@ -29,8 +29,8 @@ You simply have to create a [clembs.com account](/software/comments) and link yo
 
 I'm really grateful of all the support I got during the early testing phases, and I'm excited to see where this simple project can lead me to.
 `,
-	iconPath: 'https://c.clembs.com/files/93a9d81d637714e4a0.webp',
-	iconThumbnailPath: 'https://c.clembs.com/files/93a9d81d637714e4a0.webp',
+	iconPath: 'https://c.clembs.com/branding/habile-chat/icon.webp',
+	iconThumbnailPath: 'https://c.clembs.com/branding/habile-chat/icon.webp',
 	links: {
 		projectUrl: 'https://clembs.com/habile',
 		repoUrl: 'https://github.com/Clembs/clembs.com/tree/main/src/routes/habile',
