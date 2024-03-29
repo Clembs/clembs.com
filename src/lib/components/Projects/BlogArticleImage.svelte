@@ -3,16 +3,16 @@
 	import Card from '../Card.svelte';
 
 	export let data: BlogPost;
-	export let loaded = false;
 </script>
 
-<Card
-	class="card project"
-	aria-label="View design project: {data.title}"
-	href="/blog/{data.categoryId}/{data.id}"
->
-	<div class="card-image" style="background-image: url({data.bannerThumbnailPath})">
-		<img loading="lazy" src={data.bannerPath} class:loaded alt={data.subtitle} />
+<Card aria-label="Read blog article: {data.title}" href="/blog/{data.categoryId}/{data.id}">
+	<div class="card-image">
+		<img
+			loading="lazy"
+			src={data.bannerPath}
+			alt={data.subtitle}
+			style="background-image: url({data.bannerThumbnailPath});"
+		/>
 	</div>
 	<div slot="card-content" class="card-content">
 		<div class="text">
@@ -20,14 +20,14 @@
 				{data.title}
 			</div>
 			<span class="subtext">
+				{data.subtitle} •
 				{data.createdAt.toLocaleString('en-US', {
-					month: 'long',
+					month: 'short',
 					day: 'numeric',
 					year: 'numeric',
 				})}
 			</span>
 		</div>
-		<!-- <p>{project.brief}</p> -->
 	</div>
 </Card>
 
@@ -47,16 +47,10 @@
 		overflow: hidden;
 
 		img {
-			opacity: 0;
-			transition: opacity ease-in-out 300ms;
 			object-position: center;
 			object-fit: cover;
 			width: 100%;
 			height: 100%;
-
-			&:global(.loaded) {
-				opacity: 1;
-			}
 		}
 	}
 
