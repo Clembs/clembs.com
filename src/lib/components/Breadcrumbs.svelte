@@ -19,9 +19,11 @@
 					<span>{name}</span>
 				{:else}
 					<a {href}>{name}</a>
-					<IconChevronRight />
 				{/if}
 			</li>
+			{#if i !== data.length - 1}
+				<IconChevronRight />
+			{/if}
 		{/each}
 	</ol>
 </nav>
@@ -33,7 +35,7 @@
 		align-items: center;
 		font-size: 0.875rem;
 		padding: 0;
-		margin: 0;
+		margin: 1rem 0;
 		margin-left: -0.75rem;
 		user-select: none;
 		position: relative;
@@ -41,7 +43,7 @@
 		li {
 			display: flex;
 			align-items: center;
-			// gap: 0.25rem;
+			margin: 0;
 
 			span,
 			a {
@@ -52,6 +54,11 @@
 				left: 0px;
 				position: relative;
 				margin-right: -0.25rem;
+				font-weight: 500;
+			}
+
+			span {
+				color: var(--color-on-surface);
 			}
 
 			a {

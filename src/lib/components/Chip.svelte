@@ -53,7 +53,14 @@
 		border: var(--_border);
 		border-radius: 0.5rem;
 
-		transition: background-color 150ms ease-in-out;
+		transition:
+			background-color 150ms ease,
+			color 150ms ease;
+
+		:global(svg) {
+			width: 20px;
+			height: 20px;
+		}
 
 		&[aria-checked='true'] {
 			--_bg: var(--color-on-background);

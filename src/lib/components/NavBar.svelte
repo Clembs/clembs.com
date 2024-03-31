@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import Clembs from '$lib/icons/Clembs.svelte';
-	import { IconArrowLeft, IconLogin, IconUser } from '@tabler/icons-svelte';
+	import { IconArrowLeft, IconLogin } from '@tabler/icons-svelte';
 	import { cubicInOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
 	import GradientAvatar from './GradientAvatar/GradientAvatar.svelte';
@@ -55,10 +55,16 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		max-width: 750px;
 		position: relative;
+		width: 100%;
+		padding: 1rem;
+		margin-bottom: 1rem;
 
-		margin: 2rem auto;
+		// position: sticky;
+		// inset: 0;
+		// background-color: var(--color-background);
+		// z-index: 99;
+		border-bottom: 1px solid var(--color-outline);
 
 		#profile {
 			display: grid;
@@ -71,14 +77,17 @@
 			align-items: center;
 			text-decoration: none;
 			gap: 0.5rem;
-			padding: 0.25rem;
-			padding-right: 0.5rem;
+			padding: 0.5rem 1rem;
+			padding-right: 1.25rem;
 			color: var(--color-on-surface);
 			position: absolute;
 			border-radius: 99rem;
+			border: 1px solid transparent;
 
 			&:hover {
-				text-decoration: underline;
+				// text-decoration: underline;
+				background-color: var(--color-surface);
+				border: 1px solid var(--color-outline);
 			}
 		}
 

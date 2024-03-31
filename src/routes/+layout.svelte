@@ -59,12 +59,12 @@
 	style="--from: {$colorProgress?.from}; --to: {$colorProgress?.to}"
 />
 
-<NavBar />
-
 <div class="content">
+	<NavBar />
 	<slot />
+
+	<Footer />
 </div>
-<Footer />
 
 <style lang="scss">
 	.background-piece {
@@ -84,9 +84,12 @@
 		margin: 0 auto;
 		max-width: 750px;
 		width: 100%;
+		margin-top: 2rem;
 		z-index: 2;
 		position: relative;
-		// border-left: 1px solid var(--color-outline);
-		// border-right: 1px solid var(--color-outline);
+		border-top: 1px solid var(--color-outline);
+		border-left: 1px solid var(--color-outline);
+		border-right: 1px solid var(--color-outline);
+		border-radius: 2rem 2rem 0 0;
 	}
 </style>

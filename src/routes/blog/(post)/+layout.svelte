@@ -143,7 +143,7 @@
 	header {
 		border-radius: 1rem 1rem 0 0;
 		margin: 1rem;
-		margin-bottom: 2rem;
+		margin-bottom: 0;
 
 		.post-banner {
 			width: 100%;
@@ -156,7 +156,7 @@
 		.post-info {
 			display: flex;
 			justify-content: space-between;
-			margin: 1rem 0;
+			margin-top: 1rem;
 
 			.post-author {
 				display: flex;
