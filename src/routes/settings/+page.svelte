@@ -163,11 +163,11 @@
 						When anyone replies to my comments
 					</Switch>
 
-					<Switch required={false} name="clembsReplies" disabled={emailAllReplies}>
+					<!-- <Switch required={false} name="clembsReplies" disabled={emailAllReplies}>
 						When Clembs replies to my comments
-					</Switch>
+					</Switch> -->
 
-					<Switch required={false} name="mentioned">When anyone @mentions me</Switch>
+					<!-- <Switch required={false} name="mentioned">When anyone @mentions me</Switch> -->
 				</div>
 
 				<Button type="submit">
