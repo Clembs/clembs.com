@@ -20,6 +20,8 @@ article:not(.comment-wrapper) {
 		margin-bottom: 0.75rem;
 		border-radius: 0.75rem;
 		height: auto;
+		max-height: 500px;
+		width: auto;
 	}
 
 	.stylized-element {

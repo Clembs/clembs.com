@@ -74,6 +74,8 @@
 
 	<h1 class="post-title">{data.title}</h1>
 
+	<p>{data.summary}</p>
+
 	<div class="post-info">
 		<div class="post-author">
 			<img
