@@ -1,8 +1,14 @@
 <script lang="ts">
 	import { SocialName, email, socials } from '$lib/data/socials';
-	import IconHeart from '@tabler/icons-svelte/dist/svelte/icons/IconHeart.svelte';
+	import { IconHeart } from '@tabler/icons-svelte';
 	import LinksList from '$lib/components/LinksList.svelte';
+	import MetaTags from '$lib/components/MetaTags.svelte';
 </script>
+
+<MetaTags
+	pageName="Contact - Clembs"
+	description="Contact me through email, social media or donate to support my work."
+/>
 
 <main>
 	<header>

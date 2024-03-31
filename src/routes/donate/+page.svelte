@@ -9,6 +9,7 @@
 	import { dateFormat } from '$lib/helpers/dateFormat';
 	import type { donations } from '$lib/db/schema';
 	import { IconAt } from '@tabler/icons-svelte';
+	import MetaTags from '$lib/components/MetaTags.svelte';
 
 	export let data: PageServerData;
 
@@ -29,6 +30,11 @@
 		SUB: 'month(s) of subscription',
 	};
 </script>
+
+<MetaTags
+	pageName="Donate - Clembs"
+	description="Since my projects are free, consider buying me some water as a thank you!"
+/>
 
 <main>
 	<header>

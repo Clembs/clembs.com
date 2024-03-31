@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Button from '$lib/components/Button.svelte';
+	import MetaTags from '$lib/components/MetaTags.svelte';
 	import BlogPost from '$lib/components/Projects/BlogPost.svelte';
 	import FeaturedBlogPost from '$lib/components/Projects/FeaturedBlogPost.svelte';
 	import { categories } from '$lib/data/blog/_categories';
@@ -7,6 +8,11 @@
 
 	export let data;
 </script>
+
+<MetaTags
+	pageName="Blog - Clembs"
+	description="My thoughts, projects, finds, and home to everything else I want to put into text."
+/>
 
 <section class="category">
 	<header>
@@ -19,7 +25,10 @@
 {#each categories as category}
 	<section class="category">
 		<header>
-			<h2>{category.name}</h2>
+			<div class="text">
+				<h2>{category.name}</h2>
+				<p class="subtext">{category.description}</p>
+			</div>
 
 			<Button aria-kabel="View more posts" style="text" icon href={`/blog/${category.id}`}>
 				<IconChevronRight />

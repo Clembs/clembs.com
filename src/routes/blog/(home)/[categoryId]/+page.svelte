@@ -1,10 +1,23 @@
 <script lang="ts">
+	import MetaTags from '$lib/components/MetaTags.svelte';
 	import BlogPost from '$lib/components/Projects/BlogPost.svelte';
 
 	export let data;
 </script>
 
-<h2>{data.category.name}</h2>
+<MetaTags pageName="{data.category.name} - Blog - Clembs" description={data.category.description} />
+
+<h2>
+	{data.category.name}
+</h2>
+
+<p>
+	{data.category.description}
+</p>
+
+<span class="subtext">
+	{data.posts.length} posts
+</span>
 
 <ol class="article-{data.category.id === 'design' ? 'grid' : 'list'}">
 	{#each data.posts as post}
