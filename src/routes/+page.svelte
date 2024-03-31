@@ -12,7 +12,7 @@
 	} from '@tabler/icons-svelte';
 	import MetaTags from '$lib/components/MetaTags.svelte';
 	import ArchiveItem from '$lib/components/Projects/ArchiveItem.svelte';
-	import BlogCard from '$lib/components/Projects/BlogArticleImage.svelte';
+	import BlogPost from '$lib/components/Projects/BlogPost.svelte';
 	import Card from '$lib/components/Card.svelte';
 	import FeaturedBlogPost from '$lib/components/Projects/FeaturedBlogPost.svelte';
 
@@ -60,24 +60,12 @@ and express my love through design, code and video. Welcome to clembs.com!"
 	<FeaturedBlogPost data={designPosts[0]} />
 	<div id="project-grid">
 		{#each designPosts.slice(1, 3) as post, i}
-			{#if i % 2 === 0}
-				<div class="blog">
-					<BlogCard data={post} />
-				</div>
-				{#each archives.slice(i * 2, i * 2 + 2) as archive, i}
-					<ArchiveItem loaded data={archive} />
-				{/each}
-			{:else}
-				{#each archives.slice(i * 2, i * 2 + 1) as archive, i}
-					<ArchiveItem loaded data={archive} />
-				{/each}
-				<div class="blog">
-					<BlogCard data={post} />
-				</div>
-				{#each archives.slice(i * 2 + 1, i * 2 + 2) as archive, i}
-					<ArchiveItem loaded data={archive} />
-				{/each}
-			{/if}
+			<div class="blog">
+				<BlogPost data={post} />
+			</div>
+			{#each archives.slice(i * 2, i * 2 + 2) as archive, i}
+				<ArchiveItem loaded data={archive} />
+			{/each}
 		{/each}
 	</div>
 	<div id="quick-links">
@@ -164,7 +152,7 @@ and express my love through design, code and video. Welcome to clembs.com!"
 					gap: 0.5rem;
 					background: hsla(var(--color), 0.1);
 					border: 2px solid hsl(var(--color));
-					padding: 0.125rem 0.75rem;
+					padding: 0.125rem 0.75rem 0.125rem 0.5rem;
 					border-radius: 99rem;
 
 					:global(svg) {
@@ -211,7 +199,7 @@ and express my love through design, code and video. Welcome to clembs.com!"
 			gap: 1rem;
 
 			.blog {
-				grid-row: span 2;
+				grid-row: span 3;
 			}
 		}
 

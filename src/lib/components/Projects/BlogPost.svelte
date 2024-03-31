@@ -6,14 +6,16 @@
 </script>
 
 <Card aria-label="Read blog article: {data.title}" href="/blog/{data.categoryId}/{data.id}">
-	<div class="card-image">
-		<img
-			loading="lazy"
-			src={data.bannerPath}
-			alt={data.subtitle}
-			style="background-image: url({data.bannerThumbnailPath});"
-		/>
-	</div>
+	{#if data.bannerPath}
+		<div class="card-image">
+			<img
+				loading="lazy"
+				src={data.bannerPath}
+				alt={data.subtitle}
+				style="background-image: url({data.bannerThumbnailPath});"
+			/>
+		</div>
+	{/if}
 	<div slot="card-content" class="card-content">
 		<div class="text">
 			<div class="title">
