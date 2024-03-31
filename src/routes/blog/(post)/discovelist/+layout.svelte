@@ -47,8 +47,8 @@
 							'newsletters_subscriptions',
 							JSON.stringify([...subscriptions, 'discovelist'])
 						);
-					} else {
-						toast.error('An error occurred. Please try again later.');
+					} else if (result.type === 'failure' && typeof result.data?.message === 'string') {
+						toast.error(result.data?.message || 'An error occurred. Please try again later.');
 					}
 
 					await update();

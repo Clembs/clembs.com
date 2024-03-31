@@ -7,14 +7,15 @@ import { dateFormat } from '$lib/helpers/dateFormat';
 import { getPostHtml } from '$lib/helpers/getPostHtml';
 import { emailHtmlTemplate, sendEmail } from '$lib/helpers/sendEmail';
 import { error, fail } from '@sveltejs/kit';
+import { eq } from 'drizzle-orm';
 
 export const actions = {
 	async sendSubscriptionIntent({ request, url }) {
 		const formData = await request.formData();
-		const email = formData.get('email')?.toString();
+		const formEmail = formData.get('email')?.toString();
 		const list = url.searchParams.get('list') as Newsletter;
 
-		if (!email) {
+		if (!formEmail) {
 			return fail(400, {
 				message: 'Email is required',
 			});
@@ -34,16 +35,41 @@ export const actions = {
 			});
 		}
 
-		try {
-			const subscribeToken = Math.random().toString(36).substring(2, 18);
+		const existingSubscriber = await db.query.newsletterSubscribers.findFirst({
+			where: ({ email }, { eq }) => eq(email, formEmail),
+		});
 
-			await db.insert(newsletterSubscribers).values({
-				email,
-				lists: {
-					[list]: 'pending-sub',
-				},
-				subscribeToken,
+		if (existingSubscriber && existingSubscriber.lists[list] === 'subscribed') {
+			return fail(400, {
+				message: 'You are already subscribed to this list',
 			});
+		}
+
+		const triedToSubscribe = existingSubscriber?.lists[list] === 'pending-sub';
+
+		try {
+			const subscribeToken =
+				existingSubscriber?.subscribeToken || Math.random().toString(36).substring(2, 18);
+
+			if (!existingSubscriber || triedToSubscribe) {
+				await db.insert(newsletterSubscribers).values({
+					email: formEmail,
+					lists: {
+						[list]: 'pending-sub',
+					},
+					subscribeToken,
+				});
+			} else {
+				await db
+					.update(newsletterSubscribers)
+					.set({
+						lists: {
+							[list]: 'pending-sub',
+						},
+						subscribeToken,
+					})
+					.where(eq(newsletterSubscribers.email, formEmail));
+			}
 
 			await sendEmail(
 				{
@@ -58,7 +84,7 @@ export const actions = {
 <a 
 	style="margin-top: 1rem; background-color: #000; color: #fff; padding: 8px 16px; text-decoration: none; border-radius: 32px;"
 	href="${url.origin}/blog/newsletter/confirm?email=${encodeURIComponent(
-		email
+		formEmail
 	)}&token=${subscribeToken}&list=${list}"
 >
 	Confirm subscription
@@ -69,7 +95,7 @@ Not you? You can safely ignore this email.
 </p>
 				`),
 				},
-				email
+				formEmail
 			);
 		} catch (err) {
 			return error(404);
