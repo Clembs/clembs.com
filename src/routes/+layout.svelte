@@ -113,5 +113,11 @@
 		&:global(.close-in) {
 			border-radius: 2rem;
 		}
+
+		@media (max-width: 750px) {
+			margin-top: 0;
+			border-radius: 0;
+			border: none;
+		}
 	}
 </style>
