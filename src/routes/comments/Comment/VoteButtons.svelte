@@ -13,7 +13,7 @@
 	import type { ActionResult } from '@sveltejs/kit';
 	import { showLoginDialog, showRestrictedAccountDialog } from '$lib/stores/modals';
 	import { client } from '$lib/db/supabase';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 
 	export let comment: Comment;
 	export let big = false;
@@ -95,6 +95,10 @@
 				}
 			})
 			.subscribe();
+	});
+
+	onDestroy(() => {
+		channel.unsubscribe();
 	});
 </script>
 
