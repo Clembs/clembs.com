@@ -12,11 +12,13 @@ import { dateFormat } from '$lib/helpers/dateFormat';
 import { getComments } from '$lib/helpers/getComments';
 import { allObjectIds } from '$lib/data';
 
-export const load: PageServerLoad = async ({ locals, setHeaders }) => {
+export const load: PageServerLoad = async ({ locals, setHeaders, depends }) => {
 	const session = await locals.getSession();
 	const user = session?.user ?? null;
 
 	const comments = await getComments();
+
+	depends('comments');
 
 	setHeaders({
 		'Cache-Control': 'public, max-age=1200',

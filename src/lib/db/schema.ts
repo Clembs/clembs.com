@@ -26,11 +26,10 @@ export const users = pgTable('users', {
 
 export const comments = pgTable('comments', {
 	id: text('id').primaryKey(),
-	content: text('content').notNull(),
+	content: varchar('content', { length: 420 }).notNull(),
 	projectId: text('project_id'),
 	userId: text('user_id'),
 	parentId: text('parent_id'),
-	// referenceCommentId: text('reference_comment_id'),
 	isPinned: boolean('pinned'),
 	isBlocked: boolean('blocked'),
 	createdAt: timestamp('created_at', {

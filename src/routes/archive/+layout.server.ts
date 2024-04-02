@@ -3,7 +3,7 @@ import type { LayoutServerLoad } from './$types';
 import { archives } from '$lib/data/archive';
 import { getComments } from '$lib/helpers/getComments';
 
-export const load: LayoutServerLoad = async ({ url, locals: { getUserData }, setHeaders }) => {
+export const load: LayoutServerLoad = async ({ url, setHeaders, depends }) => {
 	const project = archives.find(({ id }) => id === url.pathname.split('/').at(-1));
 
 	if (!project) {
@@ -14,7 +14,7 @@ export const load: LayoutServerLoad = async ({ url, locals: { getUserData }, set
 		projectId: `archive/${project.id}`,
 	});
 
-	const userData = await getUserData();
+	depends('comments');
 
 	setHeaders({
 		'Cache-Control': 'public, max-age=1200',
@@ -23,7 +23,6 @@ export const load: LayoutServerLoad = async ({ url, locals: { getUserData }, set
 	return {
 		...project,
 		comments,
-		userData,
 		navButton: {
 			label: 'Projects',
 			href: '/projects',
