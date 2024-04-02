@@ -133,24 +133,30 @@ Not you? You can safely ignore this email.
 
 		const postHtml = await getPostHtml(post);
 
+		const postUrl = new URL(`/blog/${category.id}/${post.id}`, 'https://clembs.com');
+
 		const subscribers = await db.query.newsletterSubscribers.findMany();
 
 		for (const subscriber of subscribers) {
-			if (subscriber.lists[category.id] === 'subscribed') {
+			if (
+				subscriber.lists[category.id] === 'subscribed' &&
+				subscriber.email === 'clembombmail@gmail.com'
+			) {
 				await sendEmail(
 					{
 						subject: post.title,
-						html: emailHtmlTemplate(`
+						html: emailHtmlTemplate(
+							`
 <a
-	href="${url.origin}/blog/${category.id}/${post.id}"
-	style="margin-bottom: 1rem; color: #6E6D7A; font-size: 14px;"
+	href=${postUrl}
+	style="padding-bottom: 16px; color: #6E6D7A; font-size: 14px;"
 >
 	Read in browser
 </a>
 •
 <a
-	href="${url.origin}"
-	style="margin-bottom: 1rem; color: #6E6D7A; font-size: 14px;"
+	href="https://clembs.com"
+	style="padding-bottom: 16px; color: #6E6D7A; font-size: 14px;"
 >
 	clembs.com
 </a>
@@ -158,25 +164,27 @@ Not you? You can safely ignore this email.
 <h1>${post.title}</h1>
 <span style="font-size: 14px;">
 	<img
-		src="https://clembs.com/assets/logo-purplue.webp"
+		src="https://c.clembs.com/files/Logo+-+Purplue+very+small.png"
 		alt="Clembs logo"
-		style="height: 32px; vertical-align: middle; margin-right: 8px; border-radius: 50%;"
+		height="32"
+		width="32"
+		style="vertical-align: middle; border-radius: 50%;"
 	/>
-	<div style="display: inline-block; vertical-align: middle;">
+	<span style="display: inline-block; vertical-align: middle; padding-left: 8px;">
 		Clément "Clembs" Voisin
 		<br />
 		<span style="color: #6E6D7A;">
 		${dateFormat(post.createdAt, false)}
 		</span>
-	</div>
+	</span>
 </span>
 
-${postHtml}
+${postHtml.replace(/href="#/g, `href="${postUrl}#`)}
 
 
 <div style="padding-top: 32px;">
 	<a
-		href="${url.origin}/blog/newsletter/unsubscribe?list=${category.id}&email=${encodeURIComponent(
+		href="https://clembs.com/blog/newsletter/unsubscribe?list=${category.id}&email=${encodeURIComponent(
 			subscriber.email
 		)}&token=${subscriber.unsubscribeToken}"
 		style="font-size: 14px; color: #6E6D7A;"
@@ -184,7 +192,9 @@ ${postHtml}
 		Unsubscribe from ${category.name}
 	</a>
 </div>
-							`),
+`,
+							url
+						),
 					},
 					subscriber.email
 				);
