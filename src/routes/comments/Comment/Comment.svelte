@@ -19,35 +19,38 @@
 	import CommentList from './CommentList.svelte';
 	import CommentForm from '../CommentForm/CommentForm.svelte';
 	import { slide } from 'svelte/transition';
+	import { invalidate } from '$app/navigation';
 
 	export let comment: Comment;
 
 	let isDeletionLoading = false;
 	let isPinningLoading = false;
 
-	let areRepliesLoading = false;
-	export let areRepliesLoaded = true;
+	// export let areRepliesLoaded = true;
 	export let areRepliesShown = true;
 
 	let showReplyForm = false;
 
-	async function loadChildComments() {
-		if (!comment.childComments?.length) {
-			areRepliesLoading = true;
-			try {
-				const req = await fetch(`/comments/api/${comment.id}/comments`);
+	// async function loadChildComments() {
+	// 	if (!comment.childComments?.length) {
+	// 		areRepliesLoading = true;
+	// 		try {
+	// 			const req = await fetch(`/comments/api/${comment.id}/comments`);
 
-				areRepliesLoaded = true;
-				comment.childComments = await req.json();
-			} catch (e) {
-				toast.error('Failed loading replies.');
-			}
-			areRepliesLoading = false;
-		}
-	}
+	// 			areRepliesLoaded = true;
+	// 			comment.childComments = await req.json();
+	// 		} catch (e) {
+	// 			toast.error('Failed loading replies.');
+	// 		}
+	// 		areRepliesLoading = false;
+	// 	}
+	// }
 </script>
 
-<article class="comment-wrapper" data-comment-id={comment.id} class:reply={!!comment.parentId}>
+<article
+	class="comment-wrapper {!!comment.parentId ? 'reply' : 'parent'}"
+	data-comment-id={comment.id}
+>
 	<div class="comment">
 		<CommentHeader {comment} />
 
@@ -91,9 +94,10 @@
 				<form
 					use:enhance={() => {
 						isDeletionLoading = true;
-						return ({ update }) => {
+						return async ({ update }) => {
+							await update();
+							await invalidate('comments');
 							isDeletionLoading = false;
-							update();
 						};
 					}}
 					method="POST"
@@ -117,10 +121,10 @@
 				<CommentForm expanded projectId={comment.projectId} parentComment={comment} />
 			</div>
 		{/if}
-		{#if comment.childComments?.length}
-			{#if areRepliesShown}
-				<CommentList comments={comment.childComments} />
-			{:else}
+		{#if comment.childComments?.length && areRepliesShown}
+			<!-- {#if areRepliesShown} -->
+			<CommentList comments={comment.childComments} />
+			<!-- {:else}
 				<button
 					class="view-replies-button"
 					on:mouseover={loadChildComments}
@@ -142,7 +146,7 @@
 						View {comment.childComments.length} replies
 					{/if}
 				</button>
-			{/if}
+			{/if} -->
 		{/if}
 	</div>
 </article>
@@ -153,6 +157,15 @@
 		flex-direction: column;
 		text-decoration: none;
 		position: relative;
+
+		&.parent {
+			overflow-x: scroll;
+			margin: 0 -1rem;
+
+			.comment {
+				padding: 0.5rem 1rem;
+			}
+		}
 
 		&.reply {
 			padding-left: 1rem;
@@ -168,7 +181,6 @@
 		padding: 0.5rem 0;
 		z-index: 2;
 
-		word-break: break-word;
 		font-weight: inherit;
 		text-decoration: none;
 
@@ -187,35 +199,35 @@
 		padding-top: 0.5rem;
 	}
 
-	.view-replies-button {
-		z-index: 1;
-		transform: translateY(-0.5rem);
-		display: flex;
-		align-items: center;
-		cursor: pointer;
-		gap: 0.5rem;
-		font-size: 0.8rem;
-		font-weight: 500;
-		margin: 0 -0.25rem;
-		padding: 0.5rem 0.75rem;
-		text-decoration: none;
-		border-radius: 1rem;
-		width: fit-content;
+	// .view-replies-button {
+	// 	z-index: 1;
+	// 	transform: translateY(-0.5rem);
+	// 	display: flex;
+	// 	align-items: center;
+	// 	cursor: pointer;
+	// 	gap: 0.5rem;
+	// 	font-size: 0.8rem;
+	// 	font-weight: 500;
+	// 	margin: 0 -0.25rem;
+	// 	padding: 0.5rem 0.75rem;
+	// 	text-decoration: none;
+	// 	border-radius: 1rem;
+	// 	width: fit-content;
 
-		transition:
-			box-shadow 150ms ease-in-out,
-			transform 150ms ease-in-out;
+	// 	transition:
+	// 		box-shadow 150ms ease-in-out,
+	// 		transform 150ms ease-in-out;
 
-		&:hover {
-			background-color: var(--color-surface);
-		}
+	// 	&:hover {
+	// 		background-color: var(--color-surface);
+	// 	}
 
-		.profiles {
-			display: flex;
+	// 	.profiles {
+	// 		display: flex;
 
-			:global(.avatar) {
-				margin-left: -0.25rem;
-			}
-		}
-	}
+	// 		:global(.avatar) {
+	// 			margin-left: -0.25rem;
+	// 		}
+	// 	}
+	// }
 </style>

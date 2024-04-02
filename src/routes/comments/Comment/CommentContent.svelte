@@ -38,5 +38,7 @@
 		font-size: 17px;
 		margin-left: 2.5rem;
 		margin-top: -0.5rem;
+		word-break: break-word;
+		min-width: 30ch;
 	}
 </style>

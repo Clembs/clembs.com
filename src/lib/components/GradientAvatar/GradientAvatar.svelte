@@ -51,6 +51,7 @@
 		border-radius: 99rem;
 		background: linear-gradient(45deg, var(--color-a), var(--color-b));
 		border: 1px solid var(--color-outline);
+		flex-shrink: 0;
 
 		&.showSilhouette::after {
 			content: '';

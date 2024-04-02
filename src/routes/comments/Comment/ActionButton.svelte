@@ -37,6 +37,10 @@
 		font-weight: 500;
 		border: 1px solid var(--color-outline);
 		text-decoration: none;
+		height: 2.25rem;
+		min-width: 2.25rem;
+		word-break: normal;
+		min-width: fit-content;
 
 		&:hover {
 			background-color: var(--color-surface);
@@ -45,6 +49,7 @@
 		:global(svg) {
 			width: 18px;
 			height: 18px;
+			flex-shrink: 0;
 		}
 	}
 </style>
