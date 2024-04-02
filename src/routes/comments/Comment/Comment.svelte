@@ -165,6 +165,10 @@
 			.comment {
 				padding: 0.5rem 1rem;
 			}
+
+			.child-comments {
+				padding-right: 1rem;
+			}
 		}
 
 		&.reply {
@@ -195,7 +199,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 0.5rem;
-		padding-left: 2.75rem;
+		padding-left: 3.25rem;
 		padding-top: 0.5rem;
 	}
 
