@@ -12,6 +12,8 @@
 	import { enhance } from '$app/forms';
 	import type { ActionResult } from '@sveltejs/kit';
 	import { showLoginDialog, showRestrictedAccountDialog } from '$lib/stores/modals';
+	import { client } from '$lib/db/supabase';
+	import { onMount } from 'svelte';
 
 	export let comment: Comment;
 	export let big = false;
@@ -49,6 +51,16 @@
 			vote = voteType;
 			currentScore = scoreExcludingCurrentUser + (voteType === 'UPVOTE' ? 1 : -1);
 		}
+
+		channel.send({
+			event: 'vote',
+			type: 'broadcast',
+			payload: {
+				voteType: vote,
+				newScore: currentScore,
+				userId: data.userData.id,
+			},
+		});
 	}
 
 	function handleVoteError(result: ActionResult) {
@@ -71,6 +83,19 @@
 		vote = previousVote;
 		currentScore = previousScore;
 	}
+
+	const channel = client.channel(`comment-votes-${comment.id}`);
+
+	onMount(() => {
+		channel
+			.on('broadcast', { event: 'vote' }, ({ payload }) => {
+				currentScore = payload.newScore;
+				if (data.userData?.id === payload.userId) {
+					vote = payload.voteType;
+				}
+			})
+			.subscribe();
+	});
 </script>
 
 <div
