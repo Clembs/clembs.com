@@ -18,7 +18,7 @@
 	let loading = false;
 	let showHelpModal = false;
 	let commentForm: HTMLFormElement;
-	const commentMaxLength = 256;
+	const commentMaxLength = 420;
 </script>
 
 <svelte:window

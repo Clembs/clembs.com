@@ -95,6 +95,14 @@ export const actions: Actions = {
 			}
 		}
 
+		const maxCommentLength = 420;
+
+		if (content.length > maxCommentLength) {
+			return fail(400, {
+				message: `Comment length must be under ${maxCommentLength} characters.`,
+			});
+		}
+
 		const input: typeof comments.$inferInsert = {
 			id: generateSnowflake(),
 			content: content,
