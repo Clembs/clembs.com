@@ -9,6 +9,11 @@
 		{ "source": "/branding", "destination": "/blog/design" },
 		{ "source": "/software", "destination": "/archive" },
 
+		{ "source": "/archive/crbt", "destination": "https://crbt.app" },
+		{ "source": "/archive/purplet", "destination": "https://github.com/CRBT-Team/Purplet" },
+		{ "source": "/archive/messages", "destination": "https://clembs.com/messages" },
+		{ "source": "/archive/acknowledgements", "destination": "https://npmjs.org/acknowledgements" },
+
 		{ "source": "/discord", "destination": "https://discord.gg/6uNwP46" },
 		{ "source": "/gh/:path*", "destination": "https://github.com/Clembs/:path*" },
 		{ "source": "/github/:path*", "destination": "https://github.com/Clembs/:path*" },
@@ -25,6 +30,7 @@
 		{ "source": "/steam", "destination": "https://steamcommunity.com/id/Clembs" },
 		{ "source": "/twitch", "destination": "https://twitch.tv/Clembs" },
 		{ "source": "/twitter", "destination": "https://twitter.com/ClembsV" },
+		{ "source": "/yt", "destination": "https://youtube.com/channel/UC1uQmGSF7MGyOnHnljzaCWg" },
 		{ "source": "/youtube", "destination": "https://youtube.com/channel/UC1uQmGSF7MGyOnHnljzaCWg" },
 
 		{ "source": "/unibros/latest", "destination": "/unibros/unibros-demo3.zip" },
