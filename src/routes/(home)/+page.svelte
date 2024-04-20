@@ -15,6 +15,7 @@
 	import BlogPost from '$lib/components/Projects/BlogPost.svelte';
 	import Card from '$lib/components/Card.svelte';
 	import FeaturedBlogPost from '$lib/components/Projects/FeaturedBlogPost.svelte';
+	import Cta from './CTA.svelte';
 
 	const designPosts = allPosts.filter(({ categoryId }) => categoryId === 'design');
 </script>
@@ -50,8 +51,8 @@ and express my love through design, code and video. Welcome to clembs.com!"
 		</h1>
 
 		<div class="buttons">
-			<Button href="#projects">View projects</Button>
-			<Button href="/contact" style="outlined">Contact me</Button>
+			<Cta />
+			<!-- <Button href="/contact">Contact me - Available for hire!</Button> -->
 		</div>
 	</div>
 </header>
