@@ -80,6 +80,7 @@
 		padding: 0.5rem;
 		font-family: monospace;
 		font-size: 1rem;
+		inset: 0;
 
 		.tile-group {
 			margin-bottom: 0.7rem;
