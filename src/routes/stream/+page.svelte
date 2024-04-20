@@ -140,11 +140,7 @@
 
 		<p>But I stream every now and then on the following platforms:</p>
 
-		<LinksList
-			socials={socials
-				.filter((social) => social.id === SocialName.Twitch || social.id === SocialName.YouTube)
-				.map((social) => ({ ...social, activity: undefined }))}
-		/>
+		<LinksList socials={streamSocials.map((social) => ({ ...social, activity: undefined }))} />
 	{/if}
 
 	<h2>See also</h2>

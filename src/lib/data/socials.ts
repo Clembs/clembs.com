@@ -9,6 +9,11 @@ import Youtube from '$lib/icons/socials/youtube.svelte';
 import IconMail from '@tabler/icons-svelte/dist/svelte/icons/IconMail.svelte';
 import IconMessageCircle from '@tabler/icons-svelte/dist/svelte/icons/IconMessageCircle.svelte';
 import IconDroplet from '@tabler/icons-svelte/dist/svelte/icons/IconDroplet.svelte';
+import Linkedin from '$lib/icons/socials/linkedin.svelte';
+import type { ComponentType } from 'svelte';
+import X from '$lib/icons/socials/x.svelte';
+import Threads from '$lib/icons/socials/threads.svelte';
+import Bluesky from '$lib/icons/socials/bluesky.svelte';
 
 export enum SocialName {
 	Kofi = 'ko-fi',
@@ -22,13 +27,17 @@ export enum SocialName {
 	Twitch = 'twitch',
 	Mastodon = 'mastodon',
 	YouTube = 'youtube',
+	LinkedIn = 'linkedin',
+	Twitter = 'twitter',
+	Threads = 'threads',
+	Bluesky = 'bluesky',
 }
 
 export interface Social {
-	id?: SocialName;
+	id: SocialName;
 	name: string;
 	url: string;
-	icon: any;
+	icon: ComponentType;
 	activity?: 'low' | 'medium' | 'high';
 	username?: string;
 	description?: string;
@@ -39,8 +48,6 @@ export const email: Social = {
 	name: 'E-mail',
 	url: 'mailto://clembs@clembs.com',
 	icon: IconMail,
-	activity: 'high',
-	username: 'clembs@clembs.com',
 };
 
 export const kofi: Social = {
@@ -60,6 +67,7 @@ export const boosty: Social = {
 };
 
 export const waterAid: Social = {
+	id: SocialName.Kofi,
 	name: 'Water Aid',
 	url: 'https://wateraid.org/donate',
 	icon: IconDroplet,
@@ -71,8 +79,6 @@ export const comments: Social = {
 	name: 'My comments section <3',
 	url: '/comments',
 	icon: IconMessageCircle,
-	activity: 'high',
-	username: 'Clembs',
 };
 
 export const github: Social = {
@@ -80,8 +86,6 @@ export const github: Social = {
 	name: 'GitHub',
 	url: 'https://github.com/Clembs',
 	icon: Github,
-	activity: 'high',
-	username: 'Clembs',
 };
 
 export const discord: Social = {
@@ -89,8 +93,6 @@ export const discord: Social = {
 	name: 'Discord',
 	url: 'https://discord.gg/6uNwP46',
 	icon: Discord,
-	activity: 'medium',
-	username: "Habile's Lounge",
 };
 
 export const youtube: Social = {
@@ -98,8 +100,6 @@ export const youtube: Social = {
 	name: 'YouTube',
 	url: 'https://youtube.com/@ClembsV',
 	icon: Youtube,
-	activity: 'low',
-	username: '@ClembsV',
 };
 
 export const twitch: Social = {
@@ -107,8 +107,6 @@ export const twitch: Social = {
 	name: 'Twitch',
 	url: 'https://twitch.tv/clembs',
 	icon: Twitch,
-	activity: 'low',
-	username: 'Clembs',
 };
 
 export const instagram: Social = {
@@ -116,8 +114,6 @@ export const instagram: Social = {
 	name: 'Instagram',
 	url: 'https://instagram.com/clembs.v',
 	icon: Instagram,
-	activity: 'low',
-	username: '@clembs.v',
 };
 
 export const mastodon: Social = {
@@ -125,8 +121,34 @@ export const mastodon: Social = {
 	name: 'Mastodon',
 	url: 'https://mastodon.social/@clembs',
 	icon: Mastodon,
-	activity: 'low',
-	username: '@clembs@mastodon.social',
+};
+
+export const linkedin: Social = {
+	id: SocialName.LinkedIn,
+	name: 'LinkedIn',
+	url: 'https://www.linkedin.com/in/clembs/',
+	icon: Linkedin,
+};
+
+export const twitter: Social = {
+	id: SocialName.Twitter,
+	name: 'X/Twitter',
+	url: 'https://twitter.com/clembsv',
+	icon: X,
+};
+
+export const threads: Social = {
+	id: SocialName.Threads,
+	name: 'Threads',
+	url: 'https://threads.net/@clembs.v/',
+	icon: Threads,
+};
+
+export const bluesky: Social = {
+	id: SocialName.Bluesky,
+	name: 'Bluesky',
+	url: 'https://bsky.app/profile/clembs.bsky.social',
+	icon: Bluesky,
 };
 
 export const donationLinks = [kofi, boosty, waterAid] satisfies Social[];
@@ -138,13 +160,12 @@ export const socials = [
 	// 	url: 'https://www.fiverr.com/clembs',
 	// 	background: '#1DBF73',
 	// },
-	comments,
 	github,
-	discord,
-	youtube,
-	twitch,
 	instagram,
-	mastodon,
 ] satisfies Social[];
+
+export const chatting = [email, discord, comments] satisfies Social[];
+
+export const microblogging = [mastodon, twitter, linkedin, threads, bluesky] satisfies Social[];
 
 export const streamSocials = [youtube, twitch] satisfies Social[];

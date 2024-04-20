@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Social } from '$lib/data/socials';
-	import IconChevronRight from '@tabler/icons-svelte/dist/svelte/icons/IconChevronRight.svelte';
+	import { IconChevronRight } from '@tabler/icons-svelte';
 	import IconExternalLink from '$lib/icons/IconExternalLink.svelte';
 
 	export let socials: Social[];
@@ -24,13 +24,13 @@
 								{#if social.description}
 									{social.description}
 								{/if}
-								{#if social.username}
+								<!-- {#if social.username}
 									{social.username}
-								{/if}
-								{#if social.activity && social.username}
+								{/if} -->
+								<!-- {#if social.activity && social.username}
 									•
-								{/if}
-								{#if social.activity}
+								{/if} -->
+								<!-- {#if social.activity}
 									<span class="activity {social.activity}">
 										{#if social.activity === 'low'}
 											Not very active
@@ -40,7 +40,7 @@
 											Very active
 										{/if}
 									</span>
-								{/if}
+								{/if} -->
 							</span>
 						{/if}
 					</div>
@@ -118,16 +118,16 @@
 						flex-direction: column;
 						flex: 1;
 
-						.activity {
-							font-weight: 500;
+						// .activity {
+						// 	font-weight: 500;
 
-							&.medium {
-								color: #b67014;
-							}
-							&.high {
-								color: var(--color-error);
-							}
-						}
+						// 	&.medium {
+						// 		color: #b67014;
+						// 	}
+						// 	&.high {
+						// 		color: var(--color-error);
+						// 	}
+						// }
 					}
 				}
 
