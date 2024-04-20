@@ -64,9 +64,5 @@
 			margin-bottom: 0.25rem;
 			text-wrap: balance;
 		}
-		.subtext {
-			color: var(--color-on-surface);
-			font-size: 0.9rem;
-		}
 	}
 </style>
