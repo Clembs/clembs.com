@@ -4,7 +4,7 @@
 	<div class="subgrid">
 		<section class="panel small green">40 player slots</section>
 
-		<section class="panel small brown">Java Edition 1.21, cracks allowed</section>
+		<section class="panel small brown">Java Edition 1.20.6, cracks allowed</section>
 
 		<section class="panel small red">Hard mode, plugins enabled</section>
 	</div>
