@@ -1,119 +1,73 @@
 <script lang="ts">
-	import Tabs from '$lib/components/Tabs.svelte';
-	import { onMount } from 'svelte';
-	import RegistrationCard from './RegistrationCard.svelte';
-	import SectionDonations from './SectionDonations.svelte';
 	import SectionGuide from './SectionGuide.svelte';
 	import SectionRules from './SectionRules.svelte';
 	import MetaTags from '$lib/components/MetaTags.svelte';
-	import SectionConfiguration from './SectionConfiguration.svelte';
-
-	const sections = ['Support', 'Guide', 'Rules', 'Configuration'] as const;
-	let sectionElements: NodeListOf<Element>;
-	let activeTab = '0';
-
-	function inView(element: any) {
-		var top = element.offsetTop - 25;
-		var height = element.offsetHeight;
-
-		while (element.offsetParent) {
-			element = element.offsetParent;
-			top += element.offsetTop - 25;
-		}
-
-		return top < window.scrollY + window.innerHeight && top + height > window.scrollY;
-	}
-
-	function update() {
-		let next = false;
-
-		sectionElements.forEach((section) => {
-			if (inView(section) && !next) {
-				activeTab = section.id.replace('section-', '');
-				next = true;
-			}
-			// else {
-			// }
-		});
-	}
-
-	onMount(() => {
-		sectionElements = document.querySelectorAll('section');
-		update();
-	});
+	import Button from '$lib/components/Button.svelte';
+	import InfoSection from './InfoSection.svelte';
+	import AboutSection from './AboutSection.svelte';
 </script>
 
-<svelte:window on:scroll={update} />
-
 <MetaTags
-	pageName="About Clembs Minecraft"
+	pageName="Habile SMP"
 	image="/assets/smp/Clembs SMP.png"
-	description="Clembs Minecraft (formerly Clembs SMP) is a Minecraft server where players from around the
-world come together to build, fight, survive and create!"
+	description="The Habile SMP (Survival Multi Player) is a multiplayer Minecraft server where players from around the world come together to build, fight, survive and create!"
 />
 
 <main>
 	<header>
-		<img src="/assets/smp/smp-wordmark.webp" alt="Clembs SMP" />
+		<img id="hero-image" src="/assets/smp/habile-smp-banner.png" alt="Habile SMP" />
 
-		<p>
-			Clembs Minecraft (formerly Clembs SMP) is a Minecraft server where players from around the
-			world come together to build, fight, survive and create!
-		</p>
-
-		<RegistrationCard />
+		<div id="waitlist-bar">
+			Registrations open June 26
+			<Button size="xl" href="/discord">Join the Discord</Button>
+		</div>
 	</header>
 
-	<div class="tabs-wrapper">
-		<Tabs
-			bind:activeTab
-			entries={sections.map((section, index) => ({
-				label: section,
-				href: `#section-${index}`,
-				id: index.toString(),
-			}))}
-		/>
-	</div>
+	<InfoSection />
 
-	<SectionDonations />
+	<AboutSection />
 
 	<SectionGuide />
 
 	<SectionRules />
-
-	<SectionConfiguration />
 </main>
 
 <style lang="scss">
-	header {
+	main {
+		margin: 2.5rem 1.25rem;
 		display: flex;
 		flex-direction: column;
-		align-items: center;
-		margin: 2.5rem 1.25rem;
-		text-align: center;
 		gap: 1rem;
-
-		img {
-			height: 10rem;
-		}
-
-		p {
-			max-width: 70ch;
-		}
 	}
 
-	.tabs-wrapper {
-		position: sticky;
-		background-color: var(--color-background);
-		top: 0;
-		left: 0;
-		padding: 0.5rem;
-		border-bottom: 1px solid var(--color-on-background);
-		z-index: 9;
+	#hero-image {
+		border-radius: 1rem;
+		border: 1px solid var(--color-outline);
+		margin-bottom: 1rem;
 	}
 
-	:global(section) {
-		margin: 2.5rem 1.25rem;
-		scroll-margin-top: 5rem;
+	#waitlist-bar {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		background-color: var(--color-primary);
+		color: var(--color-on-primary);
+		border: 1px solid var(--color-on-background);
+		border-radius: 99rem;
+		padding: 1rem;
+		padding-left: 1.75rem;
+		font-size: clamp(1.5rem, 2vw, 2rem);
+		font-weight: 500;
+		width: 100%;
+		gap: 1rem;
+		flex-wrap: wrap;
+
+		@media (max-width: 650px) {
+			border-radius: 3rem;
+			flex-direction: column;
+			padding-left: 1rem;
+			align-items: center;
+			text-align: center;
+		}
 	}
 </style>
