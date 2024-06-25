@@ -9,7 +9,7 @@
 
 <MetaTags
 	pageName="Habile SMP"
-	image="/assets/smp/Clembs SMP.png"
+	image="/assets/smp/habile-smp-banner.png"
 	description="The Habile SMP (Survival Multi Player) is a multiplayer Minecraft server where players from around the world come together to build, fight, survive and create!"
 />
 
