@@ -120,6 +120,11 @@
 				width: auto;
 			}
 		}
+		&.size-xl {
+			font-size: 1.5rem;
+			padding: 0.75rem 1.5rem;
+			height: 3.5rem;
+		}
 
 		&:hover,
 		&:focus {
