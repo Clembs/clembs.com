@@ -50,7 +50,6 @@
 			scale 200ms ease-out,
 			opacity 200ms ease-out;
 		padding: 0;
-		position: relative;
 		overflow: visible;
 
 		.close-button {
