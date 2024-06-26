@@ -28,7 +28,7 @@
 			{@html strings.gettingStarted.step3.replace('smp.clembs.com', '<code>smp.clembs.com</code>')}
 		</li>
 		<li>
-			{strings.gettingStarted.step4}/li>
+			{strings.gettingStarted.step4}
 		</li>
 		<li>
 			{@html strings.gettingStarted.step5}
