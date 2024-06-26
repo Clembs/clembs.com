@@ -1,19 +1,5 @@
 import { error } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
 import { languages } from './locales';
-
-export const load: PageServerLoad = ({ cookies }) => {
-	let language = cookies.get('language');
-
-	if (!language) {
-		language = 'en';
-	}
-
-	return {
-		themeGradient: { from: '#987fff', to: '#987fff' },
-		language,
-	};
-};
 
 export const actions = {
 	async default({ request, cookies }) {
