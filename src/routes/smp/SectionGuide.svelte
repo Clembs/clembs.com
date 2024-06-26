@@ -1,38 +1,37 @@
+<script lang="ts">
+	import type { LanguageSchema } from './locales';
+
+	export let strings: LanguageSchema;
+</script>
+
 <section id="getting-started">
-	<h2>Getting started</h2>
+	<h2>{strings.gettingStarted.title}</h2>
 
 	<ol>
 		<li>
-			Install Minecraft on version 1.20.6 (not the latest!).
-
+			{strings.gettingStarted.step1}
 			<blockquote>
-				<h4>Pro tip!</h4>
+				<h4>{strings.gettingStarted.protip.title}</h4>
 
 				<p>
-					For best gameplay, install a
-					<a
-						href="https://modrinth.com/modpack/fabulously-optimized/versions#all-versions"
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						performance modpack
-					</a>
-					if you're using a graphics card or
-					<a href="https://optifine.net/downloads" target="_blank" rel="noopener noreferrer">
-						OptiFine
-					</a> otherwise.
+					{@html strings.gettingStarted.protip.description(
+						'https://modrinth.com/modpack/fabulously-optimized/versions#all-versions',
+						'https://optifine.net/downloads'
+					)}
 				</p>
 			</blockquote>
 		</li>
-		<li>When the game launches, select "Multiplayer".</li>
 		<li>
-			Click "Add Server" and enter
-			<code>smp.clembs.com</code> in the address field.
+			{strings.gettingStarted.step2}
 		</li>
-		<li>Click "Done", then double-click the newly added server.</li>
 		<li>
-			You'll be prompted to create a password, to prevent data theft.<br />
-			Once that's made, log in and you're in!
+			{@html strings.gettingStarted.step3.replace('smp.clembs.com', '<code>smp.clembs.com</code>')}
+		</li>
+		<li>
+			{strings.gettingStarted.step4}/li>
+		</li>
+		<li>
+			{@html strings.gettingStarted.step5}
 		</li>
 	</ol>
 </section>

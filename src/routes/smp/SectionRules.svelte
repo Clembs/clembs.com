@@ -1,15 +1,21 @@
+<script lang="ts">
+	import type { LanguageSchema } from './locales';
+
+	export let strings: LanguageSchema;
+</script>
+
 <section id="rules">
-	<h2>Rules</h2>
+	<h2>{strings.rules.title}</h2>
 
 	<ol>
-		<li>Don't use cheats, hacks, abuse exploits, or create lag on purpose.</li>
-		<li>Only use one Minecraft profile to log into the server.</li>
-		<li>Don't attempt to cyberattack the server (DDoS, etc.)</li>
-		<li>Use common sense, don't be harsh, don't use slurs, bigotry, etc.</li>
-		<li>The public chat should only be in <b>english</b> (translators are OK).</li>
+		<li>{strings.rules.cheats}</li>
+		<li>{strings.rules.oneProfile}</li>
+		<li>{strings.rules.attacks}</li>
+		<li>{strings.rules.commonSense}</li>
+		<li>{@html strings.rules.englishOnly}</li>
 	</ol>
 
-	<p>Everything else, including griefing, spawn-killing, etc. is <b>authorized</b>.</p>
+	<p>{@html strings.rules.everythingElse}</p>
 </section>
 
 <style lang="scss">

@@ -1,15 +1,18 @@
-<script>
+<script lang="ts">
 	import Button from '$lib/components/Button.svelte';
 	import Modal from '$lib/components/Modal.svelte';
+	import type { LanguageSchema } from './locales';
+
+	export let strings: LanguageSchema;
 
 	let detailsModalOpen = false;
 </script>
 
 <Modal bind:showModal={detailsModalOpen}>
 	<div class="details">
-		<h2>Technical details</h2>
+		<h2>{strings.about.technicals.title}</h2>
 
-		<h3>Server configuration</h3>
+		<h3>{strings.about.technicals.config}</h3>
 
 		<ul>
 			<li>
@@ -20,7 +23,7 @@
 			</li>
 		</ul>
 
-		<h3>World settings</h3>
+		<h3>{strings.about.technicals.world}</h3>
 
 		<ul>
 			<li>Difficulty: Hard</li>
@@ -28,39 +31,33 @@
 			<li>Whitelist size: 40 players</li>
 		</ul>
 
-		<h3>Datapacks & Plugins</h3>
+		<h3>{strings.about.technicals.plugins} & {strings.about.technicals.datapacks}</h3>
 
-		<p>Coming soon...</p>
+		<p>{strings.about.technicals.soon}</p>
 	</div>
 </Modal>
 
 <section id="about-smp">
-	<h2>About Habile SMP</h2>
+	<h2>{strings.about.title}</h2>
+
+	<p>{strings.about.overview}</p>
 
 	<p>
-		The Habile SMP (Survival Multi Player) is a multiplayer Minecraft server where players from
-		around the world come together to build, fight, survive and create!
+		{@html strings.about.registration.replace(
+			'Clembs',
+			'<a href="/" target="_blank" rel="noopener noreferrer">Clembs</a>'
+		)}
 	</p>
 
 	<p>
-		It is provided free of charge by <a href="/"> Clembs</a>. Anyone is free to register and to play
-		however they want, as no specific goals are given.
+		{strings.about.livestreaming}
 	</p>
 
 	<p>
-		Livestreaming (with the #habile-smp hashtag), forming teams and engaging on the <a
-			href="/discord"
-		>
-			Discord server
-		</a> is heavily encouraged.
+		{strings.about.plugins}
 	</p>
 
-	<p>
-		Several plugins, behavior and terrain generation datapacks are used to enhance the vanilla
-		Minecraft experience.
-	</p>
-
-	<Button on:click={() => (detailsModalOpen = true)}>View details</Button>
+	<Button on:click={() => (detailsModalOpen = true)}>{strings.about.detailsCta}</Button>
 </section>
 
 <style lang="scss">

@@ -1,12 +1,18 @@
+<script lang="ts">
+	import type { LanguageSchema } from './locales';
+
+	export let strings: LanguageSchema;
+</script>
+
 <section id="info-grid">
-	<section class="panel large">Open June 30<br /> — September 30</section>
+	<section class="panel large">{@html strings.info.dates}</section>
 
 	<div class="subgrid">
-		<section class="panel small green">40 player slots</section>
+		<section class="panel small green">{strings.info.slots}</section>
 
-		<section class="panel small brown">Java Edition 1.20.6, cracks allowed</section>
+		<section class="panel small brown">{strings.info.version}</section>
 
-		<section class="panel small red">Hard mode, plugins enabled</section>
+		<section class="panel small red">{strings.info.mode}</section>
 	</div>
 </section>
 
