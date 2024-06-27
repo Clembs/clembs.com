@@ -14,17 +14,36 @@
 </svelte:head>
 
 <main>
-	<form use:enhance bind:this={form} action="/smp?" method="post" id="language-selection">
-		{strings.language.button}
-		{#if data.language !== 'en'}
-			/ Language
+	<div id="head-bar">
+		{#if data.player}
+			<div class="username">
+				{#if data.player.uuid}
+					<img src="https://crafatar.com/avatars/{data.player.uuid}?size=32" alt="Player avatar" />
+				{:else}
+					<img
+						width={32}
+						height={32}
+						src="https://m.clembs.com/placeholder-image.png"
+						alt="Player avatar"
+					/>
+				{/if}
+				<span>{data.player.username}</span>
+			</div>
+		{:else}
+			<a href="/smp/register">{strings.registerSignIn}</a>
 		{/if}
-		<select name="language" bind:value={data.language} on:change={() => form.requestSubmit()}>
-			<option selected={data.language === 'en'} value="en">{languages.en.language.name}</option>
-			<option selected={data.language === 'fr'} value="fr">French</option>
-			<option selected={data.language === 'ru'} value="ru">{languages.ru.language.name}</option>
-		</select>
-	</form>
+		<form use:enhance bind:this={form} action="/smp?" method="post" id="language-selection">
+			{strings.language.button}
+			{#if data.language !== 'en'}
+				/ Language
+			{/if}
+			<select name="language" bind:value={data.language} on:change={() => form.requestSubmit()}>
+				<option selected={data.language === 'en'} value="en">{languages.en.language.name}</option>
+				<option selected={data.language === 'fr'} value="fr">French</option>
+				<option selected={data.language === 'ru'} value="ru">{languages.ru.language.name}</option>
+			</select>
+		</form>
+	</div>
 
 	<slot />
 </main>
@@ -38,9 +57,14 @@
 		font-family: 'General Sans', Inter, var(--font-stack);
 	}
 
-	#language-selection {
+	#head-bar {
 		display: flex;
-		justify-content: flex-end;
-		gap: 0.5rem;
+		justify-content: space-between;
+
+		.username {
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+		}
 	}
 </style>
