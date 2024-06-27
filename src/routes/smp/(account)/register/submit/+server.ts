@@ -18,9 +18,7 @@ export const POST: RequestHandler = async ({ request, fetch, cookies }) => {
 		if (uuid.length !== 32) {
 			throw error(400, 'No UUID provided');
 		}
-		const validUnameReq = await fetch(
-			`/smp/register/player/check?username=${username}&withUuid=true`
-		);
+		const validUnameReq = await fetch(`/smp/register/check?username=${username}&withUuid=true`);
 		if (!validUnameReq.ok) {
 			throw error(400, 'Invalid username');
 		}

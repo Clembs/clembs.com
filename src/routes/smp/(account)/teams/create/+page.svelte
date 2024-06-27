@@ -4,8 +4,8 @@
 	import InfoBox from '$lib/components/InfoBox.svelte';
 	import Switch from '$lib/components/Switch.svelte';
 	import TextInput from '$lib/components/TextInput.svelte';
-	import { languages } from '../../locales';
-	import { colors } from '../_helpers';
+	import { languages } from '../../../locales';
+	import { colors } from '../../_helpers';
 
 	export let data;
 	$: strings = languages[data.language];

@@ -61,17 +61,6 @@ export default {
 	register: {
 		back: 'Back',
 		nothing: 'Nothing left to register! Wait until June 30 for the SMP to open.',
-		what: {
-			title: 'What are you registering?',
-			myself: {
-				label: 'Myself',
-				description: 'Register on the SMP members list.',
-			},
-			team: {
-				label: 'A team',
-				description: 'Register your team on the SMP. You must have registered yourself first.',
-			},
-		},
 		player: {
 			type: {
 				title: 'What type of account will you use?',
@@ -107,7 +96,7 @@ export default {
 			},
 		},
 		team: {
-			title: 'Register your team',
+			title: 'Create a team',
 			description:
 				'Teams can have up to 5 players (for now). Set up a private party with a unique invite code, or make a public one for anyone to join.',
 			disclaimer: 'You can not change any of these settings later!',
@@ -120,7 +109,28 @@ export default {
 				inviteCodeInputLabel: 'Invite code',
 				inviteCodePlaceholder: '6 numbers',
 			},
-			submitButton: 'Register team',
+			submitButton: 'Create a team',
+		},
+	},
+	teams: {
+		title: 'Habile SMP Teams',
+		description:
+			'Here are all of the teams participating in the Habile SMP. Join one or create your own! Locked teams require an invite code.',
+		joinTeam: 'Join a team',
+		members: 'members',
+		full: 'Full',
+		teamLeader: 'Created by {leader}',
+		modalJoin: {
+			title: 'Join team {name}?',
+			locked: {
+				description: 'This team is invite-only. Please enter the invite code to join it.',
+				inputLabel: 'Invite code',
+				joinButton: 'Join team',
+			},
+		},
+		modalSuccess: {
+			title: 'Welcome to team {name}!',
+			description: 'You are now part of the team. Good luck out there!',
 		},
 	},
 };

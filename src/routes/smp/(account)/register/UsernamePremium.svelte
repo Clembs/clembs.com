@@ -19,7 +19,7 @@
 		if (username.trim().length < 3) return;
 
 		timeout = setTimeout(async () => {
-			const req = await fetch(`/smp/register/player/check?username=${username}&withUuid=true`);
+			const req = await fetch(`/smp/register/check?username=${username}&withUuid=true`);
 
 			if (!req.ok) {
 				error = (await req.json()).message;

@@ -2,7 +2,7 @@
 	export let data;
 </script>
 
-<h2>Yippee!</h2>
+<h2>Team created!</h2>
 
 <p>Your team has been created. I'll let you know when your teammates can join teams!</p>
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
+	import { tweened } from 'svelte/motion';
 	import { languages } from '../../locales';
 	import AccountType from './AccountType.svelte';
 	import UsernameCracked from './UsernameCracked.svelte';
@@ -10,7 +10,9 @@
 
 	let steps = ['type', 'username'] as const;
 	let currentStep: (typeof steps)[number] = 'type';
-	$: progress = steps.indexOf(currentStep);
+	let progress = tweened(steps.indexOf(currentStep), { duration: 300 });
+
+	$: progress.set(steps.indexOf(currentStep));
 
 	let userData: Partial<{
 		type: 'premium' | 'cracked';
@@ -18,11 +20,11 @@
 		uuid: string;
 	}> = {};
 
-	const previousStep = () => (currentStep = steps[progress - 1]);
-	const nextStep = () => (currentStep = steps[progress + 1]);
+	const previousStep = () => (currentStep = steps[$progress - 1]);
+	const nextStep = () => (currentStep = steps[$progress + 1]);
 
 	async function createPlayer() {
-		const req = await fetch('/smp/register/player/submit', {
+		const req = await fetch('/smp/register/submit', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -31,14 +33,14 @@
 		});
 
 		if (req.ok) {
-			window.location.href = '/smp/register/player/success';
+			window.location.href = '/smp/register/success';
 		}
 	}
 </script>
 
 <div>
-	Steps {progress + 1} / {steps.length}
-	<progress value={progress / steps.length}></progress>
+	{Math.round($progress) + 1}/{steps.length}
+	<progress value={$progress + 1 / steps.length}></progress>
 
 	{#if currentStep === 'type'}
 		<AccountType

@@ -19,6 +19,6 @@
 
 <!-- <InfoBox type="note">Joining teams is coming soon!!</InfoBox> -->
 
-<Button href="/smp/register/team">
+<Button href="/smp/teams/create">
 	{strings.register.player.success.registerTeam}
 </Button>

@@ -1,5 +1,5 @@
 import type { LayoutServerLoad } from './$types';
-import { fetchMinecraftPlayer } from './register/_server-helpers';
+import { fetchMinecraftPlayer } from './(account)/_server-helpers';
 
 export const load: LayoutServerLoad = async ({ cookies }) => {
 	const language = cookies.get('language') || 'en';

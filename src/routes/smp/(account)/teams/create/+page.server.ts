@@ -1,9 +1,10 @@
 import { db } from '$lib/db';
 import { error, fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import { fetchMinecraftPlayer } from '../_server-helpers';
+import { fetchMinecraftPlayer } from '../../_server-helpers';
 import { minecraftPlayers, minecraftTeams } from '$lib/db/schema';
-import { colors } from '../_helpers';
+import { colors } from '../../_helpers';
+import { eq } from 'drizzle-orm';
 
 export const load: PageServerLoad = async ({ parent }) => {
 	const teams = await db.query.minecraftTeams.findMany();
@@ -62,10 +63,13 @@ export const actions = {
 			})
 			.returning();
 
-		await db.update(minecraftPlayers).set({
-			teamId: team.id,
-		});
+		await db
+			.update(minecraftPlayers)
+			.set({
+				teamId: team.id,
+			})
+			.where(eq(minecraftPlayers.username, player.username));
 
-		throw redirect(303, `/smp/register/team/success/${team.id}`);
+		throw redirect(303, `/smp/teams/create/success?teamId=${team.id}`);
 	},
 };
