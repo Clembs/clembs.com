@@ -48,6 +48,9 @@ export const actions = {
 
 		const team = await db.query.minecraftTeams.findFirst({
 			where: ({ id }, { eq }) => eq(id, teamId),
+			with: {
+				members: true,
+			},
 		});
 
 		if (!team) return fail(404, { message: 'Not found' });
@@ -62,6 +65,10 @@ export const actions = {
 			if (team.passcode !== passcode) {
 				return fail(400, { message: 'Invalid passcode' });
 			}
+		}
+
+		if (team.members.length >= 5) {
+			return fail(400, { message: 'This team is full' });
 		}
 
 		await db

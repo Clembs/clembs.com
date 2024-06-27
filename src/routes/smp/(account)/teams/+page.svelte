@@ -95,6 +95,7 @@
 				{#each data.teams as team}
 					<li>
 						<button
+							disabled={team.members.length >= 5}
 							class="team"
 							on:click={() => {
 								currentTeam = team;
@@ -192,6 +193,11 @@
 			border-radius: 1rem;
 			padding: 0.5rem;
 			border: 1px solid var(--color-outline);
+
+			&:disabled {
+				opacity: 0.5;
+				cursor: not-allowed;
+			}
 
 			&:is(button):hover {
 				background-color: var(--color-surface);
