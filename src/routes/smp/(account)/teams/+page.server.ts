@@ -9,7 +9,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
 	const { player } = await fetchMinecraftPlayer(cookies);
 
 	if (!player) {
-		throw redirect(303, '/smp/register');
+		redirect(303, '/smp/register');
 	}
 
 	const teams = await db.query.minecraftTeams.findMany({
@@ -35,7 +35,7 @@ export const actions = {
 	async default({ request, cookies }) {
 		const { player } = await fetchMinecraftPlayer(cookies);
 		if (!player) {
-			throw redirect(303, '/smp/register');
+			redirect(303, '/smp/register');
 		}
 
 		if (player.teamId) {

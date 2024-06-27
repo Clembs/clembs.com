@@ -7,12 +7,12 @@ export async function GET({ params, url }) {
 	const categoryId = params.article.split('/')[0];
 	const postId = params.article.split('/').slice(1).join('/');
 
-	if (!categoryId || !postId) throw error(404);
+	if (!categoryId || !postId) error(404);
 
 	const category = categories.find((c) => c.id === categoryId);
 	const post = allPosts.find((p) => p.id === postId && p.categoryId === categoryId);
 
-	if (!category || !post) throw error(404);
+	if (!category || !post) error(404);
 
 	return json({
 		type: 'rich',

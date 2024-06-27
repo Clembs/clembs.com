@@ -10,7 +10,7 @@ export const load: PageServerLoad = async ({ parent }) => {
 	const teams = await db.query.minecraftTeams.findMany();
 	const { player } = await parent();
 
-	if (player?.teamId) throw redirect(303, '/smp');
+	if (player?.teamId) redirect(303, '/smp');
 
 	return {
 		navButton: {
@@ -26,7 +26,7 @@ export const actions = {
 		const { player } = await fetchMinecraftPlayer(cookies);
 
 		if (!player) {
-			throw error(401, 'Unauthorized');
+			error(401, 'Unauthorized');
 		}
 
 		const formData = await request.formData();
@@ -70,6 +70,6 @@ export const actions = {
 			})
 			.where(eq(minecraftPlayers.username, player.username));
 
-		throw redirect(303, `/smp/teams/create/success?teamId=${team.id}`);
+		redirect(303, `/smp/teams/create/success?teamId=${team.id}`);
 	},
 };

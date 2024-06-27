@@ -5,7 +5,7 @@ export const load: PageServerLoad = async ({ locals: { getUserData } }) => {
 	const user = await getUserData();
 
 	if (!user) {
-		throw redirect(301, '/settings');
+		redirect(301, '/settings');
 	}
 
 	return {

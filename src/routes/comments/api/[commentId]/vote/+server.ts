@@ -6,13 +6,13 @@ import { and, eq } from 'drizzle-orm';
 
 export const PATCH: RequestHandler = async ({ params, locals: { getUserData }, url }) => {
 	if (!params.commentId) {
-		throw error(404);
+		error(404);
 	}
 
 	const userData = await getUserData();
 
 	if (!userData) {
-		throw error(401);
+		error(401);
 	}
 
 	const commentData = await db.query.comments.findFirst({
@@ -20,13 +20,13 @@ export const PATCH: RequestHandler = async ({ params, locals: { getUserData }, u
 	});
 
 	if (!commentData) {
-		throw error(404);
+		error(404);
 	}
 
 	const voteType = url.searchParams.get('type');
 
 	if (voteType && voteType !== 'UPVOTE' && voteType !== 'DOWNVOTE') {
-		throw error(400, 'Invalid comment vote type.');
+		error(400, 'Invalid comment vote type.');
 	}
 
 	const originalVote = await db.query.userCommentVote.findFirst({

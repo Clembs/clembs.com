@@ -40,7 +40,7 @@ import { generateSnowflake } from '$lib/helpers/snowflake';
 import { extractInfoFromUA } from '$lib/helpers/extractInfoFromUA';
 
 export const load: PageServerLoad = async ({ locals }) => {
-	throw redirect(303, '/settings');
+	redirect(303, '/settings');
 };
 
 export const actions: Actions = {
@@ -50,7 +50,7 @@ export const actions: Actions = {
 		if (session) {
 			await getUserData();
 
-			throw redirect(303, '/settings');
+			redirect(303, '/settings');
 		}
 
 		const formData = await request.formData();
@@ -89,9 +89,9 @@ export const actions: Actions = {
 				});
 		} catch (e) {
 			console.error(e);
-			throw error(500, {
-				message: 'Failed to create one-time password. Try again later.',
-			});
+			error(500, {
+            				message: 'Failed to create one-time password. Try again later.',
+            			});
 		}
 
 		try {
@@ -126,9 +126,9 @@ export const actions: Actions = {
 			);
 		} catch (e) {
 			console.error(e);
-			throw error(500, {
-				message: 'Failed to send email. Try again later.',
-			});
+			error(500, {
+            				message: 'Failed to send email. Try again later.',
+            			});
 		}
 
 		const user = await db.query.users.findFirst({
@@ -147,7 +147,7 @@ export const actions: Actions = {
 		if (session) {
 			await getUserData();
 
-			throw redirect(303, '/settings');
+			redirect(303, '/settings');
 		}
 
 		const formData = await request.formData();
@@ -221,7 +221,7 @@ export const actions: Actions = {
 			});
 
 			if (!passkeys.length) {
-				throw redirect(303, '/account/create-passkey');
+				redirect(303, '/account/create-passkey');
 			}
 
 			return { success: true };
@@ -407,7 +407,7 @@ export const actions: Actions = {
 
 					return { success: true };
 				} else {
-					throw error(401, { message: 'Invalid registration response.' });
+					error(401, { message: 'Invalid registration response.' });
 				}
 			} catch (e) {
 				console.error(e);
@@ -531,7 +531,7 @@ export const actions: Actions = {
 		const userData = await getUserData();
 		const formData = await request.formData();
 
-		if (!userData) throw redirect(303, '/settings');
+		if (!userData) redirect(303, '/settings');
 		if (!formData)
 			return fail(400, {
 				message: 'Invalid data.',
@@ -560,16 +560,16 @@ export const actions: Actions = {
 
 			return { success: true };
 		} catch (e) {
-			throw error(500, {
-				message: 'Failed to edit passkey.',
-			});
+			error(500, {
+            				message: 'Failed to edit passkey.',
+            			});
 		}
 	},
 	deletePasskey: async ({ request, locals: { getUserData } }) => {
 		const userData = await getUserData();
 		const formData = await request.formData();
 
-		if (!userData) throw redirect(303, '/settings');
+		if (!userData) redirect(303, '/settings');
 		if (!formData)
 			return fail(400, {
 				message: 'Invalid data.',
@@ -589,9 +589,9 @@ export const actions: Actions = {
 
 			return { success: true };
 		} catch (e) {
-			throw error(500, {
-				message: 'Failed to delete passkey.',
-			});
+			error(500, {
+            				message: 'Failed to delete passkey.',
+            			});
 		}
 	},
 };

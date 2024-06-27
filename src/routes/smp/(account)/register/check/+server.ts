@@ -7,7 +7,7 @@ export const GET: RequestHandler = async ({ url, fetch }) => {
 	const withUuid = url.searchParams.get('withUuid');
 
 	if (!username || !username.trim() || username.trim().length < 3) {
-		throw error(400, 'No username provided');
+		error(400, 'No username provided');
 	}
 
 	const existingUser = await db.query.minecraftPlayers.findFirst({
@@ -15,7 +15,7 @@ export const GET: RequestHandler = async ({ url, fetch }) => {
 	});
 
 	if (existingUser) {
-		throw error(400, 'Username already registered');
+		error(400, 'Username already registered');
 	}
 
 	if (!withUuid) {
@@ -25,13 +25,13 @@ export const GET: RequestHandler = async ({ url, fetch }) => {
 	const req = await fetch(`https://api.mojang.com/users/profiles/minecraft/${username}`);
 
 	if (!req.ok) {
-		throw error(400, 'Username not found');
+		error(400, 'Username not found');
 	}
 
 	const data = await req.json();
 
 	if (!data) {
-		throw error(400, 'Username not found');
+		error(400, 'Username not found');
 	}
 
 	return new Response(data.id);

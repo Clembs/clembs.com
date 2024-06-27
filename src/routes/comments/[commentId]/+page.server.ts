@@ -15,7 +15,7 @@ async function vote(
 	const commentData = await db.query.comments.findFirst({
 		where: ({ id }, { eq }) => eq(id, params.commentId),
 	});
-	if (!commentData) throw error(404);
+	if (!commentData) error(404);
 
 	const originalVote = await db.query.userCommentVote.findFirst({
 		where: ({ commentId, userId }, { eq, and }) =>
@@ -69,7 +69,7 @@ export const actions = {
 		const userData = await getUserData();
 
 		if (!userData) {
-			throw error(401);
+			error(401);
 		}
 
 		const commentData = await db.query.comments.findFirst({
@@ -77,11 +77,11 @@ export const actions = {
 		});
 
 		if (!commentData) {
-			throw error(404);
+			error(404);
 		}
 
 		if (userData.id !== commentData.userId && !userData.badges?.includes('CLEMBS')) {
-			throw error(401);
+			error(401);
 		}
 
 		async function deleteCommentsAndChildren(commentId: string) {
@@ -111,11 +111,11 @@ export const actions = {
 		const userData = await getUserData();
 
 		if (!userData) {
-			throw error(401);
+			error(401);
 		}
 
 		if (!userData.badges?.includes('CLEMBS')) {
-			throw error(401);
+			error(401);
 		}
 
 		const commentData = await db.query.comments.findFirst({
@@ -123,7 +123,7 @@ export const actions = {
 		});
 
 		if (!commentData) {
-			throw error(404);
+			error(404);
 		}
 
 		await db

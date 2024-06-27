@@ -10,7 +10,7 @@ export const actions = {
 		console.log(language);
 
 		if (!language || !Object.keys(languages).includes(language)) {
-			throw error(400, 'Invalid language');
+			error(400, 'Invalid language');
 		}
 
 		cookies.set('language', language, { path: '/' });

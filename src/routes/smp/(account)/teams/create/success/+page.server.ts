@@ -8,10 +8,10 @@ export const load: PageServerLoad = async ({ cookies, url }) => {
 	const teamId = url.searchParams.get('teamId');
 
 	if (!player) {
-		throw error(401, 'Unauthorized');
+		error(401, 'Unauthorized');
 	}
 	if (!teamId) {
-		throw error(404, 'Not found');
+		error(404, 'Not found');
 	}
 
 	const team = await db.query.minecraftTeams.findFirst({
@@ -19,7 +19,7 @@ export const load: PageServerLoad = async ({ cookies, url }) => {
 	});
 
 	if (!team) {
-		throw error(404, 'Not found');
+		error(404, 'Not found');
 	}
 
 	return {

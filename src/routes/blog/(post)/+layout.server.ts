@@ -8,13 +8,13 @@ export const load: LayoutServerLoad = async ({ url, setHeaders, depends }) => {
 	const categoryId = url.pathname.split('/').at(2);
 	const postId = url.pathname.split('/').slice(3).join('/');
 
-	if (!categoryId || !postId) throw error(404);
+	if (!categoryId || !postId) error(404);
 
 	const category = categories.find((c) => c.id === categoryId);
-	if (!category) throw error(404);
+	if (!category) error(404);
 
 	const post = allPosts.find((p) => p.id === postId && p.categoryId === categoryId);
-	if (!post) throw error(404);
+	if (!post) error(404);
 
 	const comments = await getComments({
 		projectId: `blog/${post.categoryId}/${post.id}`,

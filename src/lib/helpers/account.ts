@@ -67,8 +67,8 @@ export async function signOut({ locals, cookies }: RequestEvent) {
 	if (session) {
 		await db.delete(sessions).where(eq(sessions.id, session.id));
 
-		cookies.delete('session_id');
+		cookies.delete('session_id', { path: '/' });
 
-		throw redirect(303, '/settings');
+		redirect(303, '/settings');
 	}
 }

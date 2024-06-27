@@ -7,7 +7,7 @@ export const load: LayoutServerLoad = async ({ url, setHeaders, depends }) => {
 	const project = archives.find(({ id }) => id === url.pathname.split('/').at(-1));
 
 	if (!project) {
-		throw error(404);
+		error(404);
 	}
 
 	const comments = await getComments({

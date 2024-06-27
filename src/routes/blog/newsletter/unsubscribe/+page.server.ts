@@ -11,7 +11,7 @@ export async function load({ url }) {
 	const list = url.searchParams.get('list') as Newsletter | null;
 
 	if (!emailRaw || !token || !list) {
-		throw error(400, 'Invalid request');
+		error(400, 'Invalid request');
 	}
 
 	const queryEmail = decodeURIComponent(emailRaw);
@@ -19,7 +19,7 @@ export async function load({ url }) {
 	const category = categories.find((category) => category.id === list);
 
 	if (!category) {
-		throw error(400, 'Invalid list');
+		error(400, 'Invalid list');
 	}
 
 	const newsletter = await db.query.newsletterSubscribers.findFirst({
@@ -28,7 +28,7 @@ export async function load({ url }) {
 	});
 
 	if (!newsletter) {
-		throw error(400, 'Invalid token or email address');
+		error(400, 'Invalid token or email address');
 	}
 
 	const unsubscribeToken = Math.random().toString(36).substring(2, 18);

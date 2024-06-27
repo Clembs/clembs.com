@@ -10,7 +10,7 @@ export const load: PageServerLoad = async ({ locals: { getUserData }, parent }) 
 	const userData = await getUserData();
 
 	if (!userData?.badges?.includes('CLEMBS')) {
-		throw error(403, 'You are not allowed to access this page');
+		error(403, 'You are not allowed to access this page');
 	}
 
 	const streams = await db.query.streams.findMany();
@@ -30,7 +30,7 @@ export const actions: Actions = {
 		const userData = await getUserData();
 
 		if (!userData?.badges?.includes('CLEMBS')) {
-			throw error(403, 'You are not allowed to access this page');
+			error(403, 'You are not allowed to access this page');
 		}
 
 		const formData = await request.formData();
@@ -45,7 +45,7 @@ export const actions: Actions = {
 		const collaboratorUrls = formData.getAll('collaborator:url');
 
 		if (!title || !platforms || !startTime) {
-			throw error(400, 'Missing required fields');
+			error(400, 'Missing required fields');
 		}
 
 		const startedAt = new Date(new Date(startTime).getTime() + 60 * 60 * 1000);
@@ -111,7 +111,7 @@ export const actions: Actions = {
 		const userData = await getUserData();
 
 		if (!userData?.badges?.includes('CLEMBS')) {
-			throw error(403, 'You are not allowed to access this page');
+			error(403, 'You are not allowed to access this page');
 		}
 
 		const formData = await request.formData();

@@ -7,7 +7,7 @@ export async function load({ params }) {
 	const category = categories.find((category) => category.id === categoryId);
 
 	if (!category) {
-		throw error(404, `Category "${categoryId}" not found`);
+		error(404, `Category "${categoryId}" not found`);
 	}
 
 	const posts = allPosts.filter((post) => post.categoryId === categoryId);

@@ -19,7 +19,7 @@ export const actions: Actions = {
 	updateSettings: async ({ request, locals: { getUserData } }) => {
 		const userData = await getUserData();
 
-		if (!userData) throw error(401);
+		if (!userData) error(401);
 
 		const formData = await request.formData();
 
@@ -46,7 +46,7 @@ export const actions: Actions = {
 		const userData = await getUserData();
 		const formData = await request.formData();
 
-		if (!userData) throw error(401);
+		if (!userData) error(401);
 		if (!formData) return fail(400);
 
 		// checkboxes

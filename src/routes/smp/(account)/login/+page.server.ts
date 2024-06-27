@@ -7,7 +7,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
 	const { player } = await fetchMinecraftPlayer(cookies);
 
 	if (player) {
-		throw redirect(303, '/smp');
+		redirect(303, '/smp');
 	}
 
 	return {
@@ -23,7 +23,7 @@ export const actions = {
 		const { player } = await fetchMinecraftPlayer(cookies);
 
 		if (player) {
-			throw redirect(303, '/smp');
+			redirect(303, '/smp');
 		}
 
 		const formData = await request.formData();
@@ -47,6 +47,6 @@ export const actions = {
 			path: '/smp',
 		});
 
-		throw redirect(303, '/smp/teams');
+		redirect(303, '/smp/teams');
 	},
 };
