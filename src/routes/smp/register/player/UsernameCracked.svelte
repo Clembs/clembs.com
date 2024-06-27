@@ -15,6 +15,7 @@
 	const dispatch = createEventDispatcher();
 
 	async function fetchProfile() {
+		error = '';
 		if (username.trim().length < 3) return;
 
 		timeout = setTimeout(async () => {
