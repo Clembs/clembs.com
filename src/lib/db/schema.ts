@@ -120,7 +120,7 @@ export const minecraftPlayers = pgTable('minecraft_players', {
 		enum: ['premium', 'cracked'],
 	}).notNull(),
 	uuid: text('uuid'),
-	teamId: text('team_id').references(() => minecraftTeams.id),
+	teamId: text('team_id'),
 	password: text('password').notNull(),
 });
 
@@ -235,7 +235,7 @@ export const userCommentVoteRelations = relations(userCommentVote, ({ one }) => 
 	}),
 }));
 
-export const minecraftPlayersRelations = relations(minecraftPlayers, ({ one, many }) => ({
+export const minecraftPlayersRelations = relations(minecraftPlayers, ({ one }) => ({
 	team: one(minecraftTeams, {
 		fields: [minecraftPlayers.teamId],
 		references: [minecraftTeams.id],
@@ -247,7 +247,5 @@ export const minecraftTeamsRelations = relations(minecraftTeams, ({ one, many })
 		fields: [minecraftTeams.leader],
 		references: [minecraftPlayers.username],
 	}),
-	members: many(minecraftPlayers, {
-		relationName: 'members',
-	}),
+	members: many(minecraftPlayers),
 }));
