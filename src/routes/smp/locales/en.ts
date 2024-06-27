@@ -112,6 +112,18 @@ export default {
 			submitButton: 'Create team',
 		},
 	},
+	login: {
+		hasAccount: 'Already have an account?',
+		noAccount: 'Not registered on the SMP?',
+		register: 'Register',
+		logIn: 'Log in',
+		title: 'Log into your Habile SMP account',
+		description:
+			'Not to be confused with your Minecraft account or your clembs.com account (used in Clembs Comments).',
+		forgotPassword: 'Forgot your password? Ask Clembs on Discord for help.',
+		usernameInputLabel: 'Username',
+		passwordInputLabel: 'Password (given to you on registration)',
+	},
 	teams: {
 		title: 'Habile SMP Teams',
 		description:

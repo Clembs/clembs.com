@@ -74,6 +74,10 @@
 	{/if}
 </div>
 
+<p>
+	{strings.login.hasAccount} <a href="/smp/login">{strings.login.logIn}</a>.
+</p>
+
 <style lang="scss">
 	progress {
 		width: 100%;
