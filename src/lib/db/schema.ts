@@ -26,7 +26,7 @@ export const users = pgTable('users', {
 
 export const comments = pgTable('comments', {
 	id: text('id').primaryKey(),
-	content: varchar('content', { length: 420 }).notNull(),
+	content: text('content').notNull(),
 	projectId: text('project_id'),
 	userId: text('user_id'),
 	parentId: text('parent_id'),
@@ -112,6 +112,26 @@ export const newsletterSubscribers = pgTable('newsletter_subscribers', {
 	lists: jsonb('lists').$type<Record<string, SubscriptionStatus>>().notNull(),
 	subscribeToken: text('subscribe_token'),
 	unsubscribeToken: text('unsubscribe_token'),
+});
+
+export const minecraftPlayers = pgTable('minecraft_players', {
+	username: text('username').primaryKey().notNull(),
+	type: text('type', {
+		enum: ['premium', 'cracked'],
+	}).notNull(),
+	uuid: text('uuid'),
+	teamId: text('team_id').references(() => minecraftTeams.id),
+	password: text('password').notNull(),
+});
+
+export const minecraftTeams = pgTable('minecraft_teams', {
+	id: text('id')
+		.default(sql`gen_random_uuid()`)
+		.primaryKey(),
+	name: text('name').notNull().unique(),
+	leader: text('leader').notNull(),
+	color: text('color').notNull().unique(),
+	passcode: text('passcode'),
 });
 
 export const usersRelations = relations(users, ({ many }) => ({
@@ -212,5 +232,22 @@ export const userCommentVoteRelations = relations(userCommentVote, ({ one }) => 
 	comment: one(comments, {
 		fields: [userCommentVote.commentId],
 		references: [comments.id],
+	}),
+}));
+
+export const minecraftPlayersRelations = relations(minecraftPlayers, ({ one, many }) => ({
+	team: one(minecraftTeams, {
+		fields: [minecraftPlayers.teamId],
+		references: [minecraftTeams.id],
+	}),
+}));
+
+export const minecraftTeamsRelations = relations(minecraftTeams, ({ one, many }) => ({
+	leader: one(minecraftPlayers, {
+		fields: [minecraftTeams.leader],
+		references: [minecraftPlayers.username],
+	}),
+	members: many(minecraftPlayers, {
+		relationName: 'members',
 	}),
 }));
