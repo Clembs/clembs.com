@@ -1,11 +1,15 @@
 import type { LanguageSchema } from '.';
+import en from './en';
 
 export default {
+	...en,
 	language: {
 		button: 'Langue',
 		name: 'Français',
 	},
 	registrationsOpen: 'Inscriptions ouvrent le 26 juin',
+	registerNowText: 'Inscrivez-vous et votre équipe pour rejoindre le Habile SMP!',
+	registerNowCta: "S'inscrire (BÊTA)",
 	registrationsCta: 'Rejoindre le Discord',
 	info: {
 		dates: 'Ouvert du 30 juin<br/>au 30 septembre',
@@ -58,5 +62,21 @@ export default {
 		englishOnly: 'Le chat public doit être en <b>anglais uniquement</b> (traducteurs acceptés).',
 		everythingElse:
 			"Tout le reste, comme vandaliser des propriétés, tuer dès l'entrée, etc. est <b>autorisé</b>.",
+	},
+	register: {
+		...en.register,
+		back: 'Retour',
+		what: {
+			title: 'Que souhaitez-vous inscrire ?',
+			myself: {
+				label: 'Moi-même',
+				description: "S'inscrire sur la liste des joueurs du SMP.",
+			},
+			team: {
+				label: 'Une équipe',
+				description:
+					'Inscrire une nouvelle équipe sur le SMP. Vous devez vous être inscrit au préalable.',
+			},
+		},
 	},
 } satisfies LanguageSchema;

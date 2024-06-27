@@ -21,8 +21,8 @@
 	<img id="hero-image" src="/assets/smp/habile-smp-banner.png" alt="Habile SMP" />
 
 	<div id="waitlist-bar">
-		{strings.registrationsOpen}
-		<Button size="xl" href="/discord">{strings.registrationsCta}</Button>
+		{strings.registerNowText}
+		<Button size="xl" href="/discord">{strings.registerNowCta}</Button>
 	</div>
 </header>
 
@@ -49,19 +49,19 @@
 
 	#waitlist-bar {
 		display: flex;
-		justify-content: space-between;
+		flex-direction: column;
 		align-items: center;
 		background-color: var(--color-primary);
 		color: var(--color-on-primary);
 		border: 1px solid var(--color-on-background);
 		border-radius: 99rem;
-		padding: 1rem;
-		padding-left: 1.75rem;
+		padding: 1.5rem 2rem;
+		text-align: center;
+		text-wrap: balance;
 		font-size: clamp(1.5rem, 2vw, 2rem);
 		font-weight: 500;
 		width: 100%;
 		gap: 1rem;
-		flex-wrap: wrap;
 
 		@media (max-width: 650px) {
 			border-radius: 3rem;

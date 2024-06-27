@@ -5,6 +5,8 @@ export default {
 		name: 'English',
 	},
 	registrationsOpen: 'Registrations open June 26',
+	registerNowText: 'Register yourself and your team to join the Habile SMP!',
+	registerNowCta: 'Register now (BETA)',
 	registrationsCta: 'Join the Discord',
 	info: {
 		dates: 'Open June 30<br/>— September 30',
