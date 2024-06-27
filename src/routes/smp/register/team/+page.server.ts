@@ -1,8 +1,9 @@
 import { db } from '$lib/db';
 import { error, fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import { colors, fetchMinecraftPlayer } from '../_helpers';
+import { fetchMinecraftPlayer } from '../_server-helpers';
 import { minecraftPlayers, minecraftTeams } from '$lib/db/schema';
+import { colors } from '../_helpers';
 
 export const load: PageServerLoad = async ({ parent }) => {
 	const teams = await db.query.minecraftTeams.findMany();

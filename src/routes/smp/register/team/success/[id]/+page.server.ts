@@ -1,6 +1,6 @@
 import { db } from '$lib/db';
 import { error } from '@sveltejs/kit';
-import { fetchMinecraftPlayer } from '../../../_helpers';
+import { fetchMinecraftPlayer } from '../../../_server-helpers';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ cookies, params }) => {
