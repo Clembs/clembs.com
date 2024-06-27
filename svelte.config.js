@@ -1,4 +1,4 @@
-import adapter from 'svelte-adapter-bun';
+import adapter from '@svelte/adapter-vercel';
 import { mdsvex } from 'mdsvex';
 import { getHighlighter } from 'shikiji';
 import { imagetools } from '@zerodevx/svelte-img/vite';
