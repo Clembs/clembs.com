@@ -22,7 +22,7 @@
 
 	<div id="waitlist-bar">
 		{strings.registerNowText}
-		<Button size="xl" href="/discord">{strings.registerNowCta}</Button>
+		<Button size="xl" href="/smp/register">{strings.registerNowCta}</Button>
 	</div>
 </header>
 
