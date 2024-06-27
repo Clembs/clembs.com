@@ -1,8 +1,8 @@
-import adapter from '@sveltejs/adapter-vercel';
+import adapter from 'svelte-adapter-bun';
 import { mdsvex } from 'mdsvex';
 import { getHighlighter } from 'shikiji';
-import preprocess from 'svelte-preprocess';
 import { imagetools } from '@zerodevx/svelte-img/vite';
+import { vitePreprocess } from '@sveltejs/kit/vite';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -12,7 +12,7 @@ const config = {
 			extensions: ['.mdx'],
 			smartypants: true,
 			highlight: {
-				async highlighter(code, lang, meta) {
+				async highlighter(code, lang) {
 					const highlighter = await getHighlighter({
 						langs: [lang || 'plaintext'],
 						themes: ['github-dark-dimmed'],
@@ -22,7 +22,7 @@ const config = {
 				},
 			},
 		}),
-		preprocess(),
+		vitePreprocess(),
 		imagetools(),
 	],
 

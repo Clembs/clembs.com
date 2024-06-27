@@ -1,9 +1,9 @@
 import { sveltekit } from '@sveltejs/kit/vite';
-import type { UserConfig } from 'vite';
+import { defineConfig } from 'vite';
 import { imagetools } from '@zerodevx/svelte-img/vite';
 import entryShakingPlugin from 'vite-plugin-entry-shaking';
 
-const config: UserConfig = {
+export default defineConfig({
 	plugins: [
 		sveltekit(),
 		imagetools({
@@ -16,6 +16,4 @@ const config: UserConfig = {
 			extensions: ['svelte'],
 		}),
 	],
-};
-
-export default config;
+});
