@@ -3,6 +3,7 @@ import en from './en';
 
 export default {
 	...en,
+	registerSignIn: "S'inscrire/Se connecter",
 	language: {
 		button: 'Langue',
 		name: 'Français',
@@ -77,6 +78,57 @@ export default {
 				description:
 					'Inscrire une nouvelle équipe sur le SMP. Vous devez vous être inscrit au préalable.',
 			},
+		},
+		player: {
+			type: {
+				title: 'Sur quel type de compte allez-vous jouer ?',
+				description: "Aucun jugement, c'est juste une info utile pour la suite.",
+				premium: {
+					label: 'Compte premium',
+					description: 'Vous avez acheté une copie légale de Minecraft.',
+				},
+				cracked: {
+					label: 'Compte cracké',
+					description: 'Vous utilisez une copie gratuite de Minecraft.',
+				},
+			},
+			usernameCracked: {
+				title: 'Quel pseudo allez-vous utiliser sur le serveur ?',
+				description:
+					"C'est un pseudo que vous allez devoir garder tout au long de votre aventure sur le SMP.",
+				textInputLabel: 'Pseudo',
+				confirmButton: 'On est bon !',
+			},
+			usernamePremium: {
+				title: 'Quel est votre pseudo Minecraft Java ?',
+				description:
+					"C'est le pseudo que les autres joueurs voient quand vous parlez dans le chat, par exemple, et PAS votre Gamertag Xbox.",
+				textInputLabel: 'Pseudo Minecraft',
+				placeholder: 'ex : Clembs',
+				confirmButton: "C'est moi !",
+			},
+			success: {
+				title: 'Votre compte a été inscrit !',
+				paragraph1: 'Voici un mot de passe au cas où vous auriez besoin de vous reconnecter :',
+				paragraph2: 'Notez-le quelque part en sécurité !',
+				registerTeam: 'Inscrire une équipe',
+			},
+		},
+		team: {
+			title: 'Inscrire votre équipe',
+			description:
+				"Une équipe peut avoir jusqu'à 5 membres (pour le moment). Créez un groupe privé sur invitation, ou un public où tout le monde peut rejoindre.",
+			disclaimer: 'Vous ne pourrez pas modifier ces paramètres plus tard !',
+			nameInputLabel: "Nom de l'équipe",
+			colorInputLabel: "Couleur de l'équipe",
+			privateTeam: {
+				label: "Rendre l'équipe privée",
+				description:
+					"Seuls les joueurs avec le code d'invitation pourront rejoindre. Partagez-le avec parcimonie.",
+				inviteCodeInputLabel: "Code d'invitation",
+				inviteCodePlaceholder: '6 chiffres',
+			},
+			submitButton: "Inscrire l'équipe",
 		},
 	},
 } satisfies LanguageSchema;

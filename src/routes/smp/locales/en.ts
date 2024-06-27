@@ -99,6 +99,12 @@ export default {
 				textInputLabel: 'Username',
 				confirmButton: 'Got it!',
 			},
+			success: {
+				title: 'Your account has been registered!',
+				paragraph1: "Here's your unique password in case you need to log back in:",
+				paragraph2: 'Keep it somewhere safe!',
+				registerTeam: 'Register a team',
+			},
 		},
 		team: {
 			title: 'Register your team',

@@ -1,20 +1,24 @@
 <script lang="ts">
-	import InfoBox from '$lib/components/InfoBox.svelte';
 	import Button from '$lib/components/Button.svelte';
+	import { languages } from '../../../locales';
 
 	export let data;
+
+	$: strings = languages[data.language];
 </script>
 
-<h2>Your account has been registered!</h2>
+<h2>{strings.register.player.success.title}</h2>
 
-<p>Here's your unique password in case you need to log back in:</p>
+<p>{strings.register.player.success.paragraph1}</p>
 
 <pre>
   {data.player?.password}
 </pre>
 
-<p>Save it somewhere safe!</p>
+<p>{strings.register.player.success.paragraph2}</p>
 
-<InfoBox type="note">Joining teams is coming soon!!</InfoBox>
+<!-- <InfoBox type="note">Joining teams is coming soon!!</InfoBox> -->
 
-<Button href="/smp/register/team">Register a team</Button>
+<Button href="/smp/register/team">
+	{strings.register.player.success.registerTeam}
+</Button>
