@@ -120,4 +120,26 @@ export default {
 			submitButton: "Créer l'équipe",
 		},
 	},
+	teams: {
+		title: 'Équipes Habile SMP',
+		description:
+			"Voici toutes les équipes qui participent au Habile SMP. Rejoignez-en une ou créez la vôtre ! Les équipes verrouillées nécessitent un code d'invitation.",
+		full: 'Complet',
+		joinTeam: 'Rejoindre une équipe',
+		members: 'membres',
+		modalJoin: {
+			title: "Rejoindre l'équipe {name} ?",
+			locked: {
+				description:
+					"Cette équipe est privée. Veuillez entrer le code d'invitation pour la rejoindre.",
+				inputLabel: "Code d'invitation",
+				joinButton: "Rejoindre l'équipe",
+			},
+		},
+		modalSuccess: {
+			title: "Bienvenue dans l'équipe {name} !",
+			description: "Vous faites maintenant partie de l'équipe. Bonne chance !",
+		},
+		teamLeader: 'Créée par {leader}',
+	},
 } satisfies LanguageSchema;
