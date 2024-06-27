@@ -8,10 +8,11 @@ export default {
 		button: 'Langue',
 		name: 'Français',
 	},
-	registrationsOpen: 'Inscriptions ouvrent le 26 juin',
 	registerNowText: 'Inscrivez-vous et votre équipe pour rejoindre le Habile SMP!',
 	registerNowCta: "S'inscrire (BÊTA)",
 	registrationsCta: 'Rejoindre le Discord',
+	viewCreateTeamsText: "Rejoignez ou créez une équipe pour jouer avec d'autres (facultatif).",
+	viewCreateTeamsCta: 'Équipes',
 	info: {
 		dates: 'Ouvert du 30 juin<br/>au 30 septembre',
 		slots: '40 joueurs maxi',
@@ -67,18 +68,6 @@ export default {
 	register: {
 		...en.register,
 		back: 'Retour',
-		what: {
-			title: 'Que souhaitez-vous inscrire ?',
-			myself: {
-				label: 'Moi-même',
-				description: "S'inscrire sur la liste des joueurs du SMP.",
-			},
-			team: {
-				label: 'Une équipe',
-				description:
-					'Inscrire une nouvelle équipe sur le SMP. Vous devez vous être inscrit au préalable.',
-			},
-		},
 		player: {
 			type: {
 				title: 'Sur quel type de compte allez-vous jouer ?',
@@ -111,11 +100,11 @@ export default {
 				title: 'Votre compte a été inscrit !',
 				paragraph1: 'Voici un mot de passe au cas où vous auriez besoin de vous reconnecter :',
 				paragraph2: 'Notez-le quelque part en sécurité !',
-				registerTeam: 'Inscrire une équipe',
+				joinCreateTeam: 'Rejoindre ou créer une équipe',
 			},
 		},
 		team: {
-			title: 'Inscrire votre équipe',
+			title: 'Créer une équipe',
 			description:
 				"Une équipe peut avoir jusqu'à 5 membres (pour le moment). Créez un groupe privé sur invitation, ou un public où tout le monde peut rejoindre.",
 			disclaimer: 'Vous ne pourrez pas modifier ces paramètres plus tard !',
@@ -128,7 +117,7 @@ export default {
 				inviteCodeInputLabel: "Code d'invitation",
 				inviteCodePlaceholder: '6 chiffres',
 			},
-			submitButton: "Inscrire l'équipe",
+			submitButton: "Créer l'équipe",
 		},
 	},
 } satisfies LanguageSchema;

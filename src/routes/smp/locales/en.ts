@@ -4,10 +4,11 @@ export default {
 		button: 'Language',
 		name: 'English',
 	},
-	registrationsOpen: 'Registrations open June 26',
-	registerNowText: 'Register yourself and your team to join the Habile SMP!',
-	registerNowCta: 'Register now (BETA)',
 	registrationsCta: 'Join the Discord',
+	registerNowText: 'Register yourself to join the Habile SMP!',
+	registerNowCta: 'Register now (BETA)',
+	viewCreateTeamsText: 'Join or create a team to play with others (optionally).',
+	viewCreateTeamsCta: 'Teams',
 	info: {
 		dates: 'Open June 30<br/>— September 30',
 		slots: '40 player slots',
@@ -60,7 +61,6 @@ export default {
 	},
 	register: {
 		back: 'Back',
-		nothing: 'Nothing left to register! Wait until June 30 for the SMP to open.',
 		player: {
 			type: {
 				title: 'What type of account will you use?',
@@ -92,7 +92,7 @@ export default {
 				title: 'Your account has been registered!',
 				paragraph1: "Here's your unique password in case you need to log back in:",
 				paragraph2: 'Keep it somewhere safe!',
-				registerTeam: 'Register a team',
+				joinCreateTeam: 'Join or create a team',
 			},
 		},
 		team: {
@@ -109,7 +109,7 @@ export default {
 				inviteCodeInputLabel: 'Invite code',
 				inviteCodePlaceholder: '6 numbers',
 			},
-			submitButton: 'Create a team',
+			submitButton: 'Create team',
 		},
 	},
 	teams: {

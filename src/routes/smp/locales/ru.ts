@@ -8,7 +8,6 @@ export default {
 		button: 'Язык',
 		name: 'Русский',
 	},
-	registrationsOpen: 'Регистрация начинается 26 июня',
 	registerNowText: 'Зарегистрируйте себя и свою команду, чтобы присоединиться к Habile SMP',
 	registerNowCta: 'Регистрация открыта (БЕТА)',
 	registrationsCta: 'Присоединится к Discord',
@@ -65,20 +64,8 @@ export default {
 		everythingElse: 'Всё остальное, включая грифинг, спаун-киллинг и т.д.  <b>разрешено</b>.',
 	},
 	register: {
+		...en.register,
 		back: 'Назад',
-		nothing: 'Регистировать нечего! Подождите до 30 июня, когда SMP сервер будет открыт.',
-		what: {
-			title: 'Я регистрирую...',
-			myself: {
-				label: 'Себя',
-				description: 'Зарегистрировать себя в список участников SMP.',
-			},
-			team: {
-				label: 'Команду',
-				description:
-					'Зарегистрировать свою команду в SMP. Необходим зарегистрированный аккаунт участника.',
-			},
-		},
 		player: {
 			type: {
 				title: 'Какой тип аккаунта будете использовать?',
@@ -108,10 +95,10 @@ export default {
 				confirmButton: 'Записал(а)!',
 			},
 			success: {
+				...en.register.player.success,
 				title: 'Ваш аккаунт был зарегистрирован!',
 				paragraph1: 'Вот ваш уникальный пароль на случай, если вам нужно будет войти:',
 				paragraph2: 'Сохраните его в безопасное место!',
-				registerTeam: 'Зарегистрировать команду',
 			},
 		},
 		team: {
@@ -131,5 +118,5 @@ export default {
 			submitButton: 'Зарегистрировать команду',
 		},
 	},
-	credits: 'DankNil, Sovencho & SuperKnuckles',
+	credits: 'DankNil, Sovencho, Nadav & SuperKnuckles',
 } satisfies LanguageSchema;

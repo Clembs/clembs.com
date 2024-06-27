@@ -17,8 +17,6 @@
 
 <p>{strings.register.player.success.paragraph2}</p>
 
-<!-- <InfoBox type="note">Joining teams is coming soon!!</InfoBox> -->
-
-<Button href="/smp/teams/create">
-	{strings.register.player.success.registerTeam}
+<Button href="/smp/teams">
+	{strings.register.player.success.joinCreateTeam}
 </Button>
