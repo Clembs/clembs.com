@@ -20,10 +20,17 @@
 <header>
 	<img id="hero-image" src="/assets/smp/habile-smp-banner.png" alt="Habile SMP" />
 
-	<div id="waitlist-bar">
-		{strings.registerNowText}
-		<Button size="xl" href="/smp/register">{strings.registerNowCta}</Button>
-	</div>
+	{#if !data.player?.teamId}
+		<div id="waitlist-bar">
+			{#if !data.player}
+				{strings.registerNowText}
+				<Button size="xl" href="/smp/register">{strings.registerNowCta}</Button>
+			{:else}
+				{strings.viewCreateTeamsText}
+				<Button size="xl" href="/smp/teams">{strings.viewCreateTeamsCta}</Button>
+			{/if}
+		</div>
+	{/if}
 </header>
 
 <InfoSection {strings} />
