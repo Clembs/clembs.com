@@ -23,7 +23,7 @@
 
 	onMount(() => {
 		previousMessages = (JSON.parse(localStorage.getItem('messages') || '[]') as Message[]).sort(
-			(a, b) => new Date(b.date!).getTime() - new Date(a.date!).getTime()
+			(a, b) => new Date(b.date!).getTime() - new Date(a.date!).getTime(),
 		);
 		loadingMessages = false;
 	});
@@ -81,9 +81,9 @@
 			{#if selectedMessageForContext}
 				Votre message sera accompagné de celui-ci :
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
-				<div transition:blur on:click={() => (selectedMessageForContext = null)}>
+				<button transition:blur on:click={() => (selectedMessageForContext = null)}>
 					<PreviousMessage message={selectedMessageForContext} />
-				</div>
+				</button>
 			{/if}
 			<textarea
 				bind:this={textareaEl}
@@ -136,7 +136,7 @@
 			<div class="messages">
 				{#each previousMessages as message}
 					<!-- svelte-ignore a11y-click-events-have-key-events -->
-					<div
+					<button
 						class="msg"
 						on:click={() => {
 							document.body.scroll({ top: 0, behavior: 'smooth' });
@@ -145,7 +145,7 @@
 						}}
 					>
 						<PreviousMessage {message} />
-					</div>
+					</button>
 				{/each}
 			</div>
 		{/if}

@@ -7,6 +7,8 @@
 	export let showTooltip = false;
 </script>
 
+<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+<!-- svelte-ignore a11y-no-static-element-interactions -->
 <span
 	on:focus={() => (type === 'hover' ? (showTooltip = true) : null)}
 	on:mouseover={() => (type === 'hover' ? (showTooltip = true) : null)}
@@ -19,9 +21,9 @@
 >
 	<slot />
 
-	<!-- type === 'click' &&  -->
 	{#if showTooltip}
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
+		<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 		<span
 			in:fly={{
 				delay: transitionDelay,

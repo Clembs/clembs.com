@@ -1,11 +1,11 @@
-import adapter from '@sveltejs/adapter-vercel';
+import adapter from '@sveltejs/adapter-auto';
 import { mdsvex } from 'mdsvex';
 import { getHighlighter } from 'shikiji';
 import { imagetools } from '@zerodevx/svelte-img/vite';
 import { vitePreprocess } from '@sveltejs/kit/vite';
 
 /** @type {import('@sveltejs/kit').Config} */
-const config = {
+export default {
 	extensions: ['.svelte', '.mdx'],
 	preprocess: [
 		mdsvex({
@@ -31,5 +31,3 @@ const config = {
 		// csrf: { checkOrigin: false },
 	},
 };
-
-export default config;
