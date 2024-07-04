@@ -3,10 +3,11 @@
 	import { IconShieldLockFilled } from '@tabler/icons-svelte';
 	import type { LanguageSchema } from '../../locales';
 	import { colors } from '../_helpers';
+	import Tooltip from '$lib/components/Tooltip.svelte';
+	import { marked } from 'marked';
+	import insane from 'insane';
 
 	export let strings: LanguageSchema;
-
-	export let onClick: (() => void) | undefined = undefined;
 
 	export let team: Omit<typeof minecraftTeams.$inferSelect, 'passcode'> & {
 		passcode: string | undefined | null;
@@ -15,65 +16,96 @@
 	};
 </script>
 
-<svelte:element
-	this={onClick ? 'button' : 'div'}
-	disabled={team.members.length >= 5}
+<button
+	on:click
+	disabled={team.members.length >= 7}
 	class="team"
-	role="button"
-	tabindex={onClick ? 0 : undefined}
-	on:click={() => onClick?.()}
+	style:--color={colors.find(({ name }) => name === team.color)?.hex}
 >
-	<!-- <header> -->
-	<div class="icon" style:--color={colors.find(({ name }) => name === team.color)?.hex}>
-		{#if team.passcode}
-			<div class="locked">
-				<IconShieldLockFilled />
-			</div>
-		{/if}
-	</div>
-	<div class="text">
-		<h4>
-			{team.name}
-		</h4>
-		<span class="subtext">
-			{team.members.length}/5 {strings.teams.members}
-			{#if team.members.length >= 5}
-				• {strings.teams.full}
+	<div class="left-stuff" class:no-description={!team.description}>
+		<div class="icon">
+			{#if team.passcode}
+				<div class="locked">
+					<IconShieldLockFilled />
+				</div>
 			{/if}
-		</span>
+		</div>
+		<div class="text">
+			<h4>
+				{team.name}
+			</h4>
+			{#if team.description}
+				<p>{@html insane(marked(team.description))}</p>
+			{/if}
+		</div>
+	</div>
+	<div class="right-stuff">
 		<ul class="members">
 			{#each team.members.sort( (a, b) => (a.uuid === team.leader.uuid ? -1 : a.username.localeCompare(b.username)), ) as member}
-				<li class:leader={member.uuid === team.leader.uuid}>
-					<img
-						src={member.uuid
-							? `https://crafatar.com/avatars/${member.uuid}?size=24&overlay`
-							: 'https://m.clembs.com/placeholder-image.png'}
-						alt={member.username}
-					/>
-					<span class="username">
-						{member.username}
-					</span>
+				<li class:leader={member.username === team.leader.username}>
+					<Tooltip>
+						<img
+							src={member.uuid
+								? `https://crafatar.com/avatars/${member.uuid}?size=24&overlay`
+								: 'https://m.clembs.com/placeholder-image.png'}
+							alt={member.username}
+						/>
+						<span slot="tooltip-content">
+							{member.username}
+							{#if member.uuid === team.leader.uuid}
+								({strings.teams.leader})
+							{/if}
+						</span>
+					</Tooltip>
 				</li>
 			{/each}
 		</ul>
+		<span class="subtext">
+			{team.members.length}/7 {strings.teams.members}
+			{#if team.members.length >= 7}
+				• {strings.teams.full}
+			{/if}
+		</span>
 	</div>
-	<!-- </header> -->
-</svelte:element>
+</button>
 
 <style lang="scss">
 	.team {
+		.left-stuff {
+			display: flex;
+			gap: 1rem;
+
+			&.no-description {
+				align-items: center;
+			}
+		}
+
+		.right-stuff {
+			display: flex;
+			flex-direction: column;
+			align-items: flex-end;
+		}
+
 		display: flex;
-		gap: 1rem;
+		justify-content: space-between;
+		// align-items: center;
 		// flex-direction: column;
 		text-align: left;
 		width: 100%;
-		border-radius: 1rem;
 		padding: 0.5rem;
 		border: 1px solid var(--color-outline);
 
-		// header {
-		// 	align-items: center;
-		// }
+		&:first-child {
+			border-radius: 1rem 1rem 0 0;
+		}
+
+		&:last-child {
+			border-radius: 0 0 1rem 1rem;
+		}
+
+		&:first-child:last-child {
+			border-radius: 1rem;
+		}
 
 		&:disabled {
 			opacity: 0.5;
@@ -88,7 +120,7 @@
 			font-size: 1.125rem;
 		}
 
-		&:is(button):hover {
+		&:not(:disabled):hover {
 			background-color: var(--color-surface);
 		}
 
@@ -111,27 +143,36 @@
 			list-style: none;
 			margin: 0;
 			padding: 0;
-			margin-top: 1rem;
-			margin-bottom: 0.5rem;
 			display: flex;
-			flex-direction: column;
-			gap: 0.75rem;
 
 			li {
-				display: flex;
-				align-items: center;
-				gap: 0.5rem;
 				position: relative;
+				display: grid;
 				margin: 0;
+				border: 3px solid white;
+				transition: margin 200ms ease-out;
+
+				&:not(:first-child) {
+					margin-left: -0.5rem;
+				}
+
+				&:not(:last-child):hover {
+					margin-right: 0.5rem;
+				}
+
+				img {
+					height: 2rem;
+					width: 2rem;
+				}
 
 				&.leader {
-					font-weight: 550;
 					&::before {
 						content: '👑';
 						position: absolute;
 						left: -0.25rem;
 						top: -0.95rem;
 						rotate: -25deg;
+						z-index: 2;
 					}
 				}
 			}

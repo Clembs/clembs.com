@@ -129,6 +129,7 @@ export const minecraftTeams = pgTable('minecraft_teams', {
 		.default(sql`gen_random_uuid()`)
 		.primaryKey(),
 	name: text('name').notNull().unique(),
+	description: text('description'),
 	leader: text('leader').notNull(),
 	color: text('color').notNull().unique(),
 	passcode: text('passcode'),
@@ -195,7 +196,7 @@ export const userCommentVote = pgTable(
 	},
 	(t) => ({
 		pk: primaryKey(t.userId, t.commentId),
-	})
+	}),
 );
 
 export const mentions = pgTable(
@@ -210,7 +211,7 @@ export const mentions = pgTable(
 	},
 	(t) => ({
 		pk: primaryKey(t.userId, t.commentId),
-	})
+	}),
 );
 
 export const mentionedUsersRelations = relations(mentions, ({ one }) => ({

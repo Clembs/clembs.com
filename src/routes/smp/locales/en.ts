@@ -131,7 +131,7 @@ export default {
 		joinTeam: 'Join a team',
 		members: 'members',
 		full: 'Full',
-		teamLeader: 'Created by {leader}',
+		leader: 'Leader',
 		modalJoin: {
 			title: 'Join team {name}?',
 			locked: {
@@ -140,9 +140,16 @@ export default {
 				joinButton: 'Join team',
 			},
 		},
+		modalLeave: {
+			title: 'Are you sure to leave your team?',
+			description:
+				'You will no longer be part of this team. You can join back (you will need an invite code if the team is invite-only).',
+			leaveButton: 'Leave team',
+		},
 		modalSuccess: {
 			title: 'Welcome to team {name}!',
 			description: 'You are now part of the team. Good luck out there!',
 		},
+		currentTeam: 'Your current team',
 	},
 };
