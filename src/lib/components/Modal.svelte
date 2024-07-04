@@ -46,6 +46,7 @@
 		box-shadow: 0 2px 0 0 var(--color-outline);
 		border-radius: 1.5rem;
 		max-width: 600px;
+		min-width: 400px;
 		transition:
 			scale 200ms ease-out,
 			opacity 200ms ease-out;
@@ -74,6 +75,7 @@
 
 		div {
 			padding: 1rem;
+			overflow: auto;
 		}
 
 		.buttons {
