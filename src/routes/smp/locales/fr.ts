@@ -3,6 +3,7 @@ import en from './en';
 
 export default {
 	...en,
+	myAccount: 'Mon compte',
 	registerSignIn: "S'inscrire/Se connecter",
 	language: {
 		button: 'Langue',
@@ -136,10 +137,22 @@ export default {
 				joinButton: "Rejoindre l'équipe",
 			},
 		},
+		modalLeave: {
+			title: 'Êtes-vous sûr de vouloir quitter votre équipe ?',
+			description:
+				"Vous n'en ferez plus partie. Vous pourrez y revenir (avec une invitation si cette équipe en requiert une).",
+			leaveButton: "Quitter l'équipe",
+		},
 		modalSuccess: {
 			title: "Bienvenue dans l'équipe {name} !",
 			description: "Vous faites maintenant partie de l'équipe. Bonne chance !",
 		},
-		teamLeader: 'Créée par {leader}',
+		leader: 'Créateur',
+		currentTeam: {
+			description: 'Description',
+			noDescription: "Aucune description n'a été donnée...",
+			inviteCode: "Code d'invitation",
+			members: 'Membres',
+		},
 	},
 } satisfies LanguageSchema;

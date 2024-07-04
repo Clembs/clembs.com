@@ -27,7 +27,7 @@
 						alt="Player avatar"
 					/>
 				{/if}
-				<span>My account</span>
+				<span>{strings.myAccount}</span>
 			</a>
 		{:else}
 			<a href="/smp/register">{strings.registerSignIn}</a>

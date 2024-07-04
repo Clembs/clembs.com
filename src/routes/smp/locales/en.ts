@@ -1,4 +1,5 @@
 export default {
+	myAccount: 'My account',
 	registerSignIn: 'Register/Sign in',
 	language: {
 		button: 'Language',
@@ -150,6 +151,11 @@ export default {
 			title: 'Welcome to team {name}!',
 			description: 'You are now part of the team. Good luck out there!',
 		},
-		currentTeam: 'Your current team',
+		currentTeam: {
+			description: 'Description',
+			noDescription: 'No description has been set...',
+			inviteCode: 'Invite code',
+			members: 'Members',
+		},
 	},
 };
