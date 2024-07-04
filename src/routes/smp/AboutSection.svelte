@@ -19,7 +19,7 @@
 				<a href="https://papermc.io/">Paper</a> 1.20.6 (latest build)
 			</li>
 			<li>
-				Hosted on <a href="https://digitalocean.com/">DigitalOcean</a> (4 GB RAM, 2 VCPUs, 80 GB SSD)
+				Hosted on <a href="https://www.g-portal.com/">G-Portal</a> (8 GB RAMD)
 			</li>
 		</ul>
 
@@ -31,9 +31,96 @@
 			<li>Whitelist size: 40 players</li>
 		</ul>
 
-		<h3>{strings.about.technicals.plugins} & {strings.about.technicals.datapacks}</h3>
+		<h3>{strings.about.technicals.datapacks}</h3>
 
-		<p>{strings.about.technicals.soon}</p>
+		<ul>
+			<li>
+				<a href="https://modrinth.com/datapack/clifftree" target="_blank" rel="noopener noreferrer">
+					Cliff under a Tree
+				</a>
+			</li>
+			<li>
+				<a
+					href="https://modrinth.com/datapack/dungeons-and-taverns"
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					Dungeons and Taverns
+				</a>
+			</li>
+			<li>
+				<a
+					href="https://vanillatweaks.net/picker/datapacks/"
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					Fast Leaf Decay
+				</a>
+			</li>
+			<li>
+				<a
+					href="https://vanillatweaks.net/picker/datapacks/"
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					Bat Membranes
+				</a>
+			</li>
+			<li>
+				<a
+					href="https://vanillatweaks.net/picker/datapacks/"
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					Graves
+				</a>
+			</li>
+			<li>
+				<a
+					href="https://vanillatweaks.net/picker/datapacks/"
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					Double Shulker Shells
+				</a>
+			</li>
+			<li>
+				<a
+					href="https://vanillatweaks.net/picker/datapacks/"
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					Custom Nether Portals
+				</a>
+			</li>
+			<li>
+				<a
+					href="https://vanillatweaks.net/picker/datapacks/"
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					Unlock All Recipes
+				</a>
+			</li>
+			<li>
+				<a
+					href="https://vanillatweaks.net/picker/datapacks/"
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					Track Raw Statistics
+				</a>
+			</li>
+			<li>
+				<a
+					href="https://vanillatweaks.net/picker/datapacks/"
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					Fast Leaf Decay
+				</a>
+			</li>
+		</ul>
 	</div>
 </Modal>
 
@@ -45,7 +132,7 @@
 	<p>
 		{@html strings.about.registration.replace(
 			'Clembs',
-			'<a href="/" target="_blank" rel="noopener noreferrer">Clembs</a>'
+			'<a href="/" target="_blank" rel="noopener noreferrer">Clembs</a>',
 		)}
 	</p>
 
