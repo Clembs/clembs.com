@@ -140,7 +140,7 @@ export default {
 		modalLeave: {
 			title: 'Êtes-vous sûr de vouloir quitter votre équipe ?',
 			description:
-				"Vous n'en ferez plus partie. Vous pourrez y revenir (avec une invitation si cette équipe en requiert une).",
+				"Vous n'en ferez plus partie. Vous pourrez y revenir (avec une invitation si cette équipe en requiert une).<br /><br/>Note : Cette action, pour l'instant, ne vous retire PAS de l'équipe dans Minecraft. Contactez Clembs pour qu'il vous change d'équipe si besoin.",
 			leaveButton: "Quitter l'équipe",
 		},
 		modalSuccess: {

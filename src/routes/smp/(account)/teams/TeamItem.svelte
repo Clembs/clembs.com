@@ -41,7 +41,7 @@
 	</div>
 	<div class="right-stuff">
 		<ul class="members">
-			{#each team.members.sort( (a, b) => (a.uuid === team.leader.uuid ? -1 : a.username.localeCompare(b.username)), ) as member}
+			{#each team.members.sort( (a, b) => (a.username === team.leader.username ? -1 : a.username.localeCompare(b.username)), ) as member}
 				<li class:leader={member.username === team.leader.username}>
 					<Tooltip>
 						<img

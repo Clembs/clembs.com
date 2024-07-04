@@ -21,8 +21,11 @@ export const load: PageServerLoad = async ({ cookies }) => {
 
 	const currentTeam = teams.find((t) => t.id === player.teamId);
 
+	if (currentTeam) {
+		redirect(303, '/smp/my-team');
+	}
+
 	return {
-		currentTeam,
 		teams: teams.map((t) => ({ ...t, passcode: t.passcode ? 'o' : undefined })),
 		navButton: {
 			href: '/smp',
@@ -78,8 +81,6 @@ export const actions = {
 			})
 			.where(eq(minecraftPlayers.username, player.username));
 
-		return {
-			success: true,
-		};
+		redirect(303, '/smp/my-team?welcome');
 	},
 };

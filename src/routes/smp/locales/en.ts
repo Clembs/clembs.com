@@ -144,7 +144,7 @@ export default {
 		modalLeave: {
 			title: 'Are you sure to leave your team?',
 			description:
-				'You will no longer be part of this team. You can join back (you will need an invite code if the team is invite-only).',
+				'You will no longer be part of this team. You can join back (you will need an invite code if the team is invite-only).<br /><br/>Note: This action, for now, does NOT remove you from the team in-game. Contact Clembs so he can change your team if needed.',
 			leaveButton: 'Leave team',
 		},
 		modalSuccess: {

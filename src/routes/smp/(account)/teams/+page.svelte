@@ -1,74 +1,55 @@
 <script lang="ts">
 	import { languages } from '../../locales';
 	import Button from '$lib/components/Button.svelte';
-	import Modal from '$lib/components/Modal.svelte';
-	import TextInput from '$lib/components/TextInput.svelte';
-	import { enhance } from '$app/forms';
-	import InfoBox from '$lib/components/InfoBox.svelte';
 	import TeamItem from './TeamItem.svelte';
+	import Modal from '$lib/components/Modal.svelte';
+	import { enhance } from '$app/forms';
+	import TextInput from '$lib/components/TextInput.svelte';
+	import InfoBox from '$lib/components/InfoBox.svelte';
 
-	export let form;
 	export let data;
+	export let form;
+
 	$: strings = languages[data.language];
-	let success = false;
 
 	let showModal = false;
+
 	let currentTeam: (typeof data.teams)[number];
 </script>
 
 {#if currentTeam}
 	<Modal bind:showModal>
 		<h2 slot="title">
-			{#if success}
-				{strings.teams.modalSuccess.title.replace('{name}', currentTeam.name)}
-			{:else}
-				{strings.teams.modalJoin.title.replace('{name}', currentTeam.name)}
-			{/if}
+			{strings.teams.modalJoin.title.replace('{name}', currentTeam.name)}
 		</h2>
 
-		{#if !success}
-			{#if currentTeam.passcode}
-				<p class="subtext">
-					{strings.teams.modalJoin.locked.description}
-				</p>
-			{/if}
-			<form
-				use:enhance={() =>
-					async ({ result, update }) => {
-						if (result.type === 'success') {
-							success = true;
-						}
-						await update();
-					}}
-				id="join-team-form"
-				method="post"
-			>
-				<input type="hidden" name="team-id" value={currentTeam.id} />
-				{#if currentTeam.passcode}
-					<TextInput
-						name="passcode"
-						label={strings.teams.modalJoin.locked.inputLabel}
-						maxlength={6}
-						minlength={6}
-						type="number"
-					/>
-				{/if}
-
-				{#if form?.message}
-					<InfoBox type="danger">
-						{form.message}
-					</InfoBox>
-				{/if}
-
-				<Button type="submit">
-					{strings.teams.modalJoin.locked.joinButton}
-				</Button>
-			</form>
-		{:else}
+		{#if currentTeam.passcode}
 			<p class="subtext">
-				{strings.teams.modalSuccess.description}
+				{strings.teams.modalJoin.locked.description}
 			</p>
 		{/if}
+		<form use:enhance id="join-team-form" method="post">
+			<input type="hidden" name="team-id" value={currentTeam.id} />
+			{#if currentTeam.passcode}
+				<TextInput
+					name="passcode"
+					label={strings.teams.modalJoin.locked.inputLabel}
+					maxlength={6}
+					minlength={6}
+					type="number"
+				/>
+			{/if}
+
+			{#if form?.message}
+				<InfoBox type="danger">
+					{form.message}
+				</InfoBox>
+			{/if}
+
+			<Button type="submit">
+				{strings.teams.modalJoin.locked.joinButton}
+			</Button>
+		</form>
 	</Modal>
 {/if}
 
@@ -79,39 +60,29 @@
 			<p class="subtext">{strings.teams.description}</p>
 		</div>
 
-		{#if !data.currentTeam}
-			<Button href="/smp/teams/create">
-				{strings.register.team.submitButton}
-			</Button>
-		{/if}
+		<Button href="/smp/teams/create">
+			{strings.register.team.submitButton}
+		</Button>
 	</header>
 
-	{#if !data.currentTeam}
-		<section>
-			<h3>{strings.teams.joinTeam}</h3>
+	<section>
+		<h3>{strings.teams.joinTeam}</h3>
 
-			<ul class="teams">
-				{#each data.teams as team}
-					<li>
-						<TeamItem
-							onClick={() => {
-								currentTeam = team;
-								showModal = true;
-							}}
-							{team}
-							{strings}
-						/>
-					</li>
-				{/each}
-			</ul>
-		</section>
-	{:else}
-		<section>
-			<h3>Your current team</h3>
-
-			<TeamItem team={data.currentTeam} {strings} />
-		</section>
-	{/if}
+		<ul class="teams">
+			{#each data.teams as team}
+				<li>
+					<TeamItem
+						on:click={() => {
+							currentTeam = team;
+							showModal = true;
+						}}
+						{team}
+						{strings}
+					/>
+				</li>
+			{/each}
+		</ul>
+	</section>
 </div>
 
 <style lang="scss">
