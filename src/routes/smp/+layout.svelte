@@ -16,7 +16,7 @@
 <main>
 	<div id="head-bar">
 		{#if data.player}
-			<div class="username">
+			<a href={data.player.teamId ? '/smp/my-team' : '/smp/teams'} class="username">
 				{#if data.player.uuid}
 					<img src="https://crafatar.com/avatars/{data.player.uuid}?size=32" alt="Player avatar" />
 				{:else}
@@ -27,8 +27,8 @@
 						alt="Player avatar"
 					/>
 				{/if}
-				<span>{data.player.username}</span>
-			</div>
+				<span>My account</span>
+			</a>
 		{:else}
 			<a href="/smp/register">{strings.registerSignIn}</a>
 		{/if}
@@ -50,7 +50,7 @@
 
 <style lang="scss">
 	main {
-		margin: 2.5rem 1.25rem;
+		margin: 1.25rem;
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
