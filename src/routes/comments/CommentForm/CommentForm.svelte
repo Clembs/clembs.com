@@ -97,8 +97,8 @@
 			placeholder={parentComment
 				? 'Reply with constructive feedback and respect.'
 				: projectId
-				? 'Give feedback, rate this project...'
-				: 'Leave suggestions, questions, rate the website...'}
+					? 'Give feedback, rate this project...'
+					: 'Leave suggestions, questions, rate the website...'}
 			{...expanded ? { autofocus: true } : {}}
 			{...$$restProps}
 			bind:value={content}
@@ -196,6 +196,7 @@
 
 		textarea {
 			background-color: var(--color-background);
+			color: var(--color-on-background);
 			border: 1px solid var(--color-outline);
 			padding: 0.5rem 0.75rem;
 			border-radius: 1.5rem;

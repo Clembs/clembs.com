@@ -152,6 +152,7 @@ and express my love through design, code and video. Welcome to clembs.com!"
 					align-items: center;
 					gap: 0.5rem;
 					background: hsla(var(--color), 0.1);
+					color: var(--color-on-background);
 					border: 2px solid hsl(var(--color));
 					padding: 0.125rem 0.75rem 0.125rem 0.5rem;
 					border-radius: 99rem;

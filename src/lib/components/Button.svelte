@@ -81,15 +81,15 @@
 		// }
 
 		&.filled {
-			--_bg: var(--color-on-background);
-			--_border: 1px solid var(--color-on-background);
+			--_bg: var(--color-outline);
+			--_border: 1px solid var(--color-outline);
 			--_text-color: var(--color-background);
 			--_hover-bg: var(--color-on-surface);
 		}
 		&.outlined {
 			--_bg: var(--color-background);
-			--_border: 1px solid var(--color-on-background);
-			--_text-color: inherit;
+			--_border: 1px solid var(--color-outline);
+			--_text-color: var(--color-on-background);
 			--_hover-bg: var(--color-surface);
 		}
 		&.text {

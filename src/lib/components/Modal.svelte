@@ -65,6 +65,7 @@
 				padding: 0.5rem;
 				border: 1px solid var(--color-outline);
 				background-color: var(--color-background);
+				color: var(--color-on-background);
 				border-radius: 99rem;
 
 				&:hover {
@@ -76,6 +77,7 @@
 		div {
 			padding: 1rem;
 			overflow: auto;
+			color: var(--color-on-background);
 		}
 
 		.buttons {

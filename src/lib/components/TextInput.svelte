@@ -74,7 +74,9 @@
 
 		textarea,
 		input {
-			border: 1px solid var(--color-on-background);
+			border: 1px solid var(--color-outline);
+			background-color: var(--color-surface);
+			color: var(--color-on-background);
 			padding: 0.75rem 1rem;
 			border-radius: 0.75rem;
 			font-family: inherit;

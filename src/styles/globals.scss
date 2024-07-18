@@ -102,6 +102,12 @@ button {
 	appearance: none;
 	border: none;
 	cursor: pointer;
+	color: inherit;
+}
+
+form,
+dialog {
+	color: inherit;
 }
 
 h1,
