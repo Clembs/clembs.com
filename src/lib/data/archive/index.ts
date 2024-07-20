@@ -2,7 +2,6 @@ import { acknowledgements } from './acknowledgements';
 import { messages } from './messages';
 import type { ThemeGradient } from '../types';
 import { comments } from './comments';
-import { habileChat } from './habile-chat';
 
 export const softwarePlatforms = {
 	windows: 'Windows',
@@ -39,6 +38,9 @@ export interface Archive {
 	platforms?: (keyof typeof softwarePlatforms)[];
 }
 
-export const archives: Archive[] = [acknowledgements, messages, comments, habileChat].sort(
-	(a, b) => b.createdAt.getTime() - a.createdAt.getTime()
-);
+export const archives: Archive[] = [
+	acknowledgements,
+	messages,
+	comments,
+	// habileChat
+].sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
