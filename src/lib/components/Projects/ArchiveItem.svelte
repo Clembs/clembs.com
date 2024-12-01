@@ -6,7 +6,11 @@
 	export let loaded = false;
 </script>
 
-<Card aria-label="View software details: {data.name}" href={data.links.projectUrl}>
+<Card
+	class="archive-item"
+	aria-label="View software details: {data.name}"
+	href={data.links.projectUrl}
+>
 	<div class="archive-wrapper" slot="card-content">
 		<div class="archive">
 			<img
@@ -20,19 +24,20 @@
 				class="archive-icon"
 			/>
 			<div class="about">
+				<!-- {data.createdAt.to} -->
+
 				<div class="name-and-summary">
+					<time class="subtext" datetime={data.createdAt.toISOString()}>
+						{(data.finishedAt || data.createdAt)?.toLocaleDateString('en-US', {
+							year: 'numeric',
+							month: 'long',
+						})}
+					</time>
 					<div class="name">
 						{data.name}
 					</div>
 					<div class="subtext">{data.brief}</div>
 				</div>
-
-				<!-- <time class="subtext" datetime={data.createdAt.toISOString()}>
-					{data.createdAt.toLocaleDateString('en-US', {
-						year: 'numeric',
-						month: 'long',
-					})}
-				</time> -->
 			</div>
 		</div>
 	</div>
@@ -60,6 +65,15 @@
 				display: flex;
 				flex-direction: column;
 				gap: 0.75rem;
+				margin-top: -0.5rem;
+
+				time {
+					font-size: 0.65rem;
+					color: var(--color-on-background);
+					text-transform: uppercase;
+					font-weight: 500;
+				}
+
 				.name {
 					font-weight: 500;
 					font-size: 1.1rem;
