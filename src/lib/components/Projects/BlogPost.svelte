@@ -5,7 +5,11 @@
 	export let data: BlogPost;
 </script>
 
-<Card aria-label="Read blog article: {data.title}" href="/blog/{data.categoryId}/{data.id}">
+<Card
+	class="blog-post"
+	aria-label="Read blog article: {data.title}"
+	href="/blog/{data.categoryId}/{data.id}"
+>
 	{#if data.bannerPath}
 		<div class="card-image">
 			<img

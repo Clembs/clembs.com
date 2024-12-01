@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Button from '$lib/components/Button.svelte';
 	import { allPosts } from '$lib/data/blog';
 	import { archives } from '$lib/data/archive';
 	import {
@@ -57,14 +56,22 @@ and express my love through design, code and video. Welcome to clembs.com!"
 	</div>
 </header>
 
+<section id="coming-soon">
+	<h3>More recent case studies coming soon!</h3>
+
+	<p>
+		This hasn't been updated in a while because I've been hard at work in school and outside cooking
+		some new projects. I can't wait to share them with you! In the meantime, feel free to check out
+		my latest work below.
+	</p>
+</section>
+
 <section id="projects">
 	<FeaturedBlogPost data={designPosts[0]} />
 	<div id="project-grid">
 		{#each designPosts.slice(1, 3) as post, i}
-			<div class="blog">
-				<BlogPost data={post} />
-			</div>
-			{#each archives.slice(i * 2, i * 2 + 2) as archive, i}
+			<BlogPost data={post} />
+			{#each archives.slice(i * 3, i * 3 + 3) as archive, i}
 				<ArchiveItem loaded data={archive} />
 			{/each}
 		{/each}
@@ -189,6 +196,15 @@ and express my love through design, code and video. Welcome to clembs.com!"
 		}
 	}
 
+	#coming-soon {
+		h3 {
+			text-align: center;
+			margin-bottom: 0.5rem;
+		}
+		padding: 1.5rem 1rem;
+		margin: 0 auto;
+	}
+
 	#projects {
 		display: flex;
 		flex-direction: column;
@@ -200,8 +216,12 @@ and express my love through design, code and video. Welcome to clembs.com!"
 			grid-template-rows: 1fr;
 			gap: 1rem;
 
-			.blog {
-				grid-row: span 3;
+			:global(.card.blog-post) {
+				grid-row: span 2;
+			}
+
+			:global(.card.archive-item) {
+				grid-row: span 1;
 			}
 		}
 
