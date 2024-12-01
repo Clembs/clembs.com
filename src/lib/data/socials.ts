@@ -6,9 +6,7 @@ import KoFi from '$lib/icons/socials/ko-fi.svelte';
 import Mastodon from '$lib/icons/socials/mastodon.svelte';
 import Twitch from '$lib/icons/socials/twitch.svelte';
 import Youtube from '$lib/icons/socials/youtube.svelte';
-import IconMail from '@tabler/icons-svelte/dist/svelte/icons/IconMail.svelte';
-import IconMessageCircle from '@tabler/icons-svelte/dist/svelte/icons/IconMessageCircle.svelte';
-import IconDroplet from '@tabler/icons-svelte/dist/svelte/icons/IconDroplet.svelte';
+import { IconMail, IconMessageCircle, IconDroplet } from '@tabler/icons-svelte';
 import Linkedin from '$lib/icons/socials/linkedin.svelte';
 import type { ComponentType } from 'svelte';
 import X from '$lib/icons/socials/x.svelte';
@@ -76,7 +74,7 @@ export const waterAid: Social = {
 
 export const comments: Social = {
 	id: SocialName.Clembs,
-	name: 'My comments section <3',
+	name: 'clembs.com Comments',
 	url: '/comments',
 	icon: IconMessageCircle,
 };
@@ -147,7 +145,7 @@ export const threads: Social = {
 export const bluesky: Social = {
 	id: SocialName.Bluesky,
 	name: 'Bluesky',
-	url: 'https://bsky.app/profile/clembs.bsky.social',
+	url: 'https://bsky.app/profile/clembs.com',
 	icon: Bluesky,
 };
 
@@ -166,6 +164,6 @@ export const socials = [
 
 export const chatting = [email, discord, comments] satisfies Social[];
 
-export const microblogging = [mastodon, twitter, linkedin, threads, bluesky] satisfies Social[];
+export const microblogging = [bluesky, twitter, linkedin] satisfies Social[];
 
 export const streamSocials = [youtube, twitch] satisfies Social[];
