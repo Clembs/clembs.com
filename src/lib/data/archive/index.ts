@@ -2,6 +2,9 @@ import { acknowledgements } from './acknowledgements';
 import { messages } from './messages';
 import type { ThemeGradient } from '../types';
 import { comments } from './comments';
+import { islands } from './islands';
+import { mecaniqueNumerique } from './mecanique-numerique';
+import { jamesHuang } from './james-huang';
 
 export const softwarePlatforms = {
 	windows: 'Windows',
@@ -42,5 +45,8 @@ export const archives: Archive[] = [
 	acknowledgements,
 	messages,
 	comments,
+	mecaniqueNumerique,
+	jamesHuang,
+	islands,
 	// habileChat
-].sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+].sort((a, b) => (b.finishedAt || b.createdAt).getTime() - (a.finishedAt || a.createdAt).getTime());
