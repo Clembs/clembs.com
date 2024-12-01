@@ -5,10 +5,10 @@
 <div class="cta">
 	<div class="left">
 		<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
-			<circle cx="7" cy="7" r="7" fill="#18d68c" />
+			<circle cx="7" cy="7" r="7" fill="#fe383a" />
 		</svg>
 
-		Available for hire!
+		Currently busy, but open to new opportunities.
 	</div>
 
 	<Button href="/contact">Get in touch</Button>
