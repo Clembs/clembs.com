@@ -49,10 +49,7 @@ and express my love through design, code and video. Welcome to clembs.com!"
 			</span>
 		</h1>
 
-		<div class="buttons">
-			<Cta />
-			<!-- <Button href="/contact">Contact me - Available for hire!</Button> -->
-		</div>
+		<Cta />
 	</div>
 </header>
 
@@ -149,9 +146,10 @@ and express my love through design, code and video. Welcome to clembs.com!"
 			padding-top: 2rem;
 			padding-bottom: 3rem;
 			position: relative;
+			width: 100%;
 
 			h1 {
-				font-size: clamp(2.5rem, 5vw, 2.9rem);
+				font-size: clamp(2rem, 7vw, 2.9rem);
 				line-height: 1.315;
 
 				mark {
@@ -181,17 +179,6 @@ and express my love through design, code and video. Welcome to clembs.com!"
 			@media (max-width: 645px) {
 				padding: 1rem;
 				align-self: flex-start;
-			}
-
-			.buttons {
-				display: flex;
-				gap: 0.5rem;
-				margin-top: 2rem;
-				justify-content: center;
-
-				@media (max-width: 645px) {
-					justify-content: flex-start;
-				}
 			}
 		}
 	}

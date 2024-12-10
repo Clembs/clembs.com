@@ -7,8 +7,6 @@ export const actions = {
 
 		const language = formData.get('language')?.toString();
 
-		console.log(language);
-
 		if (!language || !Object.keys(languages).includes(language)) {
 			error(400, 'Invalid language');
 		}

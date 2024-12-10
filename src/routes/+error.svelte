@@ -158,13 +158,14 @@
 			background-image: url('/assets/tv-static.gif');
 			overflow: hidden;
 			.dino-game {
-				&:not(.hide) {
-					display: none;
-				}
 				border: none;
 				background-color: white;
 				width: 100%;
 				height: 100%;
+
+				&:not(.hide) {
+					display: none;
+				}
 			}
 		}
 	}
