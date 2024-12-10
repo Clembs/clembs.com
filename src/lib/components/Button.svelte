@@ -14,6 +14,8 @@
 	<a
 		class="button {style} {className} size-{size}"
 		{href}
+		target={href.startsWith('http') ? '_blank' : undefined}
+		rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
 		role="button"
 		{...$$restProps}
 		class:inline
