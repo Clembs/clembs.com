@@ -167,3 +167,5 @@ export const chatting = [email, discord, comments] satisfies Social[];
 export const microblogging = [bluesky, twitter, linkedin] satisfies Social[];
 
 export const streamSocials = [youtube, twitch] satisfies Social[];
+
+export const footerSocials = [bluesky, twitter, discord, github, linkedin];
