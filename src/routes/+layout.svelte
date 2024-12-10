@@ -8,8 +8,6 @@
 	import ShortcutsModal from '../lib/components/ShortcutsModal/ShortcutsModal.svelte';
 	import { interpolate } from 'd3-interpolate';
 	import { tweened } from 'svelte/motion';
-	import { onMount } from 'svelte';
-	import { browser } from '$app/environment';
 
 	const baseColors = {
 		from: '#643FFF',
@@ -26,21 +24,6 @@
 	// don't import this right away, it's pretty heavy
 	let debugMenu: typeof DebugMenu | null = null;
 
-	function roundContentCorners() {
-		if (browser) {
-			const content = document.querySelector('.content');
-			const contentRect = content?.getBoundingClientRect();
-
-			if (!content || !contentRect) return;
-
-			if (contentRect.bottom < window.innerHeight) {
-				content.classList.add('close-in');
-			} else {
-				content.classList.remove('close-in');
-			}
-		}
-	}
-
 	page.subscribe(({ error, data }) => {
 		if (error) {
 			colorProgress.set({
@@ -50,10 +33,7 @@
 		} else {
 			colorProgress.set(data?.themeGradient ?? baseColors);
 		}
-		roundContentCorners();
 	});
-
-	onMount(roundContentCorners);
 </script>
 
 <svelte:window
@@ -79,12 +59,13 @@
 	style="--from: {$colorProgress?.from}; --to: {$colorProgress?.to}"
 />
 
-<div class="content">
-	<NavBar />
-	<slot />
+<NavBar />
 
-	<Footer />
+<div class="content">
+	<slot />
 </div>
+
+<Footer />
 
 <style lang="scss">
 	.background-piece {
@@ -104,20 +85,19 @@
 		margin: 0 auto;
 		max-width: 750px;
 		width: 100%;
-		margin-top: 2rem;
+		margin: 1rem auto;
 		z-index: 2;
 		position: relative;
-		border-radius: 2rem 2rem 0 0;
+		border-radius: 1.5rem;
 		border: 1px solid var(--color-outline);
+		background-color: var(--color-background);
 
-		&:global(.close-in) {
-			border-radius: 2rem;
-		}
-
+		// cancel cards view on smaller screens
 		@media (max-width: 750px) {
 			margin-top: 0;
-			border-radius: 0;
+			background-color: transparent;
 			border: none;
+			border-radius: 0;
 		}
 	}
 </style>

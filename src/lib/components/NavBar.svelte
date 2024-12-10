@@ -5,9 +5,46 @@
 	import { cubicInOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
 	import GradientAvatar from './GradientAvatar/GradientAvatar.svelte';
+	import { onMount } from 'svelte';
+
+	let navbarEl: HTMLElement;
+	let scaleFactor = 1;
+	let brightness = 1;
+
+	// progressively animate the navbar as the user scrolls closer to the page top (100px to 0px)
+	// brightness should be raised from 0.75 to 1
+	// scale should be raised from 0.85 to 1
+	function scroll() {
+		// if the "cards" view isn't active, don't bother
+		if (matchMedia('(max-width: 750px)').matches) return;
+
+		const scrollProgress = Math.min(window.scrollY / 100, 1);
+
+		scaleFactor = 0.85 + (1 - scrollProgress) * 0.15;
+		brightness = 0.75 + (1 - scrollProgress) * 0.25;
+	}
+
+	// if the user focuses on something within the footer, scroll to the bottom of the page
+	function focus() {
+		window.scrollBy({
+			top: 0,
+			behavior: 'smooth',
+		});
+	}
+
+	onMount(() => {
+		scroll();
+
+		// check all focusable elements
+		navbarEl.querySelectorAll('a, button').forEach((el) => {
+			el.addEventListener('focus', focus);
+		});
+	});
 </script>
 
-<nav>
+<svelte:window on:scroll={scroll} />
+
+<nav bind:this={navbarEl} style:scale={scaleFactor} style:filter="brightness({brightness})">
 	{#if $page.data.navButton || $page.url.pathname !== '/'}
 		<a
 			href={$page.data.navButton?.href || '/'}
@@ -55,16 +92,31 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		position: relative;
 		width: 100%;
 		padding: 1rem;
-		margin-bottom: 1rem;
 
-		// position: sticky;
-		// inset: 0;
-		// background-color: var(--color-background);
-		// z-index: 99;
-		border-bottom: 1px solid var(--color-outline);
+		// peeping card view
+		position: sticky;
+		inset: 0;
+		top: 1rem;
+		z-index: 1;
+		max-width: 750px;
+		margin: 1rem auto;
+		background-color: var(--color-background);
+		border: 1px solid var(--color-outline);
+		border-radius: 1.5rem;
+
+		// cancel peeping card view on smaller screens (rip)
+		@media (max-width: 750px) {
+			position: initial;
+			margin: 0;
+			background-color: transparent;
+			border: none;
+			border-bottom: 1px solid var(--color-outline);
+			border-radius: 0;
+			scale: 1 !important;
+			filter: brightness(1) !important;
+		}
 
 		#profile {
 			display: grid;
