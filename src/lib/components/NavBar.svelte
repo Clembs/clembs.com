@@ -1,9 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import Clembs from '$lib/icons/Clembs.svelte';
-	import { IconArrowLeft, IconLogin } from '@tabler/icons-svelte';
-	import { cubicInOut } from 'svelte/easing';
-	import { fly } from 'svelte/transition';
+	import { IconArrowLeft, IconAt, IconBallpen, IconLogin } from '@tabler/icons-svelte';
 	import GradientAvatar from './GradientAvatar/GradientAvatar.svelte';
 	import { onMount } from 'svelte';
 
@@ -26,7 +24,7 @@
 
 	// if the user focuses on something within the footer, scroll to the bottom of the page
 	function focus() {
-		window.scrollBy({
+		window.scrollTo({
 			top: 0,
 			behavior: 'smooth',
 		});
@@ -40,60 +38,79 @@
 			el.addEventListener('focus', focus);
 		});
 	});
+
+	$: hideBackBtn = !$page.data.navButton && $page.url.pathname === '/';
 </script>
 
 <svelte:window on:scroll={scroll} />
 
+<!-- TODO: make a mobile optimized navbar -->
 <nav bind:this={navbarEl} style:scale={scaleFactor} style:filter="brightness({brightness})">
-	{#if $page.data.navButton || $page.url.pathname !== '/'}
-		<a
-			href={$page.data.navButton?.href || '/'}
-			class="side-button"
-			id="back"
-			in:fly={{
-				duration: 200,
-				easing: cubicInOut,
-				x: 20,
-			}}
-			out:fly={{
-				duration: 150,
-				easing: cubicInOut,
-				x: -20,
-			}}
-		>
-			<div class="arrow">
-				<IconArrowLeft stroke={1.5} />
-			</div>
-			{$page.data.navButton ? $page.data.navButton.label || 'Back' : 'Home'}
-		</a>
-	{/if}
-
-	<a href="/" id="profile">
-		<Clembs />
-	</a>
-
-	{#if ['/comments', '/blog', '/settings'].some((path) => $page.url.href.includes(path))}
-		<a href="/account" id="account" class="side-button">
-			{#if $page.data.userData}
-				<GradientAvatar user={$page.data.userData} size="1.5rem" />
-				Settings
-			{:else}
+	<ul class="left" class:hideBackBtn>
+		<li>
+			<a
+				href={$page.data.navButton?.href || '/'}
+				id="back"
+				inert={hideBackBtn}
+				aria-hidden={hideBackBtn}
+			>
 				<div class="arrow">
-					<IconLogin stroke={1.5} />
+					<IconArrowLeft size={28} />
 				</div>
-				Sign in
-			{/if}
-		</a>
-	{/if}
+			</a>
+		</li>
+		<li>
+			<a href="/">
+				<Clembs />
+			</a>
+		</li>
+	</ul>
+
+	<ul class="right">
+		{#if ['/comments', '/settings'].some((path) => $page.url.href.includes(path) || $page.data.userData)}
+			<li>
+				<a href="/settings" id="account" aria-current={$page.url.pathname === '/settings'}>
+					{#if $page.data.userData}
+						<GradientAvatar user={$page.data.userData} size="20px" />
+						Account
+					{:else}
+						<div class="arrow">
+							<IconLogin size={20} />
+						</div>
+						Sign in
+					{/if}
+				</a>
+			</li>
+		{/if}
+		<li>
+			<a href="/blog" aria-current={$page.url.pathname.includes('/blog')}>
+				<IconBallpen size={20} />
+				Blog
+			</a>
+		</li>
+		<li>
+			<a href="/contact" aria-current={$page.url.pathname === '/contact'}>
+				<IconAt size={20} />
+				Contact
+			</a>
+		</li>
+		<!-- <li>
+			<a href="/work">
+				<IconLayoutCollage />
+				Work
+			</a>
+		</li> -->
+	</ul>
 </nav>
 
 <style lang="scss">
 	nav {
 		display: flex;
 		align-items: center;
-		justify-content: center;
 		width: 100%;
-		padding: 1rem;
+		padding: 0.5rem;
+		justify-content: space-between;
+		overflow: hidden;
 
 		// peeping card view
 		position: sticky;
@@ -118,52 +135,86 @@
 			filter: brightness(1) !important;
 		}
 
-		#profile {
-			display: grid;
-			border-radius: 99rem;
-			padding: 0.25rem;
-		}
-
-		.side-button {
-			display: flex;
-			align-items: center;
-			text-decoration: none;
-			gap: 0.5rem;
-			padding: 0.5rem 1rem;
-			padding-right: 1.25rem;
-			color: var(--color-on-surface);
-			position: absolute;
-			border-radius: 99rem;
-			border: 1px solid transparent;
-
-			&:hover {
-				// text-decoration: underline;
-				background-color: var(--color-surface);
-				border: 1px solid var(--color-outline);
-			}
-		}
-
 		#back {
-			left: 1rem;
-			margin-left: -0.25rem;
-
 			&:hover .arrow {
-				transform: translateX(-0.25rem);
+				transform: translateX(-0.1rem);
 			}
 
-			&:active .arrow {
-				transform: translateX(0.125rem);
+			&:active:hover .arrow {
+				transform: translateX(0.1rem);
 			}
-		}
-
-		#account {
-			right: 1rem;
-			margin-right: -0.25rem;
 		}
 
 		.arrow {
 			display: grid;
 			transition: transform 0.1s ease-in-out;
+		}
+
+		.left {
+			display: flex;
+			align-items: center;
+			list-style: none;
+			margin: 0;
+			padding: 0;
+			gap: 0.5rem;
+			transition: transform 125ms ease;
+
+			&.hideBackBtn {
+				transform: translateX(calc(0px - (28px + 0.5rem * 2)));
+			}
+
+			li {
+				display: contents;
+
+				a {
+					display: grid;
+					border-radius: 99rem;
+					text-decoration: none;
+					padding: 0.5rem;
+					color: var(--color-on-surface);
+					border: 1px solid transparent;
+					transition: background-color 50ms ease-out;
+
+					&:hover {
+						background-color: var(--color-surface);
+					}
+				}
+			}
+		}
+
+		.right {
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+			list-style: none;
+			margin: 0;
+			padding: 0;
+
+			li {
+				display: contents;
+
+				a {
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+					font-size: 0.75rem;
+					gap: 0.125rem;
+					text-decoration: none;
+					color: var(--color-on-surface);
+					padding: 0.5rem 1rem;
+					border-radius: 1rem;
+					transition: background-color 0.1s ease-in-out;
+
+					&:hover {
+						background-color: var(--color-surface);
+					}
+
+					&[aria-current='true'] {
+						background-color: var(--color-on-background);
+						color: var(--color-background);
+					}
+				}
+			}
 		}
 	}
 </style>

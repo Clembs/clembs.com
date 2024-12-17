@@ -31,7 +31,7 @@
 
 	// if the user focuses on something within the footer, scroll to the bottom of the page
 	function focus() {
-		window.scrollBy({
+		window.scrollTo({
 			top: document.body.scrollHeight,
 			behavior: 'smooth',
 		});
