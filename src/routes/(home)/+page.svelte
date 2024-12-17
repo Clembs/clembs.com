@@ -73,32 +73,6 @@ and express my love through design, code and video. Welcome to clembs.com!"
 			{/each}
 		{/each}
 	</div>
-	<div id="quick-links">
-		<Card href="/blog">
-			<div class="link" slot="card-content">
-				<IconBallpen />
-				Blog
-			</div>
-		</Card>
-		<!-- <Card href="/projects#design">
-			<div class="link" slot="card-content">
-				<IconBrush />
-				All design
-			</div>
-		</Card> -->
-		<Card href="/contact">
-			<div class="link" slot="card-content">
-				<IconAt />
-				Contact
-			</div>
-		</Card>
-		<Card href="/comments">
-			<div class="link" slot="card-content">
-				<IconMessageCircle />
-				Comments
-			</div>
-		</Card>
-	</div>
 </section>
 
 <!-- <section id="about-me">
@@ -209,27 +183,6 @@ and express my love through design, code and video. Welcome to clembs.com!"
 
 			:global(.card.archive-item) {
 				grid-row: span 1;
-			}
-		}
-
-		#quick-links {
-			display: grid;
-			grid-template-columns: 1fr 1fr 1fr;
-			gap: 1rem;
-			width: 100%;
-
-			.link {
-				display: flex;
-				gap: 0.75rem;
-				font-size: clamp(1rem, 3vw, 1.25rem);
-				font-weight: 500;
-				align-items: center;
-				justify-content: center;
-				text-align: center;
-
-				@media (max-width: 645px) {
-					flex-direction: column;
-				}
 			}
 		}
 	}
