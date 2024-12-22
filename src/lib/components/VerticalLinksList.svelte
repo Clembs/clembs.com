@@ -7,15 +7,20 @@
 	{#each socials as social}
 		<li>
 			<a
-				href={social.url}
+				href={social.href}
 				rel="me noopener noreferrer"
-				target={social.url.startsWith('/') ? '_self' : '_blank'}
+				target={social.href.startsWith('/') ? '_self' : '_blank'}
 			>
 				<div class="social">
 					<svelte:component this={social.icon} />
 
-					<div class="social-name">
-						<span>{social.name}</span>
+					<div class="text">
+						<div class="name">
+							{social.name}
+						</div>
+						{#if social.username}
+							<div class="subtext">{social.username}</div>
+						{/if}
 					</div>
 				</div>
 			</a>
@@ -68,18 +73,23 @@
 					flex-direction: column;
 
 					:global(svg) {
-						width: 20px;
-						height: 20px;
+						width: 24px;
+						height: 24px;
 					}
 
-					&-name {
+					.text {
 						display: flex;
 						flex-direction: column;
-						flex: 1;
-						font-size: 0.9rem;
 
-						@media (max-width: 375px) {
-							display: none;
+						.name {
+							display: flex;
+							flex-direction: column;
+							flex: 1;
+							font-size: 0.9rem;
+
+							@media (max-width: 375px) {
+								display: none;
+							}
 						}
 					}
 				}

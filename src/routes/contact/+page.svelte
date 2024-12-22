@@ -1,14 +1,27 @@
 <script lang="ts">
-	import { SocialName, chatting, microblogging, socials } from '$lib/data/socials';
-	import { IconHeart, IconVideo } from '@tabler/icons-svelte';
+	import {
+		bluesky,
+		boosty,
+		discord,
+		email,
+		github,
+		instagram,
+		kofi,
+		linkedin,
+		resume,
+		twitch,
+		twitter,
+		youtube,
+	} from '$lib/data/socials';
 	import LinksList from '$lib/components/LinksList.svelte';
 	import MetaTags from '$lib/components/MetaTags.svelte';
 	import VerticalLinksList from '$lib/components/VerticalLinksList.svelte';
+	import { IconCoins } from '@tabler/icons-svelte';
 </script>
 
 <MetaTags
 	pageName="Contact - Clembs"
-	description="Contact me through email, social media or donate to support my work."
+	description="View all ways you can contact me, view my work or donate to support my work."
 />
 
 <main>
@@ -18,19 +31,47 @@
 		<h1>Connect with me</h1>
 	</header>
 
-	<h2>Chat</h2>
+	<section id="chat">
+		<h2>Chat</h2>
 
-	<LinksList socials={chatting} />
+		<LinksList socials={[email, discord]} />
+	</section>
 
-	<h2>Microblogging</h2>
+	<section id="pro">
+		<h2>Professional</h2>
 
-	<VerticalLinksList socials={microblogging} />
+		<LinksList socials={[linkedin, github, resume]} />
+	</section>
 
-	<h2>Other socials</h2>
+	<section id="social">
+		<h2>Social media</h2>
 
-	<LinksList {socials} />
+		<VerticalLinksList socials={[bluesky, twitter, instagram]} />
+	</section>
 
-	<h2>Misc</h2>
+	<section id="streaming">
+		<h2>Streaming</h2>
+
+		<VerticalLinksList socials={[twitch, youtube]} />
+	</section>
+
+	<section id="donate">
+		<h2>Donate</h2>
+
+		<LinksList
+			socials={[
+				kofi,
+				boosty,
+				{
+					name: 'Donation History',
+					href: '/donate',
+					icon: IconCoins,
+				},
+			]}
+		/>
+	</section>
+
+	<!-- <h2>Misc</h2>
 
 	<LinksList
 		socials={[
@@ -41,24 +82,15 @@
 				icon: IconHeart,
 				description: 'Support me and my work',
 			},
-			{
-				id: SocialName.Twitch,
-				name: 'Streaming',
-				url: '/stream',
-				icon: IconVideo,
-				description: 'I sometimes code, design and play games live.',
-				activity: 'medium',
-			},
 		]}
-	/>
+	/> -->
 </main>
 
 <style lang="scss">
 	main {
-		padding: 1rem 1rem 2rem 1rem;
+		padding: 1.5rem 1rem;
 		display: flex;
 		flex-direction: column;
-		max-width: 500px;
 		margin: 0 auto;
 		gap: 1rem;
 
@@ -72,11 +104,18 @@
 			img {
 				border-radius: 50%;
 				border: 2px solid var(--color-outline);
+				box-shadow: 2px 2px 0px 0px var(--color-outline);
 			}
 		}
 
-		h2 {
-			font-size: 1rem;
+		section {
+			display: flex;
+			flex-direction: column;
+			gap: 1rem;
+
+			h2 {
+				font-size: 1rem;
+			}
 		}
 	}
 </style>

@@ -1,13 +1,13 @@
 <script lang="ts">
-	import { footerSocials } from '$lib/data/socials';
+	import { footerSocials, resume } from '$lib/data/socials';
 	import Clembs from '$lib/icons/Clembs.svelte';
 	import IconExternalLink from '$lib/icons/IconExternalLink.svelte';
 	import {
 		IconArticle,
+		IconAt,
 		IconChevronRight,
 		IconGitFork,
 		IconPencil,
-		IconUser,
 	} from '@tabler/icons-svelte';
 	import { onMount } from 'svelte';
 
@@ -80,7 +80,7 @@
 			<li>
 				<a href="/contact" class="footer-link">
 					<div class="label">
-						<IconUser />
+						<IconAt />
 						Contact
 					</div>
 
@@ -98,12 +98,7 @@
 				</a>
 			</li>
 			<li>
-				<a
-					href="https://c.clembs.com/files/389533db63ad437adb.pdf"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="footer-link"
-				>
+				<a href={resume.href} target="_blank" rel="noopener noreferrer" class="footer-link">
 					<div class="label">
 						<IconArticle />
 						CV (Français)
@@ -116,7 +111,7 @@
 		<ul role="navigation" aria-label="socials" id="socials">
 			{#each footerSocials as social}
 				<li>
-					<a href={social.url} aria-label={social.name}>
+					<a href={social.href} aria-label={social.name}>
 						<svelte:component this={social.icon} />
 					</a>
 				</li>

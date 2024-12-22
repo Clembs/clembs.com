@@ -10,44 +10,30 @@
 	{#each socials as social}
 		<li>
 			<a
-				href={social.url}
+				href={social.href}
 				rel="me noopener noreferrer"
-				target={social.url.startsWith('/') ? '_self' : '_blank'}
+				target={social.href.startsWith('/') ? '_self' : '_blank'}
 			>
 				<div class="social">
 					<svelte:component this={social.icon} />
 
 					<div class="social-name">
 						<span>{social.name}</span>
-						{#if social.username || social.activity || social.description}
+						{#if social.username || social.description}
 							<span class="subtext">
 								{#if social.description}
 									{social.description}
 								{/if}
-								<!-- {#if social.username}
+								{#if social.username}
 									{social.username}
-								{/if} -->
-								<!-- {#if social.activity && social.username}
-									•
-								{/if} -->
-								<!-- {#if social.activity}
-									<span class="activity {social.activity}">
-										{#if social.activity === 'low'}
-											Not very active
-										{:else if social.activity === 'medium'}
-											Moderately active
-										{:else if social.activity === 'high'}
-											Very active
-										{/if}
-									</span>
-								{/if} -->
+								{/if}
 							</span>
 						{/if}
 					</div>
 				</div>
 
 				<div class="icon-link">
-					{#if social.url.startsWith('/')}
+					{#if social.href.startsWith('/')}
 						<IconChevronRight />
 					{:else}
 						<IconExternalLink />
@@ -117,18 +103,11 @@
 						display: flex;
 						flex-direction: column;
 						flex: 1;
-
-						// .activity {
-						// 	font-weight: 500;
-
-						// 	&.medium {
-						// 		color: #b67014;
-						// 	}
-						// 	&.high {
-						// 		color: var(--color-error);
-						// 	}
-						// }
 					}
+				}
+
+				.icon-link {
+					display: grid;
 				}
 
 				&:hover,
@@ -142,15 +121,15 @@
 					:global(.tabler-icon-chevron-right) {
 						transform: translateX(3px);
 					}
-				}
 
-				&:active {
-					:global(svg #arrow) {
-						transform: translate(-1px, 1px);
-					}
+					&:active {
+						:global(svg #arrow) {
+							transform: translate(-1px, 1px);
+						}
 
-					:global(.tabler-icon-chevron-right) {
-						transform: translateX(-2px);
+						:global(.tabler-icon-chevron-right) {
+							transform: translateX(-2px);
+						}
 					}
 				}
 			}
