@@ -8,6 +8,7 @@
 	import ShortcutsModal from '../lib/components/ShortcutsModal/ShortcutsModal.svelte';
 	import { interpolate } from 'd3-interpolate';
 	import { tweened } from 'svelte/motion';
+	import ContentWrapper from '$lib/components/ContentWrapper.svelte';
 
 	const baseColors = {
 		from: '#643FFF',
@@ -61,9 +62,9 @@
 
 <NavBar />
 
-<div class="content">
+<ContentWrapper>
 	<slot />
-</div>
+</ContentWrapper>
 
 <Footer />
 
@@ -79,25 +80,5 @@
 		z-index: -1;
 		position: fixed;
 		opacity: 0.5;
-	}
-
-	.content {
-		margin: 0 auto;
-		max-width: 750px;
-		width: 100%;
-		margin: 1rem auto;
-		z-index: 2;
-		position: relative;
-		border-radius: 1.5rem;
-		border: 1px solid var(--color-outline);
-		background-color: var(--color-background);
-
-		// cancel cards view on smaller screens
-		@media (max-width: 750px) {
-			margin-top: 0;
-			background-color: transparent;
-			border: none;
-			border-radius: 0;
-		}
 	}
 </style>
