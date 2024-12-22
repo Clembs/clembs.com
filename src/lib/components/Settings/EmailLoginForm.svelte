@@ -7,6 +7,7 @@
 	import HabileHappy from '$lib/svg/HabileHappy.svelte';
 	import { createEventDispatcher } from 'svelte';
 	import { IconMail } from '@tabler/icons-svelte';
+	import InfoBox from '../InfoBox.svelte';
 	export let error = '';
 
 	let email = '';
@@ -22,6 +23,8 @@
 		loading = true;
 
 		return async ({ result, update }) => {
+			loading = false;
+
 			if (result.type === 'failure' && typeof result.data?.message === 'string') {
 				error = result.data?.message;
 				return;
@@ -47,12 +50,14 @@
 		<HabileHappy />
 
 		<h1>Sign in to clembs.com</h1>
-
-		<p>
-			Create an account or sign in to vote on comments, use a username, and more!<br />
-			The process takes less than 2 minutes, and you can always delete your account.
-		</p>
 	</header>
+
+	<InfoBox type="caution">
+		<h4 slot="title">Sunsetting clembs.com accounts</h4>
+
+		I'm slowly removing clembs.com accounts. You can no longer create a new account, and logging in
+		will be removed on January 3rd.
+	</InfoBox>
 
 	<TextInput
 		bind:value={email}
