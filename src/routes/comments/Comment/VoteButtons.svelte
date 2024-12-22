@@ -1,4 +1,4 @@
-<!-- <script lang="ts">
+<script lang="ts">
 	import {
 		IconArrowBigUp,
 		IconArrowBigDown,
@@ -8,12 +8,9 @@
 	import { page } from '$app/stores';
 	import toast from 'svelte-french-toast';
 	import type { Comment } from '$lib/db/types';
-	import { calculateScore } from '$lib/helpers/calculateScore';
 	import { enhance } from '$app/forms';
 	import type { ActionResult } from '@sveltejs/kit';
 	import { showLoginDialog, showRestrictedAccountDialog } from '$lib/stores/modals';
-	import { client } from '$lib/db/supabase';
-	import { onDestroy, onMount } from 'svelte';
 
 	export let comment: Comment;
 	export let big = false;
@@ -24,7 +21,9 @@
 		? comment.score?.find((e) => e.userId === data?.userData?.id)?.type
 		: null;
 
-	const originalScore = calculateScore(comment);
+	const originalScore =
+		comment?.score?.reduce((acc, cur) => (acc = acc + (cur.type === 'UPVOTE' ? 1 : -1)), 0) || 0;
+
 	const scoreExcludingCurrentUser =
 		originalScore - (vote === 'UPVOTE' ? 1 : vote === 'DOWNVOTE' ? -1 : 0);
 	let currentScore = originalScore;
@@ -51,16 +50,6 @@
 			vote = voteType;
 			currentScore = scoreExcludingCurrentUser + (voteType === 'UPVOTE' ? 1 : -1);
 		}
-
-		channel.send({
-			event: 'vote',
-			type: 'broadcast',
-			payload: {
-				voteType: vote,
-				newScore: currentScore,
-				userId: data.userData.id,
-			},
-		});
 	}
 
 	function handleVoteError(result: ActionResult) {
@@ -83,23 +72,6 @@
 		vote = previousVote;
 		currentScore = previousScore;
 	}
-
-	const channel = client.channel(`comment-votes-${comment.id}`);
-
-	onMount(() => {
-		channel
-			.on('broadcast', { event: 'vote' }, ({ payload }) => {
-				currentScore = payload.newScore;
-				if (data.userData?.id === payload.userId) {
-					vote = payload.voteType;
-				}
-			})
-			.subscribe();
-	});
-
-	onDestroy(() => {
-		channel.unsubscribe();
-	});
 </script>
 
 <div
@@ -109,8 +81,8 @@
 	style="--main-color: {!vote
 		? 'var(--color-on-surface)'
 		: vote === 'UPVOTE'
-		? '#654fff'
-		: 'var(--color-error)'}"
+			? '#654fff'
+			: 'var(--color-error)'}"
 >
 	<form
 		use:enhance={() => {
@@ -283,4 +255,4 @@
 			}
 		}
 	}
-</style> -->
+</style>

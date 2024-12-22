@@ -49,7 +49,6 @@
     "@formkit/auto-animate": "^0.8.2",
     "@neodrag/svelte": "^2.0.6",
     "@simplewebauthn/browser": "^10.0.0",
-    "@supabase/supabase-js": "^2.45.3",
     "@tabler/icons-svelte": "^2.47.0",
     "d3-interpolate": "^3.0.1",
     "drizzle-orm": "^0.28.6",
