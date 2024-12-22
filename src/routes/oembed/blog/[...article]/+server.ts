@@ -1,5 +1,5 @@
-import { allPosts } from '$lib/data/blog';
-import { categories } from '$lib/data/blog/_categories';
+import { blogArticles } from '$lib/data/blog-articles';
+import { categories } from '$lib/data/blog-articles/categories';
 import { dateFormat } from '$lib/helpers/dateFormat';
 import { error, json } from '@sveltejs/kit';
 
@@ -10,7 +10,7 @@ export async function GET({ params, url }) {
 	if (!categoryId || !postId) error(404);
 
 	const category = categories.find((c) => c.id === categoryId);
-	const post = allPosts.find((p) => p.id === postId && p.categoryId === categoryId);
+	const post = blogArticles.find((p) => p.slug === postId && p.categoryId === categoryId);
 
 	if (!category || !post) error(404);
 

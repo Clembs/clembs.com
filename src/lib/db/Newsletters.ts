@@ -1,4 +1,4 @@
-import type { categories } from '$lib/data/blog/_categories';
+import type { categories } from '$lib/data/blog-articles/categories';
 
 export type Newsletter = (typeof categories)[number]['id'];
 

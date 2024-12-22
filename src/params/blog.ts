@@ -1,6 +1,6 @@
-import { allPosts } from '$lib/data/blog';
+import { blogArticles } from '$lib/data/blog-articles';
 import type { ParamMatcher } from '@sveltejs/kit';
 
 export const match: ParamMatcher = (param: string) => {
-	return !!allPosts.find(({ id }) => id === param);
+	return !!blogArticles.find(({ slug: id }) => id === param);
 };

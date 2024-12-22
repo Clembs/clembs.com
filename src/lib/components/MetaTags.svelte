@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import type { BlogPost } from '$lib/data/blog';
+	import type { Article } from '$lib/data/blog-articles';
 
 	export let pageName: string = 'Clembs';
 	export let description: string;
 	export let image = '/banner.png';
 	export let siteName = 'Clembs';
-	export let blogPost: BlogPost | null = null;
-	export let themeColor = $page.data.themeGradient?.from || '#654fff';
+	export let article: Article | null = null;
+	export let themeColor = '#987fff';
 	const favicon = '/favicon.png';
 </script>
 
@@ -45,23 +45,23 @@
 	{/if}
 	<meta name="twitter:image" content={image} />
 	<!-- Article stuff -->
-	{#if blogPost}
+	{#if article}
 		<meta name="byl" content="By Clément Voisin" />
 		<meta name="article:author" content="Clément Voisin" />
-		<meta name="pubdate" content={blogPost.createdAt.toISOString()} />
-		<meta property="article:published_time" content={blogPost.createdAt.toISOString()} />
-		{#if blogPost.tags?.length}
-			<meta name="keywords" content={blogPost.tags.join(', ')} />
-			{#each blogPost.tags as tag}
+		<meta name="pubdate" content={article.createdAt.toISOString()} />
+		<meta property="article:published_time" content={article.createdAt.toISOString()} />
+		<!-- {#if article.tags?.length}
+			<meta name="keywords" content={article.tags.join(', ')} />
+			{#each article.tags as tag}
 				<meta property="article:tag" content={tag} />
 			{/each}
-		{/if}
+		{/if} -->
 		<meta property="article:section" content="Blog" />
 		<link
 			rel="alternate"
 			type="application/json+oembed"
-			href="{$page.url.origin}/oembed/blog/{blogPost.categoryId}/{blogPost.id}"
-			title={blogPost.title}
+			href="{$page.url.origin}/oembed/blog/{article.categoryId}/{article.slug}"
+			title={article.title}
 		/>
 	{/if}
 	<!-- Icons -->

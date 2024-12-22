@@ -1,9 +1,9 @@
 <script lang="ts">
 	import Button from '$lib/components/Button.svelte';
 	import MetaTags from '$lib/components/MetaTags.svelte';
-	import BlogPost from '$lib/components/Projects/BlogPost.svelte';
-	import FeaturedBlogPost from '$lib/components/Projects/FeaturedBlogPost.svelte';
-	import { categories } from '$lib/data/blog/_categories';
+	import BlogArticle from '$lib/components/Projects/BlogArticle.svelte';
+	import CaseStudyArticle from '$lib/components/Projects/CaseStudyArticle.svelte';
+	import { categories } from '$lib/data/blog-articles/categories.js';
 	import { IconChevronRight } from '@tabler/icons-svelte';
 
 	export let data;
@@ -13,14 +13,6 @@
 	pageName="Blog - Clembs"
 	description="My thoughts, projects, finds, and home to everything else I want to put into text."
 />
-
-<section class="category">
-	<header>
-		<h2>Recent</h2>
-	</header>
-
-	<FeaturedBlogPost data={data.posts[0]} />
-</section>
 
 {#each categories as category}
 	<section class="category">
@@ -39,7 +31,11 @@
 			<ul class="posts">
 				{#each data.posts.filter((post) => post.categoryId === category.id) as post}
 					<li class="post">
-						<BlogPost data={post} />
+						{#if post.categoryId === 'work'}
+							<CaseStudyArticle article={post} />
+						{:else}
+							<BlogArticle article={post} />
+						{/if}
 					</li>
 				{/each}
 			</ul>
@@ -53,7 +49,6 @@
 
 		header {
 			display: flex;
-			justify-content: space-between;
 			align-items: center;
 			margin-bottom: 0.5rem;
 

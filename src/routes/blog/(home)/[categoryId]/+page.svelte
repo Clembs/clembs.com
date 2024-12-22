@@ -1,6 +1,7 @@
 <script lang="ts">
 	import MetaTags from '$lib/components/MetaTags.svelte';
-	import BlogPost from '$lib/components/Projects/BlogPost.svelte';
+	import BlogArticle from '$lib/components/Projects/BlogArticle.svelte';
+	import CaseStudyArticle from '$lib/components/Projects/CaseStudyArticle.svelte';
 
 	export let data;
 </script>
@@ -19,36 +20,31 @@
 	{data.posts.length} posts
 </span>
 
-<ol class="article-{data.category.id === 'design' ? 'grid' : 'list'}">
+<ol class="article-list">
 	{#each data.posts as post}
 		<li>
-			<BlogPost data={post} />
+			{#if post.categoryId === 'work'}
+				<CaseStudyArticle article={post} />
+			{:else}
+				<BlogArticle article={post} />
+			{/if}
 		</li>
 	{/each}
 </ol>
 
 <style lang="scss">
-	.article-list,
-	.article-grid {
+	.article-list {
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
 		list-style: none;
 		padding: 0;
 		margin: 0;
-		gap: 1rem;
 		margin-top: 1rem;
 		height: 100%;
 
 		li {
 			margin: 0;
 		}
-	}
-
-	.article-list {
-		display: flex;
-		flex-direction: column;
-	}
-
-	.article-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 	}
 </style>

@@ -1,5 +1,5 @@
-import { allPosts } from '$lib/data/blog';
-import { categories } from '$lib/data/blog/_categories';
+import { blogArticles } from '$lib/data/blog-articles';
+import { categories } from '$lib/data/blog-articles/categories';
 import { db } from '$lib/db';
 import type { Newsletter } from '$lib/db/Newsletters';
 import { newsletterSubscribers } from '$lib/db/schema';
@@ -84,7 +84,7 @@ export const actions = {
 <a 
 	style="margin-top: 1rem; background-color: #000; color: #fff; padding: 8px 16px; text-decoration: none; border-radius: 32px;"
 	href="${url.origin}/blog/newsletter/confirm?email=${encodeURIComponent(
-		formEmail
+		formEmail,
 	)}&token=${subscribeToken}&list=${list}"
 >
 	Confirm subscription
@@ -95,7 +95,7 @@ Not you? You can safely ignore this email.
 </p>
 				`),
 				},
-				formEmail
+				formEmail,
 			);
 		} catch (err) {
 			return error(404);
@@ -123,7 +123,7 @@ Not you? You can safely ignore this email.
 		}
 
 		const category = categories.find((category) => category.id === categoryId);
-		const post = allPosts.find((post) => post.id === postId);
+		const post = blogArticles.find((post) => post.slug === postId);
 
 		if (!category || !post) {
 			return fail(404, {
@@ -133,7 +133,7 @@ Not you? You can safely ignore this email.
 
 		const postHtml = await getPostHtml(post);
 
-		const postUrl = new URL(`/blog/${category.id}/${post.id}`, 'https://clembs.com');
+		const postUrl = new URL(`/blog/${category.id}/${post.slug}`, 'https://clembs.com');
 
 		const subscribers = await db.query.newsletterSubscribers.findMany();
 
@@ -185,7 +185,7 @@ ${postHtml.replace(/href="#/g, `href="${postUrl}#`)}
 <div style="padding-top: 32px;">
 	<a
 		href="https://clembs.com/blog/newsletter/unsubscribe?list=${category.id}&email=${encodeURIComponent(
-			subscriber.email
+			subscriber.email,
 		)}&token=${subscriber.unsubscribeToken}"
 		style="font-size: 14px; color: #6E6D7A;"
 	>
@@ -193,10 +193,10 @@ ${postHtml.replace(/href="#/g, `href="${postUrl}#`)}
 	</a>
 </div>
 `,
-							url
+							url,
 						),
 					},
-					subscriber.email
+					subscriber.email,
 				);
 			}
 		}

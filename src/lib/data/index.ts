@@ -1,7 +1,7 @@
-import { archives } from './archive';
-import { allPosts } from './blog';
+import { projects } from './projects';
+import { blogArticles } from './blog-articles';
 
 export const allObjectIds = [
-	...archives.map((archive) => `archive/${archive.id}`),
-	...allPosts.map((post) => `blog/${post.categoryId}/${post.id}`),
+	...projects.map((archive) => `archive/${archive.id}`),
+	...blogArticles.map((post) => `blog/${post.categoryId}/${post.slug}`),
 ];

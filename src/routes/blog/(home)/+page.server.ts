@@ -1,9 +1,9 @@
-import { allPosts } from '$lib/data/blog';
-import { categories } from '$lib/data/blog/_categories';
+import { blogArticles } from '$lib/data/blog-articles';
+import { categories } from '$lib/data/blog-articles/categories';
 
 export async function load() {
 	return {
 		categories: categories,
-		posts: allPosts,
+		posts: blogArticles,
 	};
 }

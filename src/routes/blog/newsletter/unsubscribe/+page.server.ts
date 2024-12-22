@@ -1,4 +1,4 @@
-import { categories } from '$lib/data/blog/_categories';
+import { categories } from '$lib/data/blog-articles/categories';
 import { db } from '$lib/db';
 import type { Newsletter } from '$lib/db/Newsletters';
 import { newsletterSubscribers } from '$lib/db/schema';

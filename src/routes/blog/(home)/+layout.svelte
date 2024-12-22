@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Chip from '$lib/components/Chip.svelte';
-	import { categories } from '$lib/data/blog/_categories';
+	import { categories } from '$lib/data/blog-articles/categories';
 	import { page } from '$app/stores';
 
 	$: selectedCategory = $page.url.pathname.split('/').pop() || 'blog';
@@ -8,7 +8,9 @@
 
 <main>
 	<header>
-		<h1>Clembs' Blog</h1>
+		<h1>Blog</h1>
+
+		<p>Everything I write about, from design to code and everything in between.</p>
 
 		<div class="chips">
 			<Chip checked={selectedCategory === 'blog'} href="/blog">All posts</Chip>
@@ -34,10 +36,6 @@
 			align-items: center;
 			gap: 1rem;
 			margin-bottom: 1rem;
-
-			h1 {
-				font-size: 3.5rem;
-			}
 
 			.chips {
 				display: flex;

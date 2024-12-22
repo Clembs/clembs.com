@@ -1,5 +1,5 @@
-import { allPosts } from '$lib/data/blog';
-import { categories } from '$lib/data/blog/_categories';
+import { blogArticles } from '$lib/data/blog-articles';
+import { categories } from '$lib/data/blog-articles/categories';
 import { error } from '@sveltejs/kit';
 
 export async function load({ params }) {
@@ -10,10 +10,14 @@ export async function load({ params }) {
 		error(404, `Category "${categoryId}" not found`);
 	}
 
-	const posts = allPosts.filter((post) => post.categoryId === categoryId);
+	const posts = blogArticles.filter((post) => post.categoryId === categoryId);
 
 	return {
 		category,
 		posts,
+		navButton: {
+			label: 'Blog',
+			href: '/blog',
+		},
 	};
 }

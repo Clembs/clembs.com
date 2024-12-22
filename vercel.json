@@ -5,9 +5,11 @@
 		{ "source": "/boosty", "destination": "https://boosty.to/clembs" },
 
 		{ "source": "/questions", "destination": "/messages" },
-		{ "source": "/branding/:path*", "destination": "/blog/design/:path*" },
-		{ "source": "/branding", "destination": "/blog/design" },
-		{ "source": "/software", "destination": "/archive" },
+		{ "source": "/branding/:path*", "destination": "/blog/:path*" },
+		{ "source": "/blog/design/:path*", "destination": "/blog/:path*" },
+		{ "source": "/blog/design", "destination": "/blog/work" },
+		{ "source": "/branding", "destination": "/blog/work" },
+		{ "source": "/software", "destination": "/blog/work" },
 
 		{ "source": "/archive/crbt", "destination": "https://crbt.app" },
 		{ "source": "/archive/purplet", "destination": "https://github.com/CRBT-Team/Purplet" },
@@ -29,7 +31,7 @@
 		},
 		{ "source": "/steam", "destination": "https://steamcommunity.com/id/Clembs" },
 		{ "source": "/twitch", "destination": "https://twitch.tv/Clembs" },
-		{ "source": "/twitter", "destination": "https://twitter.com/ClembsV" },
+		{ "source": "/twitter", "destination": "https://x.com/clembsv" },
 		{ "source": "/yt", "destination": "https://youtube.com/channel/UC1uQmGSF7MGyOnHnljzaCWg" },
 		{ "source": "/youtube", "destination": "https://youtube.com/channel/UC1uQmGSF7MGyOnHnljzaCWg" },
 

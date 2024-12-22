@@ -6,7 +6,6 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
 	const { player } = await fetchMinecraftPlayer(cookies);
 
 	return {
-		themeGradient: { from: '#987fff', to: '#987fff' },
 		player,
 		language,
 	};

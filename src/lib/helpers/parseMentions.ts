@@ -1,5 +1,5 @@
-import type { BlogPost } from '$lib/data/blog';
-import type { Archive } from '$lib/data/archive';
+import type { Article } from '$lib/data/blog-articles';
+import type { Project } from '$lib/data/projects';
 import { EMOJI_MENTION_REGEX, USERNAME_MENTION_REGEX } from './regex';
 
 export const emojiList = ['flushed', 'happy', 'laugh', 'neutral', 'scared', 'encarada'];
@@ -28,12 +28,12 @@ type ParserOutputBaseProjectStructure = ParserOutputBaseStructure & {
 
 type ParserOutputBlogStructure = ParserOutputBaseProjectStructure & {
 	projectType: 'blog';
-	details: BlogPost;
+	details: Article;
 };
 
 type ParserOutputSoftwareStructure = ParserOutputBaseProjectStructure & {
 	projectType: 'archive';
-	details: Archive;
+	details: Project;
 };
 
 export type ParserOutputProjectStructure =

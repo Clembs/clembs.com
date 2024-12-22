@@ -19,7 +19,7 @@
 	description={`${data.summary}\n\nPosted on ${dateFormat(data.createdAt, false)} on Blog/${
 		data.category.name
 	}`}
-	blogPost={data}
+	article={data}
 	image={data.bannerPath}
 />
 
@@ -35,7 +35,7 @@
 				name: data.category.name,
 			},
 			{
-				href: `/blog/${data.categoryId}/${data.id}`,
+				href: `/blog/${data.categoryId}/${data.slug}`,
 				name: data.title,
 			},
 		]}
@@ -136,7 +136,7 @@
 </article>
 
 <Comments
-	projectId="blog/{data.categoryId}/{data.id}"
+	projectId="blog/{data.categoryId}/{data.slug}"
 	comments={data.comments}
 	userData={data.userData}
 />

@@ -45,7 +45,7 @@
 						subscriptionStatus = 'pending-sub';
 						localStorage.setItem(
 							'newsletters_subscriptions',
-							JSON.stringify([...subscriptions, 'discovelist'])
+							JSON.stringify([...subscriptions, 'discovelist']),
 						);
 					} else if (result.type === 'failure' && typeof result.data?.message === 'string') {
 						toast.error(result.data?.message || 'An error occurred. Please try again later.');
@@ -88,7 +88,7 @@
 				subscriptionStatus = null;
 				localStorage.setItem(
 					'newsletters_subscriptions',
-					JSON.stringify(subscriptions.filter((sub) => sub !== 'discovelist'))
+					JSON.stringify(subscriptions.filter((sub) => sub !== 'discovelist')),
 				);
 			}}
 		>
@@ -100,7 +100,7 @@
 {#if data.userData?.badges?.includes('CLEMBS')}
 	<form
 		id="dev-actions"
-		action="/blog/newsletter/actions?/send&category={data.categoryId}&post={data.id}"
+		action="/blog/newsletter/actions?/send&category={data.categoryId}&post={data.slug}"
 		method="post"
 		use:enhance={() =>
 			async ({ result }) => {

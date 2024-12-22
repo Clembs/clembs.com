@@ -1,8 +1,8 @@
-import type { BlogPost } from '$lib/data/blog';
+import type { Article } from '$lib/data/blog-articles';
 
-export async function getPostHtml(post: BlogPost): Promise<string> {
+export async function getPostHtml(article: Article): Promise<string> {
 	const rawMd = (await import(
-		`./src/routes/blog/(post)/${post.categoryId}/${post.id}/+page.mdx`
+		`./src/routes/blog/(post)/${article.categoryId}/${article.slug}/+page.mdx`
 	)) as {
 		default: {
 			render: () => {

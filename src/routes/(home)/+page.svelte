@@ -1,22 +1,11 @@
 <script lang="ts">
-	import { allPosts } from '$lib/data/blog';
-	import { archives } from '$lib/data/archive';
-	import {
-		IconBrush,
-		IconCode,
-		IconHeart,
-		IconMessageCircle,
-		IconBallpen,
-		IconAt,
-	} from '@tabler/icons-svelte';
+	import { blogArticles } from '$lib/data/blog-articles';
+	import { projects } from '$lib/data/projects';
+	import { IconBrush, IconCode, IconHeart } from '@tabler/icons-svelte';
 	import MetaTags from '$lib/components/MetaTags.svelte';
-	import ArchiveItem from '$lib/components/Projects/ArchiveItem.svelte';
-	import BlogPost from '$lib/components/Projects/BlogPost.svelte';
-	import Card from '$lib/components/Card.svelte';
-	import FeaturedBlogPost from '$lib/components/Projects/FeaturedBlogPost.svelte';
 	import Cta from './CTA.svelte';
-
-	const designPosts = allPosts.filter(({ categoryId }) => categoryId === 'design');
+	import Project from '$lib/components/Projects/Project.svelte';
+	import CaseStudyArticle from '$lib/components/Projects/CaseStudyArticle.svelte';
 </script>
 
 <MetaTags
@@ -64,47 +53,41 @@ and express my love through design, code and video. Welcome to clembs.com!"
 </section>
 
 <section id="projects">
-	<FeaturedBlogPost data={designPosts[0]} />
 	<div id="project-grid">
-		{#each designPosts.slice(1, 3) as post, i}
-			<BlogPost data={post} />
-			{#each archives.slice(i * 3, i * 3 + 3) as archive, i}
-				<ArchiveItem loaded data={archive} />
+		{#each blogArticles.filter((c) => c.categoryId === 'work').slice(1, 3) as article, i}
+			<CaseStudyArticle orientation="vertical" {article} />
+			{#each projects.slice(i * 3, i * 3 + 3) as project, i}
+				<Project {project} />
 			{/each}
 		{/each}
 	</div>
 </section>
 
-<!-- <section id="about-me">
-	<header>
-		<h2>A little about me</h2>
+<!-- <section id="work">
+	<h2>Projects</h2>
 
-		<p>Nice to meet you, I'm Clément "Clembs", a 17 y/o student from the south of France.</p>
-		<ul>
-			<li>I'm a student in a Computer Science university in Toulouse, France.</li>
-			<li>I'm primarily coding in TypeScript, and I'm currently learning Go.</li>
-			<li>
-				My website launched in 2020 to showcase design and programming projects. It's been reworked
-				a few times, with this version being coded with <a
-					href="https://kit.svelte.dev"
-					target="_blank"
-					rel="noopener noreferrer">SvelteKit</a
-				>, which is a blessing to use.<br />
-			</li>
-		</ul>
-	</header>
-
-	<ToggleAvatar />
+	{#each [...projects, ...blogArticles.filter((b) => b.categoryId === 'work')]
+		.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+		.map((p) => {
+			console.log([...projects, ...blogArticles].length);
+			return p;
+		}) as post}
+		{#if 'categoryId' in post}
+			<DesignArticle article={post} />
+		{:else if 'brief' in post}
+			<ArchiveItem project={post} />
+		{/if}
+	{/each}
 </section> -->
 
 <span
 	aria-hidden="true"
 	style="
-	opacity: 0.15;
-	color: var(--color-background);
-	text-align: left;
-	transform: rotateY(180deg);
-	"
+		opacity: 0.15;
+		color: var(--color-background);
+		text-align: left;
+		transform: rotateY(180deg);
+		"
 >
 	Strange, isn't it?
 </span>
@@ -123,7 +106,7 @@ and express my love through design, code and video. Welcome to clembs.com!"
 			width: 100%;
 
 			h1 {
-				font-size: clamp(2rem, 7vw, 2.9rem);
+				font-size: clamp(2rem, 7vw, 2.75rem);
 				line-height: 1.315;
 
 				mark {
@@ -162,7 +145,6 @@ and express my love through design, code and video. Welcome to clembs.com!"
 			text-align: center;
 			margin-bottom: 0.5rem;
 		}
-		padding: 1.5rem 1rem;
 		margin: 0 auto;
 	}
 
@@ -186,6 +168,12 @@ and express my love through design, code and video. Welcome to clembs.com!"
 			}
 		}
 	}
+
+	// #work {
+	// 	display: flex;
+	// 	flex-direction: column;
+	// 	gap: 2rem;
+	// }
 
 	// #about-me {
 	// 	display: flex;
