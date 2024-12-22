@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import EmailLogin from './EmailLoginForm.svelte';
 	import InfoBox from '../InfoBox.svelte';
 	import OtpInput from './OTPInputForm.svelte';
@@ -7,15 +6,9 @@
 	export let showModal = false;
 	export let error = '';
 
-	let canUsePasskeys: boolean;
-	let screen: 'login' | 'verify-otp' | 'create-passkey' = 'login';
+	let screen: 'login' | 'verify-otp' = 'login';
 	let email: string;
 	let isNewUser: boolean;
-
-	onMount(async () => {
-		const { browserSupportsWebAuthn } = await import('@simplewebauthn/browser');
-		canUsePasskeys = browserSupportsWebAuthn();
-	});
 </script>
 
 <div class="login-form">
@@ -32,17 +25,11 @@
 				email = ev.detail.email;
 				screen = 'verify-otp';
 			}}
-			{canUsePasskeys}
-			bind:showModal
 			bind:error
 		/>
 	{:else}
 		<OtpInput {email} {isNewUser} bind:showModal bind:error />
 	{/if}
-
-	<!-- {#if canUsePasskeys}
-		<PasskeyLogin bind:showModal bind:error />
-	{/if} -->
 </div>
 
 <style lang="scss">

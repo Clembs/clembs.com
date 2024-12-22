@@ -8,44 +8,18 @@
 	import toast, { LoaderIcon } from 'svelte-french-toast';
 	import Button from '$lib/components/Button.svelte';
 	import SettingsSection from './SettingsSection.svelte';
-	import Switch from '$lib/components/Switch.svelte';
 	import DeleteAccountModal from './DeleteAccountModal.svelte';
-	import Passkey from '$lib/svg/Passkey.svelte';
-	import { dateFormat } from '$lib/helpers/dateFormat';
-	import Tooltip from '$lib/components/Tooltip.svelte';
-	import Badge from '$lib/components/Badge.svelte';
-	import { onMount } from 'svelte';
-	import type { PageData } from '../$types';
+	import type { PageData } from './$types';
 
-	import {
-		IconDeviceFloppy,
-		IconEdit,
-		IconX,
-		IconTrash,
-		IconLogout,
-		IconAlertTriangleFilled,
-	} from '@tabler/icons-svelte';
+	import { IconLogout, IconAlertTriangleFilled } from '@tabler/icons-svelte';
 
 	export let data: PageData;
 
 	let usernameChangeLoading = false;
-	let notificationsLoading = false;
 	let signOutLoading = false;
 	let error = '';
 	let username = data?.userData?.username;
-	let emailAllReplies = data?.userData?.preferences?.email?.allReplies;
 	let showDeleteModal = false;
-
-	let editPasskeyId = '';
-
-	let canUsePasskeys = false;
-	let passkeyUseLoading = true;
-
-	onMount(async () => {
-		const { browserSupportsWebAuthn } = await import('@simplewebauthn/browser');
-		canUsePasskeys = browserSupportsWebAuthn();
-		passkeyUseLoading = false;
-	});
 </script>
 
 <main>
@@ -131,194 +105,6 @@
 		</SettingsSection>
 
 		<SettingsSection>
-			<form
-				method="POST"
-				action="/settings?/updateEmailSettings"
-				use:enhance={() => {
-					notificationsLoading = true;
-					return async ({ result, update }) => {
-						notificationsLoading = false;
-						if (result.type === 'success') {
-							toast.success('Settings updated successfully!');
-						}
-						if (result.type === 'failure' && typeof result.data?.message === 'string') {
-							toast.error(result.data?.message);
-						}
-						if (result.type === 'error') {
-							toast.error(result.error?.message);
-						}
-						await update();
-					};
-				}}
-			>
-				<h2>Email notifications</h2>
-
-				<p class="subtext">Receive emails for events that happen on clembs.com.</p>
-
-				<!-- {#if $settingsStore} -->
-				<!-- <input type="hidden" name="preferences" value={JSON.stringify($settingsStore)} /> -->
-
-				<div class="switches">
-					<Switch required={false} name="allReplies" bind:checked={emailAllReplies}>
-						When anyone replies to my comments
-					</Switch>
-
-					<!-- <Switch required={false} name="clembsReplies" disabled={emailAllReplies}>
-						When Clembs replies to my comments
-					</Switch> -->
-
-					<!-- <Switch required={false} name="mentioned">When anyone @mentions me</Switch> -->
-				</div>
-
-				<Button type="submit">
-					{#if notificationsLoading}
-						<LoaderIcon />
-					{:else}
-						Update email settings
-					{/if}
-				</Button>
-
-				<!-- <Switch bind:checked={$settings?.email.popularComment}>
-			When any of my comments gets popular
-		</Switch> -->
-			</form>
-		</SettingsSection>
-
-		<SettingsSection>
-			<h2>Passkeys <Badge style="secondary">Recommended</Badge></h2>
-
-			<p class="subtext">
-				Passkeys are a new and safer way to sign in using your device's screen lock. Manage your
-				passkeys here.
-			</p>
-
-			{#if data.userData?.passkeys?.length}
-				{#each data.userData.passkeys as passkey}
-					<form
-						use:enhance={() => {
-							return async ({ result, update }) => {
-								if (result.type === 'success') {
-									if (editPasskeyId === passkey.credentialId) {
-										toast.success('Passkey updated successfully!');
-										editPasskeyId = '';
-									} else {
-										toast.success('Passkey deleted successfully!');
-									}
-								}
-								if (result.type === 'failure') {
-									toast.error(result.data?.message);
-								}
-								if (result.type === 'error') {
-									toast.error(result.error?.message);
-								}
-								await update();
-							};
-						}}
-						method="post"
-						class="passkey"
-						action={editPasskeyId === passkey.credentialId
-							? '/account?/updatePasskey'
-							: '/account?/deletePasskey'}
-					>
-						<div class="passkey-profile">
-							<input type="hidden" name="id" value={passkey.credentialId} />
-							<Passkey />
-							<div class="passkey-profile-info">
-								{#if editPasskeyId === passkey.credentialId}
-									<TextInput
-										value={passkey.name}
-										name="name"
-										placeholder="{data.userData.username}'s device"
-										required={true}
-										autofocus
-										maxlength={32}
-										minlength={2}
-									/>
-								{:else}
-									<span class="passkey-profile-info-name">
-										{passkey.name}
-									</span>
-									<span class="subtext">
-										Created on {dateFormat(passkey.createdAt)}
-									</span>
-								{/if}
-							</div>
-						</div>
-
-						<div class="buttons">
-							{#if editPasskeyId === passkey.credentialId}
-								<Button type="submit" style="text" size="sm">
-									<IconDeviceFloppy /> Save
-								</Button>
-								<Button on:click={() => (editPasskeyId = '')} type="button" style="text" size="sm">
-									<IconX /> Cancel
-								</Button>
-							{:else}
-								<Tooltip>
-									<span slot="tooltip-content">Edit passkey</span>
-									<Button
-										on:click={() => {
-											editPasskeyId = passkey.credentialId;
-										}}
-										type="button"
-										size="sm"
-										style="text"
-									>
-										<IconEdit />
-									</Button>
-								</Tooltip>
-
-								<Tooltip>
-									<span slot="tooltip-content">Delete passkey</span>
-									<Button type="submit" size="sm" style="text">
-										<IconTrash />
-									</Button>
-								</Tooltip>
-							{/if}
-						</div>
-					</form>
-				{/each}
-			{:else}
-				<div class="no-passkeys">
-					You haven't created any passkey! Create one to sign in faster.
-				</div>
-			{/if}
-
-			{#if passkeyUseLoading}
-				<LoaderIcon />
-			{:else}
-				{#if !canUsePasskeys}
-					<p>
-						Your browser doesn't support passkeys. You can still sign in with email verification.
-					</p>
-				{/if}
-				<Button disabled={!canUsePasskeys} href="/account/create-passkey">
-					<Passkey />
-					Create a passkey
-				</Button>
-			{/if}
-		</SettingsSection>
-
-		<!-- <SettingsSection>
-		<h2>Sessions</h2>
-
-		<p>
-			Here are all the devices you're logged in on. You can log out of them individually, or log out
-			all of them at once.
-		</p>
-
-		{#if data.userData?.passkeys?.length}
-			{#each data.userData.passkeys as passkey}
-				<div class="passkey">
-					{passkey.name}
-				</div>
-			{/each}
-		{:else}
-			You haven't saved a passkey!
-		{/if}
-	</SettingsSection> -->
-
-		<SettingsSection>
 			<h2>Danger zone</h2>
 
 			<div class="buttons">
@@ -373,47 +159,8 @@
 		}
 	}
 
-	.switches {
-		margin: 1rem 0;
-		display: flex;
-		flex-direction: column;
-		gap: 0.25rem;
-	}
-
 	.buttons {
 		display: flex;
 		gap: 0.5rem;
-	}
-
-	.passkey {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: 0.5rem;
-		margin: 0.5rem 0;
-
-		&-profile {
-			display: flex;
-			align-items: center;
-
-			&-info {
-				display: flex;
-				flex-direction: column;
-
-				&-name {
-					font-weight: 500;
-				}
-			}
-
-			:global(svg) {
-				margin-right: 1rem;
-				width: 2rem;
-				height: 2rem;
-			}
-		}
-	}
-
-	.no-passkeys {
-		margin: 0.5rem 0;
 	}
 </style>

@@ -1,8 +1,4 @@
-import type { comments, passkeys, sessions, streams, userCommentVote, users } from './schema';
-
-export type Passkey = typeof passkeys.$inferSelect & {
-	user?: User;
-};
+import type { comments, sessions, streams, userCommentVote, users } from './schema';
 
 export type Session = typeof sessions.$inferSelect & {
 	user?: User;
@@ -11,7 +7,6 @@ export type Session = typeof sessions.$inferSelect & {
 export type User = typeof users.$inferSelect & {
 	email: string;
 	comments?: Comment[];
-	passkeys?: Passkey[];
 	sessions?: Session[];
 };
 

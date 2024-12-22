@@ -43,9 +43,6 @@ export async function checkUsername(username: string | undefined) {
 
 	const existingUserWithUsername = await db.query.users.findFirst({
 		where: (u, { eq }) => eq(u.username, username),
-		with: {
-			passkeys: true,
-		},
 	});
 
 	if (existingUserWithUsername) {

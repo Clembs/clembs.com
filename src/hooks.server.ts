@@ -33,7 +33,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 		return await db.query.users.findFirst({
 			where: ({ id }, { eq }) => eq(id, session.user!.id),
 			with: {
-				passkeys: true,
 				sessions: true,
 			},
 		});

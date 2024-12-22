@@ -5,12 +5,8 @@
 	import Button from '$lib/components/Button.svelte';
 	import TextInput from '$lib/components/TextInput.svelte';
 	import HabileHappy from '$lib/svg/HabileHappy.svelte';
-	import PasskeyLogin from './PasskeyLoginButton.svelte';
 	import { createEventDispatcher } from 'svelte';
 	import { IconMail } from '@tabler/icons-svelte';
-
-	export let showModal = false;
-	export let canUsePasskeys = false;
 	export let error = '';
 
 	let email = '';
@@ -78,10 +74,6 @@
 		{/if}
 	</Button>
 </form>
-
-{#if canUsePasskeys}
-	<PasskeyLogin disabled={!EMAIL_REGEX.test(email)} bind:error bind:showModal bind:email />
-{/if}
 
 <style lang="scss">
 	form {
