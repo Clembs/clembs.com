@@ -10,8 +10,8 @@
 		loading="lazy"
 		src={project.iconPath}
 		alt="Icon for {project.name}"
-		height={64}
-		width={64}
+		height={52}
+		width={52}
 		class="icon"
 	/>
 	<div class="about">
@@ -62,11 +62,12 @@
 	.project {
 		display: flex;
 		gap: 1rem;
+		align-items: center;
 
 		// temporary for consistency with the previous design
 		background-color: var(--color-background);
-		padding: 0.75rem;
-		border-radius: 1.5rem;
+		padding: 1rem;
+		border-radius: 1.25rem;
 		border: 1px solid var(--color-outline);
 		grid-row: span 1;
 

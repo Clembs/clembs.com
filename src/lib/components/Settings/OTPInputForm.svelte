@@ -36,13 +36,6 @@
 				error = result.error?.message;
 				return;
 			}
-			if (result.type === 'redirect') {
-				const { browserSupportsWebAuthn } = await import('@simplewebauthn/browser');
-
-				if (browserSupportsWebAuthn()) {
-					goto(result.location);
-				}
-			}
 
 			showModal = false;
 			await update();

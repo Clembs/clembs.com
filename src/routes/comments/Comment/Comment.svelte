@@ -1,8 +1,7 @@
 <script lang="ts">
 	import type { Comment } from '$lib/db/types';
-	import GradientAvatar from '$lib/components/GradientAvatar/GradientAvatar.svelte';
 	import { page } from '$app/stores';
-	import toast, { LoaderIcon } from 'svelte-french-toast';
+	import { LoaderIcon } from 'svelte-french-toast';
 	import VoteButtons from './VoteButtons.svelte';
 	import { enhance } from '$app/forms';
 	import '../../../styles/comment.scss';
@@ -26,25 +25,9 @@
 	let isDeletionLoading = false;
 	let isPinningLoading = false;
 
-	// export let areRepliesLoaded = true;
 	export let areRepliesShown = true;
 
 	let showReplyForm = false;
-
-	// async function loadChildComments() {
-	// 	if (!comment.childComments?.length) {
-	// 		areRepliesLoading = true;
-	// 		try {
-	// 			const req = await fetch(`/comments/api/${comment.id}/comments`);
-
-	// 			areRepliesLoaded = true;
-	// 			comment.childComments = await req.json();
-	// 		} catch (e) {
-	// 			toast.error('Failed loading replies.');
-	// 		}
-	// 		areRepliesLoading = false;
-	// 	}
-	// }
 </script>
 
 <article
@@ -122,31 +105,7 @@
 			</div>
 		{/if}
 		{#if comment.childComments?.length && areRepliesShown}
-			<!-- {#if areRepliesShown} -->
 			<CommentList comments={comment.childComments} />
-			<!-- {:else}
-				<button
-					class="view-replies-button"
-					on:mouseover={loadChildComments}
-					on:focus={loadChildComments}
-					on:click|preventDefault={() => {
-						if (!areRepliesLoading) {
-							areRepliesShown = true;
-						}
-					}}
-				>
-					{#if areRepliesLoading}
-						<LoaderIcon />
-					{:else}
-						<div class="profiles">
-							{#each comment.childComments.slice(0, 3) as childComment}
-								<GradientAvatar user={childComment.author} size="1rem" />
-							{/each}
-						</div>
-						View {comment.childComments.length} replies
-					{/if}
-				</button>
-			{/if} -->
 		{/if}
 	</div>
 </article>
@@ -202,36 +161,4 @@
 		padding-left: 3.25rem;
 		padding-top: 0.5rem;
 	}
-
-	// .view-replies-button {
-	// 	z-index: 1;
-	// 	transform: translateY(-0.5rem);
-	// 	display: flex;
-	// 	align-items: center;
-	// 	cursor: pointer;
-	// 	gap: 0.5rem;
-	// 	font-size: 0.8rem;
-	// 	font-weight: 500;
-	// 	margin: 0 -0.25rem;
-	// 	padding: 0.5rem 0.75rem;
-	// 	text-decoration: none;
-	// 	border-radius: 1rem;
-	// 	width: fit-content;
-
-	// 	transition:
-	// 		box-shadow 150ms ease-in-out,
-	// 		transform 150ms ease-in-out;
-
-	// 	&:hover {
-	// 		background-color: var(--color-surface);
-	// 	}
-
-	// 	.profiles {
-	// 		display: flex;
-
-	// 		:global(.avatar) {
-	// 			margin-left: -0.25rem;
-	// 		}
-	// 	}
-	// }
 </style>

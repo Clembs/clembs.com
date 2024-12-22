@@ -1,7 +1,7 @@
 import { blogArticles } from '$lib/data/blog-articles';
 import { categories } from '$lib/data/blog-articles/categories';
 import { db } from '$lib/db';
-import type { Newsletter } from '$lib/db/Newsletters';
+import type { Newsletter } from '$lib/db/types';
 import { newsletterSubscribers } from '$lib/db/schema';
 import { dateFormat } from '$lib/helpers/dateFormat';
 import { getPostHtml } from '$lib/helpers/getPostHtml';

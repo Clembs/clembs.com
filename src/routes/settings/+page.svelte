@@ -7,7 +7,6 @@
 	import InfoBox from '$lib/components/InfoBox.svelte';
 	import toast, { LoaderIcon } from 'svelte-french-toast';
 	import Button from '$lib/components/Button.svelte';
-	import SettingsSection from './SettingsSection.svelte';
 	import DeleteAccountModal from './DeleteAccountModal.svelte';
 	import type { PageData } from './$types';
 
@@ -28,7 +27,7 @@
 
 		<h1>Account Settings</h1>
 
-		<SettingsSection>
+		<section>
 			<h2>Profile</h2>
 
 			<form
@@ -102,9 +101,9 @@
 					/>
 				</div>
 			</form>
-		</SettingsSection>
+		</section>
 
-		<SettingsSection>
+		<section>
 			<h2>Danger zone</h2>
 
 			<div class="buttons">
@@ -134,11 +133,11 @@
 					Delete Account
 				</Button>
 			</div>
-		</SettingsSection>
+		</section>
 	{:else}
-		<SettingsSection>
+		<section>
 			<LoginForm />
-		</SettingsSection>
+		</section>
 	{/if}
 </main>
 
@@ -162,5 +161,16 @@
 	.buttons {
 		display: flex;
 		gap: 0.5rem;
+	}
+
+	section {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		margin: 1.5rem 0;
+
+		:global(h2) {
+			margin-bottom: 1rem;
+		}
 	}
 </style>

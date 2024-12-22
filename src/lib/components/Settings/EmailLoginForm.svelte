@@ -4,7 +4,7 @@
 	import { LoaderIcon } from 'svelte-french-toast';
 	import Button from '$lib/components/Button.svelte';
 	import TextInput from '$lib/components/TextInput.svelte';
-	import HabileHappy from '$lib/svg/HabileHappy.svelte';
+	import HabileHappy from '$lib/icons/habile/HabileHappy.svelte';
 	import { createEventDispatcher } from 'svelte';
 	import { IconMail } from '@tabler/icons-svelte';
 	import InfoBox from '../InfoBox.svelte';

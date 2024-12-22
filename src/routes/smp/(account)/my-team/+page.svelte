@@ -1,8 +1,6 @@
 <script lang="ts">
 	import Modal from '$lib/components/Modal.svelte';
-	import { marked } from 'marked';
 	import { languages } from '../../locales/index.js';
-	import insane from 'insane';
 	import Button from '$lib/components/Button.svelte';
 	import Tooltip from '$lib/components/Tooltip.svelte';
 	import { IconLogout } from '@tabler/icons-svelte';
@@ -62,7 +60,7 @@
 	<section>
 		<h2>{strings.teams.currentTeam.description}</h2>
 		{#if data.team.description}
-			<p>{@html insane(marked(data.team.description))}</p>
+			<p>{data.team.description}</p>
 		{:else}
 			<p>
 				<i>{strings.teams.currentTeam.noDescription}</i>

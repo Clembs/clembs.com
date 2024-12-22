@@ -10,12 +10,12 @@ import {
 	date,
 	varchar,
 } from 'drizzle-orm/pg-core';
-import type { SubscriptionStatus } from './Newsletters';
+import type { SubscriptionStatus } from './types';
 
 export const users = pgTable('users', {
 	id: text('id').primaryKey(),
 	username: text('username').unique().notNull(),
-	email: text('email').unique(),
+	email: text('email').unique().notNull(),
 	badges: text('badges', { enum: ['VERIFIED', 'BLOCKED', 'SUPPORTER', 'CLEMBS'] }).array(),
 	createdAt: timestamp('created_at').notNull().defaultNow(),
 });
@@ -66,32 +66,6 @@ export const donations = pgTable('donations', {
 	platform: text('platform', {
 		enum: ['KOFI', 'PAYPAL', 'BOOSTY', 'BUYMEACOFFEE', 'TWITCH', 'OTHER'],
 	}).notNull(),
-	userId: text('user_id').references(() => users.id),
-});
-
-export const streams = pgTable('streams', {
-	id: text('id')
-		.default(sql`gen_random_uuid()`)
-		.primaryKey(),
-	title: text('label').notNull(),
-	startedAt: timestamp('started_at').notNull(),
-	state: text('state', {
-		enum: ['DEFAULT', 'ENDED', 'CANCELLED'],
-	})
-		.notNull()
-		.default('DEFAULT'),
-	platforms: jsonb('platforms').notNull().$type<
-		{
-			id: string;
-			url: string;
-		}[]
-	>(),
-	collaborators: jsonb('collaborators').$type<
-		{
-			url: string;
-			username: string;
-		}[]
-	>(),
 });
 
 export const newsletterSubscribers = pgTable('newsletter_subscribers', {
@@ -147,13 +121,6 @@ export const commentsRelations = relations(comments, ({ one, many }) => ({
 export const sessionsRelations = relations(sessions, ({ one }) => ({
 	user: one(users, {
 		fields: [sessions.userId],
-		references: [users.id],
-	}),
-}));
-
-export const donationsRelations = relations(donations, ({ one }) => ({
-	user: one(users, {
-		fields: [donations.userId],
 		references: [users.id],
 	}),
 }));

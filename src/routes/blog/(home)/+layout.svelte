@@ -2,8 +2,6 @@
 	import Chip from '$lib/components/Chip.svelte';
 	import { categories } from '$lib/data/blog-articles/categories';
 	import { page } from '$app/stores';
-
-	$: selectedCategory = $page.url.pathname.split('/').pop() || 'blog';
 </script>
 
 <main>
@@ -13,10 +11,10 @@
 		<p>Everything I write about, from design to code and everything in between.</p>
 
 		<div class="chips">
-			<Chip checked={selectedCategory === 'blog'} href="/blog">All posts</Chip>
+			<Chip checked={$page.url.pathname === '/blog'} href="/blog">All posts</Chip>
+
 			{#each categories as category}
-				{@const selected = selectedCategory === category.id}
-				<Chip checked={selected} href="/blog/{category.id}">
+				<Chip checked={$page.url.pathname.includes(category.id)} href="/blog/{category.id}">
 					{category.name}
 				</Chip>
 			{/each}

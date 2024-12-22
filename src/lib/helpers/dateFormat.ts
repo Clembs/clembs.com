@@ -31,15 +31,7 @@ export function relativeTimeFormat(date: Date | number): string {
 	return rtf.format(Math.floor(deltaSeconds / divisor), units[unitIndex]);
 }
 
-function leadingZero(num: number) {
-	return num > 9 ? num : `0${num}`;
-}
-
 export function dateFormat(date: Date, showTime = true) {
-	// return `${date.getFullYear()}-${leadingZero(date.getMonth() + 1)}-${leadingZero(date.getDate())}${
-	// 	showTime ? ` ${leadingZero(date.getHours())}:${leadingZero(date.getMinutes())}` : ''
-	// }`;
-
 	return date.toLocaleString('en-US', {
 		month: 'short',
 		day: 'numeric',
@@ -50,7 +42,7 @@ export function dateFormat(date: Date, showTime = true) {
 					hour: '2-digit',
 					hour12: false,
 					minute: '2-digit',
-			  }
+				}
 			: {}),
 	});
 }

@@ -2,7 +2,7 @@
 	import { enhance } from '$app/forms';
 	import Button from '$lib/components/Button.svelte';
 	import TextInput from '$lib/components/TextInput.svelte';
-	import type { Newsletter } from '$lib/db/Newsletters';
+	import type { Newsletter } from '$lib/db/types';
 	import { onMount } from 'svelte';
 	import toast from 'svelte-french-toast';
 

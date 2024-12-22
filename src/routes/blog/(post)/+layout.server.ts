@@ -29,9 +29,9 @@ export const load: LayoutServerLoad = async ({ url, setHeaders, depends }) => {
 
 	if (!category || !post) error(404);
 
-	const comments = await getComments({
-		projectId: `blog/${post.categoryId === 'work' ? 'design' : post!.categoryId}/${post!.slug}`,
-	});
+	const comments = await getComments(
+		`blog/${post.categoryId === 'work' ? 'design' : post!.categoryId}/${post!.slug}`,
+	);
 
 	depends('comments');
 

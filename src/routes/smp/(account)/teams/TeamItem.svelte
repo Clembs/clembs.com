@@ -4,8 +4,6 @@
 	import type { LanguageSchema } from '../../locales';
 	import { colors } from '../_helpers';
 	import Tooltip from '$lib/components/Tooltip.svelte';
-	import { marked } from 'marked';
-	import insane from 'insane';
 
 	export let strings: LanguageSchema;
 
@@ -35,7 +33,7 @@
 				{team.name}
 			</h4>
 			{#if team.description}
-				<p>{@html insane(marked(team.description))}</p>
+				<p>{team.description}</p>
 			{/if}
 		</div>
 	</div>

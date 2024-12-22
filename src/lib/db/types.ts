@@ -1,11 +1,11 @@
-import type { comments, sessions, streams, userCommentVote, users } from './schema';
+import type { comments, sessions, userCommentVote, users } from './schema';
+import type { categories } from '$lib/data/blog-articles/categories';
 
 export type Session = typeof sessions.$inferSelect & {
 	user?: User;
 };
 
 export type User = typeof users.$inferSelect & {
-	email: string;
 	comments?: Comment[];
 	sessions?: Session[];
 };
@@ -21,4 +21,6 @@ export type Comment = typeof comments.$inferSelect & {
 	score?: Partial<UserCommentVote>[] | null | undefined;
 };
 
-export type Stream = typeof streams.$inferSelect;
+export type Newsletter = (typeof categories)[number]['id'];
+
+export type SubscriptionStatus = 'subscribed' | 'pending-sub' | null;

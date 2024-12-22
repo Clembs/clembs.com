@@ -10,6 +10,6 @@ export const jamesHuang: Project = {
 	iconThumbnailPath: 'https://c.clembs.com/files/1dec25a5d1bfc04767.png',
 	links: {
 		projectUrl: 'https://jamesdesigns.clembs.com/',
-		repoUrl: 'https://github.com/Clembs/jameshuang',
+		// repoUrl: 'https://github.com/Clembs/jameshuang',
 	},
 };

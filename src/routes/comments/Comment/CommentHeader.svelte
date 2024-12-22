@@ -2,8 +2,7 @@
 	import GradientAvatar from '$lib/components/GradientAvatar/GradientAvatar.svelte';
 	import { badges } from '$lib/helpers/badges';
 	import { dateFormat } from '$lib/helpers/dateFormat';
-	import { rankBadges } from '$lib/helpers/rankBadges';
-	import type { Comment } from '$lib/db/types';
+	import type { Comment, User, UserBadge } from '$lib/db/types';
 	import { snowflakeToDate } from '$lib/helpers/snowflake';
 
 	export let comment: Comment;
@@ -11,6 +10,16 @@
 	const date = snowflakeToDate(comment.id);
 
 	let username = comment.author?.username ?? 'Guest';
+
+	function rankBadges(badges: Exclude<User['badges'], null>): UserBadge[] {
+		const badgeImportance: UserBadge[] = ['BLOCKED', 'CLEMBS', 'SUPPORTER'];
+
+		const sortedBadges = [...badges]
+			.filter((badge) => badgeImportance.includes(badge))
+			.sort((a, b) => badgeImportance.indexOf(a) - badgeImportance.indexOf(b));
+
+		return sortedBadges;
+	}
 </script>
 
 <header>
@@ -36,12 +45,6 @@
 			</div>
 		</div>
 	</div>
-
-	<!-- {#if comment.isPinned}
-    <span class="subtext comment-metadata-pinned">
-      <IconHeartFilled />
-    </span>
-  {/if} -->
 </header>
 
 <style lang="scss">

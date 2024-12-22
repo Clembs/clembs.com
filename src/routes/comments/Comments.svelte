@@ -1,25 +1,19 @@
 <script lang="ts">
-	import type { Comment as CommentType, User } from '$lib/db/types';
-	import { rankComments } from '$lib/helpers/rankComments';
+	import type { Comment as CommentType } from '$lib/db/types';
 	import RestrictedFunctionalityModal from './RestrictedFunctionalityModal.svelte';
-	import HabileNeutral from '$lib/svg/HabileNeutral.svelte';
-	import HabileScared from '$lib/svg/HabileScared.svelte';
+	import HabileNeutral from '$lib/icons/habile/HabileNeutral.svelte';
 	import CommentForm from './CommentForm/CommentForm.svelte';
-	import HabileHappy from '$lib/svg/HabileHappy.svelte';
+	import HabileHappy from '$lib/icons/habile/HabileHappy.svelte';
 	import LoginModal from '$lib/components/Settings/LoginModal.svelte';
 	import CommentList from './Comment/CommentList.svelte';
 	import { showLoginDialog, showRestrictedAccountDialog } from '$lib/stores/modals';
 
-	export let userData: User | null | undefined;
 	export let parentComment: CommentType | null | undefined = null;
 	export let projectId: string | null = null;
 	export let comments: CommentType[];
 	export let hideCreateForm = false;
 
-	let selectedSortingMode: 'interactions' | 'recent' = 'recent';
 	let selectedParentComment = parentComment;
-
-	$: sortedAndFiltered = rankComments(comments, userData, selectedSortingMode);
 </script>
 
 <div class="comments-page" id="comments">
@@ -42,8 +36,8 @@
 			{/if}
 			<div class="title-text">
 				<span class="subtext">
-					{sortedAndFiltered.length}
-					{sortedAndFiltered.length === 1 ? 'comment' : 'comments'}
+					{comments.length}
+					{comments.length === 1 ? 'comment' : 'comments'}
 				</span>
 			</div>
 		</div>
@@ -53,18 +47,12 @@
 	</header>
 
 	{#if comments.length}
-		{#if sortedAndFiltered.length}
-			<CommentList comments={sortedAndFiltered} />
-			<li class="no-comments">
-				<HabileHappy />
-				You've reached the end of the comments!
-			</li>
-		{:else}
-			<div class="no-comments">
-				<HabileScared />
-				You've filtered too much...
-			</div>
-		{/if}
+		<CommentList {comments} />
+
+		<li class="no-comments">
+			<HabileHappy />
+			You've reached the end of the comments!
+		</li>
 	{:else}
 		<div class="no-comments">
 			<HabileNeutral />

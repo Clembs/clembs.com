@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Card from '$lib/components/Card.svelte';
 	import type { ComponentType } from 'svelte';
 	import { createEventDispatcher } from 'svelte';
 
@@ -24,23 +23,25 @@
 
 	<div class="choices">
 		{#each choices as choice}
-			<Card href={choice.href} on:click={() => choice.value && dispatch('change', choice.value)}>
-				<div class="card-content" slot="card-content">
-					{#if choice.icon}
-						<div class="icon">
-							<svelte:component this={choice.icon} size={48} stroke={1.5} />
-						</div>
-					{/if}
+			<a
+				class="choice"
+				href={choice.href}
+				on:click={() => choice.value && dispatch('change', choice.value)}
+			>
+				{#if choice.icon}
+					<div class="icon">
+						<svelte:component this={choice.icon} size={48} stroke={1.5} />
+					</div>
+				{/if}
 
-					<h3>
-						{choice.label}
-					</h3>
+				<h3>
+					{choice.label}
+				</h3>
 
-					<p class="subtext">
-						{choice.description}
-					</p>
-				</div>
-			</Card>
+				<p class="subtext">
+					{choice.description}
+				</p>
+			</a>
 		{/each}
 	</div>
 </div>
@@ -62,7 +63,7 @@
 			gap: 1rem;
 		}
 
-		.card-content {
+		.choice {
 			display: flex;
 			flex-direction: column;
 			align-items: center;

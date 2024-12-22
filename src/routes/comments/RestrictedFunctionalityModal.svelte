@@ -1,7 +1,7 @@
 <script>
 	import Modal from '$lib/components/Modal.svelte';
 	import { showRestrictedAccountDialog } from '$lib/stores/modals';
-	import HabileNeutral from '$lib/svg/HabileNeutral.svelte';
+	import HabileNeutral from '$lib/icons/habile/HabileNeutral.svelte';
 </script>
 
 <Modal showModal on:close={() => showRestrictedAccountDialog.set(false)}>

@@ -53,8 +53,8 @@
 		// border-radius: 1rem;
 
 		// temporary for consistency with the previous design
-		padding: 0.75rem;
-		border-radius: 1.5rem;
+		padding: 1rem;
+		border-radius: 1.25rem;
 		border: 1px solid var(--color-outline);
 		grid-row: span 2;
 

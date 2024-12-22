@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import Button from '$lib/components/Button.svelte';
-	import HabileScared from '$lib/svg/HabileScared.svelte';
+	import HabileScared from '$lib/icons/habile/HabileScared.svelte';
 
 	const KonamiCode = [
 		'ArrowUp',

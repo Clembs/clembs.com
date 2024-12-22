@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Button from '$lib/components/Button.svelte';
-	import HabileScared from '$lib/svg/HabileScared.svelte';
+	import HabileScared from '$lib/icons/habile/HabileScared.svelte';
 
 	export let data;
 </script>

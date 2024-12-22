@@ -100,8 +100,7 @@ and express my love through design, code and video. Welcome to clembs.com!"
 		text-align: center;
 
 		.intro-text {
-			padding-top: 2rem;
-			padding-bottom: 3rem;
+			padding: 4rem 0;
 			position: relative;
 			width: 100%;
 

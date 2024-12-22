@@ -1,6 +1,6 @@
 import { categories } from '$lib/data/blog-articles/categories';
 import { db } from '$lib/db';
-import type { Newsletter } from '$lib/db/Newsletters';
+import type { Newsletter } from '$lib/db/types';
 import { newsletterSubscribers } from '$lib/db/schema';
 import { error } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
