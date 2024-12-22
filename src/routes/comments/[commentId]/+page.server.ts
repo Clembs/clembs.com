@@ -1,12 +1,12 @@
 import { db } from '$lib/db/index.js';
-import { userCommentVote, mentions, comments } from '$lib/db/schema';
+import { userCommentVote, comments } from '$lib/db/schema';
 import { error, fail } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
 import type { RequestEvent } from './$types';
 
 async function vote(
 	{ params, locals: { getUserData } }: RequestEvent,
-	voteType: 'UPVOTE' | 'DOWNVOTE'
+	voteType: 'UPVOTE' | 'DOWNVOTE',
 ) {
 	const userData = await getUserData();
 	if (!userData) return fail(401);
@@ -29,8 +29,8 @@ async function vote(
 				.where(
 					and(
 						eq(userCommentVote.commentId, params.commentId),
-						eq(userCommentVote.userId, userData.id)
-					)
+						eq(userCommentVote.userId, userData.id),
+					),
 				);
 		} else {
 			await db
@@ -43,8 +43,8 @@ async function vote(
 				.where(
 					and(
 						eq(userCommentVote.commentId, params.commentId),
-						eq(userCommentVote.userId, userData.id)
-					)
+						eq(userCommentVote.userId, userData.id),
+					),
 				);
 		}
 	} else {
@@ -87,9 +87,6 @@ export const actions = {
 		async function deleteCommentsAndChildren(commentId: string) {
 			// delete comment votes
 			await db.delete(userCommentVote).where(eq(userCommentVote.commentId, commentId));
-
-			// delete comment mentions
-			await db.delete(mentions).where(eq(mentions.commentId, commentId));
 
 			// find child comments
 			const childComments = await db.query.comments.findMany({

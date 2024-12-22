@@ -9,18 +9,17 @@
 	import type { PageServerData } from './$types';
 	import Stream from './Stream.svelte';
 	import MetaTags from '$lib/components/MetaTags.svelte';
-	import Mention from '../comments/Comment/Mention.svelte';
 
 	export let data: PageServerData;
 
 	const currentStream = data.streams.find(
-		(stream) => stream.state === 'DEFAULT' && stream.startedAt.getTime() < Date.now()
+		(stream) => stream.state === 'DEFAULT' && stream.startedAt.getTime() < Date.now(),
 	);
 	const upcomingStreams = data.streams.filter(
-		(stream) => stream.state === 'DEFAULT' && stream.startedAt.getTime() > Date.now()
+		(stream) => stream.state === 'DEFAULT' && stream.startedAt.getTime() > Date.now(),
 	);
 	const pastStreams = data.streams.filter(
-		(stream) => stream.state !== 'DEFAULT' && stream.startedAt.getTime() < Date.now()
+		(stream) => stream.state !== 'DEFAULT' && stream.startedAt.getTime() < Date.now(),
 	);
 </script>
 
@@ -75,18 +74,9 @@
 			{#if stream.collaborators?.length}
 				<span id="collaborators">
 					with
-					{#each stream.collaborators as collaborator}
-						<Mention
-							node={{
-								type: 'user',
-								username: collaborator.username,
-							}}
-							clickable={false}
-						/>
-						<!-- {new Intl.ListFormat('en-GB', { style: 'long', type: 'conjunction' }).format(
-						stream.collaborators.map((c) => c.username)
-					)} -->
-					{/each}
+					{new Intl.ListFormat('en-GB', { style: 'long', type: 'conjunction' }).format(
+						stream.collaborators.map((c) => c.username),
+					)}
 				</span>
 			{/if}
 

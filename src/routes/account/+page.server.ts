@@ -144,15 +144,6 @@ export const actions: Actions = {
 			});
 		}
 
-		const username = formData.get('username')?.toString()?.trim();
-		const usernameCheck = await checkUsername(username);
-
-		if (username && usernameCheck?.message) {
-			return fail(usernameCheck.status, {
-				message: usernameCheck.message,
-			});
-		}
-
 		const otp = formData.get('otp')?.toString();
 
 		if (!otp || !OTP_REGEX.test(otp)) {

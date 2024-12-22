@@ -1,11 +1,10 @@
 import { db } from '$lib/db';
-import { comments, mentions } from '$lib/db/schema';
+import { comments } from '$lib/db/schema';
 import { generateSnowflake } from '$lib/helpers/snowflake';
 import { fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { rateLimit } from '$lib/helpers/handleRateLimit';
 import { bannedWords } from '$lib/helpers/bannedWords';
-import { parseMentions, type ParserOutputUserStructure } from '$lib/helpers/parseMentions';
 import { getComments } from '$lib/helpers/getComments';
 import { allObjectIds } from '$lib/data';
 
@@ -111,26 +110,6 @@ export const actions: Actions = {
 		};
 
 		await db.insert(comments).values(input);
-
-		const parsedContent = parseMentions(content);
-		const mentionedUsers = parsedContent?.filter(
-			(v) => typeof v !== 'string' && v.type === 'user',
-		) as ParserOutputUserStructure[];
-
-		if (mentionedUsers.length) {
-			for (const mentionedUser of mentionedUsers) {
-				const userData = await db.query.users.findFirst({
-					where: ({ username }, { eq }) => eq(username, mentionedUser.username),
-				});
-
-				if (userData) {
-					await db.insert(mentions).values({
-						commentId: input.id,
-						userId: userData.id,
-					});
-				}
-			}
-		}
 
 		return { success: true };
 	},

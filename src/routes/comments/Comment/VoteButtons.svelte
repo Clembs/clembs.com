@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
 	import {
 		IconArrowBigUp,
 		IconArrowBigDown,
@@ -283,4 +283,4 @@
 			}
 		}
 	}
-</style>
+</style> -->

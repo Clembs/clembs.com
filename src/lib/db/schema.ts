@@ -124,7 +124,6 @@ export const minecraftTeams = pgTable('minecraft_teams', {
 
 export const usersRelations = relations(users, ({ many }) => ({
 	comments: many(comments),
-	mentionedInComments: many(mentions),
 	sessions: many(sessions),
 	donations: many(donations),
 }));
@@ -143,7 +142,6 @@ export const commentsRelations = relations(comments, ({ one, many }) => ({
 		relationName: 'child_comments',
 	}),
 	score: many(userCommentVote),
-	mentionedUsers: many(mentions),
 }));
 
 export const sessionsRelations = relations(sessions, ({ one }) => ({
@@ -177,32 +175,6 @@ export const userCommentVote = pgTable(
 		pk: primaryKey(t.userId, t.commentId),
 	}),
 );
-
-export const mentions = pgTable(
-	'mentions',
-	{
-		commentId: text('comment_id')
-			.notNull()
-			.references(() => comments.id),
-		userId: text('user_id')
-			.notNull()
-			.references(() => users.id),
-	},
-	(t) => ({
-		pk: primaryKey(t.userId, t.commentId),
-	}),
-);
-
-export const mentionedUsersRelations = relations(mentions, ({ one }) => ({
-	user: one(users, {
-		fields: [mentions.userId],
-		references: [users.id],
-	}),
-	comment: one(comments, {
-		fields: [mentions.commentId],
-		references: [comments.id],
-	}),
-}));
 
 export const userCommentVoteRelations = relations(userCommentVote, ({ one }) => ({
 	user: one(users, {

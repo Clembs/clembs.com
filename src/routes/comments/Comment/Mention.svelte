@@ -1,37 +1,9 @@
 <script lang="ts">
-	import GradientAvatar from '$lib/components/GradientAvatar/GradientAvatar.svelte';
-	import type {
-		ParserOutputProjectStructure,
-		ParserOutputUserStructure,
-	} from '$lib/helpers/parseMentions';
-
-	export let node:
-		| Partial<ParserOutputProjectStructure>
-		| ParserOutputUserStructure
-		| { type: 'other'; text: string; icon: any; color: string };
+	export let node: { type: 'other'; text: string; icon: any; color: string };
 	export let clickable = true;
 </script>
 
-{#if node.type === 'user'}
-	<div class="inline-mention {node.type}">
-		<GradientAvatar showSilhouette={false} user={{ username: node.username }} size="16px" />
-		{node.username}
-	</div>
-	<!-- {:else if node.type === 'project'}
-	<svelte:element
-		this={clickable ? 'a' : 'div'}
-		target="_blank"
-		class="inline-mention {node.type}"
-		href="/{node.projectType}/{node.projectId}"
-	>
-		{#if node.projectType === 'design'}
-			<IconBrush size={16} />
-		{:else}
-			<IconCode size={16} />
-		{/if}
-		{node.projectId}
-	</svelte:element> -->
-{:else if node.type === 'other'}
+{#if node.type === 'other'}
 	<svelte:element
 		this={clickable ? 'a' : 'div'}
 		class="inline-mention {node.type}"

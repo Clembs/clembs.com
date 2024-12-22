@@ -1,71 +1,26 @@
-import type { Article } from '$lib/data/blog-articles';
-import type { Project } from '$lib/data/projects';
-import { EMOJI_MENTION_REGEX, USERNAME_MENTION_REGEX } from './regex';
+import { EMOJI_MENTION_REGEX } from './regex';
 
 export const emojiList = ['flushed', 'happy', 'laugh', 'neutral', 'scared', 'encarada'];
 
 type ParserOutputBaseStructure =
 	| string
 	| {
-			type: 'user' | 'emoji' | 'project';
+			type: 'emoji' | 'project';
 	  };
-
-export type ParserOutputUserStructure = ParserOutputBaseStructure & {
-	type: 'user';
-	username: string;
-};
 
 export type ParserOutputEmojiStructure = ParserOutputBaseStructure & {
 	type: 'emoji';
 	emojiId: string;
 };
 
-type ParserOutputBaseProjectStructure = ParserOutputBaseStructure & {
-	type: 'project';
-	projectId: string;
-	projectType: 'archive' | 'blog';
-};
-
-type ParserOutputBlogStructure = ParserOutputBaseProjectStructure & {
-	projectType: 'blog';
-	details: Article;
-};
-
-type ParserOutputSoftwareStructure = ParserOutputBaseProjectStructure & {
-	projectType: 'archive';
-	details: Project;
-};
-
-export type ParserOutputProjectStructure =
-	| ParserOutputBlogStructure
-	| ParserOutputSoftwareStructure;
-
-export type ParserOutputStructure =
-	| ParserOutputUserStructure
-	| ParserOutputProjectStructure
-	| ParserOutputEmojiStructure;
+export type ParserOutputStructure = ParserOutputEmojiStructure;
 
 export function parseMentions(text: string): ParserOutputStructure[] {
 	const parts = [];
 	let buffer = '';
 
 	for (let i = 0; i < text.length; i++) {
-		if (text[i] === '@') {
-			// Check for user mentions
-			const match = text.slice(i).match(USERNAME_MENTION_REGEX);
-			if (match) {
-				// Add the buffer content as plain text
-				if (buffer) {
-					parts.push(buffer);
-					buffer = '';
-				}
-				// Add the user mention
-				parts.push({ type: 'user', username: match[1] } as ParserOutputUserStructure);
-				// Skip the processed part
-				i += match[0].length - 1;
-				continue;
-			}
-		} else if (text[i] === ':') {
+		if (text[i] === ':') {
 			// Check for emojis
 			const emojiEnd = text.indexOf(':', i + 1);
 			if (emojiEnd !== -1) {
@@ -86,39 +41,6 @@ export function parseMentions(text: string): ParserOutputStructure[] {
 				}
 			}
 		}
-		// else if (text[i] === '#') {
-		// 	// Check for project mentions
-		// 	const match = text.slice(i).match(PROJECT_MENTION_REGEX);
-
-		// 	if (match) {
-		// 		// Add the buffer content as plain text
-		// 		if (buffer) {
-		// 			parts.push(buffer);
-		// 			buffer = '';
-		// 		}
-
-		// 		const projectId = match[1];
-		// 		// Check the project type
-		// 		const projectType = allPosts.find(({ id }) => id === projectId) ? 'blog' : 'software';
-		// 		// Find the project's data
-		// 		const details =
-		// 			projectType === 'blog'
-		// 				? allPosts.find(({ id }) => id === projectId)
-		// 				: archives.find(({ id }) => id === projectId);
-
-		// 		if (details) {
-		// 			parts.push({
-		// 				type: 'project',
-		// 				projectId,
-		// 				projectType,
-		// 				details,
-		// 			} as ParserOutputProjectStructure);
-		// 			// Skip the processed part
-		// 			i += match[0].length - 1;
-		// 			continue;
-		// 		}
-		// 	}
-		// }
 
 		// Add characters to the buffer
 		buffer += text[i];

@@ -19,12 +19,6 @@ export type Comment = typeof comments.$inferSelect & {
 	childComments?: Comment[] | null | undefined;
 	parentComment?: Comment | null | undefined;
 	score?: Partial<UserCommentVote>[] | null | undefined;
-	mentionedUsers?:
-		| {
-				user: Partial<User>;
-		  }[]
-		| null
-		| undefined;
 };
 
 export type Stream = typeof streams.$inferSelect;

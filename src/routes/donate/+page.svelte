@@ -109,7 +109,7 @@
 					<tr>
 						<td>
 							{#if donation.user}
-								<Mention node={{ type: 'user', username: donation.user.username }} />
+								{donation.user.username} />
 							{:else}
 								{donation.username}
 							{/if}

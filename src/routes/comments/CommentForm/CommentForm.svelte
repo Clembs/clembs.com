@@ -5,7 +5,6 @@
 	import { IconAlertCircleFilled } from '@tabler/icons-svelte';
 	import toast, { LoaderIcon } from 'svelte-french-toast';
 	import type { Comment as CommentType } from '$lib/db/types';
-	import FormattingHelpModal from '$lib/components/FormattingHelpModal.svelte';
 	import GradientAvatar from '$lib/components/GradientAvatar/GradientAvatar.svelte';
 	import { showLoginDialog, showRestrictedAccountDialog } from '$lib/stores/modals';
 
@@ -16,7 +15,6 @@
 
 	let error = '';
 	let loading = false;
-	let showHelpModal = false;
 	let commentForm: HTMLFormElement;
 	const commentMaxLength = 420;
 </script>
@@ -39,8 +37,6 @@
 		}
 	}}
 />
-
-<FormattingHelpModal bind:showModal={showHelpModal} />
 
 <form
 	action="/comments?/post"
@@ -112,38 +108,30 @@
 		/>
 
 		<div class="actions">
-			<div class="left">
-				<button type="button" on:click={() => (showHelpModal = true)}>
-					Comment formatting help
-				</button>
-			</div>
-
-			<div class="right">
-				<div class="content-info" class:error>
-					{#if error}
-						<IconAlertCircleFilled />
-					{/if}
-
-					{#if error}
-						{error} •
-					{/if}
-					{content.length}/{commentMaxLength}
-				</div>
-
-				{#if !$page.data?.userData}
-					<Button type="button" on:click={() => showLoginDialog.set(true)} style="outlined">
-						Use an account?
-					</Button>
+			<div class="content-info" class:error>
+				{#if error}
+					<IconAlertCircleFilled />
 				{/if}
 
-				<Button disabled={loading || content.length > commentMaxLength || !content} type="submit">
-					{#if loading}
-						<LoaderIcon />
-					{:else}
-						{parentComment ? 'Reply' : 'Comment'}
-					{/if}
-				</Button>
+				{#if error}
+					{error} •
+				{/if}
+				{content.length}/{commentMaxLength}
 			</div>
+
+			{#if !$page.data?.userData}
+				<Button type="button" on:click={() => showLoginDialog.set(true)} style="outlined">
+					Use an account?
+				</Button>
+			{/if}
+
+			<Button disabled={loading || content.length > commentMaxLength || !content} type="submit">
+				{#if loading}
+					<LoaderIcon />
+				{:else}
+					{parentComment ? 'Reply' : 'Comment'}
+				{/if}
+			</Button>
 		</div>
 	</div>
 </form>
@@ -232,7 +220,6 @@
 		.actions {
 			clip-path: inset(-45px 0px 45px 0px);
 			display: flex;
-			justify-content: space-between;
 			transition:
 				transform 100ms ease-in-out,
 				clip-path 100ms ease-in-out;
@@ -240,24 +227,21 @@
 			margin-top: 0.5rem;
 			pointer-events: none;
 
-			.right {
+			align-items: center;
+			justify-content: flex-end;
+			gap: 0.75rem;
+
+			.content-info {
 				display: flex;
-				gap: 0.75rem;
-				align-self: flex-end;
+				color: var(--color-on-surface);
+				opacity: 1;
 				align-items: center;
+				gap: 0.25rem;
+				padding: 0.25rem 0;
+				border-radius: 99rem;
 
-				.content-info {
-					display: flex;
-					color: var(--color-on-surface);
-					opacity: 1;
-					align-items: center;
-					gap: 0.25rem;
-					padding: 0.25rem 0;
-					border-radius: 99rem;
-
-					&.error {
-						color: var(--color-error);
-					}
+				&.error {
+					color: var(--color-error);
 				}
 			}
 		}
