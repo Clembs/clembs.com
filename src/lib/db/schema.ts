@@ -1,4 +1,3 @@
-import type { UserPreferences } from './UserPreferences';
 import { relations, sql } from 'drizzle-orm';
 import {
 	timestamp,
@@ -15,13 +14,10 @@ import type { SubscriptionStatus } from './Newsletters';
 
 export const users = pgTable('users', {
 	id: text('id').primaryKey(),
-	challenge: text('challenge'),
-	challengeExpiresAt: timestamp('challenge_expires_at'),
 	username: text('username').unique().notNull(),
 	email: text('email').unique(),
 	badges: text('badges', { enum: ['VERIFIED', 'BLOCKED', 'SUPPORTER', 'CLEMBS'] }).array(),
 	createdAt: timestamp('created_at').notNull().defaultNow(),
-	preferences: jsonb('preferences').$type<UserPreferences>(),
 });
 
 export const comments = pgTable('comments', {
@@ -37,15 +33,6 @@ export const comments = pgTable('comments', {
 	})
 		.notNull()
 		.defaultNow(),
-});
-
-export const passkeys = pgTable('passkeys', {
-	credentialId: text('credential_id').primaryKey(),
-	publicKey: text('public_key').notNull(),
-	counter: integer('counter').notNull(),
-	userId: text('user_id').notNull(),
-	name: text('name').notNull(),
-	createdAt: timestamp('created_at').notNull().defaultNow(),
 });
 
 export const sessions = pgTable('sessions', {
@@ -139,7 +126,6 @@ export const usersRelations = relations(users, ({ many }) => ({
 	comments: many(comments),
 	mentionedInComments: many(mentions),
 	sessions: many(sessions),
-	passkeys: many(passkeys),
 	donations: many(donations),
 }));
 
@@ -163,13 +149,6 @@ export const commentsRelations = relations(comments, ({ one, many }) => ({
 export const sessionsRelations = relations(sessions, ({ one }) => ({
 	user: one(users, {
 		fields: [sessions.userId],
-		references: [users.id],
-	}),
-}));
-
-export const passkeysRelations = relations(passkeys, ({ one }) => ({
-	user: one(users, {
-		fields: [passkeys.userId],
 		references: [users.id],
 	}),
 }));
