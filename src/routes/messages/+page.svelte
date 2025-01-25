@@ -92,7 +92,7 @@
 				name="question"
 				required
 				placeholder="🗣️ Pose-moi une question, raconte-moi une histoire ou une blague, délivre-moi toute ta haine, etc."
-			/>
+			></textarea>
 			<input
 				name="identity"
 				bind:value={identity}

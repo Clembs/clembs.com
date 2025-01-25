@@ -36,7 +36,7 @@
 			{name}
 			id={name}
 			{...$$restProps}
-		/>
+		></textarea>
 	{:else}
 		<input
 			{...{ type }}

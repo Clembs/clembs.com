@@ -71,7 +71,7 @@
 								title="Dino game"
 								src="https://wayou.github.io/t-rex-runner/"
 								scrolling="no"
-							/>
+							></iframe>
 						{/if}
 					</div>
 					<Button
