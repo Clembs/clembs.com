@@ -3,7 +3,11 @@
 	import { IconChevronRight } from '@tabler/icons-svelte';
 	import IconExternalLink from '$lib/icons/IconExternalLink.svelte';
 
-	export let socials: Social[];
+	interface Props {
+		socials: Social[];
+	}
+
+	let { socials }: Props = $props();
 </script>
 
 <ul class="links">
@@ -15,7 +19,7 @@
 				target={social.href.startsWith('/') ? '_self' : '_blank'}
 			>
 				<div class="social">
-					<svelte:component this={social.icon} />
+					<social.icon />
 
 					<div class="social-name">
 						<span>{social.name}</span>

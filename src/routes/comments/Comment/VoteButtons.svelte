@@ -5,8 +5,12 @@
 	} from '@tabler/icons-svelte';
 	import type { LegacyComment } from '$lib/db/types';
 
-	export let comment: LegacyComment;
-	export let big = false;
+	interface Props {
+		comment: LegacyComment;
+		big?: boolean;
+	}
+
+	let { comment, big = false }: Props = $props();
 </script>
 
 <div

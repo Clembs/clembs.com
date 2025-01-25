@@ -1,5 +1,5 @@
 <script lang="ts">
-	export let data;
+	let { data } = $props();
 </script>
 
 <h2>Team created!</h2>

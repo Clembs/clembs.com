@@ -1,13 +1,35 @@
 <script lang="ts">
-	export let href = '';
-	export let style: 'filled' | 'outlined' | 'text' | 'danger' = 'filled';
-	export let disabled = false;
-	export let type: 'submit' | 'button' = 'button';
-	export let icon = false;
-	export let inline = true;
-	export let size: 'sm' | 'm' | 'xl' = 'm';
-	let className = '';
-	export { className as class };
+	import type { Snippet } from 'svelte';
+
+	interface Props {
+		href?: string;
+		style?: 'filled' | 'outlined' | 'text' | 'danger';
+		disabled?: boolean;
+		type?: 'submit' | 'button';
+		icon?: boolean;
+		inline?: boolean;
+		size?: 'sm' | 'm' | 'xl';
+		class?: string;
+		children?: Snippet;
+		onclick?: (event: MouseEvent) => void;
+		onsubmit?: (event: Event) => void;
+		[key: string]: any;
+	}
+
+	let {
+		href = '',
+		style = 'filled',
+		disabled = false,
+		type = 'button',
+		icon = false,
+		inline = true,
+		size = 'm',
+		class: className = '',
+		children,
+		onclick,
+		onsubmit,
+		...rest
+	}: Props = $props();
 </script>
 
 {#if href && !disabled}
@@ -17,24 +39,24 @@
 		target={href.startsWith('http') ? '_blank' : undefined}
 		rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
 		role="button"
-		{...$$restProps}
+		{...rest}
 		class:inline
 		class:icon
 	>
-		<slot />
+		{@render children?.()}
 	</a>
 {:else}
 	<button
-		on:click
-		on:submit
+		{onclick}
+		{onsubmit}
 		{type}
 		class="button {style} {className} size-{size}"
 		{disabled}
-		{...$$restProps}
+		{...rest}
 		class:inline
 		class:icon
 	>
-		<slot />
+		{@render children?.()}
 	</button>
 {/if}
 
@@ -77,10 +99,6 @@
 		&.icon {
 			padding: 0.5rem;
 		}
-
-		// &:has(svg) {
-		// 	padding-left: 0.5rem;
-		// }
 
 		&.filled {
 			--_bg: var(--color-outline);

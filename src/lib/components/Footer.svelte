@@ -11,9 +11,9 @@
 	} from '@tabler/icons-svelte';
 	import { onMount } from 'svelte';
 
-	let footerEl: HTMLElement;
-	let scaleFactor = 1;
-	let brightness = 1;
+	let footerEl = $state<HTMLElement>();
+	let scaleFactor = $state(1);
+	let brightness = $state(1);
 
 	// progressively animate the footer as the user scrolls closer to the page bottom (viewport height - 250px to viewport height)
 	// brightness should be raised from 0.75 to 1
@@ -41,14 +41,14 @@
 		scroll();
 
 		// check all focusable elements
-		footerEl.querySelectorAll('a, button').forEach((el) => {
+		footerEl?.querySelectorAll('a, button').forEach((el) => {
 			el.addEventListener('focus', focus);
 		});
 	});
 </script>
 
 <!-- when the focus is changed too -->
-<svelte:window on:scroll={scroll} on:resize={scroll} />
+<svelte:window onscroll={scroll} onresize={scroll} />
 
 <footer bind:this={footerEl} style:scale={scaleFactor} style:filter="brightness({brightness})">
 	<div class="left">
@@ -112,7 +112,7 @@
 			{#each footerSocials as social}
 				<li>
 					<a href={social.href} aria-label={social.name}>
-						<svelte:component this={social.icon} />
+						<social.icon />
 					</a>
 				</li>
 			{/each}

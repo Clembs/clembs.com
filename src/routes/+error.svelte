@@ -16,16 +16,16 @@
 		'a',
 		'Enter',
 	];
-	let lastKeyStrokes: string[] = [];
+	let lastKeyStrokes: string[] = $state([]);
 
-	let showStatic = true;
-	let iframeLoaded = false;
-	let showEasterEgg = false;
-	let iframe: HTMLIFrameElement;
+	let showStatic = $state(true);
+	let iframeLoaded = $state(false);
+	let showEasterEgg = $state(false);
+	let iframe: HTMLIFrameElement = $state();
 </script>
 
 <svelte:window
-	on:keydown={(e) => {
+	onkeydown={(e) => {
 		lastKeyStrokes.push(e.key);
 
 		if (KonamiCode.every((k) => lastKeyStrokes.includes(k))) {

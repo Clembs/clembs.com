@@ -3,7 +3,7 @@
 	import BlogArticle from '$lib/components/Projects/BlogArticle.svelte';
 	import CaseStudyArticle from '$lib/components/Projects/CaseStudyArticle.svelte';
 
-	export let data;
+	let { data } = $props();
 </script>
 
 <MetaTags pageName="{data.category.name} - Blog - Clembs" description={data.category.description} />

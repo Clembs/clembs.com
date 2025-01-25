@@ -141,10 +141,10 @@
 	// 	margin-top: 1.5rem;
 
 	// 	.time-extension {
-	// 		&:is(:first-child) {
+	// 		&:is(:global(:first-child)) {
 	// 			border-top-left-radius: 1rem;
 	// 		}
-	// 		&:is(:last-child) {
+	// 		&:is(:global(:last-child)) {
 	// 			border-top-right-radius: 1rem;
 	// 		}
 	// 		&:focus-within {

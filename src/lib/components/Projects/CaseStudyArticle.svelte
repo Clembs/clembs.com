@@ -2,8 +2,12 @@
 	import type { Article } from '$lib/data/blog-articles';
 	import { IconChevronRight } from '@tabler/icons-svelte';
 
-	export let article: Article;
-	export let orientation: 'horizontal' | 'vertical' = 'horizontal';
+	interface Props {
+		article: Article;
+		orientation?: 'horizontal' | 'vertical';
+	}
+
+	let { article, orientation = 'horizontal' }: Props = $props();
 </script>
 
 <a href="/blog/{article.slug}" class="case-study-article {orientation}">

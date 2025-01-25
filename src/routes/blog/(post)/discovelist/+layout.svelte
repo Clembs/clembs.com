@@ -6,11 +6,11 @@
 	import { onMount } from 'svelte';
 	import toast from 'svelte-french-toast';
 
-	export let data;
+	let { data, children } = $props();
 
-	let subscriptions: Newsletter[];
-	let subscriptionStatus = data.subscriptionStatus;
-	let subscribeLoading = false;
+	let subscriptions = $state<Newsletter[]>([]);
+	let subscriptionStatus = $state();
+	let subscribeLoading = $state(false);
 
 	onMount(() => {
 		const subscriptionsRaw = localStorage.getItem('newsletters_subscriptions');
@@ -25,7 +25,7 @@
 	});
 </script>
 
-<slot />
+{@render children?.()}
 
 <section id="newsletter">
 	{#if !subscriptionStatus}
@@ -55,11 +55,7 @@
 				};
 			}}
 		>
-			<TextInput
-				type="email"
-				placeholder="clembs@clembs.com"
-				name="email"
-			/>
+			<TextInput type="email" placeholder="clembs@clembs.com" name="email" />
 
 			{#if !subscribeLoading}
 				<Button type="submit">Subscribe</Button>

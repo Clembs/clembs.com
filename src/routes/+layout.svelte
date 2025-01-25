@@ -3,24 +3,29 @@
 	import NavBar from '$lib/components/NavBar.svelte';
 	import { Toaster } from 'svelte-french-toast';
 	import Footer from '$lib/components/Footer.svelte';
-	import type DebugMenu from './DebugMenu.svelte';
+	import type DebugMenuComponent from './DebugMenu.svelte';
 	import ContentWrapper from '$lib/components/ContentWrapper.svelte';
+	interface Props {
+		children?: import('svelte').Snippet;
+	}
+
+	let { children }: Props = $props();
 
 	// don't import this right away, it's pretty heavy
-	let debugMenu: typeof DebugMenu | null = null;
+	let DebugMenu = $state<typeof DebugMenuComponent>();
 </script>
 
 <svelte:window
-	on:keydown={async (e) => {
+	onkeydown={async (e) => {
 		if (e.key === 'F3') {
 			e.preventDefault();
-			debugMenu = debugMenu ? null : (await import('./DebugMenu.svelte')).default;
+			DebugMenu = DebugMenu ? undefined : (await import('./DebugMenu.svelte')).default;
 		}
 	}}
 />
 
-{#if debugMenu}
-	<svelte:component this={debugMenu} />
+{#if DebugMenu}
+	<DebugMenu />
 {/if}
 
 <Toaster />
@@ -30,7 +35,7 @@
 <NavBar />
 
 <ContentWrapper>
-	<slot />
+	{@render children?.()}
 </ContentWrapper>
 
 <Footer />

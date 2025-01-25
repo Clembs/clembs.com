@@ -1,21 +1,38 @@
 <script lang="ts">
-	export let indeterminate = false;
-	export let required = true;
-	export let disabled = false;
-	export let readonly = false;
-	export let name = '';
-	export let checked: undefined | boolean = false;
+	import type { Snippet } from 'svelte';
+
+	interface Props {
+		indeterminate?: boolean;
+		required?: boolean;
+		disabled?: boolean;
+		readonly?: boolean;
+		name?: string;
+		checked?: undefined | boolean;
+		onchange?: (event: Event) => void;
+		children?: Snippet;
+	}
+
+	let {
+		indeterminate = false,
+		required = true,
+		disabled = false,
+		readonly = false,
+		name = '',
+		checked = $bindable(false),
+		onchange,
+		children,
+	}: Props = $props();
 
 	let id = Math.round(Math.random() * 100);
 </script>
 
 <label for={id.toString()}>
 	<div class="label">
-		<slot />
+		{@render children?.()}
 	</div>
 	<input
 		bind:checked
-		on:change
+		{onchange}
 		{name}
 		{indeterminate}
 		type="checkbox"
@@ -86,7 +103,9 @@
 				background-color: var(--thumb-color);
 				outline: 1px solid var(--color-outline);
 
-				transition: transform 200ms ease, scale 150ms ease;
+				transition:
+					transform 200ms ease,
+					scale 150ms ease;
 			}
 
 			&:disabled {

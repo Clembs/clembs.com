@@ -1,11 +1,11 @@
-<script>
+<script lang="ts">
 	import { enhance } from '$app/forms';
 	import Button from '$lib/components/Button.svelte';
 	import TextInput from '$lib/components/TextInput.svelte';
 	import { languages } from '../../locales';
 
-	export let data;
-	$: strings = languages[data.language];
+	let { data } = $props();
+	let strings = $derived(languages[data.language]);
 </script>
 
 <div class="login">

@@ -1,12 +1,16 @@
 <script lang="ts">
 	import Tooltip from './Tooltip.svelte';
 
-	export let src: string;
-	export let name: string;
+	interface Props {
+		src: string;
+		name: string;
+	}
+
+	let { src, name }: Props = $props();
 </script>
 
 <Tooltip transitionDelay={500}>
-	<span slot="tooltip-content">
+	{#snippet tooltipContent()}
 		<div class="about">
 			<img aria-label=":{name}:" draggable="false" class="emoji big" {src} alt=":{name}:" />
 			<div class="about-text">
@@ -15,7 +19,8 @@
 				</div>
 			</div>
 		</div>
-	</span>
+	{/snippet}
+
 	<img aria-label=":{name}:" draggable="false" class="emoji" {src} alt=":{name}:" />
 </Tooltip>
 

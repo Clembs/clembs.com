@@ -1,7 +1,11 @@
 <script lang="ts">
 	import type { LanguageSchema } from './locales';
 
-	export let strings: LanguageSchema;
+	interface Props {
+		strings: LanguageSchema;
+	}
+
+	let { strings }: Props = $props();
 </script>
 
 <section id="info-grid">

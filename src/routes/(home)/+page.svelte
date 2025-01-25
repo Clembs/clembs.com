@@ -56,7 +56,7 @@ and express my love through design, code and video. Welcome to clembs.com!"
 	<div id="project-grid">
 		{#each blogArticles.filter((c) => c.categoryId === 'work').slice(1, 3) as article, i}
 			<CaseStudyArticle orientation="vertical" {article} />
-			{#each projects.slice(i * 3, i * 3 + 3) as project, i}
+			{#each projects.slice(i * 3, i * 3 + 3) as project}
 				<Project {project} />
 			{/each}
 		{/each}

@@ -4,7 +4,11 @@
 	import HabileHappy from '$lib/icons/habile/HabileHappy.svelte';
 	import Comment from './Comment/Comment.svelte';
 
-export let comments: CommentType[];
+	interface Props {
+		comments: CommentType[];
+	}
+
+	let { comments }: Props = $props();
 </script>
 
 <div class="comments-page" id="comments">

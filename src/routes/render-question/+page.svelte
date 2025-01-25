@@ -1,14 +1,13 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { colors } from '../messages';
+	import { page } from '$app/state';
 	import Message from './Message.svelte';
 	let typing = false;
 
-	const identity = decodeURI($page.url.searchParams.get('identity')!);
-	const content = decodeURI($page.url.searchParams.get('question')!);
-	const color = $page.url.searchParams.get('color') || 'black';
-	const selectedMessage = $page.url.searchParams.get('selectedMessage')
-		? JSON.parse(decodeURI($page.url.searchParams.get('selectedMessage')!))
+	const identity = decodeURI(page.url.searchParams.get('identity')!);
+	const content = decodeURI(page.url.searchParams.get('question')!);
+	const color = page.url.searchParams.get('color') || 'black';
+	const selectedMessage = page.url.searchParams.get('selectedMessage')
+		? JSON.parse(decodeURI(page.url.searchParams.get('selectedMessage')!))
 		: null;
 </script>
 

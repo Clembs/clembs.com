@@ -1,7 +1,11 @@
 <script lang="ts">
 	import { colors, type Message } from '.';
 
-	export let message: Message;
+	interface Props {
+		message: Message;
+	}
+
+	let { message }: Props = $props();
 	const date = new Date(message.date!);
 </script>
 

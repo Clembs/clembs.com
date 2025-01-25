@@ -2,7 +2,11 @@
 	import type { Project } from '$lib/data/projects';
 	import { IconDownload, IconExternalLink } from '@tabler/icons-svelte';
 
-	export let project: Project;
+	interface Props {
+		project: Project;
+	}
+
+	let { project }: Props = $props();
 </script>
 
 <div class="project">

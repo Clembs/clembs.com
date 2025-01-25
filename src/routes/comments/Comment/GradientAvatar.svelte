@@ -1,8 +1,12 @@
 <script lang="ts">
 	import type { LegacyComment } from '$lib/db/types';
 
-	export let user: LegacyComment['author'];
-	export let size = '2.25rem';
+	interface Props {
+		user: LegacyComment['author'];
+		size?: string;
+	}
+
+	let { user, size = '2.25rem' }: Props = $props();
 </script>
 
 <div

@@ -1,18 +1,20 @@
 <script lang="ts">
-	import type { ComponentType } from 'svelte';
-	import { createEventDispatcher } from 'svelte';
+	import type { Component } from 'svelte';
 
-	export let title: string;
-	export let description: string = '';
-	export let choices: {
-		label: string;
-		description: string;
-		icon?: ComponentType;
-		value?: string;
-		href?: string;
-	}[];
+	interface Props {
+		title: string;
+		description?: string;
+		choices: {
+			label: string;
+			description: string;
+			icon?: Component;
+			value?: string;
+			href?: string;
+		}[];
+		onchange?: (value: string) => void;
+	}
 
-	const dispatch = createEventDispatcher();
+	let { title, description = '', choices, onchange }: Props = $props();
 </script>
 
 <div class="question">
@@ -23,14 +25,10 @@
 
 	<div class="choices">
 		{#each choices as choice}
-			<a
-				class="choice"
-				href={choice.href}
-				on:click={() => choice.value && dispatch('change', choice.value)}
-			>
+			<a class="choice" href={choice.href} onclick={() => choice.value && onchange?.(choice.value)}>
 				{#if choice.icon}
 					<div class="icon">
-						<svelte:component this={choice.icon} size={48} stroke={1.5} />
+						<choice.icon size={48} stroke={1.5} />
 					</div>
 				{/if}
 

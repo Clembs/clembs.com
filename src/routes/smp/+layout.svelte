@@ -2,10 +2,10 @@
 	import { languages } from './locales';
 	import { enhance } from '$app/forms';
 
-	export let data;
+	let { data = $bindable(), children } = $props();
 
-	let form: HTMLFormElement;
-	$: strings = languages[data.language];
+	let form = $state<HTMLFormElement>();
+	let strings = $derived(languages[data.language]);
 </script>
 
 <svelte:head>
@@ -39,7 +39,7 @@
 			{#if data.language !== 'en'}
 				/ Language
 			{/if}
-			<select name="language" bind:value={data.language} on:change={() => form.requestSubmit()}>
+			<select name="language" bind:value={data.language} onchange={() => form?.requestSubmit()}>
 				<option selected={data.language === 'en'} value="en">{languages.en.language.name}</option>
 				<option selected={data.language === 'fr'} value="fr">French</option>
 				<option selected={data.language === 'ru'} value="ru">{languages.ru.language.name}</option>
@@ -47,7 +47,7 @@
 		</form>
 	</div>
 
-	<slot />
+	{@render children?.()}
 </main>
 
 <style lang="scss">

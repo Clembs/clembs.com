@@ -1,27 +1,29 @@
 <script lang="ts">
-	import { tweened } from 'svelte/motion';
+	import { Tween } from 'svelte/motion';
 	import { languages } from '../../locales';
 	import AccountType from './AccountType.svelte';
 	import UsernameCracked from './UsernameCracked.svelte';
 	import UsernamePremium from './UsernamePremium.svelte';
 
-	export let data;
-	$: strings = languages[data.language];
+	let { data } = $props();
+	let strings = $derived(languages[data.language]);
 
 	let steps = ['type', 'username'] as const;
-	let currentStep: (typeof steps)[number] = 'type';
-	let progress = tweened(steps.indexOf(currentStep), { duration: 300 });
+	let currentStep: (typeof steps)[number] = $state('type');
+	let progress = new Tween(steps.indexOf(currentStep), { duration: 300 });
 
-	$: progress.set(steps.indexOf(currentStep));
+	$effect(() => {
+		progress.set(steps.indexOf(currentStep));
+	});
 
 	let userData: Partial<{
 		type: 'premium' | 'cracked';
 		username: string;
 		uuid: string;
-	}> = {};
+	}> = $state({});
 
-	const previousStep = () => (currentStep = steps[$progress - 1]);
-	const nextStep = () => (currentStep = steps[$progress + 1]);
+	const previousStep = () => (currentStep = steps[progress.current - 1]);
+	const nextStep = () => (currentStep = steps[progress.current + 1]);
 
 	async function createPlayer() {
 		const req = await fetch('/smp/register/submit', {
@@ -39,8 +41,8 @@
 </script>
 
 <div>
-	{Math.round($progress) + 1}/{steps.length}
-	<progress value={$progress + 1 / steps.length}></progress>
+	{Math.round(progress.current) + 1}/{steps.length}
+	<progress value={progress.current + 1 / steps.length}></progress>
 
 	{#if currentStep === 'type'}
 		<AccountType

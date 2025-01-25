@@ -3,11 +3,16 @@
 	import type { LanguageSchema } from '../../locales';
 	import Question from '../Question.svelte';
 
-	export let strings: LanguageSchema;
+	interface Props {
+		strings: LanguageSchema;
+		onchange?: (value: string) => void;
+	}
+
+	let { strings, onchange }: Props = $props();
 </script>
 
 <Question
-	on:change
+	{onchange}
 	title={strings.register.player.type.title}
 	description={strings.register.player.type.description}
 	choices={[

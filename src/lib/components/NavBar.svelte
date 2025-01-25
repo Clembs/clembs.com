@@ -4,9 +4,9 @@
 	import { IconArrowLeft, IconAt, IconBallpen, IconLogin } from '@tabler/icons-svelte';
 	import { onMount } from 'svelte';
 
-	let navbarEl: HTMLElement;
-	let scaleFactor = 1;
-	let brightness = 1;
+	let navbarEl = $state<HTMLElement>();
+	let scaleFactor = $state(1);
+	let brightness = $state(1);
 
 	// progressively animate the navbar as the user scrolls closer to the page top (100px to 0px)
 	// brightness should be raised from 0.75 to 1
@@ -33,15 +33,15 @@
 		scroll();
 
 		// check all focusable elements
-		navbarEl.querySelectorAll('a, button').forEach((el) => {
+		navbarEl?.querySelectorAll('a, button').forEach((el) => {
 			el.addEventListener('focus', focus);
 		});
 	});
 
-	$: hideBackBtn = !$page.data.navButton && $page.url.pathname === '/';
+	let hideBackBtn = $derived(!$page.data.navButton && $page.url.pathname === '/');
 </script>
 
-<svelte:window on:scroll={scroll} />
+<svelte:window onscroll={scroll} />
 
 <!-- TODO: make a mobile optimized navbar -->
 <nav bind:this={navbarEl} style:scale={scaleFactor} style:filter="brightness({brightness})">

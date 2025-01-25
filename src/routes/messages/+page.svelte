@@ -8,18 +8,21 @@
 	import PreviousMessage from './PreviousMessage.svelte';
 	import { blur } from 'svelte/transition';
 	import Button from '$lib/components/Button.svelte';
-	import IconMasksTheater from '@tabler/icons-svelte/dist/svelte/icons/IconMasksTheater.svelte';
-	import IconMasksTheaterOff from '@tabler/icons-svelte/dist/svelte/icons/IconMasksTheaterOff.svelte';
+	import { IconMasksTheater, IconMasksTheaterOff } from '@tabler/icons-svelte';
 
-	let identity: string;
-	let question: string;
-	let textareaEl: HTMLTextAreaElement;
-	let loadingMessages = true;
-	let previousMessages: Message[];
-	let formEl: HTMLFormElement;
-	let selectedMessageForContext: Message | null;
+	let identity = $state('');
+	let question = $state('');
+	let textareaEl = $state<HTMLTextAreaElement>();
+	let loadingMessages = $state(true);
+	let previousMessages: Message[] = $state([]);
+	let formEl = $state<HTMLFormElement>();
+	let selectedMessageForContext = $state<Message>();
 
-	export let form: ActionData;
+	interface Props {
+		form: ActionData;
+	}
+
+	let { form }: Props = $props();
 
 	onMount(() => {
 		previousMessages = (JSON.parse(localStorage.getItem('messages') || '[]') as Message[]).sort(
@@ -29,13 +32,15 @@
 	});
 
 	async function handleSubmit(event: SubmitEvent) {
+		event.preventDefault();
+
 		const data = new FormData(formEl);
 
 		if (selectedMessageForContext) {
 			data.set('selectedMessage', JSON.stringify(selectedMessageForContext));
 		}
 
-		const response = await fetch(formEl.action, {
+		const response = await fetch(formEl!.action, {
 			method: 'POST',
 			body: data,
 		});
@@ -76,12 +81,12 @@
 			<Button on:click={() => history.go()}>😳 Allez, pourquoi pas !</Button>
 		</div>
 	{:else}
-		<form bind:this={formEl} method="POST" on:submit|preventDefault={handleSubmit}>
+		<form bind:this={formEl} method="POST" onsubmit={handleSubmit}>
 			<header>{splashes[Math.floor(Math.random() * splashes.length)]}</header>
 			{#if selectedMessageForContext}
 				Votre message sera accompagné de celui-ci :
-				<!-- svelte-ignore a11y-click-events-have-key-events -->
-				<button transition:blur on:click={() => (selectedMessageForContext = null)}>
+				<!-- svelte-ignore a11y_click_events_have_key_events -->
+				<button transition:blur onclick={() => (selectedMessageForContext = undefined)}>
 					<PreviousMessage message={selectedMessageForContext} />
 				</button>
 			{/if}
@@ -135,10 +140,10 @@
 		{:else}
 			<div class="messages">
 				{#each previousMessages as message}
-					<!-- svelte-ignore a11y-click-events-have-key-events -->
+					<!-- svelte-ignore a11y_click_events_have_key_events -->
 					<button
 						class="msg"
-						on:click={() => {
+						onclick={() => {
 							document.body.scroll({ top: 0, behavior: 'smooth' });
 							document.documentElement.scroll({ top: 0, behavior: 'smooth' });
 							selectedMessageForContext = message;

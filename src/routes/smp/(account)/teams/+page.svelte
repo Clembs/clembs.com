@@ -7,21 +7,22 @@
 	import TextInput from '$lib/components/TextInput.svelte';
 	import InfoBox from '$lib/components/InfoBox.svelte';
 
-	export let data;
-	export let form;
+	let { data, form } = $props();
 
-	$: strings = languages[data.language];
+	let strings = $derived(languages[data.language]);
 
-	let showModal = false;
+	let showModal = $state(false);
 
-	let currentTeam: (typeof data.teams)[number];
+	let currentTeam: (typeof data.teams)[number] = $state();
 </script>
 
 {#if currentTeam}
 	<Modal bind:showModal>
-		<h2 slot="title">
-			{strings.teams.modalJoin.title.replace('{name}', currentTeam.name)}
-		</h2>
+		{#snippet title()}
+				<h2 >
+				{strings.teams.modalJoin.title.replace('{name}', currentTeam.name)}
+			</h2>
+			{/snippet}
 
 		{#if currentTeam.passcode}
 			<p class="subtext">

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Comment from './Comment.svelte';
 	import type { LegacyComment } from '$lib/db/types';
 	import VoteButtons from './VoteButtons.svelte';
 	import '../../../styles/comment.scss';
@@ -8,7 +9,11 @@
 	import { dateFormat } from '$lib/helpers/dateFormat';
 	import { badges } from './badges';
 
-	export let comment: LegacyComment;
+	interface Props {
+		comment: LegacyComment;
+	}
+
+	let { comment }: Props = $props();
 </script>
 
 <article
@@ -58,7 +63,7 @@
 		<div class="child-comments">
 			<ul>
 				{#each comment.child_comments as c (c.id)}
-					<svelte:self comment={c} />
+					<Comment comment={c} />
 				{/each}
 			</ul>
 		</div>

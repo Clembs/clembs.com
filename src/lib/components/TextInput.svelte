@@ -1,18 +1,45 @@
 <script lang="ts">
 	type InputType = 'email' | 'number' | 'password' | 'tel' | 'text' | 'url' | 'search';
 
-	export let type: InputType = 'text';
-	export let required = true;
-	export let placeholder = '';
-	export let disabled = false;
-	export let readonly = false;
-	export let value = '';
-	export let maxlength: number | undefined = undefined;
-	export let minlength: number | undefined = undefined;
-	export let multiline = false;
-	export let name = '';
-	export let label = '';
-	export let height = '200px';
+	interface Props {
+		type?: InputType;
+		required?: boolean;
+		placeholder?: string;
+		disabled?: boolean;
+		readonly?: boolean;
+		value?: string;
+		maxlength?: number | undefined;
+		minlength?: number | undefined;
+		multiline?: boolean;
+		name?: string;
+		label?: string;
+		height?: string;
+		oninput?: (event: Event) => void;
+		onfocus?: (event: Event) => void;
+		onblur?: (event: Event) => void;
+		onkeydown?: (event: Event) => void;
+		[key: string]: any;
+	}
+
+	let {
+		type = 'text',
+		required = true,
+		placeholder = '',
+		disabled = false,
+		readonly = false,
+		value = $bindable(''),
+		maxlength = undefined,
+		minlength = undefined,
+		multiline = false,
+		name = '',
+		label = '',
+		height = '200px',
+		oninput,
+		onfocus,
+		onblur,
+		onkeydown,
+		...rest
+	}: Props = $props();
 </script>
 
 <div class="text-input">
@@ -23,10 +50,10 @@
 		<textarea
 			style:--height={height}
 			bind:value
-			on:input
-			on:focus
-			on:blur
-			on:keydown
+			{oninput}
+			{onfocus}
+			{onblur}
+			{onkeydown}
 			{minlength}
 			{maxlength}
 			{placeholder}
@@ -35,16 +62,16 @@
 			{required}
 			{name}
 			id={name}
-			{...$$restProps}
+			{...rest}
 		></textarea>
 	{:else}
 		<input
 			{...{ type }}
 			bind:value
-			on:input
-			on:focus
-			on:blur
-			on:keydown
+			{oninput}
+			{onfocus}
+			{onblur}
+			{onkeydown}
 			{minlength}
 			{maxlength}
 			{placeholder}
@@ -53,7 +80,7 @@
 			{required}
 			{name}
 			id={name}
-			{...$$restProps}
+			{...rest}
 		/>
 	{/if}
 </div>

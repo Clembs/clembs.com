@@ -3,9 +3,13 @@
 
 	const clembsAvatar =
 		'https://cdn.discordapp.com/avatars/327690719085068289/d39b870ee1be24d9fe645b2eaafec2c7.png?size=2048';
-	export let type: 'ogmessage' | 'answer' | 'message';
-	export let hasOgMessage = false;
-	export let message: Message;
+	interface Props {
+		type: 'ogmessage' | 'answer' | 'message';
+		hasOgMessage?: boolean;
+		message: Message;
+	}
+
+	let { type, hasOgMessage = false, message }: Props = $props();
 </script>
 
 <div class="message" class:answer={type === 'answer'} style="--color: {colors[message.color]}">

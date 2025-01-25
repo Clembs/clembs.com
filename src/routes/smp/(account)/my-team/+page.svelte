@@ -6,36 +6,42 @@
 	import { IconLogout } from '@tabler/icons-svelte';
 	import { enhance } from '$app/forms';
 
-	export let data;
+	let { data } = $props();
 
-	let showLeaveModal = false;
+	let showLeaveModal = $state(false);
 
-	$: strings = languages[data.language];
+	let strings = $derived(languages[data.language]);
 </script>
 
 <Modal bind:showModal={showLeaveModal}>
-	<h2 slot="title">
-		{strings.teams.modalLeave.title}
-	</h2>
+	{#snippet title()}
+		<h2 >
+			{strings.teams.modalLeave.title}
+		</h2>
+	{/snippet}
 
 	<p class="subtext">
 		{@html strings.teams.modalLeave.description}
 	</p>
 
-	<div slot="buttons">
-		<form use:enhance action="?/leave" method="post">
-			<Button type="submit">
-				{strings.teams.modalLeave.leaveButton}
-			</Button>
-		</form>
-	</div>
+	{#snippet buttons()}
+		<div >
+			<form use:enhance action="?/leave" method="post">
+				<Button type="submit">
+					{strings.teams.modalLeave.leaveButton}
+				</Button>
+			</form>
+		</div>
+	{/snippet}
 </Modal>
 
 {#if data.newMember}
 	<Modal showModal={true}>
-		<h2 slot="title">
-			{strings.teams.modalSuccess.title.replace('{name}', data.team.name)}
-		</h2>
+		{#snippet title()}
+				<h2 >
+				{strings.teams.modalSuccess.title.replace('{name}', data.team.name)}
+			</h2>
+			{/snippet}
 
 		<p class="subtext">
 			{strings.teams.modalSuccess.description}
@@ -52,7 +58,8 @@
 				<Button on:click={() => (showLeaveModal = true)} icon>
 					<IconLogout />
 				</Button>
-				<span slot="tooltip-content"> {strings.teams.modalLeave.leaveButton} </span>
+				<!-- @migration-task: migrate this slot by hand, `tooltip-content` is an invalid identifier -->
+	<span slot="tooltip-content"> {strings.teams.modalLeave.leaveButton} </span>
 			</Tooltip>
 		{/if}
 	</header>

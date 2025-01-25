@@ -2,9 +2,9 @@
 	import Button from '$lib/components/Button.svelte';
 	import { languages } from '../../../locales';
 
-	export let data;
+	let { data } = $props();
 
-	$: strings = languages[data.language];
+	let strings = $derived(languages[data.language]);
 </script>
 
 <h2>{strings.register.player.success.title}</h2>

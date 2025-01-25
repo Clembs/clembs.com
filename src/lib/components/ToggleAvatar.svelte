@@ -1,12 +1,12 @@
 <script lang="ts">
-	let currentFace: 'logo' | 'irl' = 'irl';
-	let isAnimating = false;
+	let currentFace: 'logo' | 'irl' = $state('irl');
+	let isAnimating = $state(false);
 </script>
 
 <button
 	class="avatar"
 	disabled={isAnimating}
-	on:click={() => {
+	onclick={() => {
 		if (isAnimating) return;
 		isAnimating = true;
 		setTimeout(() => (isAnimating = false), 500);

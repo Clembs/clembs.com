@@ -3,7 +3,11 @@
 	import type { PageData } from './$types';
 	import Comments from './Comments.svelte';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 </script>
 
 <MetaTags

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import LinksList from '$lib/components/LinksList.svelte';
-	import Table from '$lib/components/Table/Table.svelte';
+	import Table from '$lib/components/Table.svelte';
 	import Tooltip from '$lib/components/Tooltip.svelte';
 	import { boosty, kofi } from '$lib/data/socials';
 	import type { PageServerData } from './$types';
@@ -9,7 +9,11 @@
 	import MetaTags from '$lib/components/MetaTags.svelte';
 	import { IconHeart } from '@tabler/icons-svelte';
 
-	export let data: PageServerData;
+	interface Props {
+		data: PageServerData;
+	}
+
+	let { data }: Props = $props();
 
 	const platformNames: Record<typeof donations.$inferSelect.platform, string> = {
 		KOFI: 'Ko-fi',
@@ -41,11 +45,13 @@
 	</header>
 
 	<p>
-		Since my projects are and will remain as free, open-source and ad-free <Tooltip>
-			<span slot="tooltip-content">
+		Since my projects are and will remain as free, open-source and ad-free
+		<Tooltip>
+			{#snippet tooltipContent()}
 				Some platforms I use may have ads I can't control, and some projects may depend on paid 3rd
 				party services.
-			</span>
+			{/snippet}
+
 			<dfn>as possible</dfn>
 		</Tooltip>, consider donating as a thank you. In return, you'll be listed here and on any future
 		personal projects.

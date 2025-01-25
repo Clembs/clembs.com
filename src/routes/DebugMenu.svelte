@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { onMount } from 'svelte';
 
 	const versionString = '3.1.3';
 
-	let display: { h: number; w: number } = { h: 0, w: 0 };
-	let scroll: { x: number; y: number } = { x: 0, y: 0 };
-	let fps: number;
+	let display: { h: number; w: number } = $state({ h: 0, w: 0 });
+	let scroll: { x: number; y: number } = $state({ x: 0, y: 0 });
+	let fps: number = $state(0);
 	const times: number[] = [];
 
 	function updateFPS() {
@@ -28,10 +28,10 @@
 </script>
 
 <svelte:window
-	on:resize={() => {
+	onresize={() => {
 		display = { h: document.body.clientHeight, w: document.body.clientWidth };
 	}}
-	on:scroll={() => {
+	onscroll={() => {
 		scroll = {
 			x: document.scrollingElement?.scrollLeft || 0,
 			y: document.scrollingElement?.scrollTop || 0,
@@ -52,9 +52,9 @@
 			<span class="tile"> Block: 0 0 0 </span>
 			<span class="tile"> Facing: the_screen </span>
 			<span class="tile">
-				Page: clembs:{$page.url.pathname === '/'
+				Page: clembs:{page.url.pathname === '/'
 					? 'home'
-					: $page.url.pathname.replaceAll('/', '_').slice(1)}
+					: page.url.pathname.replaceAll('/', '_').slice(1)}
 			</span>
 			<span class="tile"> Local Difficulty: 0.0 // 0.0 (Day {new Date().getDate()}) </span>
 		</div>

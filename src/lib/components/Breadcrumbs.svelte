@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
 	export type Breadcrumbs = {
 		name: string;
 		href: string;
@@ -8,7 +8,11 @@
 <script lang="ts">
 	import { IconChevronRight } from '@tabler/icons-svelte';
 
-	export let data: Breadcrumbs[];
+	interface Props {
+		data: Breadcrumbs[];
+	}
+
+	let { data }: Props = $props();
 </script>
 
 <nav aria-label="Breadcrumbs">

@@ -3,9 +3,13 @@
 	import Button from './Button.svelte';
 	import { useShare } from './useShare';
 
-	export let url: string;
+	interface Props {
+		url: string;
+	}
+
+	let { url }: Props = $props();
 </script>
 
-<Button icon style="outlined" on:click={() => useShare(url)}>
+<Button icon style="outlined" onclick={() => useShare(url)}>
 	<IconShare />
 </Button>

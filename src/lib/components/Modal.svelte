@@ -1,20 +1,30 @@
 <script lang="ts">
 	import { IconX } from '@tabler/icons-svelte';
-	import { createEventDispatcher } from 'svelte';
+	import { type Snippet } from 'svelte';
 
-	export let showModal: boolean;
+	interface Props {
+		showModal: boolean;
+		title?: Snippet;
+		children?: Snippet;
+		buttons?: Snippet;
+		onclose?: () => void;
+	}
 
-	let dialog: HTMLDialogElement;
+	let { showModal = $bindable(), title, children, buttons, onclose }: Props = $props();
 
-	const dispatch = createEventDispatcher();
+	let dialog = $state<HTMLDialogElement>();
 
-	$: if (dialog && showModal) dialog.showModal();
+	$effect(() => {
+		if (dialog && showModal) {
+			dialog.showModal();
+		}
+	});
 </script>
 
 <dialog
 	bind:this={dialog}
-	on:close={() => {
-		dispatch('close');
+	onclose={() => {
+		onclose?.();
 		showModal = false;
 	}}
 >
@@ -24,16 +34,16 @@
 		</button>
 	</form>
 	<div>
-		{#if $$slots.title}
-			<slot name="title">
+		{#if title}
+			{#if title}{@render title()}{:else}
 				<h1>Modal Title</h1>
-			</slot>
+			{/if}
 		{/if}
-		<slot />
+		{@render children?.()}
 	</div>
-	{#if $$slots.buttons}
+	{#if buttons}
 		<div class="buttons">
-			<slot name="buttons" />
+			{@render buttons?.()}
 		</div>
 	{/if}
 </dialog>

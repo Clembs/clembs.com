@@ -1,10 +1,20 @@
 <script lang="ts">
-	import IconInfoCircleFilled from '@tabler/icons-svelte/dist/svelte/icons/IconInfoCircleFilled.svelte';
-	import IconCircleCheckFilled from '@tabler/icons-svelte/dist/svelte/icons/IconCircleCheckFilled.svelte';
-	import IconAlertTriangleFilled from '@tabler/icons-svelte/dist/svelte/icons/IconAlertTriangleFilled.svelte';
-	import IconAlertCircleFilled from '@tabler/icons-svelte/dist/svelte/icons/IconAlertCircleFilled.svelte';
+	import {
+		IconInfoCircleFilled,
+		IconCircleCheckFilled,
+		IconAlertTriangleFilled,
+		IconAlertCircleFilled,
+	} from '@tabler/icons-svelte';
+	import type { Snippet } from 'svelte';
 
-	export let type: 'note' | 'info' | 'caution' | 'danger' | 'success';
+	interface Props {
+		type: 'note' | 'info' | 'caution' | 'danger' | 'success';
+		title?: Snippet;
+		children?: Snippet;
+		actions?: Snippet;
+	}
+
+	let { type, title, children, actions }: Props = $props();
 
 	const icons: Record<typeof type, any> = {
 		danger: IconAlertCircleFilled,
@@ -13,24 +23,26 @@
 		note: IconInfoCircleFilled,
 		success: IconCircleCheckFilled,
 	};
+
+	const Icon = $derived(icons[type]);
 </script>
 
 <div class="info-box {type}">
 	<div class="icon">
-		<svelte:component this={icons[type]} />
+		<Icon />
 	</div>
 	<div class="right">
 		<div class="text">
 			<div class="title">
-				<slot name="title" />
+				{@render title?.()}
 			</div>
 			<span class="description">
-				<slot />
+				{@render children?.()}
 			</span>
 		</div>
-		{#if $$slots.actions}
+		{#if actions}
 			<div class="actions">
-				<slot name="actions" />
+				{@render actions?.()}
 			</div>
 		{/if}
 	</div>

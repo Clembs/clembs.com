@@ -2,7 +2,7 @@
 	import Button from '$lib/components/Button.svelte';
 	import HabileHappy from '$lib/icons/habile/HabileHappy.svelte';
 
-	export let data;
+	let { data } = $props();
 </script>
 
 <main>

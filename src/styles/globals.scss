@@ -1,4 +1,4 @@
-@import 'vars.scss';
+@use 'vars.scss';
 
 html {
 	scroll-behavior: smooth;
@@ -43,6 +43,8 @@ body {
 		25px 25px;
 	background-repeat: repeat;
 	background-attachment: fixed;
+	display: flex;
+	flex-direction: column;
 }
 
 h1,

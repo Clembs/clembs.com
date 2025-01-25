@@ -1,7 +1,11 @@
 <script lang="ts">
 	import type { Article } from '$lib/data/blog-articles';
 
-	export let article: Article;
+	interface Props {
+		article: Article;
+	}
+
+	let { article }: Props = $props();
 </script>
 
 <a href="/blog/{article.categoryId}/{article.slug}" class="article">

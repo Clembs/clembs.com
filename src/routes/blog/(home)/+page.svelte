@@ -6,7 +6,7 @@
 	import { categories } from '$lib/data/blog-articles/categories.js';
 	import { IconChevronRight } from '@tabler/icons-svelte';
 
-	export let data;
+	let { data } = $props();
 </script>
 
 <MetaTags
@@ -22,7 +22,7 @@
 				<p class="subtext">{category.description}</p>
 			</div>
 
-			<Button aria-kabel="View more posts" style="text" icon href={`/blog/${category.id}`}>
+			<Button aria-label="View more posts" style="text" icon href="/blog/${category.id}">
 				<IconChevronRight />
 			</Button>
 		</header>

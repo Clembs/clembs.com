@@ -5,12 +5,16 @@
 	import type { LanguageSchema } from '../../locales';
 	import InfoBox from '$lib/components/InfoBox.svelte';
 
-	export let strings: LanguageSchema;
+	interface Props {
+		strings: LanguageSchema;
+	}
 
-	let username: string;
-	let uuid: string;
-	let error: string;
-	let timeout: number | NodeJS.Timeout;
+	let { strings }: Props = $props();
+
+	let username = $state('');
+	let uuid = $state('');
+	let error = $state('');
+	let timeout = $state<number>();
 
 	const dispatch = createEventDispatcher();
 
@@ -44,7 +48,7 @@
 			bind:value={username}
 			label={strings.register.player.usernamePremium.textInputLabel}
 			placeholder={strings.register.player.usernamePremium.placeholder}
-			on:input={fetchProfile}
+			oninput={fetchProfile}
 			required
 			minlength={3}
 			maxlength={32}
@@ -65,11 +69,11 @@
 		</InfoBox>
 	{/if}
 	<div class="buttons">
-		<Button inline={false} on:click={() => dispatch('back')} style="outlined">
+		<Button inline={false} onclick={() => dispatch('back')} style="outlined">
 			{strings.register.back}
 		</Button>
 		<Button
-			on:click={() => dispatch('next', { username, uuid })}
+			onclick={() => dispatch('next', { username, uuid })}
 			inline={false}
 			disabled={!username || !uuid || !!error}
 		>

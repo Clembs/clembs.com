@@ -7,11 +7,10 @@
 	import { languages } from '../../../locales';
 	import { colors } from '../../_helpers';
 
-	export let data;
-	$: strings = languages[data.language];
-	export let form;
+	let { data, form } = $props();
 
-	let isPrivate = false;
+	let isPrivate = $state(false);
+	let strings = $derived(languages[data.language]);
 </script>
 
 <div class="question">

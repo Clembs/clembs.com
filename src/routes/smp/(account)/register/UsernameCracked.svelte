@@ -5,12 +5,16 @@
 	import type { LanguageSchema } from '../../locales';
 	import InfoBox from '$lib/components/InfoBox.svelte';
 
-	export let strings: LanguageSchema;
+	interface Props {
+		strings: LanguageSchema;
+	}
 
-	let username: string;
-	let uuid: string;
-	let error: string;
-	let timeout: number | NodeJS.Timeout;
+	let { strings }: Props = $props();
+
+	let username = $state('');
+	let uuid = $state('');
+	let error = $state('');
+	let timeout: number;
 
 	const dispatch = createEventDispatcher();
 
@@ -58,11 +62,11 @@
 	{/if}
 
 	<div class="buttons">
-		<Button inline={false} on:click={() => dispatch('back')} style="outlined">
+		<Button inline={false} onclick={() => dispatch('back')} style="outlined">
 			{strings.register.back}
 		</Button>
 		<Button
-			on:click={() => dispatch('next', { username })}
+			onclick={() => dispatch('next', { username })}
 			inline={false}
 			disabled={!username || username.length < 3 || username.length > 32 || !!error}
 		>

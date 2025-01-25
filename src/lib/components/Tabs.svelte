@@ -1,16 +1,22 @@
 <script lang="ts">
 	import Chip from './Chip.svelte';
-	import { createEventDispatcher } from 'svelte';
 
-	export let entries: { label: string; href?: string; id: string }[];
-	export let vertical = false;
+	interface Props {
+		entries: { label: string; href?: string; id: string }[];
+		vertical?: boolean;
+		onchange?: (newEntryId: string) => void;
+		activeTab?: (typeof entries)[number]['id'];
+	}
 
-	export let activeTab: (typeof entries)[number]['id'] = entries[0].id;
-
-	const dispatch = createEventDispatcher();
+	let {
+		entries,
+		vertical = false,
+		activeTab = $bindable(entries[0].id),
+		onchange,
+	}: Props = $props();
 
 	function changeTab(newEntryId: string) {
-		dispatch('change', newEntryId);
+		onchange?.(newEntryId);
 		activeTab = newEntryId;
 	}
 </script>

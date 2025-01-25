@@ -1,7 +1,14 @@
 <script lang="ts">
 	import Chip from '$lib/components/Chip.svelte';
 	import { categories } from '$lib/data/blog-articles/categories';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
+	import type { Snippet } from 'svelte';
+
+	interface Props {
+		children?: Snippet;
+	}
+
+	let { children }: Props = $props();
 </script>
 
 <main>
@@ -11,17 +18,17 @@
 		<p>Everything I write about, from design to code and everything in between.</p>
 
 		<div class="chips">
-			<Chip checked={$page.url.pathname === '/blog'} href="/blog">All posts</Chip>
+			<Chip checked={page.url.pathname === '/blog'} href="/blog">All posts</Chip>
 
 			{#each categories as category}
-				<Chip checked={$page.url.pathname.includes(category.id)} href="/blog/{category.id}">
+				<Chip checked={page.url.pathname.includes(category.id)} href="/blog/{category.id}">
 					{category.name}
 				</Chip>
 			{/each}
 		</div>
 	</header>
 
-	<slot />
+	{@render children?.()}
 </main>
 
 <style lang="scss">

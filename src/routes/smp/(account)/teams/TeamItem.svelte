@@ -5,17 +5,21 @@
 	import { colors } from '../_helpers';
 	import Tooltip from '$lib/components/Tooltip.svelte';
 
-	export let strings: LanguageSchema;
+	interface Props {
+		strings: LanguageSchema;
+		team: Omit<typeof minecraftTeams.$inferSelect, 'passcode'> & {
+			passcode: string | undefined | null;
+			leader: typeof minecraftPlayers.$inferSelect;
+			members: (typeof minecraftPlayers.$inferSelect)[];
+		};
+		onclick: () => void;
+	}
 
-	export let team: Omit<typeof minecraftTeams.$inferSelect, 'passcode'> & {
-		passcode: string | undefined | null;
-		leader: typeof minecraftPlayers.$inferSelect;
-		members: (typeof minecraftPlayers.$inferSelect)[];
-	};
+	let { strings, team, onclick }: Props = $props();
 </script>
 
 <button
-	on:click
+	{onclick}
 	disabled={team.members.length >= 7}
 	class="team"
 	style:--color={colors.find(({ name }) => name === team.color)?.hex}
@@ -48,12 +52,12 @@
 								: 'https://m.clembs.com/placeholder-image.png'}
 							alt={member.username}
 						/>
-						<span slot="tooltip-content">
+						{#snippet tooltipContent()}
 							{member.username}
 							{#if member.uuid === team.leader.uuid}
 								({strings.teams.leader})
 							{/if}
-						</span>
+						{/snippet}
 					</Tooltip>
 				</li>
 			{/each}

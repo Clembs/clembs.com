@@ -1,36 +1,47 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import { fly } from 'svelte/transition';
 
-	export let transitionDelay = 120;
-	export let type: 'hover' | 'click' = 'hover';
+	interface Props {
+		transitionDelay?: number;
+		type?: 'hover' | 'click';
+		showTooltip?: boolean;
+		tooltipContent: Snippet;
+		children: Snippet;
+	}
 
-	export let showTooltip = false;
+	let {
+		transitionDelay = 120,
+		type = 'hover',
+		showTooltip = false,
+		tooltipContent,
+		children,
+	}: Props = $props();
 </script>
 
-<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-<!-- svelte-ignore a11y-no-static-element-interactions -->
+<!-- svelte-ignore a11y_no_static_element_interactions -->
 <span
-	on:focus={() => (type === 'hover' ? (showTooltip = true) : null)}
-	on:mouseover={() => (type === 'hover' ? (showTooltip = true) : null)}
-	on:blur={() => (type === 'hover' ? (showTooltip = false) : null)}
-	on:mouseleave={() => (type === 'hover' ? (showTooltip = false) : null)}
-	on:click={() => (type === 'click' ? (showTooltip = true) : null)}
-	on:keydown={(ev) => (ev.key === 'Enter' && type === 'click' ? (showTooltip = true) : null)}
+	onfocus={() => (type === 'hover' ? (showTooltip = true) : null)}
+	onmouseover={() => (type === 'hover' ? (showTooltip = true) : null)}
+	onblur={() => (type === 'hover' ? (showTooltip = false) : null)}
+	onmouseleave={() => (type === 'hover' ? (showTooltip = false) : null)}
+	onclick={() => (type === 'click' ? (showTooltip = true) : null)}
+	onkeydown={(ev) => (ev.key === 'Enter' && type === 'click' ? (showTooltip = true) : null)}
 	class="tooltip-container {type}"
 	style="--transition-delay: {transitionDelay}ms"
 >
-	<slot />
+	{@render children()}
 
 	{#if showTooltip}
-		<!-- svelte-ignore a11y-click-events-have-key-events -->
-		<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+		<!-- svelte-ignore a11y_click_events_have_key_events -->
+		<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 		<span
 			in:fly={{
 				delay: transitionDelay,
 				duration: 100,
 				y: 10,
 			}}
-			on:keypress={(ev) => {
+			onkeypress={(ev) => {
 				console.log(ev.key);
 				if (ev.key === 'Escape') {
 					showTooltip = false;
@@ -39,7 +50,7 @@
 			class="tooltip-content"
 			role="tooltip"
 		>
-			<slot name="tooltip-content" />
+			{@render tooltipContent()}
 		</span>
 	{/if}
 </span>

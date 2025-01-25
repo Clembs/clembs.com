@@ -3,9 +3,13 @@
 	import Modal from '$lib/components/Modal.svelte';
 	import type { LanguageSchema } from './locales';
 
-	export let strings: LanguageSchema;
+	interface Props {
+		strings: LanguageSchema;
+	}
 
-	let detailsModalOpen = false;
+	let { strings }: Props = $props();
+
+	let detailsModalOpen = $state(false);
 </script>
 
 <Modal bind:showModal={detailsModalOpen}>

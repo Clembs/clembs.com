@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Button from '$lib/components/Button.svelte';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import ShareButton from '$lib/components/ShareButton.svelte';
 	import MetaTags from '$lib/components/MetaTags.svelte';
 	import type { LayoutServerData } from './$types';
@@ -8,8 +8,14 @@
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 	import '/src/styles/blog.scss';
 	import { dateFormat } from '$lib/helpers/dateFormat';
+	import type { Snippet } from 'svelte';
 
-	export let data: LayoutServerData;
+	interface Props {
+		data: LayoutServerData;
+		children?: Snippet;
+	}
+
+	let { data, children }: Props = $props();
 </script>
 
 <MetaTags
@@ -124,13 +130,13 @@
 				<IconMessageCircle />
 				{data.comments.length}
 			</Button> -->
-			<ShareButton url={$page.url.href} />
+			<ShareButton url={page.url.href} />
 		</div>
 	</div>
 </header>
 
 <article>
-	<slot />
+	{@render children?.()}
 </article>
 
 <!-- <Comments

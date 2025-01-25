@@ -7,8 +7,8 @@
 	import AboutSection from './AboutSection.svelte';
 	import { languages } from './locales';
 
-	export let data;
-	$: strings = languages[data.language];
+	let { data } = $props();
+	let strings = $derived(languages[data.language]);
 </script>
 
 <MetaTags

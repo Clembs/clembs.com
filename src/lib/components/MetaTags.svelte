@@ -1,13 +1,24 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import type { Article } from '$lib/data/blog-articles';
 
-	export let pageName: string = 'Clembs';
-	export let description: string;
-	export let image = '/banner.png';
-	export let siteName = 'Clembs';
-	export let article: Article | null = null;
-	export let themeColor = '#987fff';
+	interface Props {
+		pageName?: string;
+		description: string;
+		image?: string;
+		siteName?: string;
+		article?: Article | null;
+		themeColor?: string;
+	}
+
+	let {
+		pageName = 'Clembs',
+		description,
+		image = '/banner.png',
+		siteName = 'Clembs',
+		article = null,
+		themeColor = '#987fff',
+	}: Props = $props();
 	const favicon = '/favicon.png';
 </script>
 
@@ -23,14 +34,14 @@
 	<!-- Google index -->
 	<meta name="”robots”" content="”follow,index”" />
 	<meta name="”googlebot”" content="”follow,index”" />
-	<link rel="canonical" href={$page.url.href} />
+	<link rel="canonical" href={page.url.href} />
 	<!-- OpenGraph -->
 	<meta property="og:site_name" content={siteName} />
 	<meta property="og:title" content={pageName} />
 	{#if description}
 		<meta property="og:description" content={description} />
 	{/if}
-	<meta property="og:url" content={$page.url.href} />
+	<meta property="og:url" content={page.url.href} />
 	<meta property="og:type" content="website" />
 	<meta property="og:image" content={image} />
 	<!-- Twitter -->
@@ -57,7 +68,7 @@
 		<link
 			rel="alternate"
 			type="application/json+oembed"
-			href="{$page.url.origin}/oembed/blog/{article.categoryId}/{article.slug}"
+			href="{page.url.origin}/oembed/blog/{article.categoryId}/{article.slug}"
 			title={article.title}
 		/>
 	{/if}

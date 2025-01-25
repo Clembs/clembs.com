@@ -1,31 +1,40 @@
 <script lang="ts">
-	export let href = '';
-	export let checked: boolean;
-	export let disabled = false;
+	import type { Snippet } from 'svelte';
+
+	interface Props {
+		href?: string;
+		checked: boolean;
+		disabled?: boolean;
+		children?: Snippet;
+		onclick?: (event: MouseEvent) => void;
+		[key: string]: any;
+	}
+
+	let { href = '', checked, disabled = false, children, onclick, ...rest }: Props = $props();
 </script>
 
 {#if href}
 	<a
 		class="chip"
 		aria-disabled={disabled}
-		on:click
+		{onclick}
 		{href}
 		role="radio"
 		aria-checked={checked}
-		{...$$restProps}
+		{...rest}
 	>
-		<slot />
+		{@render children?.()}
 	</a>
 {:else}
 	<button
 		class="chip"
 		aria-disabled={disabled}
-		on:click
+		{onclick}
 		role="radio"
 		aria-checked={checked}
-		{...$$restProps}
+		{...rest}
 	>
-		<slot />
+		{@render children?.()}
 	</button>
 {/if}
 
