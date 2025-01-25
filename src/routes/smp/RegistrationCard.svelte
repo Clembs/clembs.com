@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Button from '$lib/components/Button.svelte';
-	import toast, { CheckmarkIcon } from 'svelte-french-toast';
 </script>
 
 <div class="registration-card">

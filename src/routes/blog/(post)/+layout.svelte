@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Button from '$lib/components/Button.svelte';
 	import { page } from '$app/state';
-	import ShareButton from '$lib/components/ShareButton.svelte';
 	import MetaTags from '$lib/components/MetaTags.svelte';
 	import type { LayoutServerData } from './$types';
 	import IconExternalLink from '$lib/icons/IconExternalLink.svelte';
@@ -9,6 +8,8 @@
 	import '/src/styles/blog.scss';
 	import { dateFormat } from '$lib/helpers/dateFormat';
 	import type { Snippet } from 'svelte';
+	import { IconShare } from '@tabler/icons-svelte';
+	import toast from 'svelte-french-toast';
 
 	interface Props {
 		data: LayoutServerData;
@@ -130,7 +131,24 @@
 				<IconMessageCircle />
 				{data.comments.length}
 			</Button> -->
-			<ShareButton url={page.url.href} />
+
+			<Button
+				icon
+				style="outlined"
+				onclick={() => {
+					if ('canShare' in navigator && navigator.canShare()) {
+						navigator.share({
+							url: page.url.href,
+						});
+					} else {
+						navigator.clipboard.writeText(page.url.href).then(() => {
+							toast.success('Link copied to clipboard');
+						});
+					}
+				}}
+			>
+				<IconShare />
+			</Button>
 		</div>
 	</div>
 </header>
