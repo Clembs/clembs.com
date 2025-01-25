@@ -2,7 +2,6 @@
 	import { page } from '$app/stores';
 	import Clembs from '$lib/icons/Clembs.svelte';
 	import { IconArrowLeft, IconAt, IconBallpen, IconLogin } from '@tabler/icons-svelte';
-	import GradientAvatar from './GradientAvatar/GradientAvatar.svelte';
 	import { onMount } from 'svelte';
 
 	let navbarEl: HTMLElement;
@@ -67,21 +66,6 @@
 	</ul>
 
 	<ul class="right">
-		{#if ['/comments', '/settings'].some((path) => $page.url.href.includes(path) || $page.data.userData)}
-			<li>
-				<a href="/settings" id="account" aria-current={$page.url.pathname === '/settings'}>
-					{#if $page.data.userData}
-						<GradientAvatar user={$page.data.userData} size="20px" />
-						Account
-					{:else}
-						<div class="arrow">
-							<IconLogin size={20} />
-						</div>
-						Sign in
-					{/if}
-				</a>
-			</li>
-		{/if}
 		<li>
 			<a href="/blog" aria-current={$page.url.pathname.includes('/blog')}>
 				<IconBallpen size={20} />

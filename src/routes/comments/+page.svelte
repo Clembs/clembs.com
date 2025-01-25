@@ -12,4 +12,4 @@
 	description="Leave a question, a suggestion or just wave hi!"
 />
 
-<Comments comments={data.comments} userData={data.userData} />
+<Comments comments={data.comments} />

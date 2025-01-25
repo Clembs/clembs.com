@@ -1,113 +1,68 @@
 <script lang="ts">
-	import type { Comment } from '$lib/db/types';
-	import { page } from '$app/stores';
-	import { LoaderIcon } from 'svelte-french-toast';
+	import type { LegacyComment } from '$lib/db/types';
 	import VoteButtons from './VoteButtons.svelte';
-	import { enhance } from '$app/forms';
 	import '../../../styles/comment.scss';
-	import ActionButton from './ActionButton.svelte';
-	import CommentContent from './CommentContent.svelte';
-	import {
-		IconTrash,
-		IconHeartFilled,
-		IconHeart,
-		IconMessageCircle,
-		IconX,
-	} from '@tabler/icons-svelte';
-	import CommentHeader from './CommentHeader.svelte';
-	import CommentList from './CommentList.svelte';
-	import CommentForm from '../CommentForm/CommentForm.svelte';
-	import { slide } from 'svelte/transition';
-	import { invalidate } from '$app/navigation';
+	import { parseEmojis } from './parseMentions';
+	import Emoji from '$lib/components/Emoji.svelte';
+	import GradientAvatar from './GradientAvatar.svelte';
+	import { dateFormat } from '$lib/helpers/dateFormat';
+	import { badges } from './badges';
 
-	export let comment: Comment;
-
-	let isDeletionLoading = false;
-	let isPinningLoading = false;
-
-	export let areRepliesShown = true;
-
-	let showReplyForm = false;
+	export let comment: LegacyComment;
 </script>
 
 <article
-	class="comment-wrapper {!!comment.parentId ? 'reply' : 'parent'}"
+	class="comment-wrapper {!!comment.parent_id ? 'reply' : 'parent'}"
 	data-comment-id={comment.id}
 >
 	<div class="comment">
-		<CommentHeader {comment} />
+		<div class="author">
+			<GradientAvatar user={comment.author} size="2rem" />
+			<div class="author-text">
+				<div class="username">
+					{comment.author.username}
+				</div>
+				<div class="author-text-below">
+					{#if comment?.author?.badges}
+						{@const highestBadge = badges[comment.author.badges[0]]}
+						{#if highestBadge}
+							<span class="author-badge" style:--badge-color={highestBadge.color}>
+								{highestBadge.label}
+							</span>
+							•
+						{/if}
+					{/if}
+					<time datetime={comment.created_at}>
+						{dateFormat(new Date(comment.created_at))}
+					</time>
+				</div>
+			</div>
+		</div>
 
-		<CommentContent {comment} dynamicContent={!comment.projectId} />
+		<div class="comment-content">
+			{#each parseEmojis(comment.content) as part}
+				{#if typeof part === 'string'}
+					{part}
+				{:else if part.type === 'emoji'}
+					<Emoji name={part.emojiId} src="/assets/emotes/{part.emojiId}.webp" />
+				{/if}
+			{/each}
+		</div>
 
 		<div class="comment-actions">
 			<VoteButtons {comment} />
-			<ActionButton on:click={() => (showReplyForm = !showReplyForm)} aria-label="Reply to comment">
-				{#if showReplyForm}
-					<IconX />
-					Cancel
-				{:else}
-					<IconMessageCircle />
-					Reply
-				{/if}
-			</ActionButton>
-			{#if !comment.parentId && $page.data.userData?.badges?.includes('CLEMBS')}
-				<form
-					use:enhance={() => {
-						isPinningLoading = true;
-						return ({ update }) => {
-							isPinningLoading = false;
-							update();
-						};
-					}}
-					action="/comments/{comment.id}?/pin"
-					method="POST"
-				>
-					<ActionButton aria-label="Feature comment">
-						{#if isPinningLoading}
-							<LoaderIcon />
-						{:else if comment.isPinned}
-							<IconHeartFilled />
-						{:else}
-							<IconHeart />
-						{/if}
-					</ActionButton>
-				</form>
-			{/if}
-			{#if ($page.data.userData && $page.data.userData?.id === comment.author?.id) || $page.data.userData?.badges?.includes('CLEMBS')}
-				<form
-					use:enhance={() => {
-						isDeletionLoading = true;
-						return async ({ update }) => {
-							await update();
-							await invalidate('comments');
-							isDeletionLoading = false;
-						};
-					}}
-					method="POST"
-					action="/comments/{comment.id}?/delete"
-				>
-					<ActionButton aria-label="Delete comment">
-						{#if isDeletionLoading}
-							<LoaderIcon />
-						{:else}
-							<IconTrash />
-						{/if}
-					</ActionButton>
-				</form>
-			{/if}
 		</div>
 	</div>
 
-	<div class="child-comments">
-		{#if showReplyForm}
-			<div class="reply-form" transition:slide>
-				<CommentForm expanded projectId={comment.projectId} parentComment={comment} />
-			</div>
-		{/if}
-		{#if comment.childComments?.length && areRepliesShown}
-			<CommentList comments={comment.childComments} />
-		{/if}
-	</div>
+	{#if comment.child_comments.length > 0}
+		<div class="child-comments">
+			<ul>
+				{#each comment.child_comments as c (c.id)}
+					<svelte:self comment={c} />
+				{/each}
+			</ul>
+		</div>
+	{/if}
 </article>
 
 <style lang="scss">
@@ -119,6 +74,16 @@
 
 		&.parent {
 			overflow-x: scroll;
+			
+			// remove scrollbars
+			overflow: -moz-scrollbars-none;
+			-ms-overflow-style: none;
+			scrollbar-width: none;
+			
+			&::-webkit-scrollbar {
+				display: none;
+			}
+
 			margin: 0 -1rem;
 
 			.comment {
@@ -147,6 +112,44 @@
 		font-weight: inherit;
 		text-decoration: none;
 
+
+		.author {
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+
+			.author-text {
+				display: flex;
+				flex-direction: column;
+
+				.username {
+					font-weight: 600;
+					color: var(--color-on-background);
+				}
+
+				.author-text-below {
+					font-size: 0.75rem;
+
+					.author-badge {
+						color: var(--badge-color);
+						font-weight: 500;
+					}
+
+					time {
+						color: var(--color-on-surface);
+					}
+				}
+			}
+		}
+
+		.comment-content {
+			font-size: 17px;
+			margin-left: 2.5rem;
+			margin-top: -0.5rem;
+			word-break: break-word;
+			min-width: 30ch;
+		}
+
 		.comment-actions {
 			display: flex;
 			gap: 0.25rem;
@@ -160,5 +163,13 @@
 		gap: 0.5rem;
 		padding-left: 3.25rem;
 		padding-top: 0.5rem;
+
+		ul {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+			display: flex;
+			flex-direction: column;
+		}
 	}
 </style>

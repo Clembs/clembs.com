@@ -2,12 +2,11 @@ import { blogArticles } from '$lib/data/blog-articles';
 import { error } from '@sveltejs/kit';
 import type { LayoutServerLoad } from './$types';
 import { categories } from '$lib/data/blog-articles/categories';
-import { getComments } from '$lib/helpers/getComments';
 
 // notes to self:
 // in the case of a case study (with the "work" categoryId), the URL will be /blog/:slug
 // in the case of anything else, the URL will be /blog/:categoryId/:slug
-export const load: LayoutServerLoad = async ({ url, setHeaders, depends }) => {
+export const load: LayoutServerLoad = async ({ url, setHeaders }) => {
 	let categoryId = url.pathname.split('/').at(2);
 
 	if (!categoryId) error(404);
@@ -29,11 +28,11 @@ export const load: LayoutServerLoad = async ({ url, setHeaders, depends }) => {
 
 	if (!category || !post) error(404);
 
-	const comments = await getComments(
-		`blog/${post.categoryId === 'work' ? 'design' : post!.categoryId}/${post!.slug}`,
-	);
+	// const comments = await getComments(
+	// 	`blog/${post.categoryId === 'work' ? 'design' : post!.categoryId}/${post!.slug}`,
+	// );
 
-	depends('comments');
+	// depends('comments');
 
 	setHeaders({
 		'Cache-Control': 'public, max-age=1200',
@@ -42,7 +41,7 @@ export const load: LayoutServerLoad = async ({ url, setHeaders, depends }) => {
 	return {
 		...post,
 		category,
-		comments,
+		// comments,
 		navButton: {
 			label: category.name,
 			href: `/blog/${category.id}`,

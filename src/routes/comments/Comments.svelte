@@ -1,39 +1,17 @@
 <script lang="ts">
-	import type { Comment as CommentType } from '$lib/db/types';
-	import RestrictedFunctionalityModal from './RestrictedFunctionalityModal.svelte';
+	import type { LegacyComment as CommentType } from '$lib/db/types';
 	import HabileNeutral from '$lib/icons/habile/HabileNeutral.svelte';
-	import CommentForm from './CommentForm/CommentForm.svelte';
 	import HabileHappy from '$lib/icons/habile/HabileHappy.svelte';
-	import LoginModal from '$lib/components/Settings/LoginModal.svelte';
-	import CommentList from './Comment/CommentList.svelte';
-	import { showLoginDialog, showRestrictedAccountDialog } from '$lib/stores/modals';
+	import Comment from './Comment/Comment.svelte';
 
-	export let parentComment: CommentType | null | undefined = null;
-	export let projectId: string | null = null;
-	export let comments: CommentType[];
-	export let hideCreateForm = false;
-
-	let selectedParentComment = parentComment;
+export let comments: CommentType[];
 </script>
 
 <div class="comments-page" id="comments">
-	{#if $showRestrictedAccountDialog}
-		<RestrictedFunctionalityModal />
-	{/if}
-
-	{#if $showLoginDialog}
-		<LoginModal />
-	{/if}
-
-	<header>
+	<div class="header">
 		<div class="title">
-			{#if projectId}
-				<h3>Comments</h3>
-			{:else if parentComment}
-				<h3>Replies</h3>
-			{:else}
-				<h1>Comments</h1>
-			{/if}
+			<h3>Comments</h3>
+	
 			<div class="title-text">
 				<span class="subtext">
 					{comments.length}
@@ -41,13 +19,14 @@
 				</span>
 			</div>
 		</div>
-		{#if !hideCreateForm}
-			<CommentForm {projectId} parentComment={selectedParentComment} />
-		{/if}
-	</header>
+	</div>
 
 	{#if comments.length}
-		<CommentList {comments} />
+	<ul>
+		{#each comments as comment (comment.id)}
+			<Comment {comment} />
+		{/each}
+	</ul>
 
 		<li class="no-comments">
 			<HabileHappy />
@@ -56,11 +35,7 @@
 	{:else}
 		<div class="no-comments">
 			<HabileNeutral />
-			{#if hideCreateForm}
 				No comments yet...
-			{:else}
-				No comments, but you could be the first!
-			{/if}
 		</div>
 	{/if}
 </div>
@@ -73,7 +48,7 @@
 		gap: 1rem;
 	}
 
-	header {
+	.header {
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
@@ -88,6 +63,14 @@
 				font-size: 1.5rem;
 			}
 		}
+	}
+
+	ul {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
 	}
 
 	.no-comments {

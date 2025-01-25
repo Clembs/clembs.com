@@ -59,7 +59,6 @@
 				type="email"
 				placeholder="clembs@clembs.com"
 				name="email"
-				value={data.userData?.email}
 			/>
 
 			{#if !subscribeLoading}
@@ -97,7 +96,7 @@
 	{/if}
 </section>
 
-{#if data.userData?.badges?.includes('CLEMBS')}
+<!-- {#if data.userData?.badges?.includes('CLEMBS')}
 	<form
 		id="dev-actions"
 		action="/blog/newsletter/actions?/send&category={data.categoryId}&post={data.slug}"
@@ -115,7 +114,7 @@
 			Send newsletter to {data.subscribers} subscribers
 		</Button>
 	</form>
-{/if}
+{/if} -->
 
 <style lang="scss">
 	#newsletter {

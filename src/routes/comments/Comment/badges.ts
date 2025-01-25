@@ -1,25 +1,17 @@
-import type { UserBadge } from '$lib/db/types';
 import Clembs from '$lib/icons/badges/clembs.svelte';
 import Supporter from '$lib/icons/badges/supporter.svelte';
-import Blocked from '$lib/icons/badges/blocked.svelte';
-import type { ComponentType } from 'svelte';
+import type { SvelteComponent } from 'svelte';
 import Verified from '$lib/icons/badges/verified.svelte';
 
 export const badges: Record<
-	UserBadge,
+	string,
 	{
 		color: string;
-		icon: ComponentType;
+		icon: SvelteComponent;
 		label: string;
 		description: string;
 	}
 > = {
-	BLOCKED: {
-		color: 'var(--color-error)',
-		label: 'Soft-banned',
-		icon: Blocked,
-		description: 'This user was blocked for breaking the Comments rules.',
-	},
 	CLEMBS: {
 		color: '#654FFF',
 		label: 'Admin',

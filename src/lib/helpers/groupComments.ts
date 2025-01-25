@@ -1,12 +1,12 @@
-import type { Comment } from '$lib/db/types';
+import type { LegacyComment } from '$lib/db/types';
 
-export function nestComments(comments: Comment[]): Comment[] {
+export function nestComments(comments: LegacyComment[]): LegacyComment[] {
 	// Find comments which have a parentId attribute
 	// If they do, attach them to their parent's childComments attribute and remove them from the array
 	// If they don't, add them to the final array
 	// Do that recursively (call groupComments) until there are no more comments with a parentId attribute
-	const commentMap = new Map<string, Comment>();
-	const nestedComments: Comment[] = [];
+	const commentMap = new Map<string, LegacyComment>();
+	const nestedComments: LegacyComment[] = [];
 
 	comments.forEach((comment) => {
 		commentMap.set(comment.id, { ...comment, childComments: [] });

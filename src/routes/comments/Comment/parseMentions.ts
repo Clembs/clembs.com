@@ -1,21 +1,15 @@
-import { EMOJI_MENTION_REGEX } from './regex';
+import { EMOJI_MENTION_REGEX } from '../../../lib/helpers/regex';
 
 export const emojiList = ['flushed', 'happy', 'laugh', 'neutral', 'scared', 'encarada'];
 
-type ParserOutputBaseStructure =
+export type ParserOutputStructure =
 	| string
 	| {
-			type: 'emoji' | 'project';
+			type: 'emoji';
+			emojiId: string;
 	  };
 
-export type ParserOutputEmojiStructure = ParserOutputBaseStructure & {
-	type: 'emoji';
-	emojiId: string;
-};
-
-export type ParserOutputStructure = ParserOutputEmojiStructure;
-
-export function parseMentions(text: string): ParserOutputStructure[] {
+export function parseEmojis(text: string): ParserOutputStructure[] {
 	const parts = [];
 	let buffer = '';
 
@@ -34,7 +28,7 @@ export function parseMentions(text: string): ParserOutputStructure[] {
 				// Check if the regex matches & the emoji exists
 				if (match && emojiList.includes(match[1])) {
 					// Add the emoji
-					parts.push({ type: 'emoji', emojiId: match[1] } as ParserOutputEmojiStructure);
+					parts.push({ type: 'emoji', emojiId: match[1] } as ParserOutputStructure);
 					// Skip the processed part
 					i = emojiEnd;
 					continue;

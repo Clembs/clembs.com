@@ -25,7 +25,7 @@
 
 <Toaster />
 
-<div inert class="background-piece" />
+<div inert class="background-piece"></div>
 
 <NavBar />
 

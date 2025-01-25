@@ -18,9 +18,6 @@
 	{#if description}
 		<meta name="description" content={description} />
 	{/if}
-	{#if description}
-		<meta name="description" content={description} />
-	{/if}
 	<meta property="theme-color" content={themeColor} />
 	<meta name="copyright" content="&copy;{new Date().getFullYear()} Clembs" />
 	<!-- Google index -->

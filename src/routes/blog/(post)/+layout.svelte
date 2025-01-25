@@ -1,11 +1,9 @@
 <script lang="ts">
-	import { IconMessageCircle } from '@tabler/icons-svelte';
 	import Button from '$lib/components/Button.svelte';
 	import { page } from '$app/stores';
 	import ShareButton from '$lib/components/ShareButton.svelte';
 	import MetaTags from '$lib/components/MetaTags.svelte';
 	import type { LayoutServerData } from './$types';
-	import Comments from '../../comments/Comments.svelte';
 	import IconExternalLink from '$lib/icons/IconExternalLink.svelte';
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 	import '/src/styles/blog.scss';
@@ -122,10 +120,10 @@
 					<IconBrandInstagram />
 				</Button>
 			{/if} -->
-			<Button style="outlined" href="#comments" aria-label="Comments">
+			<!-- <Button style="outlined" href="#comments" aria-label="Comments">
 				<IconMessageCircle />
 				{data.comments.length}
-			</Button>
+			</Button> -->
 			<ShareButton url={$page.url.href} />
 		</div>
 	</div>
@@ -135,11 +133,11 @@
 	<slot />
 </article>
 
-<Comments
+<!-- <Comments
 	projectId="blog/{data.categoryId}/{data.slug}"
 	comments={data.comments}
 	userData={data.userData}
-/>
+/> -->
 
 <style lang="scss">
 	header {

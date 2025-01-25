@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { emojiList } from '$lib/helpers/parseMentions';
 	import Tooltip from './Tooltip.svelte';
 
 	export let src: string;
@@ -14,9 +13,6 @@
 				<div class="title">
 					:{name}:
 				</div>
-				{#if emojiList.includes(name)}
-					<div class="subtext">Type it in your comments to use.</div>
-				{/if}
 			</div>
 		</div>
 	</span>

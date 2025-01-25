@@ -1,5 +1,5 @@
 <script lang="ts">
-	import IconShare from '@tabler/icons-svelte/dist/svelte/icons/IconShare.svelte';
+	import { IconShare } from '@tabler/icons-svelte';
 	import Button from './Button.svelte';
 	import { useShare } from './useShare';
 
