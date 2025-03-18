@@ -3,18 +3,14 @@ import Discord from '$lib/icons/socials/discord.svelte';
 import Github from '$lib/icons/socials/github.svelte';
 import Instagram from '$lib/icons/socials/instagram.svelte';
 import KoFi from '$lib/icons/socials/ko-fi.svelte';
-import Twitch from '$lib/icons/socials/twitch.svelte';
-import Youtube from '$lib/icons/socials/youtube.svelte';
 import { IconFileText, IconMail } from '@tabler/icons-svelte';
-import Linkedin from '$lib/icons/socials/linkedin.svelte';
-import type { ComponentType } from 'svelte';
 import X from '$lib/icons/socials/x.svelte';
 import Bluesky from '$lib/icons/socials/bluesky.svelte';
 
 export interface Social {
 	name: string;
 	href: string;
-	icon: ComponentType;
+	icon: typeof IconMail | typeof KoFi;
 	username?: string;
 	description?: string;
 }
@@ -54,32 +50,11 @@ export const discord: Social = {
 	icon: Discord,
 };
 
-export const youtube: Social = {
-	name: 'YouTube',
-	href: 'https://youtube.com/@ClembsV',
-	username: '@clembsv',
-	icon: Youtube,
-};
-
-export const twitch: Social = {
-	name: 'Twitch',
-	href: 'https://twitch.tv/clembs',
-	username: 'clembs',
-	icon: Twitch,
-};
-
 export const instagram: Social = {
 	name: 'Instagram',
 	href: 'https://instagram.com/clembs.v',
 	username: 'clembs.v',
 	icon: Instagram,
-};
-
-export const linkedin: Social = {
-	name: 'LinkedIn',
-	href: 'https://www.linkedin.com/in/clembs/',
-	username: 'Clément Voisin',
-	icon: Linkedin,
 };
 
 export const resume: Social = {
@@ -103,4 +78,4 @@ export const bluesky: Social = {
 	icon: Bluesky,
 };
 
-export const footerSocials = [bluesky, twitter, discord, github, linkedin] satisfies Social[];
+export const footerSocials = [bluesky, twitter, discord, github] satisfies Social[];

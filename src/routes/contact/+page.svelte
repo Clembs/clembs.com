@@ -7,11 +7,8 @@
 		github,
 		instagram,
 		kofi,
-		linkedin,
 		resume,
-		twitch,
 		twitter,
-		youtube,
 	} from '$lib/data/socials';
 	import LinksList from '$lib/components/LinksList.svelte';
 	import MetaTags from '$lib/components/MetaTags.svelte';
@@ -40,19 +37,13 @@
 	<section id="pro">
 		<h2>Professional</h2>
 
-		<LinksList socials={[linkedin, github, resume]} />
+		<LinksList socials={[resume, github]} />
 	</section>
 
 	<section id="social">
 		<h2>Social media</h2>
 
 		<VerticalLinksList socials={[bluesky, twitter, instagram]} />
-	</section>
-
-	<section id="streaming">
-		<h2>Streaming</h2>
-
-		<VerticalLinksList socials={[twitch, youtube]} />
 	</section>
 
 	<section id="donate">
